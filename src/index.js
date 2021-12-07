@@ -9,11 +9,9 @@ import { ConfigProvider } from "antd";
 
 ReactDOM.render(
   <BrowserRouter>
-    <React.StrictMode>
-      <ConfigProvider direction="rtl">
-        <App />
-      </ConfigProvider>
-    </React.StrictMode>
+    <ConfigProvider direction="rtl">
+      <App />
+    </ConfigProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

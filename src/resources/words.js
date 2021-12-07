@@ -2,7 +2,7 @@ import { Component } from "react";
 
 class Words extends Component {
   static app_name = "سینترا";
-  static app_title = "سینترا";
+  static company = "فولاد بهمن";
   static unhandled_exception = "خطایی در سامانه رخ داده است";
   static copyright =
     "تمامی حقوق این سامانه متعلق به گروه صنعتی فولاد بهمن می باشد";
@@ -73,9 +73,9 @@ class Words extends Component {
   static percent = "درصد";
   static save_settings = "دخیره تنظیمات";
 
-  //   static settings = {
-  //     active_term: "---",
-  //   };
+  static messages = {
+    operation_failed: "امکان انجام عملیات وجود ندارد",
+  };
 }
 
 export default Words;

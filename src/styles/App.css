@@ -172,3 +172,12 @@
 
   background-color: rgba(0, 0, 0, 0.7);
 }
+
+/********************************/
+/*             Antd             */
+/********************************/
+
+.ant-form-item-explain-error {
+  font-size: 9pt;
+  color: #ff4d4f;
+}
