@@ -10,7 +10,6 @@ import Colors from "../resources/colors";
 import useWindowWidthBreakpoints from "use-window-width-breakpoints";
 import { isMobileView } from "../tools/general";
 // import logo from "../assets/images/mazust-white.png";
-import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { Header, Content, Footer, Sider } = Layout;
