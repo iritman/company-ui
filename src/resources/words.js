@@ -29,6 +29,7 @@ class Words extends Component {
   static username = "نام کاربری";
   static password = "رمز عبور";
   static login_to_app = "ورود به سامانه";
+  static logout = "خروج";
   static status = "وضعیت";
   static active = "فعال";
   static inactive = "غیرفعال";
@@ -76,6 +77,10 @@ class Words extends Component {
 
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
+  };
+
+  static questions = {
+    sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
   };
 }
 

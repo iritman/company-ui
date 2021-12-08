@@ -1,6 +1,7 @@
 import React from "react";
-import { Layout, Typography, Drawer, Row, Col } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import { Layout, Typography, Drawer, Row, Col, Popconfirm } from "antd";
+import { MenuOutlined as MenuIcon } from "@ant-design/icons";
+import { AiOutlinePoweroff as LogoutIcon } from "react-icons/ai";
 import DashboardRoutes from "../routes/dashboard-routes";
 import MenuRoutes from "../routes/menu-routes";
 import { useToggle } from "react-use";
@@ -9,11 +10,12 @@ import Colors from "../resources/colors";
 import useWindowWidthBreakpoints from "use-window-width-breakpoints";
 import { isMobileView } from "../tools/general";
 // import logo from "../assets/images/mazust-white.png";
+import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { Header, Content, Footer, Sider } = Layout;
 
-const MainHeader = ({ mobileView, trigger }) => {
+const MainHeader = ({ mobileView, trigger, history }) => {
   return (
     <Header
       style={{
@@ -36,7 +38,7 @@ const MainHeader = ({ mobileView, trigger }) => {
           /> */}
         </>
       ) : (
-        <MenuOutlined
+        <MenuIcon
           style={{
             color: Colors.white,
             fontSize: 20,
@@ -46,15 +48,35 @@ const MainHeader = ({ mobileView, trigger }) => {
           onClick={trigger}
         />
       )}
-      <Title
-        level={!mobileView ? 4 : 5}
+
+      <div
         style={{
-          color: Colors.silver,
-          // marginTop: 15,
+          display: "flex",
+          flexGrow: 1,
         }}
       >
-        {Words.app_name}
-      </Title>
+        <Title
+          level={!mobileView ? 4 : 5}
+          style={{
+            color: Colors.silver,
+            // marginTop: 15,
+          }}
+        >
+          {Words.app_name}
+        </Title>
+      </div>
+
+      <Popconfirm
+        title={Words.questions.sure_to_logout}
+        onConfirm={() => history.push("/logout")}
+        okText={Words.yes}
+        cancelText={Words.no}
+      >
+        <LogoutIcon
+          style={{ color: Colors.white, cursor: "pointer" }}
+          size={20}
+        />
+      </Popconfirm>
     </Header>
   );
 };
@@ -122,7 +144,11 @@ const HomePage = (props) => {
 
   return (
     <Layout>
-      <MainHeader mobileView={mobileView} trigger={setDrawer} />
+      <MainHeader
+        mobileView={mobileView}
+        trigger={setDrawer}
+        history={props.history}
+      />
 
       <Content>
         <Row>
