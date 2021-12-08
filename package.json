@@ -17,9 +17,11 @@
     "react": "^17.0.2",
     "react-data-export": "^0.6.0",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-use": "^17.3.1",
+    "use-window-width-breakpoints": "^1.0.12",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

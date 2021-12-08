@@ -36,16 +36,6 @@ export const validateForm = (formConfig) => {
 
 export const hasFormError = (errors) => Object.keys(errors).length > 0;
 
-export const trimRecord = (object) => {
-  for (const key in object) {
-    if (typeof object[key] === "string") {
-      object[key] = object[key].trim();
-    }
-  }
-
-  return object;
-};
-
 export const handleError = (ex) => {
   if (ex.response && ex.response.status === 400) {
     if (ex.response.data.Error) {

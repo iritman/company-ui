@@ -72,6 +72,7 @@ class Words extends Component {
   static type = "نوع";
   static percent = "درصد";
   static save_settings = "دخیره تنظیمات";
+  static dashboard = "داشبورد";
 
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",

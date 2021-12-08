@@ -42,7 +42,7 @@ function getJwt() {
   return localStorage.getItem(tokenKey);
 }
 
-const authService = {
+const service = {
   login,
   loginWithJwt,
   logout,
@@ -50,4 +50,4 @@ const authService = {
   getJwt,
 };
 
-export default authService;
+export default service;

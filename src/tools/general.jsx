@@ -16,3 +16,27 @@ export const centerTextCol = {
   justifyContent: "center",
   alignItems: "center",
 };
+
+export const trimRecord = (object) => {
+  for (const key in object) {
+    if (typeof object[key] === "string") {
+      object[key] = object[key].trim();
+    }
+  }
+
+  return object;
+};
+
+export const windowSize = {
+  xs: 0,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+};
+
+export const isMobileView = (screenHook) => {
+  const breakoints = screenHook(windowSize);
+
+  return breakoints.xs;
+};

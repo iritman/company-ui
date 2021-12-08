@@ -19,7 +19,7 @@ function setJwt(jwt) {
   axios.defaults.headers.common["x-auth-token"] = jwt;
 }
 
-const httpService = {
+const service = {
   get: axios.get,
   post: axios.post,
   put: axios.put,
@@ -27,4 +27,4 @@ const httpService = {
   setJwt,
 };
 
-export default httpService;
+export default service;
