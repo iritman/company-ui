@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Typography, Drawer, Row, Col, Popconfirm } from "antd";
+import { Layout, Typography, Drawer, Row, Col, Popconfirm, Space } from "antd";
 import { MenuOutlined as MenuIcon } from "@ant-design/icons";
 import { AiOutlinePoweroff as LogoutIcon } from "react-icons/ai";
 import DashboardRoutes from "../routes/dashboard-routes";
@@ -9,6 +9,8 @@ import Words from "../resources/words";
 import Colors from "../resources/colors";
 import useWindowWidthBreakpoints from "use-window-width-breakpoints";
 import { isMobileView } from "../tools/general";
+import { useLocation } from "react-router-dom";
+import BreadcrumbMap from "../components/common/breadcrumb-map";
 // import logo from "../assets/images/mazust-white.png";
 
 const { Title, Text } = Typography;
@@ -139,6 +141,8 @@ const HomePage = (props) => {
 
   const mobileView = isMobileView(useWindowWidthBreakpoints);
 
+  const location = useLocation();
+
   //------
 
   return (
@@ -165,28 +169,32 @@ const HomePage = (props) => {
                 marginTop: 63,
               }}
             >
-              <Content
-                style={
-                  !mobileView
-                    ? {
-                        marginTop: 16,
-                        marginLeft: 16,
-                        marginRight: 16,
-                        overflow: "initial",
-                      }
-                    : {
-                        overflow: "initial",
-                      }
-                }
-              >
-                <div
-                  id="app-container"
-                  className="site-layout-background"
-                  style={{ padding: 24, minHeight: 350 }}
+              <Space direction="vertical">
+                <BreadcrumbMap location={location} mobileView={mobileView} />
+
+                <Content
+                  style={
+                    !mobileView
+                      ? {
+                          // marginTop: 16,
+                          marginLeft: 16,
+                          marginRight: 16,
+                          overflow: "initial",
+                        }
+                      : {
+                          overflow: "initial",
+                        }
+                  }
                 >
-                  <DashboardRoutes path={props.match.path} />
-                </div>
-              </Content>
+                  <div
+                    id="app-container"
+                    className="site-layout-background"
+                    style={{ padding: 24, minHeight: 350 }}
+                  >
+                    <DashboardRoutes path={props.match.path} />
+                  </div>
+                </Content>
+              </Space>
 
               <MainFooter />
             </Layout>

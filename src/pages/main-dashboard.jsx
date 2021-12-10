@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Row, Col, Space, Typography, Avatar, Card } from "antd";
+import { Row, Col, Typography } from "antd";
 import modulesService from "./../services/app/modules-service";
 import Colors from "./../resources/colors";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import DashboardTile from "../components/common/dashboard-tile";
 
-const { Title } = Typography;
+const iconProps = {
+  size: 55,
+  style: { marginTop: 10 },
+};
 
 const mapper = (categoryID) => {
   let link = "";
@@ -15,8 +18,8 @@ const mapper = (categoryID) => {
 
   switch (categoryID) {
     case 1:
-      link = "cat/official";
-      icon = <OfficialIcon size={55} style={{ marginTop: 10 }} />;
+      link = "official";
+      icon = <OfficialIcon {...iconProps} />;
       backColor = Colors.green[3];
       break;
 
@@ -43,25 +46,12 @@ const MainDashboard = () => {
     <Row gutter={[10, 16]}>
       {accessibleModuleCategories.map((category) => (
         <Col xs={24} md={8} lg={6} key={category.CategoryID}>
-          <Link to={`home/${mapper(category.CategoryID).link}`}>
-            <Card
-              style={{
-                textAlign: "center",
-                cursor: "pointer",
-              }}
-            >
-              <Space direction="vertical">
-                <Avatar
-                  size={75}
-                  icon={mapper(category.CategoryID).icon}
-                  style={{
-                    backgroundColor: mapper(category.CategoryID).backColor,
-                  }}
-                />
-                <Title level={5}>{category.CategoryTitle}</Title>
-              </Space>
-            </Card>
-          </Link>
+          <DashboardTile
+            to={`home/${mapper(category.CategoryID).link}`}
+            icon={mapper(category.CategoryID).icon}
+            backColor={mapper(category.CategoryID).backColor}
+            title={category.CategoryTitle}
+          />
         </Col>
       ))}
     </Row>

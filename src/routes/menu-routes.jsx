@@ -9,7 +9,7 @@ const MenuRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
-        path={`${path}/cat/official`}
+        path={`${path}/official`}
         exact
         component={OfficialMenu}
       />

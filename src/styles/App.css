@@ -181,3 +181,15 @@
   font-size: 9pt;
   color: #ff4d4f;
 }
+
+.card {
+  text-align: center;
+  cursor: pointer;
+  transition: ease-out 0.3s;
+}
+
+.card:hover {
+  background: rgb(248, 248, 248);
+  border: 1px solid rgb(109, 165, 248);
+  transition: ease-in 0.3s;
+}

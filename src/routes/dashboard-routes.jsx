@@ -9,7 +9,7 @@ const DashboardRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
-        path={`${path}/cat/official`}
+        path={`${path}/official`}
         exact
         component={OfficialDashboard}
       />

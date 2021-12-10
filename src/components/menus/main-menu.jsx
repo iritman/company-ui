@@ -13,7 +13,7 @@ const mapper = (categoryID) => {
 
   switch (categoryID) {
     case 1:
-      link = "cat/official";
+      link = "official";
       icon = <OfficialIcon style={{ color: Colors.green[6] }} size={20} />;
       break;
 
