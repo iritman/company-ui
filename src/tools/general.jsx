@@ -17,16 +17,6 @@ export const centerTextCol = {
   alignItems: "center",
 };
 
-export const trimRecord = (object) => {
-  for (const key in object) {
-    if (typeof object[key] === "string") {
-      object[key] = object[key].trim();
-    }
-  }
-
-  return object;
-};
-
 export const windowSize = {
   xs: 0,
   sm: 576,

@@ -16,10 +16,11 @@ const BreadcrumbMap = ({ location }) => {
 
   const breadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
+
     return (
       <>
         {breadcrumbNameMap[url] && (
-          <Breadcrumb.Item key={url}>
+          <Breadcrumb.Item key={`${index}_${url}`}>
             <Link to={url}>{breadcrumbNameMap[url]}</Link>
           </Breadcrumb.Item>
         )}

@@ -7,12 +7,9 @@ import {
   handleError,
   hasFormError,
   validateForm,
-} from "./../tools/form-manager";
-import {
-  getFormItemLayout,
-  centerTextCol,
   trimRecord,
-} from "./../tools/general";
+} from "./../tools/form-manager";
+import { getFormItemLayout, centerTextCol } from "./../tools/general";
 import InputItem from "../components/form-controls/input-item";
 import {
   UserOutlined as UserIcon,

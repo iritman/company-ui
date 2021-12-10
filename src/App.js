@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/common/protected-route";
 import LoginPage from "./pages/login-page";
 import LogoutPage from "./pages/logout-page";
 import HomePage from "./pages/home-page";
+import InvalidAccessPage from "./pages/invalid-access-page";
 import NotFoundPage from "./pages/not-found-page";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/logout" component={LogoutPage} />
       <ProtectedRoute path="/home" component={HomePage} />
       <Redirect from="/" exact to="/home" />
+      <Route from="/invalid-access" component={InvalidAccessPage} />
       <Route path="/not-found" component={NotFoundPage} />
       <Redirect to="/not-found" />
     </Switch>

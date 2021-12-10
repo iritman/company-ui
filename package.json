@@ -10,6 +10,7 @@
     "antd": "^4.17.2",
     "antd-jalali": "^0.9.4",
     "axios": "^0.24.0",
+    "file-extension": "^4.0.5",
     "jalali-moment": "^3.3.10",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^3.1.2",
@@ -22,7 +23,9 @@
     "react-scripts": "4.0.3",
     "react-use": "^17.3.1",
     "use-window-width-breakpoints": "^1.0.12",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "xlsx": "^0.17.4",
+    "xlsx-style": "^0.8.13"
   },
   "scripts": {
     "start": "react-scripts start",

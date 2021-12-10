@@ -73,6 +73,11 @@ class Words extends Component {
   static type = "نوع";
   static percent = "درصد";
   static save_settings = "دخیره تنظیمات";
+  static search_text = "متن جستجو";
+  static clear = "پاکسازی";
+  static view_all = "نمایش همه";
+  static excel = "اکسل";
+  static new = "جدید";
 
   static dashboard = "داشبورد";
   //----
@@ -92,10 +97,12 @@ class Words extends Component {
 
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
+    success_submit: "ثبت اطلاعات با موفقیت انجام شد",
   };
 
   static questions = {
     sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
+    sure_to_delete_item: "برای حرف رکورد انتخابی اطمینان دارید؟",
   };
 }
 

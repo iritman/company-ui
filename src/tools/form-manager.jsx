@@ -1,8 +1,14 @@
 // import React from "react";
 import { errorLanguage } from "./language";
 import Joi from "joi-browser";
-import { message } from "antd";
+import { Space, Button, Popconfirm, message } from "antd";
+import {
+  EditOutlined as EditIcon,
+  QuestionCircleOutlined as QuestionIcon,
+  DeleteOutlined as DeleteIcon,
+} from "@ant-design/icons";
 import Words from "../resources/words";
+import accessesService from "./../services/app/accesses-service";
 
 export const validateProperty = (name, schema, value) => {
   const obj = { [name]: value };
@@ -69,4 +75,239 @@ export const handleTextChange = (
   rec[name] = input.value;
   setRecord(rec);
   setErrors(errs);
+};
+
+export const getData = (records) => {
+  const data = [...records];
+
+  data.forEach((row, index) => {
+    row.key = index;
+  });
+
+  return data;
+};
+
+export const trimRecord = (object) => {
+  for (const key in object) {
+    if (typeof object[key] === "string") {
+      object[key] = object[key].trim();
+    }
+  }
+
+  return object;
+};
+
+export const getSorter = (fieldName) => (a, b) => {
+  if (a[fieldName] < b[fieldName]) return -1;
+  if (a[fieldName] > b[fieldName]) return 1;
+  return 0;
+};
+
+export const loadFieldsValue = (formRef, data) => {
+  formRef.current.setFieldsValue(data);
+};
+
+export const initModal = (formRef, selectedObject, setRecord) => {
+  if (selectedObject && selectedObject !== null) {
+    loadFieldsValue(formRef, selectedObject);
+    setRecord(selectedObject);
+  }
+};
+
+export const checkAccess = async (setAccess, pageName) => {
+  try {
+    const userAccess = await accessesService.getPageAccess(pageName);
+
+    setAccess(userAccess);
+  } catch (ex) {
+    window.location = "/invalid-access";
+  }
+};
+
+export const updateSavedRecords = (row, recordID, records, savedRow) => {
+  let newRecords = [];
+
+  if (row[recordID] === 0) {
+    newRecords = [...records, savedRow];
+  } else {
+    records[records.findIndex((obj) => obj[recordID] === row[recordID])] =
+      savedRow;
+    newRecords = records;
+  }
+
+  return newRecords;
+};
+
+export const saveModaleChanges = async (
+  formConfig,
+  selectedObject,
+  setProgress,
+  onOk,
+  clearRecord
+) => {
+  const { errors, schema, record } = formConfig;
+
+  if (!hasFormError(errors)) {
+    setProgress(true);
+
+    try {
+      const rec = trimRecord(record);
+
+      // just validate properties of record, which included in schema
+      const rec_to_submit = {};
+      for (const key in schema) {
+        rec_to_submit[key] = rec[key];
+      }
+
+      await onOk(rec_to_submit);
+      if (selectedObject === null) clearRecord();
+
+      message.success(Words.messages.success_submit);
+    } catch (ex) {
+      handleError(ex);
+    } finally {
+      setProgress(false);
+    }
+  }
+};
+
+export const getColumns = (baseColumns, access, onEdit, onDelete, colWidth) => {
+  const { CanEdit, CanDelete } = access;
+  let columns = baseColumns; //[]; //getDynamicColumns();
+
+  if (CanEdit || CanDelete) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: colWidth || 110,
+        render: (record) => (
+          <Space>
+            {/* {this.getOperationalButtons(record)} */}
+
+            {CanEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {CanDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_item}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
+//------------------------------------------------------------------------------
+
+export const getSimplaDataPageMethods = (config) => {
+  const {
+    service,
+    recordID,
+    showModal,
+    setShowModal,
+    setSelectedObject,
+    setProgress,
+    records,
+    setRecords,
+    setSearched,
+    searchText,
+    setSearchText,
+  } = config;
+
+  return {
+    handleCloseModal: () => {
+      setShowModal(false);
+      setSelectedObject(false);
+    },
+    handleGetAll: async () => {
+      setProgress(true);
+
+      try {
+        const data = await service.getAllData();
+
+        setRecords(data);
+        setProgress(false);
+        setSearched(true);
+        setSearchText("");
+      } catch (ex) {
+        setProgress(false);
+        handleError(ex);
+      }
+    },
+    handleSearch: async () => {
+      if (searchText.length > 0) {
+        setProgress(true);
+
+        try {
+          const data = await service.searchData(searchText);
+
+          setRecords(data);
+          setProgress(false);
+          setSearched(true);
+        } catch (ex) {
+          setProgress(false);
+          handleError(ex);
+        }
+      }
+    },
+    handleAdd: () => {
+      setShowModal(!showModal);
+    },
+
+    handleEdit: (obj) => {
+      const selectedObject = { ...obj };
+      delete selectedObject.key;
+
+      setSelectedObject(selectedObject);
+      setShowModal(true);
+    },
+    handleDelete: async (row) => {
+      setProgress(true);
+
+      try {
+        // await new Promise((resolve) => setTimeout(resolve, 4000));
+        await service.deleteData(row[recordID]);
+
+        let filteredRecords = records.filter(
+          (obj) => obj[recordID] !== row[recordID]
+        );
+
+        setRecords(filteredRecords);
+        setProgress(false);
+      } catch (ex) {
+        setProgress(false);
+        handleError(ex);
+      }
+    },
+    handleSave: async (row) => {
+      const savedRow = await service.saveData(row);
+
+      const updatedRecords = updateSavedRecords(
+        row,
+        recordID,
+        records,
+        savedRow
+      );
+
+      setRecords(updatedRecords);
+    },
+  };
 };
