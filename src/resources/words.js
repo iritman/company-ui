@@ -75,10 +75,20 @@ class Words extends Component {
   static save_settings = "دخیره تنظیمات";
 
   static dashboard = "داشبورد";
+  //----
   static official = "اداری";
+  //----
   static orgAffairs = "ساختار سازمانی";
+  static citiesAndProvinces = "شهرها و استان ها";
+  static departments = "دپارتمان ها";
+  static roles = "سمت ها";
+  static companies = "شرکت ها";
+  static members = "کاربران";
+  static employees = "کارکنان";
+  //---
   static timex = "تایمکس";
   static automation = "اتوماسیون اداری";
+  //---
 
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",

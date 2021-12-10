@@ -2,7 +2,7 @@ import React from "react";
 import { Layout, Typography, Drawer, Row, Col, Popconfirm, Space } from "antd";
 import { MenuOutlined as MenuIcon } from "@ant-design/icons";
 import { AiOutlinePoweroff as LogoutIcon } from "react-icons/ai";
-import DashboardRoutes from "../routes/dashboard-routes";
+import PageRoutes from "../routes/page-routes";
 import MenuRoutes from "../routes/menu-routes";
 import { useToggle } from "react-use";
 import Words from "../resources/words";
@@ -170,7 +170,7 @@ const HomePage = (props) => {
               }}
             >
               <Space direction="vertical">
-                <BreadcrumbMap location={location} mobileView={mobileView} />
+                <BreadcrumbMap location={location} />
 
                 <Content
                   style={
@@ -191,7 +191,7 @@ const HomePage = (props) => {
                     className="site-layout-background"
                     style={{ padding: 24, minHeight: 350 }}
                   >
-                    <DashboardRoutes path={props.match.path} />
+                    <PageRoutes path={props.match.path} />
                   </div>
                 </Content>
               </Space>

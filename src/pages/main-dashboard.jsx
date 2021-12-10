@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Row, Col, Typography } from "antd";
+import { Row, Col } from "antd";
 import modulesService from "./../services/app/modules-service";
 import Colors from "./../resources/colors";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";

@@ -17,24 +17,16 @@ async function accessibleModules(categoryID) {
   return data;
 }
 
-// export async function getAllData() {
-//   const { data } = await http.get(`${apiEndpoint}/all`);
+async function accessiblePages(moduleID) {
+  const { data } = await http.get(`${apiEndpoint}/accessiblePages/${moduleID}`);
 
-//   return data;
-// }
+  return data;
+}
 
-// export async function saveData(record) {
-//   const { data } = await http.post(`${apiEndpoint}`, record);
-
-//   return data;
-// }
-
-// export async function deleteData(recordID) {
-//   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
-
-//   return data;
-// }
-
-const service = { accessibleModuleCategories, accessibleModules };
+const service = {
+  accessibleModuleCategories,
+  accessibleModules,
+  accessiblePages,
+};
 
 export default service;

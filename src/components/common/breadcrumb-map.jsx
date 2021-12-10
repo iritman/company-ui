@@ -3,7 +3,7 @@ import { Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
 import Words from "../../resources/words";
 
-const BreadcrumbMap = ({ location, mobileView }) => {
+const BreadcrumbMap = ({ location }) => {
   const breadcrumbNameMap = {
     "/home": Words.dashboard,
     "/home/official": Words.official,
@@ -17,26 +17,24 @@ const BreadcrumbMap = ({ location, mobileView }) => {
   const breadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
     return (
-      <Breadcrumb.Item key={url}>
-        <Link to={url}>{breadcrumbNameMap[url]}</Link>
-      </Breadcrumb.Item>
+      <>
+        {breadcrumbNameMap[url] && (
+          <Breadcrumb.Item key={url}>
+            <Link to={url}>{breadcrumbNameMap[url]}</Link>
+          </Breadcrumb.Item>
+        )}
+      </>
     );
   });
 
   return (
     <Breadcrumb
-      style={
-        !mobileView
-          ? {
-              marginTop: 16,
-              marginLeft: 16,
-              marginRight: 16,
-              overflow: "initial",
-            }
-          : {
-              overflow: "initial",
-            }
-      }
+      style={{
+        marginTop: 16,
+        marginLeft: 16,
+        marginRight: 16,
+        overflow: "initial",
+      }}
     >
       {breadcrumbItems}
     </Breadcrumb>

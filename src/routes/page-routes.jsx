@@ -3,9 +3,10 @@ import { Switch } from "react-router-dom";
 import ProtectedRoute from "../components/common/protected-route";
 import MainDashboard from "../pages/main-dashboard";
 import OfficialDashboard from "../components/app-modules/officials/official-dashboard";
+import OrgDashboard from "../components/app-modules/officials/org/org-dashboard";
 //---
 
-const DashboardRoutes = ({ path }) => {
+const PageRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
@@ -13,9 +14,14 @@ const DashboardRoutes = ({ path }) => {
         exact
         component={OfficialDashboard}
       />
+      <ProtectedRoute
+        path={`${path}/official/org`}
+        exact
+        component={OrgDashboard}
+      />
       <ProtectedRoute path={`${path}/`} exact component={MainDashboard} />
     </Switch>
   );
 };
 
-export default DashboardRoutes;
+export default PageRoutes;

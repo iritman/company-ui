@@ -3,6 +3,7 @@ import { Switch } from "react-router-dom";
 import ProtectedRoute from "../components/common/protected-route";
 import MainMenu from "../components/menus/main-menu";
 import OfficialMenu from "../components/menus/official-menu";
+import OrgMenu from "../components/menus/org-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -13,6 +14,7 @@ const MenuRoutes = ({ path }) => {
         exact
         component={OfficialMenu}
       />
+      <ProtectedRoute path={`${path}/official/org`} component={OrgMenu} />
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />
     </Switch>
   );
