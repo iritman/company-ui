@@ -89,7 +89,7 @@ const OrgMenu = () => {
       <Menu.Divider />
       {accessiblePages.map((page) => (
         <Menu.Item key={page.PageID} icon={mapper(page.PageID).icon}>
-          <Link to={`org/${mapper(page.PageID).link}`}>{page.PageTitle}</Link>
+          <Link to={`${mapper(page.PageID).link}`}>{page.PageTitle}</Link>
         </Menu.Item>
       ))}
     </Menu>
