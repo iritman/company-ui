@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button } from "antd";
 import { EditOutlined as EditIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/provinces-service";
+import service from "./../../../../services/org/cities-service";
 import {
   getSorter,
   checkAccess,
@@ -13,17 +13,19 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-import ProvinceModal from "./province-modal";
+import CityModal from "./city-modal";
+import Colors from "./../../../../resources/colors";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "Provinces",
+    title: "Cities",
     data: records,
     columns: [
-      { label: Words.id, value: "ProvinceID" },
-      { label: Words.title, value: "ProvinceTitle" },
+      { label: Words.id, value: "CityID" },
+      { label: Words.title, value: "CityTitle" },
+      { label: Words.province, value: "ProvinceTitle" },
     ],
   },
 ];
@@ -33,24 +35,37 @@ const baseColumns = [
     title: Words.id,
     width: 100,
     align: "center",
-    dataIndex: "ProvinceID",
-    sorter: getSorter("ProvinceID"),
-    render: (ProvinceID) => <Text>{utils.farsiNum(`${ProvinceID}`)}</Text>,
+    dataIndex: "CityID",
+    sorter: getSorter("CityID"),
+    render: (CityID) => <Text>{utils.farsiNum(`${CityID}`)}</Text>,
   },
   {
     title: Words.title,
     width: 200,
     align: "center",
     ellipsis: true,
+    dataIndex: "CityTitle",
+    sorter: getSorter("CityTitle"),
+    render: (CityTitle) => <Text>{utils.farsiNum(CityTitle)}</Text>,
+  },
+  {
+    title: Words.province,
+    width: 200,
+    align: "center",
+    ellipsis: true,
     dataIndex: "ProvinceTitle",
     sorter: getSorter("ProvinceTitle"),
-    render: (ProvinceTitle) => <Text>{utils.farsiNum(ProvinceTitle)}</Text>,
+    render: (ProvinceTitle) => (
+      <Text style={{ color: Colors.magenta[6] }}>
+        {utils.farsiNum(ProvinceTitle)}
+      </Text>
+    ),
   },
 ];
 
-const recordID = "ProvinceID";
+const recordID = "CityID";
 
-const ProvincesPage = ({ pageName }) => {
+const CitiesPage = ({ pageName }) => {
   const [progress, setProgress] = useState(false);
   const [searched, setSearched] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -112,10 +127,10 @@ const ProvincesPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.provinces}
+            title={Words.cities}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="Provinces"
+            fileName="Cities"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={handleSearch}
             onClear={() => setRecords([])}
@@ -132,7 +147,7 @@ const ProvincesPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <ProvinceModal
+        <CityModal
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
@@ -143,4 +158,4 @@ const ProvincesPage = ({ pageName }) => {
   );
 };
 
-export default ProvincesPage;
+export default CitiesPage;

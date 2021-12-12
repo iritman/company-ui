@@ -9,7 +9,8 @@ import {
   FaUsers as MemberIcon,
   FaIdCard as EmployeeIcon,
 } from "react-icons/fa";
-import { MdApartment as DepartmentIcon } from "react-icons/md";
+import { GiModernCity as CityIcon } from "react-icons/gi";
+import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import { RiBuilding2Fill as CompanyIcon } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -30,34 +31,41 @@ const mapper = (moduleID) => {
       break;
 
     case 2:
-      link = "departments";
-      icon = (
-        <DepartmentIcon style={{ color: Colors.blue[6] }} size={iconSize} />
-      );
+      link = "cities";
+      icon = <CityIcon style={{ color: Colors.cyan[7] }} size={iconSize} />;
       break;
 
     case 3:
-      link = "roles";
-      icon = <RoleIcon style={{ color: Colors.green[6] }} size={iconSize} />;
+      link = "departments";
+      icon = (
+        <DepartmentIcon style={{ color: Colors.green[6] }} size={iconSize} />
+      );
       break;
 
     case 4:
+      link = "roles";
+      icon = <RoleIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 5:
       link = "companies";
       icon = (
         <CompanyIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
       );
       break;
 
-    case 5:
+    case 6:
       link = "members";
       icon = (
         <MemberIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
       );
       break;
 
-    case 6:
+    case 7:
       link = "employees";
-      icon = <EmployeeIcon style={{ color: Colors.lime[7] }} size={iconSize} />;
+      icon = (
+        <EmployeeIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
+      );
       break;
 
     default:

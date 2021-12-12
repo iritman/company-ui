@@ -78,13 +78,16 @@ class Words extends Component {
   static view_all = "نمایش همه";
   static excel = "اکسل";
   static new = "جدید";
+  static select_please = "انتخاب کنید";
 
   static dashboard = "داشبورد";
   //----
   static official = "اداری";
   //----
   static orgAffairs = "ساختار سازمانی";
-  static citiesAndProvinces = "شهرها و استان ها";
+  static provinces = "استان ها";
+  static province = "استان";
+  static cities = "شهرها";
   static departments = "دپارتمان ها";
   static roles = "سمت ها";
   static companies = "شرکت ها";

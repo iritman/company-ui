@@ -12,6 +12,7 @@ import {
   lime,
   gold,
   volcano,
+  geekblue,
 } from "@ant-design/colors";
 
 class Colors extends Component {
@@ -29,6 +30,7 @@ class Colors extends Component {
   static lime = lime;
   static gold = gold;
   static volcano = volcano;
+  static geekblue = geekblue;
 }
 
 export default Colors;

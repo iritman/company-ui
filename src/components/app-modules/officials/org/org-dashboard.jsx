@@ -8,7 +8,8 @@ import {
   FaUsers as MemberIcon,
   FaIdCard as EmployeeIcon,
 } from "react-icons/fa";
-import { MdApartment as DepartmentIcon } from "react-icons/md";
+import { GiModernCity as CityIcon } from "react-icons/gi";
+import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import { RiBuilding2Fill as CompanyIcon } from "react-icons/ri";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
@@ -31,33 +32,39 @@ const mapper = (moduleID) => {
       break;
 
     case 2:
-      link = "departments";
-      icon = <DepartmentIcon {...iconProps} />;
-      backColor = Colors.blue[3];
+      link = "cities";
+      icon = <CityIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     case 3:
-      link = "roles";
-      icon = <RoleIcon {...iconProps} />;
+      link = "departments";
+      icon = <DepartmentIcon {...iconProps} />;
       backColor = Colors.green[3];
       break;
 
     case 4:
+      link = "roles";
+      icon = <RoleIcon {...iconProps} />;
+      backColor = Colors.blue[3];
+      break;
+
+    case 5:
       link = "companies";
       icon = <CompanyIcon {...iconProps} />;
       backColor = Colors.volcano[3];
       break;
 
-    case 5:
+    case 6:
       link = "members";
       icon = <MemberIcon {...iconProps} />;
       backColor = Colors.magenta[6];
       break;
 
-    case 6:
+    case 7:
       link = "employees";
       icon = <EmployeeIcon {...iconProps} />;
-      backColor = Colors.lime[6];
+      backColor = Colors.geekblue[6];
       break;
     default:
       break;

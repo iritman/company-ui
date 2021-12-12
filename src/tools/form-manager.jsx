@@ -171,9 +171,16 @@ export const saveModaleChanges = async (
   }
 };
 
-export const getColumns = (baseColumns, access, onEdit, onDelete, colWidth) => {
+export const getColumns = (
+  baseColumns,
+  getOperationalButtons,
+  access,
+  onEdit,
+  onDelete,
+  colWidth
+) => {
   const { CanEdit, CanDelete } = access;
-  let columns = baseColumns; //[]; //getDynamicColumns();
+  let columns = baseColumns;
 
   if (CanEdit || CanDelete) {
     columns = [
@@ -185,7 +192,7 @@ export const getColumns = (baseColumns, access, onEdit, onDelete, colWidth) => {
         width: colWidth || 110,
         render: (record) => (
           <Space>
-            {/* {this.getOperationalButtons(record)} */}
+            {getOperationalButtons && getOperationalButtons(record)}
 
             {CanEdit && (
               <Button
@@ -235,8 +242,9 @@ export const getSimplaDataPageMethods = (config) => {
   return {
     handleCloseModal: () => {
       setShowModal(false);
-      setSelectedObject(false);
+      setSelectedObject(null);
     },
+
     handleGetAll: async () => {
       setProgress(true);
 
@@ -252,6 +260,7 @@ export const getSimplaDataPageMethods = (config) => {
         handleError(ex);
       }
     },
+
     handleSearch: async () => {
       if (searchText.length > 0) {
         setProgress(true);
@@ -268,6 +277,7 @@ export const getSimplaDataPageMethods = (config) => {
         }
       }
     },
+
     handleAdd: () => {
       setShowModal(!showModal);
     },
@@ -279,6 +289,7 @@ export const getSimplaDataPageMethods = (config) => {
       setSelectedObject(selectedObject);
       setShowModal(true);
     },
+
     handleDelete: async (row) => {
       setProgress(true);
 
@@ -297,6 +308,7 @@ export const getSimplaDataPageMethods = (config) => {
         handleError(ex);
       }
     },
+
     handleSave: async (row) => {
       const savedRow = await service.saveData(row);
 

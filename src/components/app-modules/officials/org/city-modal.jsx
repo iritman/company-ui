@@ -11,10 +11,13 @@ import {
   saveModaleChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
+import DropdownItem from "./../../../form-controls/dropdown-item";
+import citiesService from "./../../../../services/org/cities-service";
 
 const schema = {
+  CityID: Joi.number().required(),
   ProvinceID: Joi.number().required(),
-  ProvinceTitle: Joi.string()
+  CityTitle: Joi.string()
     .min(2)
     .max(50)
     .required()
@@ -23,15 +26,17 @@ const schema = {
 };
 
 const initRecord = {
+  CityID: 0,
   ProvinceID: 0,
-  ProvinceTitle: "",
+  CityTitle: "",
 };
 
 const formRef = React.createRef();
 
-const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const CityModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const [progress, setProgress] = useState(false);
   const [record, setRecord] = useState(initRecord);
+  const [provinces, setProvinces] = useState([]);
   const [errors, setErrors] = useState({});
 
   const formConfig = {
@@ -43,14 +48,18 @@ const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.ProvinceTitle = "";
+    // record.ProvinceID = 0;
+    record.CityTitle = "";
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
   };
 
-  useMount(() => {
+  useMount(async () => {
     initModal(formRef, selectedObject, setRecord);
+
+    const data = await citiesService.getParams();
+    setProvinces(data);
   });
 
   const isEdit = selectedObject !== null;
@@ -78,9 +87,19 @@ const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       <Form ref={formRef} name="dataForm">
         <Row gutter={1}>
           <Col xs={24}>
+            <DropdownItem
+              title={Words.province}
+              dataSource={provinces}
+              keyColumn="ProvinceID"
+              valueColumn="ProvinceTitle"
+              formConfig={formConfig}
+              disabled={isEdit}
+            />
+          </Col>
+          <Col xs={24}>
             <InputItem
               title={Words.title}
-              fieldName="ProvinceTitle"
+              fieldName="CityTitle"
               required
               maxLength={50}
               formConfig={formConfig}
@@ -92,4 +111,4 @@ const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   );
 };
 
-export default ProvinceModal;
+export default CityModal;
