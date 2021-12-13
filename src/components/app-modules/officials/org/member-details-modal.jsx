@@ -3,10 +3,11 @@ import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
+import { getGenderTitle } from "./../../../../tools/general";
 
 const { Text } = Typography;
 
-const CompanyDetailsModal = ({ company, isOpen, onOk }) => {
+const MemberDetailsModal = ({ member, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
   return (
@@ -31,7 +32,11 @@ const CompanyDetailsModal = ({ company, isOpen, onOk }) => {
         >
           <Row gutter={[10, 10]}>
             <Col xs={24}>
-              <Alert message={company.CompanyTitle} type="info" showIcon />
+              <Alert
+                message={`#${member.MemberID} - ${member.FirstName} ${member.LastName}`}
+                type="info"
+                showIcon
+              />
             </Col>
             <Col xs={24}>
               <Descriptions
@@ -44,49 +49,69 @@ const CompanyDetailsModal = ({ company, isOpen, onOk }) => {
                 }}
                 size="middle"
               >
-                <Descriptions.Item label={Words.national_id}>
+                <Descriptions.Item label={Words.national_code}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.NationalID}`)}
+                    {utils.farsiNum(`${member.NationalCode}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.financial_code}>
+                <Descriptions.Item label={Words.gender}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.FinancialCode}`)}
+                    {getGenderTitle(member.GenderID)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.reg_no}>
+                <Descriptions.Item label={Words.birth_date}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.RegNo}`)}
+                    {utils.farsiNum(utils.slashDate(`${member.BirthDate}`))}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.mobile}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(`${member.Mobile}`)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.fix_tel}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(`${member.FixTel}`)}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.postal_code}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.PostalCode}`)}
+                    {utils.farsiNum(`${member.PostalCode}`)}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.province}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.ProvinceTitle}`)}
+                    {utils.farsiNum(`${member.ProvinceTitle}`)}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.city}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.CityTitle}`)}
+                    {utils.farsiNum(`${member.CityTitle}`)}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.address} span={2}>
                   <Text style={{ color: valueColor, whiteSpace: "pre" }}>
-                    {utils.farsiNum(`${company.Address}`)}
+                    {utils.farsiNum(`${member.Address}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.office_tel}>
+                <Descriptions.Item label={Words.username}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.OfficeTel}`)}
+                    {utils.farsiNum(`${member.Username}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.fax}>
+                <Descriptions.Item label={Words.reg_date}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${company.Fax}`)}
+                    {utils.farsiNum(utils.slashDate(`${member.RegDate}`))}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.reg_time}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(utils.colonTime(`${member.RegTime}`))}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.reg_member}>
+                  <Text style={{ color: valueColor }}>
+                    {`${member.RegFirstName} ${member.RegLastName}`}
                   </Text>
                 </Descriptions.Item>
               </Descriptions>
@@ -98,4 +123,4 @@ const CompanyDetailsModal = ({ company, isOpen, onOk }) => {
   );
 };
 
-export default CompanyDetailsModal;
+export default MemberDetailsModal;

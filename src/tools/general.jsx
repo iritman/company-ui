@@ -1,3 +1,5 @@
+import Words from "../resources/words";
+
 export const getFormItemLayout = (labelCol) => {
   return {
     labelCol: {
@@ -29,4 +31,8 @@ export const isMobileView = (screenHook) => {
   const breakoints = screenHook(windowSize);
 
   return breakoints.xs;
+};
+
+export const getGenderTitle = (genderID) => {
+  return genderID === 1 ? Words.male : Words.female;
 };

@@ -9,6 +9,7 @@ import CitiesPage from "../components/app-modules/officials/org/cities-page";
 import RolesPage from "../components/app-modules/officials/org/roles-page";
 import DepartmentsPage from "../components/app-modules/officials/org/departments-page";
 import CompaniesPage from "../components/app-modules/officials/org/companies-page";
+import MembersPage from "../components/app-modules/officials/org/members-page";
 //---
 
 const PageRoutes = ({ path }) => {
@@ -48,6 +49,11 @@ const PageRoutes = ({ path }) => {
         path={`${path}/official/org/companies`}
         exact
         render={() => <CompaniesPage pageName="Companies" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/members`}
+        exact
+        render={() => <MembersPage pageName="Members" />}
       />
       <ProtectedRoute path={`${path}/`} exact component={MainDashboard} />
     </Switch>

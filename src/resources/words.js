@@ -49,9 +49,6 @@ class Words extends Component {
   static reg_time = "زمان ثبت";
   static first_name = "نام";
   static last_name = "نام خانوادگی";
-  static reg_member_first_name = "نام ثبت کننده";
-  static reg_member_last_name = "نام خانوادگی ثبت کننده";
-  static reg_member = "ثبت کننده";
   static reg_date_time = "زمان ثبت";
   static full_name = "نام و نام خانوادگی";
   static member_id = "شناسه کاربر";
@@ -89,6 +86,19 @@ class Words extends Component {
   static reg_no = "شماره ثبت";
   static more_details = "جزئیات بیشتر";
   static confirm = "تایید";
+  static fix_tel = "تلفن ثابت";
+  static birth_date = "تاریخ تولد";
+  static profile_image = "تصویر پروفایل";
+  static reg_member = "ثبت کننده";
+  static attached_file = "فایل پیوست";
+  static select_file = "انتخاب فایل";
+  static max_image_file_size = "حداکثر ظرفیت فایل جهت آپلود یک مگابایت می باشد";
+  static max_image_file_size_1 = "حداکثر ظرفیت فایل آپلود ";
+  static max_image_file_size_2_mb = " مگابایت می باشد";
+  static max_image_file_size_2_kb = " کیلوبایت می باشد";
+  static limit_upload_file_size =
+    "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
+  st;
 
   static dashboard = "داشبورد";
   //----

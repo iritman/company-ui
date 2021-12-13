@@ -33,10 +33,7 @@ const schema = {
     .allow("")
     .regex(/^[0-9]+$/)
     .label(Words.fax),
-  Address: Joi.string()
-    .max(200)
-    .label(Words.address)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
+  Address: Joi.string().max(200).allow("").label(Words.address),
   PostalCode: Joi.string()
     .max(50)
     .allow("")
@@ -77,7 +74,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const [progress, setProgress] = useState(false);
   const [record, setRecord] = useState(initRecord);
   const [provinces, setProvinces] = useState([]);
@@ -252,4 +249,4 @@ const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   );
 };
 
-export default DepartmentModal;
+export default CompanyModal;

@@ -4,6 +4,13 @@
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|mp4",
-    "destinationFolder": "data"
+    "destinationFolder": "data",
+    "sizeType": "mb"
+  },
+  "profileImageFileSize": {
+    "maxFileSize": 150,
+    "extensions": "jpg|jpeg|png",
+    "destinationFolder": "data",
+    "sizeType": "kb"
   }
 }

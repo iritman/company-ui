@@ -358,7 +358,7 @@ export function jalaliDate(dashedDateString) {
   return dayjs(dashedDateString, { jalali: true });
 }
 
-export default {
+const methods = {
   addFirstZero,
   farsiNum,
   reverseText,
@@ -392,3 +392,5 @@ export default {
   isImageFile,
   jalaliDate,
 };
+
+export default methods;

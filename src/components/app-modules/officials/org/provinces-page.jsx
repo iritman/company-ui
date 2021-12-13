@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
-import { EditOutlined as EditIcon } from "@ant-design/icons";
+import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/org/provinces-service";
@@ -85,24 +84,8 @@ const ProvincesPage = ({ pageName }) => {
     setSearchText,
   });
 
-  // const getOperationalButtons = (record) => {
-  //   return (
-  //     <Button
-  //       type="link"
-  //       icon={<EditIcon />}
-  //       onClick={() => handleEdit(record)}
-  //     />
-  //   );
-  // };
-
   const columns = access
-    ? getColumns(
-        baseColumns,
-        null, //getOperationalButtons,
-        access,
-        handleEdit,
-        handleDelete
-      )
+    ? getColumns(baseColumns, null, access, handleEdit, handleDelete)
     : [];
 
   //------
