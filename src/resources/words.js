@@ -79,6 +79,7 @@ class Words extends Component {
   static excel = "اکسل";
   static new = "جدید";
   static select_please = "انتخاب کنید";
+  static parent_department = "دپارتمان والد";
 
   static dashboard = "داشبورد";
   //----

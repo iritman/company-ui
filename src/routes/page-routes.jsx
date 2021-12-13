@@ -6,6 +6,8 @@ import OfficialDashboard from "../components/app-modules/officials/official-dash
 import OrgDashboard from "../components/app-modules/officials/org/org-dashboard";
 import ProvincesPage from "../components/app-modules/officials/org/provinces-page";
 import CitiesPage from "../components/app-modules/officials/org/cities-page";
+import RolesPage from "../components/app-modules/officials/org/roles-page";
+import DepartmentsPage from "../components/app-modules/officials/org/departments-page";
 //---
 
 const PageRoutes = ({ path }) => {
@@ -30,6 +32,16 @@ const PageRoutes = ({ path }) => {
         path={`${path}/official/org/cities`}
         exact
         render={() => <CitiesPage pageName="Cities" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/roles`}
+        exact
+        render={() => <RolesPage pageName="Roles" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/departments`}
+        exact
+        render={() => <DepartmentsPage pageName="Departments" />}
       />
       <ProtectedRoute path={`${path}/`} exact component={MainDashboard} />
     </Switch>
