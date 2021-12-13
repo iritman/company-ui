@@ -43,7 +43,13 @@ const DropdownItem = ({
         optionFilterProp="children"
         onSearch={onSearch}
         onChange={(selectedValue) =>
-          handleDropdownSelectedItemChange(keyColumn, selectedValue, formConfig)
+          onChange
+            ? onChange(selectedValue)
+            : handleDropdownSelectedItemChange(
+                keyColumn,
+                selectedValue,
+                formConfig
+              )
         }
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

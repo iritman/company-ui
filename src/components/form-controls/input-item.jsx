@@ -34,7 +34,7 @@ const InputItem = ({
     <Form.Item
       label={noLabel ? "" : title}
       name={fieldName}
-      required
+      required={required || false}
       hasFeedback
       help={errors[fieldName]}
       validateStatus={

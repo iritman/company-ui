@@ -80,6 +80,15 @@ class Words extends Component {
   static new = "جدید";
   static select_please = "انتخاب کنید";
   static parent_department = "دپارتمان والد";
+  static office_tel = "تلفن ثابت";
+  static fax = "فکس";
+  static address = "آدرس";
+  static postal_code = "کدپستی";
+  static national_id = "شناسه ملی";
+  static financial_code = "کد اقتصادی";
+  static reg_no = "شماره ثبت";
+  static more_details = "جزئیات بیشتر";
+  static confirm = "تایید";
 
   static dashboard = "داشبورد";
   //----
@@ -89,6 +98,7 @@ class Words extends Component {
   static provinces = "استان ها";
   static province = "استان";
   static cities = "شهرها";
+  static city = "شهر";
   static departments = "دپارتمان ها";
   static roles = "سمت ها";
   static companies = "شرکت ها";
