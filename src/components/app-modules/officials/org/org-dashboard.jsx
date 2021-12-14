@@ -11,7 +11,10 @@ import {
 } from "react-icons/fa";
 import { GiModernCity as CityIcon } from "react-icons/gi";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
-import { RiBuilding2Fill as CompanyIcon } from "react-icons/ri";
+import {
+  RiBuilding2Fill as CompanyIcon,
+  RiOrganizationChart as OrgChartIcon,
+} from "react-icons/ri";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -45,30 +48,36 @@ const mapper = (moduleID) => {
       break;
 
     case 4:
+      link = "chart";
+      icon = <OrgChartIcon {...iconProps} />;
+      backColor = Colors.orange[3];
+      break;
+
+    case 5:
       link = "roles";
       icon = <RoleIcon {...iconProps} />;
       backColor = Colors.blue[3];
       break;
 
-    case 5:
+    case 6:
       link = "companies";
       icon = <CompanyIcon {...iconProps} />;
       backColor = Colors.volcano[3];
       break;
 
-    case 6:
+    case 7:
       link = "members";
       icon = <MemberIcon {...iconProps} />;
       backColor = Colors.magenta[6];
       break;
 
-    case 7:
+    case 8:
       link = "employees";
       icon = <EmployeeIcon {...iconProps} />;
       backColor = Colors.geekblue[6];
       break;
 
-    case 8:
+    case 9:
       link = "company-agents";
       icon = <AgentIcon {...iconProps} />;
       backColor = Colors.gold[6];

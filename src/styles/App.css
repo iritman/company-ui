@@ -193,3 +193,20 @@
   border: 1px solid rgb(109, 165, 248);
   transition: ease-in 0.3s;
 }
+
+.org-tree-node-label {
+  background-color: rgb(250, 226, 159);
+  border-radius: 5px;
+}
+
+.scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  overflow-x: auto;
+  min-height: 500px;
+}
+
+.scrolling-wrapper-flexbox .card {
+  flex: 0 0 auto;
+}
