@@ -4,42 +4,50 @@ import { Button, Modal, Row, Col, Typography, Alert } from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
-import provincesService from "./../../../../services/org/provinces-service";
+import companiesService from "./../../../../services/org/companies-service";
 import DetailsTable from "./../../../common/details-table";
 
 const { Text } = Typography;
 
 const columns = [
   {
-    title: Words.id,
-    width: 100,
+    title: Words.member_id,
+    width: 75,
     align: "center",
-    dataIndex: "CityID",
-    render: (CityID) => <Text>{utils.farsiNum(`${CityID}`)}</Text>,
+    dataIndex: "MemberID",
+    render: (MemberID) => <Text>{utils.farsiNum(`${MemberID}`)}</Text>,
   },
   {
-    title: Words.title,
+    title: Words.full_name,
     width: 200,
     align: "center",
     ellipsis: true,
-    dataIndex: "CityTitle",
-    render: (CityTitle) => (
+    render: (record) => (
       <Text style={{ color: Colors.magenta[6] }}>
-        {utils.farsiNum(CityTitle)}
+        {`${record.FirstName} ${record.LastName}`}
+      </Text>
+    ),
+  },
+  {
+    title: Words.mobile,
+    width: 100,
+    align: "center",
+    ellipsis: true,
+    render: (record) => (
+      <Text style={{ color: Colors.red[6] }}>
+        {utils.farsiNum(`${record.Mobile}`)}
       </Text>
     ),
   },
 ];
 
-const ProvinceCitiesModal = ({ province, isOpen, onOk }) => {
-  const [cities, setCities] = useState([]);
+const CompanyAgentsModal = ({ company, isOpen, onOk }) => {
+  const [agents, setAgents] = useState([]);
 
   useMount(async () => {
-    const data = await provincesService.getCitiesByProvinceID(
-      province.ProvinceID
-    );
+    const data = await companiesService.getAgentsByCompanyID(company.CompanyID);
 
-    setCities(data);
+    setAgents(data);
   });
 
   return (
@@ -47,7 +55,7 @@ const ProvinceCitiesModal = ({ province, isOpen, onOk }) => {
       visible={isOpen}
       maskClosable={false}
       centered={true}
-      title={Words.cities}
+      title={Words.company_agents}
       footer={[
         <Button key="submit-button" type="primary" onClick={onOk}>
           {Words.confirm}
@@ -64,10 +72,10 @@ const ProvinceCitiesModal = ({ province, isOpen, onOk }) => {
         >
           <Row gutter={[10, 10]}>
             <Col xs={24}>
-              <Alert message={province.ProvinceTitle} type="info" showIcon />
+              <Alert message={company.CompanyTitle} type="info" showIcon />
             </Col>
             <Col xs={24}>
-              <DetailsTable records={cities} columns={columns} />
+              <DetailsTable records={agents} columns={columns} />
             </Col>
           </Row>
         </article>
@@ -76,4 +84,4 @@ const ProvinceCitiesModal = ({ province, isOpen, onOk }) => {
   );
 };
 
-export default ProvinceCitiesModal;
+export default CompanyAgentsModal;

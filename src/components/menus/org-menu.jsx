@@ -8,11 +8,11 @@ import {
   FaMapMarkerAlt as MapIcon,
   FaUsers as MemberIcon,
   FaIdCard as EmployeeIcon,
+  FaUsersCog as AgentIcon,
 } from "react-icons/fa";
 import { GiModernCity as CityIcon } from "react-icons/gi";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import { RiBuilding2Fill as CompanyIcon } from "react-icons/ri";
-import { SiHomeassistant as AgentIcon } from "react-icons/si";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";

@@ -119,6 +119,7 @@ class Words extends Component {
   static employee = "کارمند";
   static company_agents = "رابطین شرکت ها";
   static company_agent = "رابط شرکت";
+  static comp_agents = "رابطین شرکت";
   //---
   static timex = "تایمکس";
   static automation = "اتوماسیون اداری";

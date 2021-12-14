@@ -9,6 +9,12 @@ async function getAllData() {
   return data;
 }
 
+async function getAgentsByCompanyID(companyID) {
+  const { data } = await http.get(`${apiEndpoint}/agents/${companyID}`);
+
+  return data;
+}
+
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
@@ -35,6 +41,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getAllData,
+  getAgentsByCompanyID,
   getParams,
   searchData,
   saveData,

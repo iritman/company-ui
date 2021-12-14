@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
+import { Spin, Row, Col, Typography, Button, Space, Tooltip } from "antd";
+import { FaUsersCog as AgentIcon } from "react-icons/fa";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
@@ -15,6 +16,7 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import CompanyModal from "./company-modal";
 import CompanyDetailsModal from "./company-details-modal";
+import CompanyAgentsModal from "./company-agents-modal";
 import Colors from "../../../../resources/colors";
 
 const { Text } = Typography;
@@ -97,6 +99,7 @@ const CompaniesPage = ({ pageName }) => {
   const [access, setAccess] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showAgentsModal, setShowAgentsModal] = useState(false);
 
   useMount(async () => {
     await checkAccess(setAccess, pageName);
@@ -126,14 +129,27 @@ const CompaniesPage = ({ pageName }) => {
 
   const getOperationalButtons = (record) => {
     return (
-      <Button
-        type="link"
-        icon={<InfoIcon style={{ color: Colors.green[6] }} />}
-        onClick={() => {
-          setSelectedObject(record);
-          setShowDetails(true);
-        }}
-      />
+      <Space>
+        <Button
+          type="link"
+          icon={<InfoIcon style={{ color: Colors.green[6] }} />}
+          onClick={() => {
+            setSelectedObject(record);
+            setShowDetails(true);
+          }}
+        />
+
+        <Tooltip title={Words.comp_agents}>
+          <Button
+            type="link"
+            icon={<AgentIcon style={{ color: Colors.gold[6] }} size={20} />}
+            onClick={() => {
+              setSelectedObject(record);
+              setShowAgentsModal(true);
+            }}
+          />
+        </Tooltip>
+      </Space>
     );
   };
 
@@ -189,6 +205,17 @@ const CompaniesPage = ({ pageName }) => {
             setSelectedObject(null);
           }}
           isOpen={showDetails}
+          company={selectedObject}
+        />
+      )}
+
+      {showAgentsModal && (
+        <CompanyAgentsModal
+          onOk={() => {
+            setSelectedObject(null);
+            setShowAgentsModal(false);
+          }}
+          isOpen={showAgentsModal}
           company={selectedObject}
         />
       )}
