@@ -9,6 +9,12 @@ async function getAllData() {
   return data;
 }
 
+async function getCitiesByProvinceID(provinceID) {
+  const { data } = await http.get(`${apiEndpoint}/cities/${provinceID}`);
+
+  return data;
+}
+
 async function searchData(searchText) {
   const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
 
@@ -29,6 +35,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getAllData,
+  getCitiesByProvinceID,
   searchData,
   saveData,
   deleteData,

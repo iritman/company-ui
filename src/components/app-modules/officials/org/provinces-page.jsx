@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, Button, Tooltip } from "antd";
+import { GiModernCity as CityIcon } from "react-icons/gi";
 import Words from "../../../../resources/words";
+import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/org/provinces-service";
 import {
@@ -13,6 +15,7 @@ import {
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import ProvinceModal from "./province-modal";
+import ProvinceCitiesModal from "./province-cities-modal";
 
 const { Text } = Typography;
 
@@ -57,6 +60,7 @@ const ProvincesPage = ({ pageName }) => {
   const [access, setAccess] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showCitiesModal, setShowCitiesModal] = useState(false);
 
   useMount(async () => {
     await checkAccess(setAccess, pageName);
@@ -84,8 +88,29 @@ const ProvincesPage = ({ pageName }) => {
     setSearchText,
   });
 
+  const getOperationalButtons = (record) => {
+    return (
+      <Tooltip title={Words.cities}>
+        <Button
+          type="link"
+          icon={<CityIcon style={{ color: Colors.cyan[6] }} />}
+          onClick={() => {
+            setSelectedObject(record);
+            setShowCitiesModal(true);
+          }}
+        />
+      </Tooltip>
+    );
+  };
+
   const columns = access
-    ? getColumns(baseColumns, null, access, handleEdit, handleDelete)
+    ? getColumns(
+        baseColumns,
+        getOperationalButtons,
+        access,
+        handleEdit,
+        handleDelete
+      )
     : [];
 
   //------
@@ -120,6 +145,17 @@ const ProvincesPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
+        />
+      )}
+
+      {showCitiesModal && (
+        <ProvinceCitiesModal
+          onOk={() => {
+            setSelectedObject(null);
+            setShowCitiesModal(false);
+          }}
+          isOpen={showCitiesModal}
+          province={selectedObject}
         />
       )}
     </>
