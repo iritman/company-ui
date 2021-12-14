@@ -4,9 +4,10 @@ import { Form, Switch } from "antd";
 const handleSwitchChange = (fieldName, checked, formConfig) => {
   const { record, setRecord } = formConfig;
 
-  record[fieldName] = checked;
+  const rec = { ...record };
+  rec[fieldName] = checked;
 
-  setRecord(record);
+  setRecord(rec);
 };
 
 const SwitchItem = ({

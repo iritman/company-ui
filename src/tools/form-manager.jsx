@@ -222,6 +222,17 @@ export const getColumns = (
   return columns;
 };
 
+export const handleDropdownSelectedItemChange = (
+  keyColumn,
+  value,
+  formConfig
+) => {
+  const { record, setRecord } = formConfig;
+
+  record[keyColumn] = value || 0;
+  setRecord(record);
+};
+
 //------------------------------------------------------------------------------
 
 export const getSimplaDataPageMethods = (config) => {

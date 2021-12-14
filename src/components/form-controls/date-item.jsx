@@ -21,20 +21,20 @@ const JalaliDatePicker = ({ fieldName, formConfig }) => {
 };
 
 const onDateChange = (fieldName, date, formConfig) => {
-  const { record, setRecord, formRef, loadFieldsValue } = formConfig;
+  const { record, setRecord } = formConfig;
+  const rec = { ...record };
 
   if (date !== null) {
     const { $jy: jYear, $jM: jMonth, $jD: jDay } = date;
 
-    record[fieldName] = `${jYear}${utils.addFirstZero(
+    rec[fieldName] = `${jYear}${utils.addFirstZero(
       `${jMonth + 1}`
     )}${utils.addFirstZero(`${jDay}`)}`;
   } else {
-    record[fieldName] = "";
+    rec[fieldName] = "";
   }
 
-  setRecord(record);
-  loadFieldsValue(formRef, record);
+  setRecord(rec);
 };
 
 const DateItem = ({

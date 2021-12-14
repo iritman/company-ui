@@ -10,6 +10,7 @@ import RolesPage from "../components/app-modules/officials/org/roles-page";
 import DepartmentsPage from "../components/app-modules/officials/org/departments-page";
 import CompaniesPage from "../components/app-modules/officials/org/companies-page";
 import MembersPage from "../components/app-modules/officials/org/members-page";
+import EmployeesPage from "../components/app-modules/officials/org/employees-page";
 //---
 
 const PageRoutes = ({ path }) => {
@@ -54,6 +55,11 @@ const PageRoutes = ({ path }) => {
         path={`${path}/official/org/members`}
         exact
         render={() => <MembersPage pageName="Members" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/employees`}
+        exact
+        render={() => <EmployeesPage pageName="Employees" />}
       />
       <ProtectedRoute path={`${path}/`} exact component={MainDashboard} />
     </Switch>

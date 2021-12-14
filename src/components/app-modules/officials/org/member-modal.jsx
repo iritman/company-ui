@@ -164,8 +164,6 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setRecord,
     errors,
     setErrors,
-    loadFieldsValue,
-    formRef,
     // fileList,
     // setFileList,
     // fileConfig,

@@ -55,7 +55,6 @@ class Words extends Component {
   static national_code = "کد ملی";
   static mobile = "موبایل";
   static account_status = "وضعیت حساب کاربری";
-  static member = "کاربر";
   static gender = "جنسیت";
   static male = "آقا";
   static female = "خانم";
@@ -98,7 +97,6 @@ class Words extends Component {
   static max_image_file_size_2_kb = " کیلوبایت می باشد";
   static limit_upload_file_size =
     "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
-  st;
 
   static dashboard = "داشبورد";
   //----
@@ -110,10 +108,14 @@ class Words extends Component {
   static cities = "شهرها";
   static city = "شهر";
   static departments = "دپارتمان ها";
+  static department = "دپارتمان";
   static roles = "سمت ها";
+  static role = "سمت";
   static companies = "شرکت ها";
   static members = "کاربران";
+  static member = "کاربر";
   static employees = "کارکنان";
+  static employee = "کارمند";
   //---
   static timex = "تایمکس";
   static automation = "اتوماسیون اداری";

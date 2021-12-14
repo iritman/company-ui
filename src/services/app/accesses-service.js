@@ -9,8 +9,18 @@ async function getPageAccess(pageName) {
   return data;
 }
 
+async function searchMembers(pageName, searchText) {
+  const { data } = await http.post(`${apiEndpoint}/search-members`, {
+    pageName,
+    searchText,
+  });
+
+  return data;
+}
+
 const service = {
   getPageAccess,
+  searchMembers,
 };
 
 export default service;

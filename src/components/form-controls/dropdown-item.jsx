@@ -7,8 +7,9 @@ const { Option } = Select;
 const handleDropdownSelectedItemChange = (keyColumn, value, formConfig) => {
   const { record, setRecord } = formConfig;
 
-  record[keyColumn] = value || 0;
-  setRecord(record);
+  const rec = { ...record };
+  rec[keyColumn] = value || 0;
+  setRecord(rec);
 };
 
 const DropdownItem = ({
