@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, Button } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import {
+  AiFillLock as LockIcon,
+  AiOutlineCheck as CheckIcon,
+} from "react-icons/ai";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
@@ -76,6 +80,20 @@ const baseColumns = [
     render: (CompanyTitle) => (
       <Text style={{ color: Colors.orange[6] }}>{CompanyTitle}</Text>
     ),
+  },
+  {
+    title: Words.status,
+    width: 75,
+    align: "center",
+    ellipsis: true,
+    // dataIndex: "Mobile",
+    sorter: getSorter("IsActive"),
+    render: (record) =>
+      record.IsActive ? (
+        <CheckIcon style={{ color: Colors.green[6] }} />
+      ) : (
+        <LockIcon style={{ color: Colors.red[6] }} />
+      ),
   },
 ];
 

@@ -4,7 +4,6 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
-import Colors from "../../../../resources/colors";
 import {
   validateForm,
   loadFieldsValue,
@@ -14,7 +13,6 @@ import {
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import SwitchItem from "./../../../form-controls/switch-item";
-// import TextItem from "./../../../form-controls/text-item";
 import accessesService from "./../../../../services/app/accesses-service";
 
 const schema = {
@@ -141,15 +139,6 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]}>
-          {/* {isEdit && (
-            <Col xs={24}>
-              <TextItem
-                title={Words.member}
-                value={`${record.FirstName} ${record.LastName}`}
-                valueColor={Colors.magenta[6]}
-              />
-            </Col>
-          )} */}
           <Col xs={24}>
             <DropdownItem
               title={Words.company}
