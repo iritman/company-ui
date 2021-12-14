@@ -11,6 +11,7 @@ import {
 import { GiModernCity as CityIcon } from "react-icons/gi";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import { RiBuilding2Fill as CompanyIcon } from "react-icons/ri";
+import { SiHomeassistant as AgentIcon } from "react-icons/si";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -66,6 +67,13 @@ const mapper = (moduleID) => {
       icon = <EmployeeIcon {...iconProps} />;
       backColor = Colors.geekblue[6];
       break;
+
+    case 8:
+      link = "company-agents";
+      icon = <AgentIcon {...iconProps} />;
+      backColor = Colors.gold[6];
+      break;
+
     default:
       break;
   }

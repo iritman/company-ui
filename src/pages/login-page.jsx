@@ -85,7 +85,7 @@ const LoginPage = () => {
       <div style={{ maxWidth: 400, marginLeft: 25, marginRight: 25 }}>
         <Row gutter={[16, 16]}>
           <Col xs={24} style={centerTextCol}>
-            <img src={logo} alt={Words.company} />
+            <img src={logo} alt={Words.app_company} />
           </Col>
           <Col xs={24} style={centerTextCol}>
             <Title level={1} style={{ color: Colors.blue[7] }}>

@@ -11,6 +11,7 @@ import DepartmentsPage from "../components/app-modules/officials/org/departments
 import CompaniesPage from "../components/app-modules/officials/org/companies-page";
 import MembersPage from "../components/app-modules/officials/org/members-page";
 import EmployeesPage from "../components/app-modules/officials/org/employees-page";
+import CompanyAgentsPage from "../components/app-modules/officials/org/company-agents-page";
 //---
 
 const PageRoutes = ({ path }) => {
@@ -60,6 +61,11 @@ const PageRoutes = ({ path }) => {
         path={`${path}/official/org/employees`}
         exact
         render={() => <EmployeesPage pageName="Employees" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/company-agents`}
+        exact
+        render={() => <CompanyAgentsPage pageName="CompanyAgents" />}
       />
       <ProtectedRoute path={`${path}/`} exact component={MainDashboard} />
     </Switch>

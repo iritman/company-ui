@@ -2,7 +2,7 @@ import { Component } from "react";
 
 class Words extends Component {
   static app_name = "سینترا";
-  static company = "فولاد بهمن";
+  static app_company = "فولاد بهمن";
   static unhandled_exception = "خطایی در سامانه رخ داده است";
   static copyright =
     "تمامی حقوق این سامانه متعلق به گروه صنعتی فولاد بهمن می باشد";
@@ -112,10 +112,13 @@ class Words extends Component {
   static roles = "سمت ها";
   static role = "سمت";
   static companies = "شرکت ها";
+  static company = "شرکت";
   static members = "کاربران";
   static member = "کاربر";
   static employees = "کارکنان";
   static employee = "کارمند";
+  static company_agents = "رابطین شرکت ها";
+  static company_agent = "رابط شرکت";
   //---
   static timex = "تایمکس";
   static automation = "اتوماسیون اداری";
