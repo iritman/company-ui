@@ -11,11 +11,11 @@ const { Text } = Typography;
 
 const columns = [
   {
-    title: Words.member_id,
+    title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "MemberID",
-    render: (MemberID) => <Text>{utils.farsiNum(`${MemberID}`)}</Text>,
+    dataIndex: "AgentID",
+    render: (AgentID) => <Text>{utils.farsiNum(`${AgentID}`)}</Text>,
   },
   {
     title: Words.full_name,
@@ -23,9 +23,18 @@ const columns = [
     align: "center",
     ellipsis: true,
     render: (record) => (
-      <Text style={{ color: Colors.magenta[6] }}>
+      <Text style={{ color: Colors.green[7] }}>
         {`${record.FirstName} ${record.LastName}`}
       </Text>
+    ),
+  },
+  {
+    title: Words.role,
+    width: 120,
+    align: "center",
+    dataIndex: "RoleTitle",
+    render: (RoleTitle) => (
+      <Text style={{ color: Colors.magenta[6] }}>{RoleTitle}</Text>
     ),
   },
   {

@@ -50,9 +50,9 @@ const CompanyAgentDetailsModal = ({ agent, isOpen, onOk }) => {
                 }}
                 size="middle"
               >
-                <Descriptions.Item label={Words.national_code}>
+                <Descriptions.Item label={Words.fix_tel}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.NationalCode}`)}
+                    {utils.farsiNum(`${agent.FixTel}`)}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.mobile}>
@@ -75,34 +75,14 @@ const CompanyAgentDetailsModal = ({ agent, isOpen, onOk }) => {
                     {utils.farsiNum(`${agent.FinancialCode}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.province}>
+                <Descriptions.Item label={Words.role}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.ProvinceTitle}`)}
+                    {utils.farsiNum(`${agent.RoleTitle}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.city}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.CityTitle}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.postal_code}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.PostalCode}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.address} span={2}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.Address}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.office_tel}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.OfficeTel}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.fax}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${agent.Fax}`)}
+                <Descriptions.Item label={Words.descriptions} span={2}>
+                  <Text style={{ color: valueColor, whiteSpace: "pre" }}>
+                    {utils.farsiNum(`${agent.DetailsText}`)}
                   </Text>
                 </Descriptions.Item>
               </Descriptions>

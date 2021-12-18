@@ -97,6 +97,8 @@ class Words extends Component {
   static max_image_file_size_2_kb = " کیلوبایت می باشد";
   static limit_upload_file_size =
     "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
+  static department_manager = "مدیر دپارتمان";
+  static descriptions = "توضیحات";
 
   static dashboard = "داشبورد";
   //----

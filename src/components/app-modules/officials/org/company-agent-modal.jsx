@@ -12,32 +12,58 @@ import {
   handleError,
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
-import SwitchItem from "./../../../form-controls/switch-item";
+import InputItem from "./../../../form-controls/input-item";
+import companyAgentsService from "./../../../../services/org/company-agents-service";
 import accessesService from "./../../../../services/app/accesses-service";
 
 const schema = {
   AgentID: Joi.number().required(),
-  MemberID: Joi.number().required().min(1),
+  RoleID: Joi.number().required().min(1),
   CompanyID: Joi.number().required().min(1),
-  IsActive: Joi.boolean(),
+  FirstName: Joi.string()
+    .min(2)
+    .max(50)
+    .required()
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.first_name),
+  LastName: Joi.string()
+    .min(2)
+    .max(50)
+    .required()
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.last_name),
+  FixTel: Joi.string()
+    .max(50)
+    .allow("")
+    .regex(/^[0-9]+$/)
+    .label(Words.fix_tel),
+  Mobile: Joi.string()
+    .max(50)
+    .allow("")
+    .regex(/^[0-9]+$/)
+    .label(Words.mobile),
+  DetailsText: Joi.string().max(200).allow("").label(Words.descriptions),
 };
 
 const initRecord = {
   AgentID: 0,
-  MemberID: 0,
+  RoleID: 0,
   CompanyID: 0,
-  IsActive: true,
+  FirstName: "",
+  LastName: "",
+  FixTel: "",
+  Mobile: "",
+  DetailsText: "",
 };
 
 const formRef = React.createRef();
 
 const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const [progress, setProgress] = useState(false);
-  const [memberSearchProgress, setMemberSearchProgress] = useState(false);
   const [companySearchProgress, setCompanySearchProgress] = useState(false);
   const [record, setRecord] = useState(initRecord);
   const [companies, setCompanies] = useState([]);
-  const [members, setMembers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState({});
 
   const formConfig = {
@@ -50,8 +76,13 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.AgentID = 0;
-    record.MemberID = 0;
+    record.RoleID = 0;
     record.CompanyID = 0;
+    record.FirstName = "";
+    record.LastName = "";
+    record.FixTel = "";
+    record.Mobile = "";
+    record.DetailsText = "";
 
     setRecord(record);
     setErrors({});
@@ -61,23 +92,12 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   useMount(async () => {
     initModal(formRef, selectedObject, setRecord);
 
+    const roles_data = await companyAgentsService.getParams();
+    setRoles(roles_data);
+
     if (isEdit) {
-      const {
-        CompanyID,
-        CompanyTitle,
-        RegNo,
-        MemberID,
-        FirstName,
-        LastName,
-        NationalCode,
-      } = selectedObject;
+      const { CompanyID, CompanyTitle, RegNo } = selectedObject;
       setCompanies([{ CompanyID, CompanyTitle: `${CompanyTitle} (${RegNo})` }]);
-      setMembers([
-        {
-          MemberID,
-          FullName: `${FirstName} ${LastName} (${NationalCode})`,
-        },
-      ]);
     }
   });
 
@@ -91,23 +111,6 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onOk,
       clearRecord
     );
-  };
-
-  const handleSearchMembers = async (searchValue) => {
-    setMemberSearchProgress(true);
-
-    try {
-      const data_members = await accessesService.searchMembers(
-        "CompanyAgents",
-        searchValue
-      );
-
-      setMembers(data_members);
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setMemberSearchProgress(false);
   };
 
   const handleSearchCompanies = async (searchValue) => {
@@ -139,7 +142,7 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]}>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.company}
               dataSource={companies}
@@ -151,25 +154,58 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               onSearch={handleSearchCompanies}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.member}
-              dataSource={members}
-              keyColumn="MemberID"
-              valueColumn="FullName"
+              title={Words.role}
+              dataSource={roles}
+              keyColumn="RoleID"
+              valueColumn="RoleTitle"
               formConfig={formConfig}
               required
-              loading={memberSearchProgress}
-              onSearch={handleSearchMembers}
+              loading={companySearchProgress}
+              onSearch={handleSearchCompanies}
             />
           </Col>
           <Col xs={24} md={12}>
-            <SwitchItem
-              title={Words.status}
-              fieldName="IsActive"
-              initialValue={true}
-              checkedTitle={Words.active}
-              unCheckedTitle={Words.inactive}
+            <InputItem
+              title={Words.first_name}
+              fieldName="FirstName"
+              required
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.last_name}
+              fieldName="LastName"
+              maxLength={50}
+              required
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.fix_tel}
+              fieldName="FixTel"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.mobile}
+              fieldName="Mobile"
+              maxLength={11}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <InputItem
+              title={Words.descriptions}
+              fieldName="DetailsText"
+              maxLength={200}
+              multiline
               formConfig={formConfig}
             />
           </Col>

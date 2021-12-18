@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, Button } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
-import {
-  AiFillLock as LockIcon,
-  AiOutlineCheck as CheckIcon,
-} from "react-icons/ai";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
@@ -29,21 +25,15 @@ const getSheets = (records) => [
     data: records,
     columns: [
       { label: Words.id, value: "AgentID" },
-      { label: Words.member_id, value: "MemberID" },
       { label: Words.first_name, value: "FirstName" },
       { label: Words.last_name, value: "LastName" },
-      { label: Words.national_code, value: "NationalCode" },
+      { label: Words.role, value: "RoleTitle" },
+      { label: Words.fix_tel, value: "FixTel" },
       { label: Words.mobile, value: "Mobile" },
       { label: Words.company, value: "CompanyTitle" },
       { label: Words.reg_no, value: "RegNo" },
       { label: Words.national_id, value: "NationalID" },
       { label: Words.financial_code, value: "FinancialCode" },
-      { label: Words.city, value: "CityTitle" },
-      { label: Words.province, value: "ProvinceTitle" },
-      { label: Words.office_tel, value: "OfficeTel" },
-      { label: Words.fax, value: "Fax" },
-      { label: Words.address, value: "Address" },
-      { label: Words.postal_code, value: "PostalCode" },
     ],
   },
 ];
@@ -82,18 +72,15 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.status,
-    width: 75,
+    title: Words.role,
+    width: 150,
     align: "center",
     ellipsis: true,
-    // dataIndex: "Mobile",
-    sorter: getSorter("IsActive"),
-    render: (record) =>
-      record.IsActive ? (
-        <CheckIcon style={{ color: Colors.green[6] }} />
-      ) : (
-        <LockIcon style={{ color: Colors.red[6] }} />
-      ),
+    dataIndex: "RoleTitle",
+    sorter: getSorter("RoleTitle"),
+    render: (RoleTitle) => (
+      <Text style={{ color: Colors.magenta[6] }}>{RoleTitle}</Text>
+    ),
   },
 ];
 
