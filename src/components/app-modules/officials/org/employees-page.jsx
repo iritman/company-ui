@@ -6,6 +6,7 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/org/employees-service";
+import { AiOutlineCheck as CheckIcon } from "react-icons/ai";
 import {
   getSorter,
   checkAccess,
@@ -32,6 +33,10 @@ const getSheets = (records) => [
       { label: Words.mobile, value: "Mobile" },
       { label: Words.department, value: "DepartmentTitle" },
       { label: Words.role, value: "RoleTitle" },
+      {
+        label: Words.department_manager,
+        value: (record) => (record.IsDepartmentManger ? Words.yes : Words.no),
+      },
     ],
   },
 ];
@@ -77,8 +82,20 @@ const baseColumns = [
     dataIndex: "RoleTitle",
     sorter: getSorter("RoleTitle"),
     render: (RoleTitle) => (
-      <Text style={{ color: Colors.green[6] }}>{RoleTitle}</Text>
+      <Text style={{ color: Colors.magenta[6] }}>{RoleTitle}</Text>
     ),
+  },
+  {
+    title: Words.department_manager,
+    width: 120,
+    align: "center",
+    ellipsis: true,
+    // dataIndex: "Mobile",
+    sorter: getSorter("IsDepartmentManager"),
+    render: (record) =>
+      record.IsDepartmentManager && (
+        <CheckIcon style={{ color: Colors.green[6] }} />
+      ),
   },
 ];
 

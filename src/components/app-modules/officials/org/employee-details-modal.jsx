@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
+import { AiFillStar as StarIcon } from "react-icons/ai";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
@@ -50,6 +51,14 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
                 }}
                 size="middle"
               >
+                {employee.IsDepartmentManager && (
+                  <Descriptions.Item label={Words.department_manager} span={2}>
+                    {/* <Text style={{ color: valueColor }}>
+                      {Words.department_manager}
+                    </Text> */}
+                    <StarIcon style={{ color: Colors.yellow[6] }} />
+                  </Descriptions.Item>
+                )}
                 <Descriptions.Item label={Words.national_code}>
                   <Text style={{ color: valueColor }}>
                     {utils.farsiNum(`${employee.NationalCode}`)}

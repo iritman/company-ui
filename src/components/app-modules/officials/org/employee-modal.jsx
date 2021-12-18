@@ -14,6 +14,7 @@ import {
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import TextItem from "./../../../form-controls/text-item";
+import SwitchItem from "./../../../form-controls/switch-item";
 import employeesService from "./../../../../services/org/employees-service";
 import accessesService from "./../../../../services/app/accesses-service";
 
@@ -22,6 +23,7 @@ const schema = {
   MemberID: Joi.number().required().min(1),
   DepartmentID: Joi.number().required().min(1),
   RoleID: Joi.number().required().min(1),
+  IsDepartmentManager: Joi.boolean(),
 };
 
 const initRecord = {
@@ -29,6 +31,7 @@ const initRecord = {
   MemberID: 0,
   DepartmentID: 0,
   RoleID: 0,
+  IsDepartmentManager: false,
 };
 
 const formRef = React.createRef();
@@ -55,6 +58,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.MemberID = 0;
     record.DepartmentID = 0;
     record.RoleID = 0;
+    record.IsDepartmentManager = false;
 
     setRecord(record);
     setErrors({});
@@ -153,6 +157,16 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               valueColumn="RoleTitle"
               formConfig={formConfig}
               required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <SwitchItem
+              title={Words.department_manager}
+              fieldName="IsDepartmentManager"
+              initialValue={false}
+              checkedTitle={Words.active}
+              unCheckedTitle={Words.inactive}
+              formConfig={formConfig}
             />
           </Col>
         </Row>
