@@ -33,9 +33,9 @@ const schema = {
     .allow("")
     .regex(/^[0-9]+$/)
     .label(Words.fax),
-  Address: Joi.string().max(200).allow("").label(Words.address),
+  Address: Joi.string().min(25).max(200).required().label(Words.address),
   PostalCode: Joi.string()
-    .max(50)
+    .max(10)
     .allow("")
     .regex(/^[0-9]+$/)
     .label(Words.postal_code),
@@ -48,13 +48,13 @@ const schema = {
   FinancialCode: Joi.string()
     .min(10)
     .max(50)
-    .required()
+    // .required()
     .regex(/^[0-9]+$/)
     .label(Words.financial_code),
   RegNo: Joi.string()
     .min(2)
     .max(50)
-    .required()
+    // .required()
     .regex(/^[0-9]+$/)
     .label(Words.reg_no),
 };
@@ -178,7 +178,6 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.financial_code}
               fieldName="FinancialCode"
               maxLength={50}
-              required
               formConfig={formConfig}
             />
           </Col>
@@ -187,7 +186,6 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.reg_no}
               fieldName="RegNo"
               maxLength={50}
-              required
               formConfig={formConfig}
             />
           </Col>
@@ -195,7 +193,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             <InputItem
               title={Words.postal_code}
               fieldName="PostalCode"
-              maxLength={50}
+              maxLength={10}
               formConfig={formConfig}
             />
           </Col>
@@ -224,6 +222,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               fieldName="Address"
               maxLength={200}
               multiline
+              required
               formConfig={formConfig}
             />
           </Col>

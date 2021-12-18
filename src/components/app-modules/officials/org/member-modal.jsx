@@ -43,13 +43,13 @@ const schema = {
     .regex(/^[0-9]+$/)
     .label(Words.fix_tel),
   Mobile: Joi.string()
-    .max(50)
+    .max(11)
     .allow("")
     .regex(/^[0-9]+$/)
     .label(Words.mobile),
   Address: Joi.string().max(200).allow("").label(Words.address),
   PostalCode: Joi.string()
-    .max(50)
+    .max(10)
     .allow("")
     .regex(/^[0-9]+$/)
     .label(Words.postal_code),

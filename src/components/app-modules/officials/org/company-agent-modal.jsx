@@ -38,7 +38,7 @@ const schema = {
     .regex(/^[0-9]+$/)
     .label(Words.fix_tel),
   Mobile: Joi.string()
-    .max(50)
+    .max(11)
     .allow("")
     .regex(/^[0-9]+$/)
     .label(Words.mobile),
