@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, message } from "antd";
+import { Form, Row, Col, message, Button } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -203,6 +203,10 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     );
   });
 
+  useEffect(() => {
+    loadFieldsValue(formRef, record);
+  });
+
   const isEdit = selectedObject !== null;
 
   if (isEdit) {
@@ -233,6 +237,19 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       (c) => c.ProvinceID === selectedProvinceID
     );
     return selectedCities;
+  };
+
+  const handleGenerateRandomAccountInfo = () => {
+    const { NationalCode } = record;
+
+    if (NationalCode.length === 0)
+      return message.error(Words.messages.no_national_code);
+    else {
+      const rec = { ...record };
+      rec.Username = rec.NationalCode;
+      rec.Password = utils.generateRandomNumericPassword(8);
+      setRecord(rec);
+    }
   };
 
   return (
@@ -345,6 +362,17 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               multiline
               formConfig={formConfig}
             />
+          </Col>
+          <Col xs={24}>
+            <Form.Item>
+              <Button
+                type="primary"
+                danger
+                onClick={() => handleGenerateRandomAccountInfo()}
+              >
+                {Words.generate_random_account_info}
+              </Button>
+            </Form.Item>
           </Col>
           <Col xs={24} md={12}>
             <InputItem

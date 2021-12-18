@@ -2,6 +2,7 @@ import jalaliMoment from "jalali-moment";
 import persianJS from "persianjs";
 import fileExtension from "file-extension";
 import dayjs from "dayjs";
+import passGenerator from "generate-password";
 
 export function checkRegex(
   isFarsiChar,
@@ -358,6 +359,16 @@ export function jalaliDate(dashedDateString) {
   return dayjs(dashedDateString, { jalali: true });
 }
 
+export function generateRandomNumericPassword(passLength) {
+  return passGenerator.generate({
+    length: passLength,
+    numbers: true,
+    lowercase: false,
+    uppercase: false,
+    symbols: false
+  });
+}
+
 const methods = {
   addFirstZero,
   farsiNum,
@@ -391,6 +402,7 @@ const methods = {
   jalaliToMiladi,
   isImageFile,
   jalaliDate,
+  generateRandomNumericPassword
 };
 
 export default methods;

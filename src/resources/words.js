@@ -99,6 +99,7 @@ class Words extends Component {
     "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
   static department_manager = "مدیر دپارتمان";
   static descriptions = "توضیحات";
+  static generate_random_account_info = "تولید نام کاربری و رمز عبور تصادفی";
 
   static dashboard = "داشبورد";
   //----
@@ -130,6 +131,7 @@ class Words extends Component {
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",
+    no_national_code: "کدملی وارد نشده است"
   };
 
   static questions = {
