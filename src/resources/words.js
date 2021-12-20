@@ -101,10 +101,11 @@ class Words extends Component {
   static descriptions = "توضیحات";
   static generate_random_account_info = "تولید نام کاربری و رمز عبور تصادفی";
   static color_code = "کد رنگ";
-  static color_id = "رنگ شناسه";
+  static color_id = "شناسه رنگ";
   static show_order = "ترتیب نمایش";
   static move_up = "انتقال به بالا";
   static move_down = "انتقال به پایین";
+  static duty_title = "عنوان وظیفه";
 
   static dashboard = "داشبورد";
   //----
@@ -130,6 +131,7 @@ class Words extends Component {
   static comp_agents = "رابطین شرکت";
   static duty_levels = "سطوح وظایف";
   static duties = "شرح وظایف";
+  static duty_level = "سطح وظیفه";
   //---
   static timex = "تایمکس";
   static automation = "اتوماسیون اداری";
@@ -138,7 +140,7 @@ class Words extends Component {
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",
-    no_national_code: "کدملی وارد نشده است"
+    no_national_code: "کدملی وارد نشده است",
   };
 
   static questions = {
