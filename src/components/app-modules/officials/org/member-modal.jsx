@@ -331,7 +331,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             <InputItem
               title={Words.postal_code}
               fieldName="PostalCode"
-              maxLength={50}
+              maxLength={10}
               formConfig={formConfig}
             />
           </Col>

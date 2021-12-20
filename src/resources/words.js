@@ -100,6 +100,11 @@ class Words extends Component {
   static department_manager = "مدیر دپارتمان";
   static descriptions = "توضیحات";
   static generate_random_account_info = "تولید نام کاربری و رمز عبور تصادفی";
+  static color_code = "کد رنگ";
+  static color_id = "رنگ شناسه";
+  static show_order = "ترتیب نمایش";
+  static move_up = "انتقال به بالا";
+  static move_down = "انتقال به پایین";
 
   static dashboard = "داشبورد";
   //----
@@ -123,6 +128,8 @@ class Words extends Component {
   static company_agents = "رابطین شرکت ها";
   static company_agent = "رابط شرکت";
   static comp_agents = "رابطین شرکت";
+  static duty_levels = "سطوح وظایف";
+  static duties = "شرح وظایف";
   //---
   static timex = "تایمکس";
   static automation = "اتوماسیون اداری";

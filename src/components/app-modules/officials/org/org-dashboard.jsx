@@ -15,6 +15,8 @@ import {
   RiBuilding2Fill as CompanyIcon,
   RiOrganizationChart as OrgChartIcon,
 } from "react-icons/ri";
+import { VscUngroupByRefType as DutyLevelIcon } from "react-icons/vsc";
+import { GoTasklist as DutyIcon } from "react-icons/go";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -81,6 +83,18 @@ const mapper = (moduleID) => {
       link = "company-agents";
       icon = <AgentIcon {...iconProps} />;
       backColor = Colors.gold[6];
+      break;
+
+    case 10:
+      link = "duty-levels";
+      icon = <DutyLevelIcon {...iconProps} />;
+      backColor = Colors.magenta[4];
+      break;
+
+    case 11:
+      link = "duties";
+      icon = <DutyIcon {...iconProps} />;
+      backColor = Colors.red[4];
       break;
 
     default:

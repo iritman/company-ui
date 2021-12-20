@@ -16,6 +16,8 @@ import {
   RiBuilding2Fill as CompanyIcon,
   RiOrganizationChart as OrgChartIcon,
 } from "react-icons/ri";
+import { VscUngroupByRefType as DutyLevelIcon } from "react-icons/vsc";
+import { GoTasklist as DutyIcon } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";
@@ -82,6 +84,18 @@ const mapper = (moduleID) => {
     case 9:
       link = "company-agents";
       icon = <AgentIcon style={{ color: Colors.gold[7] }} size={iconSize} />;
+      break;
+
+    case 10:
+      link = "duty-levels";
+      icon = (
+        <DutyLevelIcon style={{ color: Colors.magenta[5] }} size={iconSize} />
+      );
+      break;
+
+    case 11:
+      link = "duties";
+      icon = <DutyIcon style={{ color: Colors.red[5] }} size={iconSize} />;
       break;
 
     default:

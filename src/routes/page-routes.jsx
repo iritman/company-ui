@@ -13,6 +13,8 @@ import MembersPage from "../components/app-modules/officials/org/members-page";
 import EmployeesPage from "../components/app-modules/officials/org/employees-page";
 import CompanyAgentsPage from "../components/app-modules/officials/org/company-agents-page";
 import OrgChartPage from "../components/app-modules/officials/org/org-chart-page";
+import DutyLevelsPage from "../components/app-modules/officials/org/duty-levels-page";
+import DutiesPage from "../components/app-modules/officials/org/duties-page";
 //---
 
 const PageRoutes = ({ path }) => {
@@ -72,6 +74,16 @@ const PageRoutes = ({ path }) => {
         path={`${path}/official/org/chart`}
         exact
         render={() => <OrgChartPage pageName="OrgChart" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/duty-levels`}
+        exact
+        render={() => <DutyLevelsPage pageName="DutyLevels" />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/org/duties`}
+        exact
+        render={() => <DutiesPage pageName="Duties" />}
       />
       <ProtectedRoute path={`${path}/`} exact component={MainDashboard} />
     </Switch>
