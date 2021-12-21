@@ -1,54 +1,46 @@
 import React from "react";
 import { Form, Upload, Button, Progress, message } from "antd";
 import { UploadOutlined as UploadIcon } from "@ant-design/icons";
-import utils from "../../tools/utils";
 import Words from "../../resources/words";
+import utils from "../../tools/utils";
 
-// const getUploadProps = (fieldName, formConfig) => {
-//   let {
-//     fileList,
-//     setFileList,
-//     record,
-//     setRecord,
-//     fileConfig,
-//     loadFieldsValue,
-//     formRef,
-//   } = formConfig;
-//   const { sizeType, maxFileSize } = fileConfig;
+const getUploadProps = (fieldName, fileConfig, formConfig) => {
+  const { maxFileSize, sizeType } = fileConfig;
+  const { fileList, setFileList, record, setRecord } = formConfig;
 
-//   const props = {
-//     onRemove: (file) => {
-//       delete fileList[fieldName];
-//       record[fieldName] = "";
-//       setFileList(fileList);
-//       setRecord(record);
-//       // loadFieldsValue(formRef, record);
-//     },
-//     beforeUpload: (file) => {
-//       const validFileSize =
-//         file.size / 1024 / (sizeType === "mb" ? 1024 : 1) <= maxFileSize;
+  let _fileList = { ...fileList };
+  let _record = { ...record };
 
-//       if (!validFileSize) {
-//         message.error(Words.limit_upload_file_size);
+  const props = {
+    onRemove: (file) => {
+      delete _fileList[fieldName];
+      _record[fieldName] = "";
+      setFileList(_fileList);
+      setRecord(_record);
+    },
+    beforeUpload: (file) => {
+      const validFileSize =
+        file.size / 1024 / (sizeType === "mb" ? 1024 : 1) <= maxFileSize;
 
-//         //prevent auto upload
-//         return false;
-//       }
+      if (!validFileSize) {
+        message.error(Words.limit_upload_file_size);
 
-//       fileList[fieldName] = file;
-//       record[fieldName] = file.name;
+        //prevent auto upload
+        return false;
+      }
 
-//       setFileList(fileList);
-//       // loadFieldsValue(formRef, record);
+      _fileList[fieldName] = file;
+      _record[fieldName] = file.name;
+      setFileList(_fileList);
 
-//       //prevent auto upload
-//       return false;
-//     },
-//     fileList: fileList[fieldName] ? [fileList[fieldName]] : [],
-//   };
+      //prevent auto upload
+      return false;
+    },
+    fileList: _fileList[fieldName] ? [_fileList[fieldName]] : [],
+  };
 
-//   return props;
-// };
+  return props;
+};
 
 const FileItem = ({
   title,
@@ -58,14 +50,12 @@ const FileItem = ({
   horizontal,
   labelCol,
   formConfig,
-  uploadProps,
-  fileList,
+  fileConfig,
 }) => {
-  const { errors, fileConfig } = formConfig;
+  const { errors, fileList } = formConfig;
   const { maxFileSize, sizeType } = fileConfig;
 
-  // const props = getUploadProps(fieldName, formConfig);
-  const props = uploadProps(fieldName, formConfig, fileList);
+  const props = getUploadProps(fieldName, fileConfig, formConfig);
 
   let uploading = false;
   let uploadProgress = 0;
@@ -96,19 +86,21 @@ const FileItem = ({
       }
       extra={utils.farsiNum(
         maxFileSize > 0
-          ? Words.max_image_file_size_1 +
+          ? Words.max_file_size_1 +
               maxFileSize +
-              (sizeType === "kb"
-                ? Words.max_image_file_size_2_kb
-                : Words.max_image_file_size_2_mb)
-          : Words.max_image_file_size
+              (sizeType === "mb"
+                ? Words.max_file_size_2_mb
+                : Words.max_file_size_2_kb)
+          : Words.max_file_size
       )}
     >
-      <Upload {...props}>
-        <Button icon={<UploadIcon />}>{Words.select_file}</Button>
-      </Upload>
+      <>
+        <Upload {...props}>
+          <Button icon={<UploadIcon />}>{Words.select_file}</Button>
+        </Upload>
 
-      {uploading && <Progress percent={uploadProgress} size="small" />}
+        {uploading && <Progress percent={uploadProgress} size="small" />}
+      </>
     </Form.Item>
   );
 };

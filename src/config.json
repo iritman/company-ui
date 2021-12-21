@@ -10,7 +10,7 @@
   "profileImageFileSize": {
     "maxFileSize": 150,
     "extensions": "jpg|jpeg|png",
-    "destinationFolder": "data",
+    "destinationFolder": "member-profiles",
     "sizeType": "kb"
   }
 }

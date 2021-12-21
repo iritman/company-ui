@@ -1,9 +1,19 @@
 import React from "react";
-import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
+import {
+  Button,
+  Modal,
+  Row,
+  Col,
+  Typography,
+  Alert,
+  Descriptions,
+  Space,
+} from "antd";
 import { AiFillStar as StarIcon } from "react-icons/ai";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
+import MemberProfileImage from "../../../common/member-profile-image";
 
 const { Text } = Typography;
 
@@ -33,11 +43,17 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
           <Row gutter={[10, 10]}>
             <Col xs={24}>
               <Alert
-                message={utils.farsiNum(
-                  `#${employee.EmployeeID} - ${employee.FirstName} ${employee.LastName}`
-                )}
+                message={
+                  <Space>
+                    <MemberProfileImage fileName={employee.PicFileName} />
+                    <Text>
+                      {utils.farsiNum(
+                        `#${employee.EmployeeID} - ${employee.FirstName} ${employee.LastName}`
+                      )}
+                    </Text>
+                  </Space>
+                }
                 type="info"
-                showIcon
               />
             </Col>
             <Col xs={24}>

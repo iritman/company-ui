@@ -91,10 +91,10 @@ class Words extends Component {
   static reg_member = "ثبت کننده";
   static attached_file = "فایل پیوست";
   static select_file = "انتخاب فایل";
-  static max_image_file_size = "حداکثر ظرفیت فایل جهت آپلود یک مگابایت می باشد";
-  static max_image_file_size_1 = "حداکثر ظرفیت فایل آپلود ";
-  static max_image_file_size_2_mb = " مگابایت می باشد";
-  static max_image_file_size_2_kb = " کیلوبایت می باشد";
+  static max_file_size = "حداکثر ظرفیت فایل جهت آپلود یک مگابایت می باشد";
+  static max_file_size_1 = "حداکثر ظرفیت فایل آپلود ";
+  static max_file_size_2_mb = " مگابایت می باشد";
+  static max_file_size_2_kb = " کیلوبایت می باشد";
   static limit_upload_file_size =
     "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
   static department_manager = "مدیر دپارتمان";
@@ -106,6 +106,8 @@ class Words extends Component {
   static move_up = "انتقال به بالا";
   static move_down = "انتقال به پایین";
   static duty_title = "عنوان وظیفه";
+  static remove_image = "حذف تصویر";
+  static reload_image = "بازیابی تصویر";
 
   static dashboard = "داشبورد";
   //----
@@ -146,6 +148,7 @@ class Words extends Component {
   static questions = {
     sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
     sure_to_delete_item: "برای حرف رکورد انتخابی اطمینان دارید؟",
+    sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
   };
 }
 

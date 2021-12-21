@@ -23,6 +23,7 @@ import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";
 import Colors from "./../../resources/colors";
 import Words from "./../../resources/words";
+import { useLocation } from "react-router-dom";
 
 const iconSize = 20;
 
@@ -114,6 +115,9 @@ const OrgMenu = () => {
     setAccessiblePages(accessiblePages);
   });
 
+  const isEndsWithOrg = useLocation().pathname.endsWith("/org");
+  const prePath = isEndsWithOrg ? "org/" : "";
+
   return (
     <Menu mode="inline" theme="light">
       <Menu.Item
@@ -127,7 +131,9 @@ const OrgMenu = () => {
       <Menu.Divider />
       {accessiblePages.map((page) => (
         <Menu.Item key={page.PageID} icon={mapper(page.PageID).icon}>
-          <Link to={`${mapper(page.PageID).link}`}>{page.PageTitle}</Link>
+          <Link to={`${prePath}${mapper(page.PageID).link}`}>
+            {page.PageTitle}
+          </Link>
         </Menu.Item>
       ))}
     </Menu>

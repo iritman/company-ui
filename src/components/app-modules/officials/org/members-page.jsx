@@ -20,6 +20,7 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import MemberModal from "./member-modal";
 import MemberDetailsModal from "./member-details-modal";
 import Colors from "../../../../resources/colors";
+import MemberProfileImage from "../../../common/member-profile-image";
 
 const { Text } = Typography;
 
@@ -65,13 +66,18 @@ const baseColumns = [
     render: (MemberID) => <Text>{utils.farsiNum(`${MemberID}`)}</Text>,
   },
   {
+    title: "",
+    width: 75,
+    align: "center",
+    dataIndex: "PicFileName",
+    render: (PicFileName) => <MemberProfileImage fileName={PicFileName} />,
+  },
+  {
     title: Words.full_name,
     width: 250,
     align: "center",
     ellipsis: true,
-    // dataIndex: "LastName",
     sorter: getSorter("LastName"),
-    // render: (LastName) => <Text>{utils.farsiNum(LastName)}</Text>,
     render: (record) => (
       <Text
         style={{ color: Colors.blue[6] }}
@@ -107,7 +113,6 @@ const baseColumns = [
     width: 75,
     align: "center",
     ellipsis: true,
-    // dataIndex: "Mobile",
     sorter: getSorter("IsActive"),
     render: (record) =>
       record.IsActive ? (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Space } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -17,6 +17,7 @@ import TextItem from "./../../../form-controls/text-item";
 import SwitchItem from "./../../../form-controls/switch-item";
 import employeesService from "./../../../../services/org/employees-service";
 import accessesService from "./../../../../services/app/accesses-service";
+import MemberProfileImage from "../../../common/member-profile-image";
 
 const schema = {
   EmployeeID: Joi.number().required(),
@@ -116,13 +117,21 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]}>
           {isEdit && (
-            <Col xs={24}>
-              <TextItem
-                title={Words.member}
-                value={`${record.FirstName} ${record.LastName}`}
-                valueColor={Colors.magenta[6]}
-              />
-            </Col>
+            <>
+              <Col
+                xs={24}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <MemberProfileImage fileName={record.PicFileName} size={60} />
+              </Col>
+              <Col xs={24}>
+                <TextItem
+                  title={Words.member}
+                  value={`${record.FirstName} ${record.LastName}`}
+                  valueColor={Colors.magenta[6]}
+                />
+              </Col>
+            </>
           )}
 
           {!isEdit && (

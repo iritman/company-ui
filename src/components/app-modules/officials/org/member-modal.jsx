@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, message, Button } from "antd";
+import { Form, Row, Col, message, Button, Avatar, Space, Tooltip } from "antd";
+import {
+  UserOutlined as UserIcon,
+  CloseOutlined as RemoveIcon,
+  ReloadOutlined as ReloadIcon,
+} from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -8,18 +13,25 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  hasFormError,
+  handleError,
+  trimRecord,
+  // saveModaleChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "./../../../form-controls/date-item";
 import SwitchItem from "./../../../form-controls/switch-item";
-// import FileItem from "./../../../form-controls/file-item";
+import FileItem from "./../../../form-controls/file-item";
 import TextItem from "./../../../form-controls/text-item";
 import membersService from "./../../../../services/org/members-service";
+import fileService from "./../../../../services/file-service";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
-// import { profileImageFileSize as fileConfig } from "./../../../../config.json";
+import {
+  profileImageFileSize as fileConfig,
+  fileBasicUrl,
+} from "./../../../../config.json";
 
 const schema = {
   MemberID: Joi.number().required(),
@@ -100,54 +112,106 @@ const genders = [
 
 const formRef = React.createRef();
 
-// const getUploadProps = (fieldName, formConfig, fileList) => {
-//   let {
-//     // fileList,
-//     setFileList,
-//     record,
-//     setRecord,
-//     fileConfig,
-//     loadFieldsValue,
-//     formRef,
-//   } = formConfig;
-//   const { sizeType, maxFileSize } = fileConfig;
+const onUploadProgress = (progressEvent, fieldName, formConfig) => {
+  const progress = Math.round(
+    (progressEvent.loaded / progressEvent.total) * 100
+  );
 
-//   const props = {
-//     onRemove: (file) => {
-//       console.log("1>", record);
-//       delete fileList[fieldName];
-//       record[fieldName] = "";
-//       setFileList(fileList);
-//       setRecord(record);
-//       console.log("2>", record);
-//       loadFieldsValue(formRef, record);
-//     },
-//     beforeUpload: (file) => {
-//       const validFileSize =
-//         file.size / 1024 / (sizeType === "mb" ? 1024 : 1) <= maxFileSize;
+  const { fileList, setFileList } = formConfig;
+  fileList[fieldName].uploadProgress = progress;
 
-//       if (!validFileSize) {
-//         message.error(Words.limit_upload_file_size);
+  setFileList({ ...fileList });
+};
 
-//         //prevent auto upload
-//         return false;
-//       }
+const handleUpload = async (
+  fieldName,
+  deleteLastFile,
+  fileConfig,
+  formConfig
+) => {
+  const { destinationFolder: category, extensions, maxFileSize } = fileConfig;
+  const { fileList, setFileList, record } = formConfig;
+  // const { fileList, record } = this.state;
 
-//       fileList[fieldName] = file;
-//       record[fieldName] = file.name;
+  let result = null;
 
-//       console.log(fileList);
-//       setFileList(fileList);
-//       loadFieldsValue(formRef, record);
+  if (fileList[fieldName]) {
+    const upFileName = fileList[fieldName].name;
 
-//       //prevent auto upload
-//       return false;
-//     },
-//     fileList: fileList[fieldName] ? [fileList[fieldName]] : [],
-//   };
+    const fd = new FormData();
+    fd.append("dataFile", fileList[fieldName], upFileName);
 
-//   return props;
-// };
+    const uploadConditions = {
+      category,
+      extensions,
+      maxFileSize,
+    };
+
+    if (deleteLastFile === true && record[fieldName].length > 0) {
+      uploadConditions.deleteFileName = record[fieldName];
+    }
+
+    //---
+
+    fileList[fieldName].uploading = true;
+    setFileList({ ...fileList });
+
+    result = await fileService.uploadFile(fd, uploadConditions, (e) =>
+      onUploadProgress(e, fieldName, formConfig)
+    );
+
+    record[fieldName] = result.fileName;
+
+    fileList[fieldName].uploading = false;
+
+    setFileList({ ...fileList });
+  }
+
+  return result;
+};
+
+const handleSubmitWithFile = async (
+  fileConfig,
+  formConfig,
+  selectedObject,
+  onOk,
+  clearRecord
+) => {
+  const { errors, record, fileList, setFileList, setProgress, schema } =
+    formConfig;
+
+  if (!hasFormError(errors)) {
+    setProgress(true);
+
+    try {
+      for (const key in fileList) {
+        await handleUpload(key, true, fileConfig, formConfig);
+      }
+
+      const rec = trimRecord(record);
+
+      // just validate properties of record, which included in schema
+      const rec_to_submit = {};
+      for (const key in schema) {
+        rec_to_submit[key] = rec[key];
+      }
+
+      await onOk(rec_to_submit);
+      if (selectedObject === null) clearRecord();
+      else {
+        setFileList({});
+        // setRecord(_record);
+      }
+
+      message.success(Words.messages.success_submit);
+    } catch (ex) {
+      handleError(ex);
+    } finally {
+      setProgress(false);
+      // this.setState({ inProgress: false });
+    }
+  }
+};
 
 const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const [progress, setProgress] = useState(false);
@@ -155,18 +219,19 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const [provinces, setProvinces] = useState([]);
   const [selectedProvinceID, setSelectedProvinceID] = useState(0);
   const [cities, setCities] = useState([]);
-  // const [fileList, setFileList] = useState({});
+  const [fileList, setFileList] = useState({});
   const [errors, setErrors] = useState({});
 
   const formConfig = {
     schema,
     record,
+    fileList,
+    setFileList,
     setRecord,
     errors,
     setErrors,
-    // fileList,
-    // setFileList,
-    // fileConfig,
+    progress,
+    setProgress,
   };
 
   const clearRecord = () => {
@@ -185,6 +250,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.Password = "";
     record.IsActive = true;
 
+    setFileList({});
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
@@ -219,10 +285,10 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   }
 
   const handleSubmit = async () => {
-    saveModaleChanges(
+    handleSubmitWithFile(
+      fileConfig,
       formConfig,
       selectedObject,
-      setProgress,
       onOk,
       clearRecord
     );
@@ -250,6 +316,16 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       rec.Password = utils.generateRandomNumericPassword(8);
       setRecord(rec);
     }
+  };
+
+  const removeProfileImage = () => {
+    record.PicFileName = "";
+    setRecord({ ...record });
+  };
+
+  const reloadProfileImage = () => {
+    record.PicFileName = selectedObject.PicFileName;
+    setRecord({ ...record });
   };
 
   return (
@@ -392,7 +468,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24}>
             <SwitchItem
               title={Words.status}
               fieldName="IsActive"
@@ -402,19 +478,54 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          {/* <Col xs={24} md={12}>
+
+          <Col xs={24} md={6}>
+            {record.PicFileName.length > 0 ? (
+              <Space>
+                <Avatar
+                  shape="square"
+                  size={60}
+                  src={`${fileBasicUrl}/member-profiles/${record.PicFileName}`}
+                />
+
+                <Tooltip title={Words.remove_image}>
+                  <Button
+                    shape="circle"
+                    icon={<RemoveIcon />}
+                    style={{ color: Colors.red[6] }}
+                    onClick={removeProfileImage}
+                  />
+                </Tooltip>
+              </Space>
+            ) : (
+              <Space>
+                <Avatar shape="square" size={60} icon={<UserIcon />} />
+
+                {selectedObject.PicFileName.length > 0 &&
+                  record.PicFileName.length === 0 && (
+                    <Tooltip title={Words.reload_image}>
+                      <Button
+                        shape="circle"
+                        icon={<ReloadIcon />}
+                        style={{ color: Colors.green[6] }}
+                        onClick={reloadProfileImage}
+                      />
+                    </Tooltip>
+                  )}
+              </Space>
+            )}
+          </Col>
+
+          <Col xs={24} md={18}>
             <FileItem
               horizontal
-              rows={1}
+              // rows={3}
               title={Words.profile_image}
               fieldName="PicFileName"
               formConfig={formConfig}
-              // errors={errors}
-              //maxFileSize={maxFileSize}
-              uploadProps={getUploadProps}
-              fileList={fileList}
+              fileConfig={fileConfig}
             />
-          </Col> */}
+          </Col>
           {isEdit && (
             <>
               <Col xs={24} md={12}>

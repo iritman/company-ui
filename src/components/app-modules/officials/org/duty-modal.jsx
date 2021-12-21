@@ -163,13 +163,12 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
                   valueColor={Colors.magenta[6]}
                 />
               </Col>
-              <Col xs={24} ms={12}>
+              <Col xs={24} md={12}>
                 <TextItem
                   title={Words.reg_date_time}
-                  value={utils.farsiNum(
-                    `${utils.slashDate(
-                      `${record.RegDate}`
-                    )} - ${utils.colonTime(`${record.RegTime}`)}`
+                  value={utils.formattedDateTime(
+                    record.RegDate,
+                    record.RegTime
                   )}
                   valueColor={Colors.magenta[6]}
                 />

@@ -110,7 +110,7 @@ export const loadFieldsValue = (formRef, data) => {
 export const initModal = (formRef, selectedObject, setRecord) => {
   if (selectedObject && selectedObject !== null) {
     loadFieldsValue(formRef, selectedObject);
-    setRecord(selectedObject);
+    setRecord({ ...selectedObject });
   }
 };
 

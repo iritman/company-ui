@@ -17,6 +17,7 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import EmployeeModal from "./employee-modal";
 import EmployeeDetailsModal from "./employee-details-modal";
+import MemberProfileImage from "../../../common/member-profile-image";
 
 const { Text } = Typography;
 
@@ -51,11 +52,17 @@ const baseColumns = [
     render: (EmployeeID) => <Text>{utils.farsiNum(`${EmployeeID}`)}</Text>,
   },
   {
+    title: "",
+    width: 75,
+    align: "center",
+    dataIndex: "PicFileName",
+    render: (PicFileName) => <MemberProfileImage fileName={PicFileName} />,
+  },
+  {
     title: Words.full_name,
     width: 200,
     align: "center",
     ellipsis: true,
-    // dataIndex: "First",
     sorter: getSorter("LastName"),
     render: (record) => (
       <Text
@@ -90,7 +97,6 @@ const baseColumns = [
     width: 120,
     align: "center",
     ellipsis: true,
-    // dataIndex: "Mobile",
     sorter: getSorter("IsDepartmentManager"),
     render: (record) =>
       record.IsDepartmentManager && (

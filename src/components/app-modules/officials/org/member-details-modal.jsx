@@ -1,9 +1,19 @@
 import React from "react";
-import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
+import {
+  Button,
+  Modal,
+  Row,
+  Col,
+  Typography,
+  Alert,
+  Descriptions,
+  Space,
+} from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import { getGenderTitle } from "./../../../../tools/general";
+import MemberProfileImage from "../../../common/member-profile-image";
 
 const { Text } = Typography;
 
@@ -33,9 +43,17 @@ const MemberDetailsModal = ({ member, isOpen, onOk }) => {
           <Row gutter={[10, 10]}>
             <Col xs={24}>
               <Alert
-                message={`#${member.MemberID} - ${member.FirstName} ${member.LastName}`}
+                message={
+                  <Space>
+                    <MemberProfileImage fileName={member.PicFileName} />
+                    <Text>
+                      {utils.farsiNum(
+                        `#${member.MemberID} - ${member.FirstName} ${member.LastName}`
+                      )}
+                    </Text>
+                  </Space>
+                }
                 type="info"
-                showIcon
               />
             </Col>
             <Col xs={24}>
