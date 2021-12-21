@@ -5,11 +5,17 @@ import { fileBasicUrl } from "./../../config.json";
 
 const MemberProfileImage = ({ fileName, size }) => {
   return (
-    <Avatar
-      size={size || 35}
-      src={`${fileBasicUrl}/member-profiles/${fileName}`}
-      icon={<UserIcon />}
-    />
+    <>
+      {fileName.length > 0 ? (
+        <Avatar
+          size={size || 35}
+          src={`${fileBasicUrl}/member-profiles/${fileName}`}
+          icon={<UserIcon />}
+        />
+      ) : (
+        <Avatar size={size || 35} icon={<UserIcon />} />
+      )}
+    </>
   );
 };
 

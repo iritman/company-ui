@@ -330,6 +330,8 @@ export const getSimplaDataPageMethods = (config) => {
         savedRow
       );
 
+      setSelectedObject({ ...row });
+
       setRecords(updatedRecords);
     },
   };
