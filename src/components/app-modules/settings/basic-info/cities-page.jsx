@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../resources/words";
-import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/cities-service";
+import utils from "../../../../tools/utils";
+import service from "../../../../services/org/cities-service";
 import {
   getSorter,
   checkAccess,
@@ -13,7 +13,7 @@ import {
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import CityModal from "./city-modal";
-import Colors from "./../../../../resources/colors";
+import Colors from "../../../../resources/colors";
 
 const { Text } = Typography;
 

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import {
-  AiOutlineDashboard as DashboardIcon,
-  AiFillBank as OrgIcon,
-  AiOutlineFieldTime as TimexIcon,
-  AiOutlineDeploymentUnit as AutomationIcon,
-} from "react-icons/ai";
+import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import { GoSettings as BasicSettingsIcon } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";
@@ -19,20 +15,10 @@ const mapper = (moduleID) => {
   let icon = null;
 
   switch (moduleID) {
-    case 2:
-      link = "org";
-      icon = <OrgIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-      break;
-
-    case 3:
-      link = "timex";
-      icon = <TimexIcon style={{ color: Colors.orange[6] }} size={iconSize} />;
-      break;
-
-    case 4:
-      link = "automation";
+    case 1:
+      link = "basic-info";
       icon = (
-        <AutomationIcon style={{ color: Colors.red[6] }} size={iconSize} />
+        <BasicSettingsIcon style={{ color: Colors.blue[6] }} size={iconSize} />
       );
       break;
 
@@ -43,13 +29,13 @@ const mapper = (moduleID) => {
   return { link, icon };
 };
 
-const OfficialMenu = () => {
+const SettingsMenu = () => {
   const [accessibleModules, setAccessibleModules] = useState([]);
 
   useMount(async () => {
-    const official_category_id = 2;
+    const settings_category_id = 1;
     const accessibleModules = await modulesService.accessibleModules(
-      official_category_id
+      settings_category_id
     );
 
     setAccessibleModules(accessibleModules);
@@ -68,7 +54,7 @@ const OfficialMenu = () => {
       <Menu.Divider />
       {accessibleModules.map((module) => (
         <Menu.Item key={module.ModuleID} icon={mapper(module.ModuleID).icon}>
-          <Link to={`official/${mapper(module.ModuleID).link}`}>
+          <Link to={`settings/${mapper(module.ModuleID).link}`}>
             {module.ModuleTitle}
           </Link>
         </Menu.Item>
@@ -77,4 +63,4 @@ const OfficialMenu = () => {
   );
 };
 
-export default OfficialMenu;
+export default SettingsMenu;

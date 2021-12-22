@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import modulesService from "./../services/app/modules-service";
 import Colors from "./../resources/colors";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
+import { FiSettings as SettingsIcon } from "react-icons/fi";
 import DashboardTile from "../components/common/dashboard-tile";
 
 const iconProps = {
@@ -18,6 +19,12 @@ const mapper = (categoryID) => {
 
   switch (categoryID) {
     case 1:
+      link = "settings";
+      icon = <SettingsIcon {...iconProps} />;
+      backColor = Colors.grey[3];
+      break;
+
+    case 2:
       link = "official";
       icon = <OfficialIcon {...iconProps} />;
       backColor = Colors.green[3];

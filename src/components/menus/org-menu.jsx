@@ -5,12 +5,10 @@ import {
   AiOutlineCodepen as RoleIcon,
 } from "react-icons/ai";
 import {
-  FaMapMarkerAlt as MapIcon,
   FaUsers as MemberIcon,
   FaIdCard as EmployeeIcon,
   FaUsersCog as AgentIcon,
 } from "react-icons/fa";
-import { GiModernCity as CityIcon } from "react-icons/gi";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import {
   RiBuilding2Fill as CompanyIcon,
@@ -27,21 +25,11 @@ import { useLocation } from "react-router-dom";
 
 const iconSize = 20;
 
-const mapper = (moduleID) => {
+const mapper = (pageID) => {
   let link = "";
   let icon = null;
 
-  switch (moduleID) {
-    case 1:
-      link = "provinces";
-      icon = <MapIcon style={{ color: Colors.red[6] }} size={iconSize} />;
-      break;
-
-    case 2:
-      link = "cities";
-      icon = <CityIcon style={{ color: Colors.cyan[7] }} size={iconSize} />;
-      break;
-
+  switch (pageID) {
     case 3:
       link = "departments";
       icon = (
@@ -110,13 +98,17 @@ const OrgMenu = () => {
   const [accessiblePages, setAccessiblePages] = useState([]);
 
   useMount(async () => {
-    const accessiblePages = await modulesService.accessiblePages(1);
+    const org_module_id = 2;
+    const accessiblePages = await modulesService.accessiblePages(org_module_id);
 
     setAccessiblePages(accessiblePages);
   });
 
-  const isEndsWithOrg = useLocation().pathname.endsWith("/org");
-  const prePath = isEndsWithOrg ? "org/" : "";
+  const org_module_path_name = "org";
+  const isEndsWithOrg = useLocation().pathname.endsWith(
+    `/${org_module_path_name}`
+  );
+  const prePath = isEndsWithOrg ? `${org_module_path_name}/` : "";
 
   return (
     <Menu mode="inline" theme="light">

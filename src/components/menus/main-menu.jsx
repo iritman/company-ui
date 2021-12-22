@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-// import { UserOutlined, MailOutlined } from "@ant-design/icons";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
+import { FiSettings as SettingsIcon } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";
@@ -13,6 +13,11 @@ const mapper = (categoryID) => {
 
   switch (categoryID) {
     case 1:
+      link = "settings";
+      icon = <SettingsIcon style={{ color: Colors.grey[6] }} size={20} />;
+      break;
+
+    case 2:
       link = "official";
       icon = <OfficialIcon style={{ color: Colors.green[6] }} size={20} />;
       break;

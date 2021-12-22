@@ -4,12 +4,10 @@ import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import { AiOutlineCodepen as RoleIcon } from "react-icons/ai";
 import {
-  FaMapMarkerAlt as MapIcon,
   FaUsers as MemberIcon,
   FaIdCard as EmployeeIcon,
   FaUsersCog as AgentIcon,
 } from "react-icons/fa";
-import { GiModernCity as CityIcon } from "react-icons/gi";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import {
   RiBuilding2Fill as CompanyIcon,
@@ -25,24 +23,12 @@ const iconProps = {
   style: { marginTop: 10 },
 };
 
-const mapper = (moduleID) => {
+const mapper = (pageID) => {
   let link = "";
   let icon = null;
   let backColor = Colors.blue[3];
 
-  switch (moduleID) {
-    case 1:
-      link = "provinces";
-      icon = <MapIcon {...iconProps} />;
-      backColor = Colors.red[3];
-      break;
-
-    case 2:
-      link = "cities";
-      icon = <CityIcon {...iconProps} />;
-      backColor = Colors.cyan[3];
-      break;
-
+  switch (pageID) {
     case 3:
       link = "departments";
       icon = <DepartmentIcon {...iconProps} />;
@@ -108,7 +94,8 @@ const OrgDashboard = () => {
   const [accessiblePages, setAccessiblePages] = useState([]);
 
   useMount(async () => {
-    const accessiblePages = await modulesService.accessiblePages(1);
+    const org_module_id = 2;
+    const accessiblePages = await modulesService.accessiblePages(org_module_id);
 
     setAccessiblePages(accessiblePages);
   });

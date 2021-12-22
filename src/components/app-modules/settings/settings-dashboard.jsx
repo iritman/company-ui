@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "./../../common/dashboard-tile";
-import {
-  AiFillBank as OrgIcon,
-  AiOutlineFieldTime as TimexIcon,
-  AiOutlineDeploymentUnit as AutomationIcon,
-} from "react-icons/ai";
+import { GoSettings as BasicSettingsIcon } from "react-icons/go";
 import Colors from "./../../../resources/colors";
 import modulesService from "./../../../services/app/modules-service";
 
@@ -21,22 +17,10 @@ const mapper = (moduleID) => {
   let backColor = Colors.blue[3];
 
   switch (moduleID) {
-    case 2:
-      link = "org";
-      icon = <OrgIcon {...iconProps} />;
+    case 1:
+      link = "basic-info";
+      icon = <BasicSettingsIcon {...iconProps} />;
       backColor = Colors.blue[3];
-      break;
-
-    case 3:
-      link = "timex";
-      icon = <TimexIcon {...iconProps} />;
-      backColor = Colors.orange[3];
-      break;
-
-    case 4:
-      link = "automation";
-      icon = <AutomationIcon {...iconProps} />;
-      backColor = Colors.red[3];
       break;
 
     default:
@@ -50,9 +34,9 @@ const OfficialDashboard = () => {
   const [accessibleModules, setAccessibleModules] = useState([]);
 
   useMount(async () => {
-    const official_category_id = 2;
+    const settings_category_id = 1;
     const accessibleModules = await modulesService.accessibleModules(
-      official_category_id
+      settings_category_id
     );
 
     setAccessibleModules(accessibleModules);
@@ -63,7 +47,7 @@ const OfficialDashboard = () => {
       {accessibleModules.map((module) => (
         <Col xs={24} md={8} lg={6} key={module.ModuleID}>
           <DashboardTile
-            to={`official/${mapper(module.ModuleID).link}`}
+            to={`settings/${mapper(module.ModuleID).link}`}
             icon={mapper(module.ModuleID).icon}
             backColor={mapper(module.ModuleID).backColor}
             title={module.ModuleTitle}
