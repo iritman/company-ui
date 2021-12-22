@@ -107,7 +107,7 @@ const baseColumns = [
 
 const recordID = "EmployeeID";
 
-const RolesPage = ({ pageName }) => {
+const EmployeesPage = ({ pageName }) => {
   const [progress, setProgress] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -134,6 +134,7 @@ const RolesPage = ({ pageName }) => {
     recordID,
     showModal,
     setShowModal,
+    selectedObject,
     setSelectedObject,
     setProgress,
     records,
@@ -215,4 +216,4 @@ const RolesPage = ({ pageName }) => {
   );
 };
 
-export default RolesPage;
+export default EmployeesPage;
