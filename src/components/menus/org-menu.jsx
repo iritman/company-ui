@@ -129,7 +129,10 @@ const OrgMenu = (props) => {
       </Menu.Item>
       <Menu.Divider />
       {accessiblePages.map((page) => (
-        <Menu.Item key={page.PageID} icon={mapper(page.PageID).icon}>
+        <Menu.Item
+          key={page.PageName.toLocaleLowerCase()}
+          icon={mapper(page.PageID).icon}
+        >
           <Link to={`${prePath}${mapper(page.PageID).link}`}>
             {page.PageTitle}
           </Link>
