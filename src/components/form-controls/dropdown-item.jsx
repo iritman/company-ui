@@ -53,7 +53,7 @@ const DropdownItem = ({
               )
         }
         filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
       >
         <Option key={`${keyColumn}_0`} value={0}>
