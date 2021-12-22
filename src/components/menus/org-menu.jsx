@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import {
   AiOutlineDashboard as DashboardIcon,
@@ -94,8 +94,9 @@ const mapper = (pageID) => {
   return { link, icon };
 };
 
-const OrgMenu = () => {
+const OrgMenu = (props) => {
   const [accessiblePages, setAccessiblePages] = useState([]);
+  const [lastPathKey, setLastPathKey] = useState("");
 
   useMount(async () => {
     const org_module_id = 2;
@@ -104,14 +105,20 @@ const OrgMenu = () => {
     setAccessiblePages(accessiblePages);
   });
 
+  useEffect(() => {
+    const pathKeys = props.location.pathname.split("/");
+    const _lastPathKey = pathKeys[pathKeys.length - 1].toLocaleLowerCase();
+    setLastPathKey(_lastPathKey);
+  }, [props.location.pathname]);
+
   const org_module_path_name = "org";
-  const isEndsWithOrg = useLocation().pathname.endsWith(
+  const isEndsWithModuleName = useLocation().pathname.endsWith(
     `/${org_module_path_name}`
   );
-  const prePath = isEndsWithOrg ? `${org_module_path_name}/` : "";
+  const prePath = isEndsWithModuleName ? `${org_module_path_name}/` : "";
 
   return (
-    <Menu mode="inline" theme="light">
+    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
       <Menu.Item
         key="official"
         icon={

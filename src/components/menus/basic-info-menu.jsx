@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { FaMapMarkerAlt as MapIcon } from "react-icons/fa";
@@ -34,8 +34,9 @@ const mapper = (pageID) => {
   return { link, icon };
 };
 
-const BasicInfoMenu = () => {
+const BasicInfoMenu = (props) => {
   const [accessiblePages, setAccessiblePages] = useState([]);
+  const [lastPathKey, setLastPathKey] = useState("");
 
   useMount(async () => {
     const basic_info_module_id = 1;
@@ -46,31 +47,42 @@ const BasicInfoMenu = () => {
     setAccessiblePages(accessiblePages);
   });
 
+  useEffect(() => {
+    const pathKeys = props.location.pathname.split("/");
+    const _lastPathKey = pathKeys[pathKeys.length - 1].toLocaleLowerCase();
+    setLastPathKey(_lastPathKey);
+  }, [props.location.pathname]);
+
   const basic_info_module_path_name = "basic-info";
-  const isEndsWithOrg = useLocation().pathname.endsWith(
+  const isEndsWithModuleName = useLocation().pathname.endsWith(
     `/${basic_info_module_path_name}`
   );
-  const prePath = isEndsWithOrg ? `${basic_info_module_path_name}/` : "";
+  const prePath = isEndsWithModuleName ? `${basic_info_module_path_name}/` : "";
 
   return (
-    <Menu mode="inline" theme="light">
-      <Menu.Item
-        key="settings"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home/settings`}>{Words.settings}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessiblePages.map((page) => (
-        <Menu.Item key={page.PageID} icon={mapper(page.PageID).icon}>
-          <Link to={`${prePath}${mapper(page.PageID).link}`}>
-            {page.PageTitle}
-          </Link>
+    <>
+      <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
+        <Menu.Item
+          key="settings"
+          icon={
+            <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
+          }
+        >
+          <Link to={`/home/settings`}>{Words.settings}</Link>
         </Menu.Item>
-      ))}
-    </Menu>
+        <Menu.Divider />
+        {accessiblePages.map((page) => (
+          <Menu.Item
+            key={page.PageName.toLocaleLowerCase()}
+            icon={mapper(page.PageID).icon}
+          >
+            <Link to={`${prePath}${mapper(page.PageID).link}`}>
+              {page.PageTitle}
+            </Link>
+          </Menu.Item>
+        ))}
+      </Menu>
+    </>
   );
 };
 
