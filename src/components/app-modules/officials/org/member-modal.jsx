@@ -479,53 +479,71 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             />
           </Col>
 
-          <Col xs={24} md={6}>
-            {record.PicFileName.length > 0 ? (
-              <Space>
-                <Avatar
-                  shape="square"
-                  size={60}
-                  src={`${fileBasicUrl}/member-profiles/${record.PicFileName}`}
-                />
+          {isEdit && (
+            <>
+              <Col xs={24} md={6}>
+                {record.PicFileName.length > 0 ? (
+                  <Space>
+                    <Avatar
+                      shape="square"
+                      size={60}
+                      src={`${fileBasicUrl}/member-profiles/${record.PicFileName}`}
+                    />
 
-                <Tooltip title={Words.remove_image}>
-                  <Button
-                    shape="circle"
-                    icon={<RemoveIcon />}
-                    style={{ color: Colors.red[6] }}
-                    onClick={removeProfileImage}
-                  />
-                </Tooltip>
-              </Space>
-            ) : (
-              <Space>
-                <Avatar shape="square" size={60} icon={<UserIcon />} />
-
-                {selectedObject.PicFileName.length > 0 &&
-                  record.PicFileName.length === 0 && (
-                    <Tooltip title={Words.reload_image}>
+                    <Tooltip title={Words.remove_image}>
                       <Button
                         shape="circle"
-                        icon={<ReloadIcon />}
-                        style={{ color: Colors.green[6] }}
-                        onClick={reloadProfileImage}
+                        icon={<RemoveIcon />}
+                        style={{ color: Colors.red[6] }}
+                        onClick={removeProfileImage}
                       />
                     </Tooltip>
-                  )}
-              </Space>
-            )}
-          </Col>
+                  </Space>
+                ) : (
+                  <Space>
+                    <Avatar shape="square" size={60} icon={<UserIcon />} />
 
-          <Col xs={24} md={18}>
-            <FileItem
-              horizontal
-              // rows={3}
-              title={Words.profile_image}
-              fieldName="PicFileName"
-              formConfig={formConfig}
-              fileConfig={fileConfig}
-            />
-          </Col>
+                    {selectedObject.PicFileName.length > 0 &&
+                      record.PicFileName.length === 0 && (
+                        <Tooltip title={Words.reload_image}>
+                          <Button
+                            shape="circle"
+                            icon={<ReloadIcon />}
+                            style={{ color: Colors.green[6] }}
+                            onClick={reloadProfileImage}
+                          />
+                        </Tooltip>
+                      )}
+                  </Space>
+                )}
+              </Col>
+
+              <Col xs={24} md={18}>
+                <FileItem
+                  horizontal
+                  // rows={3}
+                  title={Words.profile_image}
+                  fieldName="PicFileName"
+                  formConfig={formConfig}
+                  fileConfig={fileConfig}
+                />
+              </Col>
+            </>
+          )}
+
+          {!isEdit && (
+            <Col xs={24}>
+              <FileItem
+                horizontal
+                // rows={3}
+                title={Words.profile_image}
+                fieldName="PicFileName"
+                formConfig={formConfig}
+                fileConfig={fileConfig}
+              />
+            </Col>
+          )}
+
           {isEdit && (
             <>
               <Col xs={24} md={12}>

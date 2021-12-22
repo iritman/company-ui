@@ -241,6 +241,7 @@ export const getSimplaDataPageMethods = (config) => {
     recordID,
     showModal,
     setShowModal,
+    selectedObject,
     setSelectedObject,
     setProgress,
     records,
@@ -330,7 +331,9 @@ export const getSimplaDataPageMethods = (config) => {
         savedRow
       );
 
-      setSelectedObject({ ...row });
+      if (selectedObject !== null) {
+        setSelectedObject({ ...row });
+      }
 
       setRecords(updatedRecords);
     },

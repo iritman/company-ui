@@ -152,6 +152,7 @@ const MembersPage = ({ pageName }) => {
     recordID,
     showModal,
     setShowModal,
+    selectedObject,
     setSelectedObject,
     setProgress,
     records,
