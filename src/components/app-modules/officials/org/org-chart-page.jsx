@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import service from "./../../../../services/org/departments-service";
+import service from "./../../../../services/official/org/departments-service";
 import { OrganizationGraph } from "@ant-design/charts";
 
 const OrgChartPage = () => {

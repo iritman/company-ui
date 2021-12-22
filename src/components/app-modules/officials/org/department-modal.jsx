@@ -12,7 +12,7 @@ import {
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
-import departmentsService from "./../../../../services/org/departments-service";
+import departmentsService from "./../../../../services/official/org/departments-service";
 
 const schema = {
   DepartmentID: Joi.number().required(),

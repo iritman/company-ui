@@ -5,7 +5,7 @@ import { GiModernCity as CityIcon } from "react-icons/gi";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/provinces-service";
+import service from "./../../../../services/settings/basic-info/provinces-service";
 import {
   getSorter,
   checkAccess,

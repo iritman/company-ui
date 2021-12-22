@@ -12,7 +12,7 @@ import {
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
-import citiesService from "./../../../../services/org/cities-service";
+import citiesService from "./../../../../services/settings/basic-info/cities-service";
 
 const schema = {
   CityID: Joi.number().required(),

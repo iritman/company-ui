@@ -5,7 +5,7 @@ import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/duties-service";
+import service from "./../../../../services/official/org/duties-service";
 import { BsFillCircleFill as FillCircleIcon } from "react-icons/bs";
 import {
   getSorter,

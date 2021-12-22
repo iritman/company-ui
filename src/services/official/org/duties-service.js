@@ -1,7 +1,7 @@
-import http from "../http-service";
-import { apiUrl } from "../../config.json";
+import http from "../../http-service";
+import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/org/duty-levels";
+const apiEndpoint = apiUrl + "/official/org/duties";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
@@ -9,8 +9,8 @@ async function getAllData() {
   return data;
 }
 
-async function changeOrder(levelID, changeType) {
-  const { data } = await http.get(`${apiEndpoint}/change-order/${levelID}/${changeType}`);
+async function getParams() {
+  const { data } = await http.get(`${apiEndpoint}/params`);
 
   return data;
 }
@@ -35,7 +35,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getAllData,
-  changeOrder,
+  getParams,
   searchData,
   saveData,
   deleteData,

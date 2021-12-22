@@ -1,7 +1,7 @@
-import http from "../http-service";
-import { apiUrl } from "../../config.json";
+import http from "../../http-service";
+import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/org/provinces";
+const apiEndpoint = apiUrl + "/official/org/departments";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
@@ -9,8 +9,8 @@ async function getAllData() {
   return data;
 }
 
-async function getCitiesByProvinceID(provinceID) {
-  const { data } = await http.get(`${apiEndpoint}/cities/${provinceID}`);
+async function getParams() {
+  const { data } = await http.get(`${apiEndpoint}/params`);
 
   return data;
 }
@@ -35,7 +35,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getAllData,
-  getCitiesByProvinceID,
+  getParams,
   searchData,
   saveData,
   deleteData,

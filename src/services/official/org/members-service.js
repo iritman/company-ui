@@ -1,7 +1,7 @@
-import http from "../http-service";
-import { apiUrl } from "../../config.json";
+import http from "../../http-service";
+import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/org/members";
+const apiEndpoint = apiUrl + "/official/org/members";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);

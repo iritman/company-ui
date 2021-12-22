@@ -8,7 +8,7 @@ import {
 } from "react-icons/ai";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/members-service";
+import service from "./../../../../services/official/org/members-service";
 import {
   getSorter,
   checkAccess,

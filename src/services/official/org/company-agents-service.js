@@ -1,21 +1,21 @@
-import http from "../http-service";
-import { apiUrl } from "../../config.json";
+import http from "../../http-service";
+import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/org/duties";
+const apiEndpoint = apiUrl + "/official/org/company-agents";
 
-async function getAllData() {
+export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
   return data;
 }
 
-async function getParams() {
+export async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
   return data;
 }
 
-async function searchData(searchText) {
+export async function searchData(searchText) {
   const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
 
   return data;

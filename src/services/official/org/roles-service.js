@@ -1,16 +1,10 @@
-import http from "../http-service";
-import { apiUrl } from "../../config.json";
+import http from "../../http-service";
+import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/org/cities";
+const apiEndpoint = apiUrl + "/official/org/roles";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
-
-  return data;
-}
-
-async function getParams() {
-  const { data } = await http.get(`${apiEndpoint}/params`);
 
   return data;
 }
@@ -35,7 +29,6 @@ export async function deleteData(recordID) {
 
 const service = {
   getAllData,
-  getParams,
   searchData,
   saveData,
   deleteData,

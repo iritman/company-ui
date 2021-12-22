@@ -4,7 +4,7 @@ import { Button, Modal, Row, Col, Typography, Alert } from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
-import provincesService from "./../../../../services/org/provinces-service";
+import provincesService from "./../../../../services/settings/basic-info/provinces-service";
 import DetailsTable from "./../../../common/details-table";
 
 const { Text } = Typography;

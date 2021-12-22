@@ -5,7 +5,7 @@ import { FaUsersCog as AgentIcon } from "react-icons/fa";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/companies-service";
+import service from "./../../../../services/official/org/companies-service";
 import {
   getSorter,
   checkAccess,

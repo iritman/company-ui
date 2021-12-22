@@ -9,7 +9,7 @@ import {
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/duty-levels-service";
+import service from "./../../../../services/official/org/duty-levels-service";
 import {
   //   getSorter,
   checkAccess,

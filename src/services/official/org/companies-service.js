@@ -1,21 +1,27 @@
-import http from "../http-service";
-import { apiUrl } from "../../config.json";
+import http from "../../http-service";
+import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/org/company-agents";
+const apiEndpoint = apiUrl + "/official/org/companies";
 
-export async function getAllData() {
+async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
   return data;
 }
 
-export async function getParams() {
+async function getAgentsByCompanyID(companyID) {
+  const { data } = await http.get(`${apiEndpoint}/agents/${companyID}`);
+
+  return data;
+}
+
+async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
   return data;
 }
 
-export async function searchData(searchText) {
+async function searchData(searchText) {
   const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
 
   return data;
@@ -35,6 +41,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getAllData,
+  getAgentsByCompanyID,
   getParams,
   searchData,
   saveData,

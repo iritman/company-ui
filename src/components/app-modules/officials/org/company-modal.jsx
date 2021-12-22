@@ -12,7 +12,7 @@ import {
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
-import companiesService from "./../../../../services/org/companies-service";
+import companiesService from "./../../../../services/official/org/companies-service";
 
 const schema = {
   CompanyID: Joi.number().required(),

@@ -3,7 +3,7 @@ import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/departments-service";
+import service from "./../../../../services/official/org/departments-service";
 import {
   getSorter,
   checkAccess,

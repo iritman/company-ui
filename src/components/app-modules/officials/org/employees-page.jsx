@@ -5,7 +5,7 @@ import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/org/employees-service";
+import service from "./../../../../services/official/org/employees-service";
 import { AiOutlineCheck as CheckIcon } from "react-icons/ai";
 import {
   getSorter,

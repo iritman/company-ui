@@ -13,7 +13,7 @@ import {
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import InputItem from "./../../../form-controls/input-item";
-import companyAgentsService from "./../../../../services/org/company-agents-service";
+import companyAgentsService from "./../../../../services/official/org/company-agents-service";
 import accessesService from "./../../../../services/app/accesses-service";
 
 const schema = {

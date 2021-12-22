@@ -15,7 +15,7 @@ import {
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import TextItem from "./../../../form-controls/text-item";
 import SwitchItem from "./../../../form-controls/switch-item";
-import employeesService from "./../../../../services/org/employees-service";
+import employeesService from "./../../../../services/official/org/employees-service";
 import accessesService from "./../../../../services/app/accesses-service";
 import MemberProfileImage from "../../../common/member-profile-image";
 

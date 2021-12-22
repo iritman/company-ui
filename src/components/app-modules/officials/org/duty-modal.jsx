@@ -15,7 +15,7 @@ import {
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import TextItem from "./../../../form-controls/text-item";
 import InputItem from "./../../../form-controls/input-item";
-import service from "./../../../../services/org/duties-service";
+import service from "./../../../../services/official/org/duties-service";
 import utils from "./../../../../tools/utils";
 
 const schema = {
