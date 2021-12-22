@@ -36,7 +36,7 @@ const mapper = (pageID) => {
       break;
 
     case 4:
-      link = "chart";
+      link = "org-chart";
       icon = <OrgChartIcon {...iconProps} />;
       backColor = Colors.orange[3];
       break;

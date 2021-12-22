@@ -58,7 +58,7 @@ const OfficialRoutes = ({ path }) => {
         render={() => <CompanyAgentsPage pageName="CompanyAgents" />}
       />
       <ProtectedRoute
-        path={`${path}/official/org/chart`}
+        path={`${path}/official/org/org-chart`}
         exact
         render={() => <OrgChartPage pageName="OrgChart" />}
       />
