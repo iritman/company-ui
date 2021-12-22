@@ -18,6 +18,7 @@ import {
 import Words from "./../resources/words";
 import Colors from "./../resources/colors";
 import logo from "./../assets/images/logo.png";
+import fbc_background from "./../assets/images/fbc-login-bg.png";
 
 const { Title, Text } = Typography;
 
@@ -143,7 +144,8 @@ const LoginPage = () => {
   };
 
   const renderInfoBox = () => {
-    return <Text>FBC</Text>;
+    // return <Text>FBC</Text>;
+    return <></>;
   };
 
   return (
@@ -170,6 +172,8 @@ const LoginPage = () => {
           alignItems: "center",
           height: "100vh",
           backgroundColor: Colors.blue[6],
+          backgroundImage: `url(${fbc_background})`,
+          backgroundPosition: "center",
         }}
       >
         {renderInfoBox()}
