@@ -49,7 +49,9 @@ const BasicInfoMenu = (props) => {
 
   useEffect(() => {
     const pathKeys = props.location.pathname.split("/");
-    const _lastPathKey = pathKeys[pathKeys.length - 1].toLocaleLowerCase();
+    const _lastPathKey = pathKeys[pathKeys.length - 1]
+      .replace("-", "")
+      .toLocaleLowerCase();
     setLastPathKey(_lastPathKey);
   }, [props.location.pathname]);
 
@@ -73,7 +75,7 @@ const BasicInfoMenu = (props) => {
         <Menu.Divider />
         {accessiblePages.map((page) => (
           <Menu.Item
-            key={page.PageName.toLocaleLowerCase()}
+            key={page.PageName.replace("-", "").toLocaleLowerCase()}
             icon={mapper(page.PageID).icon}
           >
             <Link to={`${prePath}${mapper(page.PageID).link}`}>
