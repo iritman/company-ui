@@ -108,6 +108,7 @@ class Words extends Component {
   static duty_title = "عنوان وظیفه";
   static remove_image = "حذف تصویر";
   static reload_image = "بازیابی تصویر";
+  static invalid_national_code = "کدملی نامعتبر";
 
   static dashboard = "داشبورد";
   //----

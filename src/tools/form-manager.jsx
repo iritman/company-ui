@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import Words from "../resources/words";
 import accessesService from "./../services/app/accesses-service";
+import utils from "./utils";
 
 export const validateProperty = (name, schema, value) => {
   const obj = { [name]: value };
@@ -69,7 +70,12 @@ export const handleTextChange = (
   const errs = { ...errors };
   const errorMessage = validateProperty(name, schema, value);
   if (errorMessage) errs[name] = errorMessage;
-  else delete errs[name];
+  //else delete errs[name];
+  else {
+    if (name === "NationalCode" && !utils.checkNationalCode(value)) {
+      errs[name] = Words.invalid_national_code;
+    } else delete errs[name];
+  }
 
   const rec = { ...record };
   rec[name] = input.value;
