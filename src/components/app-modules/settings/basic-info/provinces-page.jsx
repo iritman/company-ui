@@ -10,12 +10,13 @@ import {
   getSorter,
   checkAccess,
   getColumns,
-  getSimplaDataPageMethods,
+  GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import ProvinceModal from "./province-modal";
 import ProvinceCitiesModal from "./province-cities-modal";
+import { usePageContext } from "./../../../contexts/page-context";
 
 const { Text } = Typography;
 
@@ -53,16 +54,24 @@ const baseColumns = [
 const recordID = "ProvinceID";
 
 const ProvincesPage = ({ pageName }) => {
-  const [progress, setProgress] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [records, setRecords] = useState([]);
-  const [access, setAccess] = useState(null);
-  const [selectedObject, setSelectedObject] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showCitiesModal, setShowCitiesModal] = useState(false);
 
+  const {
+    progress,
+    searched,
+    searchText,
+    setSearchText,
+    records,
+    setRecords,
+    access,
+    setAccess,
+    selectedObject,
+    setSelectedObject,
+    showModal,
+  } = usePageContext();
+
   useMount(async () => {
+    handleResetContext();
     await checkAccess(setAccess, pageName);
   });
 
@@ -74,18 +83,10 @@ const ProvincesPage = ({ pageName }) => {
     handleEdit,
     handleDelete,
     handleSave,
-  } = getSimplaDataPageMethods({
+    handleResetContext,
+  } = GetSimplaDataPageMethods({
     service,
     recordID,
-    showModal,
-    setShowModal,
-    setSelectedObject,
-    setProgress,
-    records,
-    setRecords,
-    setSearched,
-    searchText,
-    setSearchText,
   });
 
   const getOperationalButtons = (record) => {

@@ -4,20 +4,21 @@ import { Spin, Row, Col, Typography, Button, Space, Tooltip } from "antd";
 import { FaUsersCog as AgentIcon } from "react-icons/fa";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
+import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/official/org/companies-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
-  getSimplaDataPageMethods,
+  GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import CompanyModal from "./company-modal";
 import CompanyDetailsModal from "./company-details-modal";
 import CompanyAgentsModal from "./company-agents-modal";
-import Colors from "../../../../resources/colors";
+import { usePageContext } from "./../../../contexts/page-context";
 
 const { Text } = Typography;
 
@@ -91,17 +92,26 @@ const baseColumns = [
 const recordID = "CompanyID";
 
 const CompaniesPage = ({ pageName }) => {
-  const [progress, setProgress] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [records, setRecords] = useState([]);
-  const [access, setAccess] = useState(null);
-  const [selectedObject, setSelectedObject] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showAgentsModal, setShowAgentsModal] = useState(false);
 
+  const {
+    progress,
+    searched,
+    searchText,
+    setSearchText,
+    records,
+    setRecords,
+    access,
+    setAccess,
+    selectedObject,
+    setSelectedObject,
+    showModal,
+    showDetails,
+    setShowDetails,
+  } = usePageContext();
+
   useMount(async () => {
+    handleResetContext();
     await checkAccess(setAccess, pageName);
   });
 
@@ -113,18 +123,10 @@ const CompaniesPage = ({ pageName }) => {
     handleEdit,
     handleDelete,
     handleSave,
-  } = getSimplaDataPageMethods({
+    handleResetContext,
+  } = GetSimplaDataPageMethods({
     service,
     recordID,
-    showModal,
-    setShowModal,
-    setSelectedObject,
-    setProgress,
-    records,
-    setRecords,
-    setSearched,
-    searchText,
-    setSearchText,
   });
 
   const getOperationalButtons = (record) => {

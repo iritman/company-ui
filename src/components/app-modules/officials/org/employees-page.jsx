@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, Button } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
@@ -11,13 +11,14 @@ import {
   getSorter,
   checkAccess,
   getColumns,
-  getSimplaDataPageMethods,
+  GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import EmployeeModal from "./employee-modal";
 import EmployeeDetailsModal from "./employee-details-modal";
 import MemberProfileImage from "../../../common/member-profile-image";
+import { usePageContext } from "./../../../contexts/page-context";
 
 const { Text } = Typography;
 
@@ -108,16 +109,24 @@ const baseColumns = [
 const recordID = "EmployeeID";
 
 const EmployeesPage = ({ pageName }) => {
-  const [progress, setProgress] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [records, setRecords] = useState([]);
-  const [access, setAccess] = useState(null);
-  const [selectedObject, setSelectedObject] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const {
+    progress,
+    searched,
+    searchText,
+    setSearchText,
+    records,
+    setRecords,
+    access,
+    setAccess,
+    selectedObject,
+    setSelectedObject,
+    showModal,
+    showDetails,
+    setShowDetails,
+  } = usePageContext();
 
   useMount(async () => {
+    handleResetContext();
     await checkAccess(setAccess, pageName);
   });
 
@@ -129,19 +138,10 @@ const EmployeesPage = ({ pageName }) => {
     handleEdit,
     handleDelete,
     handleSave,
-  } = getSimplaDataPageMethods({
+    handleResetContext,
+  } = GetSimplaDataPageMethods({
     service,
     recordID,
-    showModal,
-    setShowModal,
-    selectedObject,
-    setSelectedObject,
-    setProgress,
-    records,
-    setRecords,
-    setSearched,
-    searchText,
-    setSearchText,
   });
 
   const getOperationalButtons = (record) => {

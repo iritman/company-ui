@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, Button, Space } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
@@ -11,12 +11,13 @@ import {
   getSorter,
   checkAccess,
   getColumns,
-  getSimplaDataPageMethods,
+  GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import DutyModal from "./duty-modal";
 import DutyDetailsModal from "./duty-details-modal";
+import { usePageContext } from "./../../../contexts/page-context";
 
 const { Text } = Typography;
 
@@ -91,16 +92,24 @@ const baseColumns = [
 const recordID = "DutyID";
 
 const DutiesPage = ({ pageName }) => {
-  const [progress, setProgress] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [records, setRecords] = useState([]);
-  const [access, setAccess] = useState(null);
-  const [selectedObject, setSelectedObject] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const {
+    progress,
+    searched,
+    searchText,
+    setSearchText,
+    records,
+    setRecords,
+    access,
+    setAccess,
+    selectedObject,
+    setSelectedObject,
+    showModal,
+    showDetails,
+    setShowDetails,
+  } = usePageContext();
 
   useMount(async () => {
+    handleResetContext();
     await checkAccess(setAccess, pageName);
   });
 
@@ -112,18 +121,10 @@ const DutiesPage = ({ pageName }) => {
     handleEdit,
     handleDelete,
     handleSave,
-  } = getSimplaDataPageMethods({
+    handleResetContext,
+  } = GetSimplaDataPageMethods({
     service,
     recordID,
-    showModal,
-    setShowModal,
-    setSelectedObject,
-    setProgress,
-    records,
-    setRecords,
-    setSearched,
-    searchText,
-    setSearchText,
   });
 
   const getOperationalButtons = (record) => {

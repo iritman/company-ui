@@ -1,4 +1,4 @@
-// import React from "react";
+import React from "react";
 import { errorLanguage } from "./language";
 import Joi from "joi-browser";
 import { Space, Button, Popconfirm, message } from "antd";
@@ -10,6 +10,10 @@ import {
 import Words from "../resources/words";
 import accessesService from "./../services/app/accesses-service";
 import utils from "./utils";
+import {
+  usePageContext,
+  useResetContext,
+} from "./../components/contexts/page-context";
 
 export const validateProperty = (name, schema, value) => {
   const obj = { [name]: value };
@@ -241,10 +245,10 @@ export const handleDropdownSelectedItemChange = (
 
 //------------------------------------------------------------------------------
 
-export const getSimplaDataPageMethods = (config) => {
+export const GetSimplaDataPageMethods = (config) => {
+  const { service, recordID } = config;
+
   const {
-    service,
-    recordID,
     showModal,
     setShowModal,
     selectedObject,
@@ -255,7 +259,9 @@ export const getSimplaDataPageMethods = (config) => {
     setSearched,
     searchText,
     setSearchText,
-  } = config;
+  } = usePageContext();
+
+  const resetContext = useResetContext();
 
   return {
     handleCloseModal: () => {
@@ -342,6 +348,10 @@ export const getSimplaDataPageMethods = (config) => {
       }
 
       setRecords(updatedRecords);
+    },
+
+    handleResetContext: () => {
+      resetContext();
     },
   };
 };
