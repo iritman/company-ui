@@ -49,6 +49,7 @@ const RoleModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.RoleTitle = "";
+
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);

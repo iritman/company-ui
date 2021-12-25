@@ -11,6 +11,10 @@ import {
   saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   ProvinceID: Joi.number().required(),
@@ -30,9 +34,10 @@ const initRecord = {
 const formRef = React.createRef();
 
 const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [errors, setErrors] = useState({});
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -44,12 +49,15 @@ const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.ProvinceTitle = "";
+
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
   };
 
   useMount(() => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
   });
 

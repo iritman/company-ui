@@ -13,6 +13,10 @@ import {
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import citiesService from "./../../../../services/settings/basic-info/cities-service";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   CityID: Joi.number().required(),
@@ -34,10 +38,18 @@ const initRecord = {
 const formRef = React.createRef();
 
 const CityModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [provinces, setProvinces] = useState([]);
-  const [errors, setErrors] = useState({});
+  const {
+    progress,
+    setProgress,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    provinces,
+    setProvinces,
+  } = useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -56,6 +68,8 @@ const CityModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const data = await citiesService.getParams();
