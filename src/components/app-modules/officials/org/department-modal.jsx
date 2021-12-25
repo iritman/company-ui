@@ -8,11 +8,15 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import departmentsService from "./../../../../services/official/org/departments-service";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   DepartmentID: Joi.number().required(),
@@ -34,10 +38,12 @@ const initRecord = {
 const formRef = React.createRef();
 
 const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
   const [parentDepartments, setParentDepartments] = useState([]);
-  const [errors, setErrors] = useState({});
+
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -48,14 +54,16 @@ const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    // record.ProvinceID = 0;
     record.DepartmentTitle = "";
+
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const data = await departmentsService.getParams();
@@ -65,10 +73,8 @@ const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     );
   });
 
-  const isEdit = selectedObject !== null;
-
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,
@@ -76,6 +82,8 @@ const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       clearRecord
     );
   };
+
+  const isEdit = selectedObject !== null;
 
   return (
     <ModalWindow
@@ -96,7 +104,6 @@ const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               keyColumn="ParentDepartmentID"
               valueColumn="ParentDepartmentTitle"
               formConfig={formConfig}
-              //   disabled={isEdit}
             />
           </Col>
           <Col xs={24}>

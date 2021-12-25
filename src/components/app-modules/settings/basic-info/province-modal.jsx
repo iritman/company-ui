@@ -8,7 +8,7 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 
@@ -56,7 +56,7 @@ const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const isEdit = selectedObject !== null;
 
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,

@@ -8,10 +8,14 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import ColorItem from "./../../../form-controls/color-item";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   LevelID: Joi.number().required(),
@@ -33,9 +37,10 @@ const initRecord = {
 const formRef = React.createRef();
 
 const DutyLevelModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [errors, setErrors] = useState({});
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -55,13 +60,13 @@ const DutyLevelModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(() => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
   });
 
-  const isEdit = selectedObject !== null;
-
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,
@@ -69,6 +74,8 @@ const DutyLevelModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       clearRecord
     );
   };
+
+  const isEdit = selectedObject !== null;
 
   return (
     <ModalWindow

@@ -8,11 +8,15 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import companiesService from "./../../../../services/official/org/companies-service";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   CompanyID: Joi.number().required(),
@@ -75,12 +79,22 @@ const initRecord = {
 const formRef = React.createRef();
 
 const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [provinces, setProvinces] = useState([]);
-  const [selectedProvinceID, setSelectedProvinceID] = useState(0);
-  const [cities, setCities] = useState([]);
-  const [errors, setErrors] = useState({});
+  const {
+    progress,
+    setProgress,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    provinces,
+    setProvinces,
+    selectedProvinceID,
+    setSelectedProvinceID,
+    cities,
+    setCities,
+  } = useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -107,6 +121,8 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const data = await companiesService.getParams();
@@ -122,7 +138,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const isEdit = selectedObject !== null;
 
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,

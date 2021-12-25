@@ -9,7 +9,7 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
   handleError,
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
@@ -18,6 +18,10 @@ import SwitchItem from "./../../../form-controls/switch-item";
 import employeesService from "./../../../../services/official/org/employees-service";
 import accessesService from "./../../../../services/app/accesses-service";
 import MemberProfileImage from "../../../common/member-profile-image";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   EmployeeID: Joi.number().required(),
@@ -38,13 +42,24 @@ const initRecord = {
 const formRef = React.createRef();
 
 const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [memberSearchProgress, setMemberSearchProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [departments, setDepartments] = useState([]);
-  const [roles, setRoles] = useState([]);
-  const [members, setMembers] = useState([]);
-  const [errors, setErrors] = useState({});
+  const {
+    memberSearchProgress,
+    setMemberSearchProgress,
+    departments,
+    setDepartments,
+    roles,
+    setRoles,
+    members,
+    setMembers,
+    progress,
+    setProgress,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+  } = useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -67,6 +82,8 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const data = await employeesService.getParams();
@@ -75,10 +92,8 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setRoles(data.Roles);
   });
 
-  const isEdit = selectedObject !== null;
-
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,
@@ -103,6 +118,8 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
     setMemberSearchProgress(false);
   };
+
+  const isEdit = selectedObject !== null;
 
   return (
     <ModalWindow

@@ -16,7 +16,7 @@ import {
   hasFormError,
   handleError,
   trimRecord,
-  // saveModaleChanges,
+  // saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
@@ -32,6 +32,10 @@ import {
   profileImageFileSize as fileConfig,
   fileBasicUrl,
 } from "./../../../../config.json";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   MemberID: Joi.number().required(),
@@ -214,13 +218,24 @@ const handleSubmitWithFile = async (
 };
 
 const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [provinces, setProvinces] = useState([]);
-  const [selectedProvinceID, setSelectedProvinceID] = useState(0);
-  const [cities, setCities] = useState([]);
-  const [fileList, setFileList] = useState({});
-  const [errors, setErrors] = useState({});
+  const {
+    progress,
+    setProgress,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    fileList,
+    setFileList,
+    provinces,
+    setProvinces,
+    selectedProvinceID,
+    setSelectedProvinceID,
+    cities,
+    setCities,
+  } = useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -257,6 +272,8 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const data = await membersService.getParams();
@@ -272,17 +289,6 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   useEffect(() => {
     loadFieldsValue(formRef, record);
   });
-
-  const isEdit = selectedObject !== null;
-
-  if (isEdit) {
-    schema.Password = Joi.string()
-      .min(8)
-      .max(50)
-      .allow("")
-      .regex(/^[a-zA-Z0-9.\-()\s]+$/)
-      .label(Words.password);
-  }
 
   const handleSubmit = async () => {
     handleSubmitWithFile(
@@ -327,6 +333,17 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.PicFileName = selectedObject.PicFileName;
     setRecord({ ...record });
   };
+
+  const isEdit = selectedObject !== null;
+
+  if (isEdit) {
+    schema.Password = Joi.string()
+      .min(8)
+      .max(50)
+      .allow("")
+      .regex(/^[a-zA-Z0-9.\-()\s]+$/)
+      .label(Words.password);
+  }
 
   return (
     <ModalWindow

@@ -8,13 +8,17 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
   handleError,
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import InputItem from "./../../../form-controls/input-item";
 import companyAgentsService from "./../../../../services/official/org/company-agents-service";
 import accessesService from "./../../../../services/app/accesses-service";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   AgentID: Joi.number().required(),
@@ -59,12 +63,22 @@ const initRecord = {
 const formRef = React.createRef();
 
 const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [companySearchProgress, setCompanySearchProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [companies, setCompanies] = useState([]);
-  const [roles, setRoles] = useState([]);
-  const [errors, setErrors] = useState({});
+  const {
+    progress,
+    setProgress,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    companySearchProgress,
+    setCompanySearchProgress,
+    companies,
+    setCompanies,
+    roles,
+    setRoles,
+  } = useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -90,6 +104,8 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const roles_data = await companyAgentsService.getParams();
@@ -101,10 +117,8 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     }
   });
 
-  const isEdit = selectedObject !== null;
-
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,
@@ -130,6 +144,8 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setCompanySearchProgress(false);
   };
 
+  const isEdit = selectedObject !== null;
+
   return (
     <ModalWindow
       isOpen={isOpen}
@@ -139,6 +155,7 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
+      width={650}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]}>

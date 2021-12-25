@@ -9,7 +9,7 @@ import {
   validateForm,
   loadFieldsValue,
   initModal,
-  saveModaleChanges,
+  saveModalChanges,
   //   handleError,
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
@@ -17,6 +17,10 @@ import TextItem from "./../../../form-controls/text-item";
 import InputItem from "./../../../form-controls/input-item";
 import service from "./../../../../services/official/org/duties-service";
 import utils from "./../../../../tools/utils";
+import {
+  useModalContext,
+  useResetContext,
+} from "./../../../contexts/modal-context";
 
 const schema = {
   DutyID: Joi.number().required(),
@@ -46,11 +50,20 @@ const initRecord = {
 const formRef = React.createRef();
 
 const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const [progress, setProgress] = useState(false);
-  const [record, setRecord] = useState(initRecord);
-  const [levels, setLevels] = useState([]);
-  const [employees, setEmployees] = useState([]);
-  const [errors, setErrors] = useState({});
+  const {
+    progress,
+    setProgress,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    dutyLevels,
+    setDutyLevels,
+    employees,
+    setEmployees,
+  } = useModalContext();
+
+  const resetContext = useResetContext();
 
   const formConfig = {
     schema,
@@ -72,18 +85,18 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   useMount(async () => {
+    resetContext();
+    setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
     const data = await service.getParams();
 
-    setLevels(data.Levels);
+    setDutyLevels(data.Levels);
     setEmployees(data.Employees);
   });
 
-  const isEdit = selectedObject !== null;
-
   const handleSubmit = async () => {
-    saveModaleChanges(
+    saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,
@@ -91,6 +104,8 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       clearRecord
     );
   };
+
+  const isEdit = selectedObject !== null;
 
   return (
     <ModalWindow
@@ -129,7 +144,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           <Col xs={24}>
             <DropdownItem
               title={Words.duty_level}
-              dataSource={levels}
+              dataSource={dutyLevels}
               keyColumn="LevelID"
               valueColumn="LevelTitle"
               formConfig={formConfig}

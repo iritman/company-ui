@@ -148,7 +148,7 @@ export const updateSavedRecords = (row, recordID, records, savedRow) => {
   return newRecords;
 };
 
-export const saveModaleChanges = async (
+export const saveModalChanges = async (
   formConfig,
   selectedObject,
   setProgress,
