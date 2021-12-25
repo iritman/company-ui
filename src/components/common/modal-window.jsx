@@ -23,7 +23,7 @@ const ModalWindow = (props) => {
     <Modal
       // style={{ maxWidth: "100vw", margin: 0 }}
       visible={isOpen}
-      maskClosable={false}
+      maskClosable={true}
       centered={true}
       title={
         isEdit ? (
