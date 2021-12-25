@@ -34,7 +34,7 @@ const schema = {
     .label(Words.title),
   DetailsText: Joi.string()
     .allow("")
-    .max(200)
+    .max(1024)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.descriptions),
 };
@@ -165,7 +165,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.descriptions}
               fieldName="DetailsText"
               multiline
-              maxLength={200}
+              maxLength={1024}
               formConfig={formConfig}
             />
           </Col>
