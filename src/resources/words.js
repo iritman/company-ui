@@ -144,6 +144,13 @@ class Words extends Component {
   //---
   static timex = "تایمکس";
   static timex_settings = "تنظیمات تایمکس";
+  static security = "امنیت";
+  static indexes = "شاخص ها";
+  static vacations = "مرخصی ها";
+  static missions = "ماموریت ها";
+  static work_time_info = "اطلاعات تردد";
+  static reports = "گزارش ها";
+  //---
   static automation = "اتوماسیون اداری";
   //---
 
