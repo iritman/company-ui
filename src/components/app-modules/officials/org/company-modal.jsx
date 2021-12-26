@@ -52,12 +52,14 @@ const schema = {
   FinancialCode: Joi.string()
     .min(10)
     .max(50)
+    .allow("")
     // .required()
     .regex(/^[0-9]+$/)
     .label(Words.financial_code),
   RegNo: Joi.string()
     .min(2)
     .max(50)
+    .allow("")
     // .required()
     .regex(/^[0-9]+$/)
     .label(Words.reg_no),
@@ -135,8 +137,6 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     );
   });
 
-  const isEdit = selectedObject !== null;
-
   const handleSubmit = async () => {
     saveModalChanges(
       formConfig,
@@ -158,13 +158,16 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     return selectedCities;
   };
 
+  const isEdit = selectedObject !== null;
+
   return (
     <ModalWindow
       isOpen={isOpen}
       isEdit={isEdit}
       inProgress={progress}
       disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
+      // onClear={clearRecord}
+      onClear={() => console.log(validateForm({ record, schema }))}
       onSubmit={handleSubmit}
       onCancel={onCancel}
       width={650}
