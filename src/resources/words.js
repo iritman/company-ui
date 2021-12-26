@@ -117,10 +117,6 @@ class Words extends Component {
   static official = "اداری";
   //----
   static orgAffairs = "ساختار سازمانی";
-  static provinces = "استان ها";
-  static province = "استان";
-  static cities = "شهرها";
-  static city = "شهر";
   static departments = "دپارتمان ها";
   static department = "دپارتمان";
   static roles = "سمت ها";
@@ -138,7 +134,16 @@ class Words extends Component {
   static duties = "شرح وظایف";
   static duty_level = "سطح وظیفه";
   //---
+  static provinces = "استان ها";
+  static province = "استان";
+  static cities = "شهرها";
+  static city = "شهر";
+  //---
+  static security_guards = "نگهبان ها";
+  static security_guard = "نگهبان";
+  //---
   static timex = "تایمکس";
+  static timex_settings = "تنظیمات تایمکس";
   static automation = "اتوماسیون اداری";
   //---
 

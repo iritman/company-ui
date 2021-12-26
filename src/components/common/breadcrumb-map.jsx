@@ -8,10 +8,10 @@ const BreadcrumbMap = ({ location }) => {
     "/home": Words.dashboard,
     "/home/official": Words.official,
     "/home/official/org": Words.orgAffairs,
-    "/home/official/timex": Words.timex,
     "/home/official/automation": Words.automation,
     "/home/settings": Words.settings,
     "/home/settings/basic-info": Words.basic_settings,
+    "/home/settings/timex": Words.timex_settings,
   };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);

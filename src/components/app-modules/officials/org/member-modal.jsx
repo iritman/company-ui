@@ -489,7 +489,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             <SwitchItem
               title={Words.status}
               fieldName="IsActive"
-              initialValue={true}
+              initialValue={false}
               checkedTitle={Words.active}
               unCheckedTitle={Words.inactive}
               formConfig={formConfig}

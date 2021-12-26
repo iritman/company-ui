@@ -18,9 +18,9 @@ import { VscUngroupByRefType as DutyLevelIcon } from "react-icons/vsc";
 import { GoTasklist as DutyIcon } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
-import modulesService from "../../services/app/modules-service";
-import Colors from "./../../resources/colors";
-import Words from "./../../resources/words";
+import modulesService from "../../../services/app/modules-service";
+import Colors from "./../../../resources/colors";
+import Words from "./../../../resources/words";
 import { useLocation } from "react-router-dom";
 
 const iconSize = 20;

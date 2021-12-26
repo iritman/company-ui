@@ -5,9 +5,9 @@ import { FaMapMarkerAlt as MapIcon } from "react-icons/fa";
 import { GiModernCity as CityIcon } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
-import modulesService from "../../services/app/modules-service";
-import Colors from "./../../resources/colors";
-import Words from "./../../resources/words";
+import modulesService from "../../../services/app/modules-service";
+import Colors from "./../../../resources/colors";
+import Words from "./../../../resources/words";
 import { useLocation } from "react-router-dom";
 
 const iconSize = 20;

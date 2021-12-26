@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import {
+  AiOutlineDashboard as DashboardIcon,
+  AiOutlineFieldTime as TimexSettingsIcon,
+} from "react-icons/ai";
 import { GoSettings as BasicSettingsIcon } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
-import modulesService from "../../services/app/modules-service";
-import Colors from "./../../resources/colors";
-import Words from "./../../resources/words";
+import modulesService from "../../../services/app/modules-service";
+import Colors from "../../../resources/colors";
+import Words from "../../../resources/words";
 
 const iconSize = 20;
 
@@ -19,6 +22,16 @@ const mapper = (moduleID) => {
       link = "basic-info";
       icon = (
         <BasicSettingsIcon style={{ color: Colors.blue[6] }} size={iconSize} />
+      );
+      break;
+
+    case 5:
+      link = "timex";
+      icon = (
+        <TimexSettingsIcon
+          style={{ color: Colors.orange[6] }}
+          size={iconSize}
+        />
       );
       break;
 

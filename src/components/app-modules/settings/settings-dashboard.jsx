@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "./../../common/dashboard-tile";
 import { GoSettings as BasicSettingsIcon } from "react-icons/go";
+import { AiOutlineFieldTime as TimexSettingsIcon } from "react-icons/ai";
 import Colors from "./../../../resources/colors";
 import modulesService from "./../../../services/app/modules-service";
 
@@ -21,6 +22,12 @@ const mapper = (moduleID) => {
       link = "basic-info";
       icon = <BasicSettingsIcon {...iconProps} />;
       backColor = Colors.blue[3];
+      break;
+
+    case 5:
+      link = "timex";
+      icon = <TimexSettingsIcon {...iconProps} />;
+      backColor = Colors.orange[3];
       break;
 
     default:
