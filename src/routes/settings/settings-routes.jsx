@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 import SettingsDashboard from "../../components/app-modules/settings/settings-dashboard";
 //---
@@ -23,6 +23,7 @@ const SettingsRoute = ({ path }) => {
         path={`${path}/settings/timex`}
         render={() => <SettingsTimexRoutes path={path} />}
       />
+      <Redirect to="/not-found" />
     </Switch>
   );
 };

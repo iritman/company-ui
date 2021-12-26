@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import BasicInfoDashboard from "../../components/app-modules/settings/basic-info/basic-info-dashboard";
@@ -27,6 +27,7 @@ const SettingsBasicInfoRoutes = ({ path }) => {
         exact
         render={() => <CitiesPage pageName="Cities" />}
       />
+      <Redirect to="/not-found" />
     </Switch>
   );
 };

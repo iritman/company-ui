@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import TimexSettingsDashboard from "../../components/app-modules/settings/timex-settings/timex-settings-dashboard";
@@ -21,6 +21,7 @@ const SettingsBasicInfoRoutes = ({ path }) => {
         exact
         render={() => <SecurityGuardsPage pageName="SecurityGuards" />}
       />
+      <Redirect to="/not-found" />
     </Switch>
   );
 };

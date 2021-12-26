@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../components/common/protected-route";
 import MainDashboard from "../pages/main-dashboard";
 //---
@@ -19,6 +19,7 @@ const PageRoutes = ({ path }) => {
         path={`${path}/settings`}
         render={() => <SettingsRoutes path={path} />}
       />
+      <Redirect to="/not-found" />
     </Switch>
   );
 };

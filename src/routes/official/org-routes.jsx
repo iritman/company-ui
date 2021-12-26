@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import OrgDashboard from "../../components/app-modules/officials/org/org-dashboard";
@@ -69,6 +69,7 @@ const OrgRoutes = ({ path }) => {
         exact
         render={() => <DutiesPage pageName="Duties" />}
       />
+      <Redirect to="/not-found" />
     </Switch>
   );
 };
