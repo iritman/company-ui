@@ -86,7 +86,7 @@ const schema = {
     .min(8)
     .max(50)
     .required()
-    .regex(/^[a-zA-Z0-9.\-()\s]+$/)
+    .regex(/^[a-zA-Z0-9-._!@#$%^&*]{7,31}$/)
     .label(Words.password),
   IsActive: Joi.boolean(),
 };
@@ -341,7 +341,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       .min(8)
       .max(50)
       .allow("")
-      .regex(/^[a-zA-Z0-9.\-()\s]+$/)
+      .regex(/^[a-zA-Z0-9-._!@#$%^&*]{7,31}$/)
       .label(Words.password);
   }
 
