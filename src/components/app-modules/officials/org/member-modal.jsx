@@ -106,7 +106,7 @@ const initRecord = {
   PicFileName: "",
   Username: "",
   Password: "",
-  IsActive: true,
+  IsActive: false,
 };
 
 const genders = [
@@ -499,7 +499,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           {isEdit && (
             <>
               <Col xs={24} md={6}>
-                {record.PicFileName.length > 0 ? (
+                {record.PicFileName?.length > 0 ? (
                   <Space>
                     <Avatar
                       shape="square"
