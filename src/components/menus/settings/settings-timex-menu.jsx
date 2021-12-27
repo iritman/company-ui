@@ -249,19 +249,9 @@ const tabs = [
   },
 ];
 
-// const getTabName = (searchPageName) =>
-//   tabs.find(
-//     (t) =>
-//       t.pages.filter(
-//         (p) =>
-//           p.pageName.replace("-", "").toLocaleLowerCase() === searchPageName
-//       ).length > 0
-//   )?.name;
-
 const SettingsTimexMenu = (props) => {
   const [accessiblePages, setAccessiblePages] = useState([]);
   const [lastPathKey, setLastPathKey] = useState("");
-  // const [openKeys, setOpenKeys] = useState([]);
 
   useMount(async () => {
     const timex_settings_module_id = 5;
@@ -280,22 +270,54 @@ const SettingsTimexMenu = (props) => {
     setLastPathKey(_lastPathKey);
   }, [props.location.pathname]);
 
-  const timex_module_path_name = "timex";
-  const isEndsWithModuleName = useLocation().pathname.endsWith(
-    `/${timex_module_path_name}`
-  );
-  const prePath = isEndsWithModuleName ? `${timex_module_path_name}/` : "";
+  const currentLocation = useLocation();
 
-  // const openTab = getTabName(lastPathKey);
-  //console.log(openKeys);
+  const getSubMenus = () => {
+    const timex_module_path_name = "timex";
+    const isEndsWithModuleName = currentLocation.pathname.endsWith(
+      `/${timex_module_path_name}`
+    );
+    const prePath = isEndsWithModuleName ? `${timex_module_path_name}/` : "";
+
+    //---
+
+    let subMenus = [];
+
+    tabs.forEach((tab) => {
+      if (
+        accessiblePages.filter((p) =>
+          tab.pages.filter((tp) => tp.pageName === p.PageName)
+        ).length > 0
+      ) {
+        subMenus = [
+          ...subMenus,
+          <SubMenu key={tab.name} title={tab.title}>
+            {accessiblePages
+              .filter(
+                (ap) =>
+                  tab.pages.filter((tp) => tp.pageName === ap.PageName)
+                    .length === 1
+              )
+              .map((page) => (
+                <Menu.Item
+                  key={page.PageName.replace("-", "").toLocaleLowerCase()}
+                  icon={mapper(page.PageID).icon}
+                >
+                  <Link to={`${prePath}${mapper(page.PageID).link}`}>
+                    {page.PageTitle}
+                  </Link>
+                </Menu.Item>
+              ))}
+          </SubMenu>,
+        ];
+      }
+    });
+
+    return subMenus;
+  };
 
   return (
-    <Menu
-      mode="inline"
-      theme="light"
-      //openKeys={openKeys}
-      selectedKeys={[lastPathKey]}
-    >
+    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
       <Menu.Item
         key="settings"
         icon={
@@ -305,32 +327,8 @@ const SettingsTimexMenu = (props) => {
         <Link to={`/home/settings`}>{Words.settings}</Link>
       </Menu.Item>
       <Menu.Divider />
-      {tabs.map((tab) => (
-        <>
-          {accessiblePages.filter((p) =>
-            tab.pages.filter((tp) => tp.pageName === p.PageName)
-          ).length > 0 && (
-            <SubMenu key={tab.name} title={tab.title}>
-              {accessiblePages
-                .filter(
-                  (ap) =>
-                    tab.pages.filter((tp) => tp.pageName === ap.PageName)
-                      .length === 1
-                )
-                .map((page) => (
-                  <Menu.Item
-                    key={page.PageName.replace("-", "").toLocaleLowerCase()}
-                    icon={mapper(page.PageID).icon}
-                  >
-                    <Link to={`${prePath}${mapper(page.PageID).link}`}>
-                      {page.PageTitle}
-                    </Link>
-                  </Menu.Item>
-                ))}
-            </SubMenu>
-          )}
-        </>
-      ))}
+
+      {getSubMenus()}
     </Menu>
   );
 };
