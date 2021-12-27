@@ -249,9 +249,12 @@ const tabs = [
   },
 ];
 
-const SettingsTimexMenu = (props) => {
+const SettingsTimexMenu = () => {
   const [accessiblePages, setAccessiblePages] = useState([]);
   const [lastPathKey, setLastPathKey] = useState("");
+  const [openKeys, setOpenKeys] = React.useState([]);
+
+  const currentLocation = useLocation();
 
   useMount(async () => {
     const timex_settings_module_id = 5;
@@ -263,14 +266,39 @@ const SettingsTimexMenu = (props) => {
   });
 
   useEffect(() => {
-    const pathKeys = props.location.pathname.split("/");
+    const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
       .replace("-", "")
       .toLocaleLowerCase();
-    setLastPathKey(_lastPathKey);
-  }, [props.location.pathname]);
 
-  const currentLocation = useLocation();
+    setLastPathKey(_lastPathKey);
+
+    const parentTab = getParentTab(_lastPathKey);
+    if (parentTab !== null) setOpenKeys([parentTab.name]);
+  }, [currentLocation.pathname]);
+
+  const getParentTab = (pageName) => {
+    let tab = null;
+
+    tab = tabs.find(
+      (t) => t.pages.find((p) => p.pageName === pageName) !== null
+    );
+
+    return tab;
+  };
+
+  const onOpenChange = (keys) => {
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+
+    let rootSubmenuKeys = [];
+    tabs.forEach((t) => (rootSubmenuKeys = [...rootSubmenuKeys, t.name]));
+
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      setOpenKeys(keys);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  };
 
   const getSubMenus = () => {
     const timex_module_path_name = "timex";
@@ -317,7 +345,13 @@ const SettingsTimexMenu = (props) => {
   };
 
   return (
-    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
+    <Menu
+      mode="inline"
+      theme="light"
+      openKeys={openKeys}
+      selectedKeys={[lastPathKey]}
+      onOpenChange={onOpenChange}
+    >
       <Menu.Item
         key="settings"
         icon={
