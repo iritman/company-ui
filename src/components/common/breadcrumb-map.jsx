@@ -16,18 +16,19 @@ const BreadcrumbMap = ({ location }) => {
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 
-  const breadcrumbItems = pathSnippets.map((_, index) => {
+  let breadcrumbItems = [];
+
+  pathSnippets.forEach((p, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
 
-    return (
-      <>
-        {breadcrumbNameMap[url] && (
-          <Breadcrumb.Item key={`${index}_${url}`}>
-            <Link to={url}>{breadcrumbNameMap[url]}</Link>
-          </Breadcrumb.Item>
-        )}
-      </>
-    );
+    if (breadcrumbNameMap[url]) {
+      breadcrumbItems = [
+        ...breadcrumbItems,
+        <Breadcrumb.Item key={`${index}_${url}`}>
+          <Link to={url}>{breadcrumbNameMap[url]}</Link>
+        </Breadcrumb.Item>,
+      ];
+    }
   });
 
   return (
