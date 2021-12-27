@@ -281,8 +281,13 @@ const SettingsTimexMenu = () => {
     let tab = null;
 
     tab = tabs.find(
-      (t) => t.pages.find((p) => p.pageName === pageName) !== null
+      (t) =>
+        t.pages.filter(
+          (p) => p.pageName.replace("-", "").toLocaleLowerCase() === pageName
+        ).length > 0
     );
+
+    tab = tab || null;
 
     return tab;
   };
