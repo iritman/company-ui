@@ -111,6 +111,9 @@ class Words extends Component {
   static invalid_national_code = "کدملی نامعتبر";
   static settings = "تنظیمات سامانه";
   static basic_settings = "اطلاعات پایه";
+  static nafar = "نفر";
+  static no_employee = "بدون کارمند!";
+  static no_department_manager = "بدون مدیر دپارتمان!";
 
   static dashboard = "داشبورد";
   //----

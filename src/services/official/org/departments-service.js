@@ -15,6 +15,12 @@ async function getParams() {
   return data;
 }
 
+async function getEmployees(departmentID) {
+  const { data } = await http.get(`${apiEndpoint}/employees/${departmentID}`);
+
+  return data;
+}
+
 async function searchData(searchText) {
   const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
 
@@ -36,6 +42,7 @@ export async function deleteData(recordID) {
 const service = {
   getAllData,
   getParams,
+  getEmployees,
   searchData,
   saveData,
   deleteData,
