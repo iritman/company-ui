@@ -522,7 +522,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
                     <Avatar shape="square" size={60} icon={<UserIcon />} />
 
                     {selectedObject.PicFileName.length > 0 &&
-                      record.PicFileName.length === 0 && (
+                      record.PicFileName?.length === 0 && (
                         <Tooltip title={Words.reload_image}>
                           <Button
                             shape="circle"

@@ -119,6 +119,9 @@ class Words extends Component {
   static by_day = "روزانه";
   static by_hour = "ساعتی";
   static submit_crop = "ثبت تصویر برش داده شده";
+  static new_image = "تصویر جدید";
+  static past_image = "تصویر قبلی";
+  static re_cut = "برش مجدد";
   static please_wait = "لطفا صبر کنید ...";
   static please_wait_for_load_image = "لطفا تا بارگذاری تصویر شکیبا باشید ...";
   static visit_profile = "مشاهده حساب کاربری";
