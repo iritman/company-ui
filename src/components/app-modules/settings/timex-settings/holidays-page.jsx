@@ -161,7 +161,6 @@ const getSheets = (records) => [
 const DropdownYears = ({ dataSource, onChange, value }) => {
   return (
     <Select
-      allowClear
       showSearch
       placeholder={Words.select_please}
       value={value}
