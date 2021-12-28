@@ -291,7 +291,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   });
 
   const handleSubmit = async () => {
-    handleSubmitWithFile(
+    await handleSubmitWithFile(
       fileConfig,
       formConfig,
       selectedObject,
@@ -453,6 +453,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               fieldName="Address"
               maxLength={200}
               multiline
+              showCount
               formConfig={formConfig}
             />
           </Col>

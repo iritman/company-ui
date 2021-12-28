@@ -1,22 +1,16 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/official/org/members";
+const apiEndpoint = apiUrl + "/settings/timex/holidays";
 
-async function getAllData() {
-  const { data } = await http.get(`${apiEndpoint}`);
+async function getHolidays(year) {
+  const { data } = await http.get(`${apiEndpoint}/days/${year}`);
 
   return data;
 }
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
-
-  return data;
-}
-
-async function searchData(searchText) {
-  const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
 
   return data;
 }
@@ -33,19 +27,11 @@ export async function deleteData(recordID) {
   return data;
 }
 
-export async function getPicFileName() {
-  const { data } = await http.get(`${apiEndpoint}/getPicFileName`);
-
-  return data;
-}
-
 const service = {
-  getAllData,
+  getHolidays,
   getParams,
-  searchData,
   saveData,
   deleteData,
-  getPicFileName,
 };
 
 export default service;

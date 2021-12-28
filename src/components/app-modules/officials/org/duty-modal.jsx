@@ -165,6 +165,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.descriptions}
               fieldName="DetailsText"
               multiline
+              showCount
               maxLength={1024}
               formConfig={formConfig}
             />

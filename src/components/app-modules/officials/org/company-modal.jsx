@@ -241,6 +241,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               fieldName="Address"
               maxLength={200}
               multiline
+              showCount
               required
               formConfig={formConfig}
             />

@@ -223,6 +223,7 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               fieldName="DetailsText"
               maxLength={200}
               multiline
+              showCount
               formConfig={formConfig}
             />
           </Col>

@@ -6,6 +6,7 @@ import TimexSettingsDashboard from "../../components/app-modules/settings/timex-
 import SecurityGuardsPage from "../../components/app-modules/settings/timex-settings/security-guards-page";
 import VacationTypesPage from "../../components/app-modules/settings/timex-settings/vacation-types-page";
 import MissionTypesPage from "../../components/app-modules/settings/timex-settings/mission-types-page";
+import HolidaysPage from "../../components/app-modules/settings/timex-settings/holidays-page";
 //---
 
 const modulePath = "settings/timex";
@@ -37,6 +38,11 @@ const SettingsBasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/mission-types`}
         exact
         render={() => <MissionTypesPage pageName="MissionTypes" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/holidays`}
+        exact
+        render={() => <HolidaysPage pageName="Holidays" />}
       />
       <Redirect to="/not-found" />
     </Switch>

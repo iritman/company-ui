@@ -118,8 +118,14 @@ class Words extends Component {
   static mission_format = "قالب ماموریت";
   static by_day = "روزانه";
   static by_hour = "ساعتی";
-  static vacation_types = "انواع مرخصی";
-  static mission_types = "انواع ماموریت";
+  static submit_crop = "ثبت تصویر برش داده شده";
+  static please_wait = "لطفا صبر کنید ...";
+  static please_wait_for_load_image = "لطفا تا بارگذاری تصویر شکیبا باشید ...";
+  static visit_profile = "مشاهده حساب کاربری";
+  static logout_from_account = "خروج از حساب کاربری";
+  static date = "تاریخ";
+  static time = "زمان";
+  static holiday_date = "تاریخ تعطیلی";
 
   static dashboard = "داشبورد";
   //----
@@ -160,6 +166,10 @@ class Words extends Component {
   static work_time_info = "اطلاعات تردد";
   static reports = "گزارش ها";
   //---
+  static vacation_types = "انواع مرخصی";
+  static mission_types = "انواع ماموریت";
+  static holidays = "تعطیلات";
+  //---
   static automation = "اتوماسیون اداری";
   //---
 
@@ -173,6 +183,24 @@ class Words extends Component {
     sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
     sure_to_delete_item: "برای حرف رکورد انتخابی اطمینان دارید؟",
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
+  };
+
+  static monthes = {
+    farvardin: "فروردین",
+    ordibehesht: "اردیبهشت",
+    khordad: "خرداد",
+    //---
+    tir: "تیر",
+    mordad: "مرداد",
+    shahrivar: "شهریور",
+    //---
+    mehr: "مهر",
+    aban: "آبان",
+    azar: "آذر",
+    //---
+    dey: "دی",
+    bahman: "بهمن",
+    esfand: "اسفند",
   };
 }
 
