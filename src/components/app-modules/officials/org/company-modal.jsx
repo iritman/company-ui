@@ -166,8 +166,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       isEdit={isEdit}
       inProgress={progress}
       disabled={validateForm({ record, schema }) && true}
-      // onClear={clearRecord}
-      onClear={() => console.log(validateForm({ record, schema }))}
+      onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
       width={650}
