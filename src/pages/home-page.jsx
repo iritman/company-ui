@@ -1,6 +1,20 @@
 import React from "react";
-import { Layout, Typography, Drawer, Row, Col, Popconfirm, Space } from "antd";
-import { MenuOutlined as MenuIcon } from "@ant-design/icons";
+import {
+  Layout,
+  Typography,
+  Drawer,
+  Row,
+  Col,
+  Popover,
+  Space,
+  Button,
+} from "antd";
+import {
+  MenuOutlined as MenuIcon,
+  UserOutlined as UserIcon,
+  CaretDownOutlined as DownIcon,
+  LeftOutlined as LeftIcon,
+} from "@ant-design/icons";
 import { AiOutlinePoweroff as LogoutIcon } from "react-icons/ai";
 import PageRoutes from "../routes/page-routes";
 import MenuRoutes from "../routes/menu-routes";
@@ -9,14 +23,33 @@ import Words from "../resources/words";
 import Colors from "../resources/colors";
 import useWindowWidthBreakpoints from "use-window-width-breakpoints";
 import { isMobileView } from "../tools/general";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import BreadcrumbMap from "../components/common/breadcrumb-map";
 // import logo from "../assets/images/mazust-white.png";
+import authService from "../services/auth-service";
 
 const { Title, Text } = Typography;
 const { Header, Content, Footer, Sider } = Layout;
 
+const PopoverContent = ({ history }) => {
+  return (
+    <Space className="logoutBtn">
+      <LogoutIcon style={{ fontSize: "20px", marginTop: "7px" }} />
+
+      <Text
+        level={5}
+        style={{ fontWeight: "normal", cursor: "pointer" }}
+        onClick={() => history.push("/logout")}
+      >
+        {Words.logout_from_account}
+      </Text>
+    </Space>
+  );
+};
+
 const MainHeader = ({ mobileView, trigger, history }) => {
+  const { FirstName, LastName } = authService.getCurrentUser();
+
   return (
     <Header
       style={{
@@ -67,17 +100,34 @@ const MainHeader = ({ mobileView, trigger, history }) => {
         </Title>
       </div>
 
-      <Popconfirm
-        title={Words.questions.sure_to_logout}
-        onConfirm={() => history.push("/logout")}
-        okText={Words.yes}
-        cancelText={Words.no}
+      <Popover
+        title={
+          <Space direction="vertical">
+            <Text style={{ fontSize: 13 }}>{`${FirstName}  ${LastName}`}</Text>
+
+            <Text style={{ fontSize: 13 }}>
+              <Link
+                to={`/home/profile`}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <Space>
+                  {Words.visit_profile}
+                  <LeftIcon style={{ fontSize: 10 }} />
+                </Space>
+              </Link>
+            </Text>
+          </Space>
+        }
+        content={<PopoverContent history={history} />}
+        placement="bottomLeft"
       >
-        <LogoutIcon
-          style={{ color: Colors.white, cursor: "pointer" }}
-          size={20}
-        />
-      </Popconfirm>
+        <Button type="link" className="userAccountBtn">
+          <Space style={{ color: Colors.white }}>
+            <UserIcon style={{ fontSize: 20 }} />
+            <DownIcon style={{ fontSize: 10 }} />
+          </Space>
+        </Button>
+      </Popover>
     </Header>
   );
 };
