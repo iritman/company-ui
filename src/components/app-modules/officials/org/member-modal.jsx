@@ -251,6 +251,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.CityID = 0;
+    record.ProvinceID = 0;
     record.GenderID = 0;
     record.FirstName = "";
     record.LastName = "";
@@ -288,7 +289,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   useEffect(() => {
     loadFieldsValue(formRef, record);
-  });
+  }, [record.Password]);
 
   const handleSubmit = async () => {
     await handleSubmitWithFile(
