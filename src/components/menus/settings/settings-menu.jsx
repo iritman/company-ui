@@ -5,6 +5,7 @@ import {
   AiOutlineFieldTime as TimexSettingsIcon,
 } from "react-icons/ai";
 import { GoSettings as BasicSettingsIcon } from "react-icons/go";
+import { SiKeycdn as KeyIcon } from "react-icons/si";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -33,6 +34,11 @@ const mapper = (moduleID) => {
           size={iconSize}
         />
       );
+      break;
+
+    case 6:
+      link = "accesses";
+      icon = <KeyIcon style={{ color: Colors.red[6] }} size={iconSize} />;
       break;
 
     default:

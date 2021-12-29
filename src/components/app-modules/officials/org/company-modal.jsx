@@ -113,7 +113,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.Fax = "";
     record.Address = "";
     record.PostalCode = "";
-    record.NatioanlID = "";
+    record.NationalID = "";
     record.FinancialCode = "";
     record.RegNo = "";
 
@@ -172,7 +172,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       width={650}
     >
       <Form ref={formRef} name="dataForm">
-        <Row gutter={[5, 1]}>
+        <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <InputItem
               title={Words.title}

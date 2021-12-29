@@ -68,7 +68,7 @@ class Words extends Component {
   static to = "تا";
   static type = "نوع";
   static percent = "درصد";
-  static save_settings = "دخیره تنظیمات";
+  static save_settings = "ذخیره تنظیمات";
   static search_text = "متن جستجو";
   static clear = "پاکسازی";
   static view_all = "نمایش همه";
@@ -129,6 +129,10 @@ class Words extends Component {
   static date = "تاریخ";
   static time = "زمان";
   static holiday_date = "تاریخ تعطیلی";
+  static can_add = "امکان ثبت";
+  static can_edit = "امکان ویرایش";
+  static can_delete = "امکان حذف";
+  static can_view = "امکان مشاهده";
 
   static dashboard = "داشبورد";
   //----
@@ -172,6 +176,9 @@ class Words extends Component {
   static vacation_types = "انواع مرخصی";
   static mission_types = "انواع ماموریت";
   static holidays = "تعطیلات";
+  //---
+  static page_accesses = "دسترسی صفحات";
+
   //---
   static automation = "اتوماسیون اداری";
   //---

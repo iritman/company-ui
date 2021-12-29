@@ -5,6 +5,7 @@ import SettingsDashboard from "../../components/app-modules/settings/settings-da
 //---
 import SettingsBasicInfoRoutes from "./settings-basic-info-routes";
 import SettingsTimexRoutes from "./settings-timex-routes";
+import SettingsAccessesRoutes from "./settings-accesses-routes";
 //---
 
 const SettingsRoute = ({ path }) => {
@@ -22,6 +23,10 @@ const SettingsRoute = ({ path }) => {
       <ProtectedRoute
         path={`${path}/settings/timex`}
         render={() => <SettingsTimexRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/settings/accesses`}
+        render={() => <SettingsAccessesRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

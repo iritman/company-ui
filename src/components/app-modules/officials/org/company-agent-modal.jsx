@@ -158,7 +158,7 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       width={650}
     >
       <Form ref={formRef} name="dataForm">
-        <Row gutter={[5, 1]}>
+        <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.company}

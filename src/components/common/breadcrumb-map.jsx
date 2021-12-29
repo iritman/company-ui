@@ -12,6 +12,7 @@ const BreadcrumbMap = ({ location }) => {
     "/home/settings": Words.settings,
     "/home/settings/basic-info": Words.basic_settings,
     "/home/settings/timex": Words.timex_settings,
+    "/home/settings/accesses": Words.accesses,
   };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);

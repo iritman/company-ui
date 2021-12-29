@@ -73,23 +73,27 @@ const SimpleDataPageHeader = ({
       </Col>
 
       <Col xs={12} md={4} lg={4} className="rowFlex flexEnd">
-        <Space>
-          <ExportExcel
-            sheets={sheets}
-            fileName={fileName}
-            button={
-              <Button type="primary" icon={<DownloadIcon />}>
-                {Words.excel}
-              </Button>
-            }
-          />
+        {(sheets || onAdd) && (
+          <Space>
+            {sheets && (
+              <ExportExcel
+                sheets={sheets}
+                fileName={fileName}
+                button={
+                  <Button type="primary" icon={<DownloadIcon />}>
+                    {Words.excel}
+                  </Button>
+                }
+              />
+            )}
 
-          {onAdd && (
-            <Button type="primary" icon={<PlusIcon />} onClick={onAdd}>
-              {Words.new}
-            </Button>
-          )}
-        </Space>
+            {onAdd && (
+              <Button type="primary" icon={<PlusIcon />} onClick={onAdd}>
+                {Words.new}
+              </Button>
+            )}
+          </Space>
+        )}
       </Col>
     </>
   );

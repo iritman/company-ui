@@ -7,6 +7,8 @@ import SettingsMenu from "../components/menus/settings/settings-menu";
 import BasicInfoMenu from "../components/menus/settings/basic-info-menu";
 import SettingsTimexMenu from "../components/menus/settings/settings-timex-menu";
 //---
+import SettingsAccessesMenu from "../components/menus/settings/settings-accesses-menu";
+//---
 import OfficialMenu from "../components/menus/official/official-menu";
 import OrgMenu from "../components/menus/official/org-menu";
 //---
@@ -26,6 +28,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/settings/timex`}
         component={SettingsTimexMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/settings/accesses`}
+        component={SettingsAccessesMenu}
       />
       <ProtectedRoute
         path={`${path}/official`}

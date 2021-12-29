@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import DashboardTile from "./../../common/dashboard-tile";
 import { GoSettings as BasicSettingsIcon } from "react-icons/go";
 import { AiOutlineFieldTime as TimexSettingsIcon } from "react-icons/ai";
+import { SiKeycdn as KeyIcon } from "react-icons/si";
 import Colors from "./../../../resources/colors";
 import modulesService from "./../../../services/app/modules-service";
 
@@ -28,6 +29,12 @@ const mapper = (moduleID) => {
       link = "timex";
       icon = <TimexSettingsIcon {...iconProps} />;
       backColor = Colors.orange[3];
+      break;
+
+    case 6:
+      link = "accesses";
+      icon = <KeyIcon {...iconProps} />;
+      backColor = Colors.red[3];
       break;
 
     default:
