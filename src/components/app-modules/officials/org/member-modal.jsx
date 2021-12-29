@@ -289,7 +289,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   useEffect(() => {
     loadFieldsValue(formRef, record);
-  }, [record.Password, record]);
+  }, [record.Password]);
 
   const handleSubmit = async () => {
     await handleSubmitWithFile(
