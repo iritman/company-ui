@@ -103,6 +103,7 @@ const DepartmentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               dataSource={parentDepartments}
               keyColumn="ParentDepartmentID"
               valueColumn="ParentDepartmentTitle"
+              autoFocus
               formConfig={formConfig}
             />
           </Col>

@@ -167,6 +167,7 @@ const CompanyAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               valueColumn="CompanyTitle"
               formConfig={formConfig}
               required
+              autoFocus
               loading={companySearchProgress}
               onSearch={handleSearchCompanies}
             />

@@ -178,6 +178,7 @@ const CompanyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.title}
               fieldName="CompanyTitle"
               required
+              autoFocus
               maxLength={50}
               formConfig={formConfig}
             />

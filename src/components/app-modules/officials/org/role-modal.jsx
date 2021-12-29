@@ -90,6 +90,7 @@ const RoleModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.title}
               fieldName="RoleTitle"
               required
+              autoFocus
               maxLength={50}
               formConfig={formConfig}
             />

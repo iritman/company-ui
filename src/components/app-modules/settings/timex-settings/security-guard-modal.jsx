@@ -121,9 +121,11 @@ const SecurityGuardModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
                 valueColumn="FullName"
                 formConfig={formConfig}
                 required
+                autoFocus
               />
             </Col>
           )}
+
           <Col xs={24}>
             <SwitchItem
               title={Words.status}

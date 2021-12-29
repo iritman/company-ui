@@ -138,6 +138,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
                 valueColumn="FullName"
                 formConfig={formConfig}
                 required
+                autoFocus
               />
             </Col>
           )}
@@ -149,6 +150,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               valueColumn="LevelTitle"
               formConfig={formConfig}
               required
+              autoFocus={isEdit}
             />
           </Col>
           <Col xs={24}>

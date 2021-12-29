@@ -1,7 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, Button, Tooltip } from "antd";
-// import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import { BsKeyFill as KeyIcon } from "react-icons/bs";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
@@ -16,34 +15,11 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-// import EmployeeModal from "./employee-modal";
-// import EmployeeDetailsModal from "./employee-details-modal";
 import PageAccessModal from "./page-access-modal";
 import MemberProfileImage from "../../../common/member-profile-image";
 import { usePageContext } from "./../../../contexts/page-context";
 
 const { Text } = Typography;
-
-// const getSheets = (records) => [
-//   {
-//     title: "Employees",
-//     data: records,
-//     columns: [
-//       { label: Words.id, value: "EmployeeID" },
-//       { label: Words.member_id, value: "MemberID" },
-//       { label: Words.first_name, value: "FirstName" },
-//       { label: Words.last_name, value: "LastName" },
-//       { label: Words.national_code, value: "NationalCode" },
-//       { label: Words.mobile, value: "Mobile" },
-//       { label: Words.department, value: "DepartmentTitle" },
-//       { label: Words.role, value: "RoleTitle" },
-//       {
-//         label: Words.department_manager,
-//         value: (record) => (record.IsDepartmentManger ? Words.yes : Words.no),
-//       },
-//     ],
-//   },
-// ];
 
 const baseColumns = [
   {
@@ -122,7 +98,6 @@ const PageAccessesPage = ({ pageName }) => {
     setAccess,
     selectedObject,
     setSelectedObject,
-    // showModal,
     showDetails,
     setShowDetails,
   } = usePageContext();
@@ -132,19 +107,11 @@ const PageAccessesPage = ({ pageName }) => {
     await checkAccess(setAccess, pageName);
   });
 
-  const {
-    handleCloseModal,
-    handleGetAll,
-    handleSearch,
-    // handleAdd,
-    // handleEdit,
-    // handleDelete,
-    // handleSave,
-    handleResetContext,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleGetAll, handleSearch, handleResetContext } =
+    GetSimplaDataPageMethods({
+      service,
+      recordID,
+    });
 
   const getOperationalButtons = (record) => {
     return (
@@ -196,15 +163,6 @@ const PageAccessesPage = ({ pageName }) => {
           </Col>
         </Row>
       </Spin>
-
-      {/* {showModal && (
-        <EmployeeModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
-        />
-      )} */}
 
       {showDetails && (
         <PageAccessModal

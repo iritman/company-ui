@@ -94,6 +94,7 @@ const DutyLevelModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.title}
               fieldName="LevelTitle"
               required
+              autoFocus
               maxLength={50}
               formConfig={formConfig}
             />

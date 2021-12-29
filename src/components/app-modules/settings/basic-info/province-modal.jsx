@@ -90,6 +90,7 @@ const ProvinceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.title}
               fieldName="ProvinceTitle"
               required
+              autoFocus
               maxLength={50}
               formConfig={formConfig}
             />

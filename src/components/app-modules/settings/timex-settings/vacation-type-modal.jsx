@@ -99,6 +99,7 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.title}
               fieldName="Title"
               required
+              autoFocus
               maxLength={50}
               formConfig={formConfig}
             />

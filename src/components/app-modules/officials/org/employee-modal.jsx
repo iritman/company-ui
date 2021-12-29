@@ -166,6 +166,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               />
             </Col>
           )}
+
           <Col xs={24}>
             <DropdownItem
               title={Words.department}

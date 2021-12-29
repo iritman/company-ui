@@ -108,6 +108,7 @@ const CityModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               valueColumn="ProvinceTitle"
               formConfig={formConfig}
               disabled={isEdit}
+              autoFocus
             />
           </Col>
           <Col xs={24}>
