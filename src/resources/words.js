@@ -133,6 +133,7 @@ class Words extends Component {
   static can_edit = "امکان ویرایش";
   static can_delete = "امکان حذف";
   static can_view = "امکان مشاهده";
+  static back = "بازگشت";
 
   static dashboard = "داشبورد";
   //----
@@ -187,6 +188,8 @@ class Words extends Component {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",
     no_national_code: "کدملی وارد نشده است",
+    page_not_found: "صفحه مورد درخواست شما یافت نشد",
+    invalid_access_page: "متاسفانه مجاز به دیدن این صفحه نمی باشید",
   };
 
   static questions = {
