@@ -289,7 +289,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   useEffect(() => {
     loadFieldsValue(formRef, record);
-  }, [record.Password]);
+  }, [record.Password, record]);
 
   const handleSubmit = async () => {
     await handleSubmitWithFile(
@@ -302,6 +302,8 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const handleSelectProvince = (value) => {
+    record.CityID = 0;
+    setRecord({ ...record });
     setSelectedProvinceID(value);
   };
 
