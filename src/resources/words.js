@@ -139,7 +139,7 @@ class Words extends Component {
   //----
   static official = "اداری";
   //----
-  static orgAffairs = "ساختار سازمانی";
+  static org_structure = "ساختار سازمانی";
   static departments = "دپارتمان ها";
   static department = "دپارتمان";
   static roles = "سمت ها";
