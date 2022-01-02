@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/settings/org/duties";
+const apiEndpoint = apiUrl + "/settings/org/role-duties";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);

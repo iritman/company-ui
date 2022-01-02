@@ -8,6 +8,7 @@ import {
   FaUsers as MemberIcon,
   FaIdCard as EmployeeIcon,
   FaUsersCog as AgentIcon,
+  FaTasks as RoleDutyIcon,
 } from "react-icons/fa";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import {
@@ -15,7 +16,7 @@ import {
   RiOrganizationChart as OrgChartIcon,
 } from "react-icons/ri";
 import { VscUngroupByRefType as DutyLevelIcon } from "react-icons/vsc";
-import { GoTasklist as DutyIcon } from "react-icons/go";
+import { GoTasklist as PersonalDutyIcon } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -83,8 +84,15 @@ const mapper = (pageID) => {
       break;
 
     case 11:
-      link = "duties";
-      icon = <DutyIcon style={{ color: Colors.red[5] }} size={iconSize} />;
+      link = "personal-duties";
+      icon = (
+        <PersonalDutyIcon style={{ color: Colors.red[5] }} size={iconSize} />
+      );
+      break;
+
+    case 29:
+      link = "role-duties";
+      icon = <RoleDutyIcon style={{ color: Colors.red[6] }} size={iconSize} />;
       break;
 
     default:

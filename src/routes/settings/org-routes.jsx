@@ -11,7 +11,8 @@ import EmployeesPage from "../../components/app-modules/settings/org/employees-p
 import CompanyAgentsPage from "../../components/app-modules/settings/org/company-agents-page";
 import OrgChartPage from "../../components/app-modules/settings/org/org-chart-page";
 import DutyLevelsPage from "../../components/app-modules/settings/org/duty-levels-page";
-import DutiesPage from "../../components/app-modules/settings/org/duties-page";
+import PersonalDutiesPage from "../../components/app-modules/settings/org/personal-duties-page";
+import RoleDutiesPage from "../../components/app-modules/settings/org/role-duties-page";
 //---
 
 const modulePath = "settings/org";
@@ -65,9 +66,14 @@ const OrgRoutes = ({ path }) => {
         render={() => <DutyLevelsPage pageName="DutyLevels" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/duties`}
+        path={`${path}/${modulePath}/personal-duties`}
         exact
-        render={() => <DutiesPage pageName="Duties" />}
+        render={() => <PersonalDutiesPage pageName="PersonalDuties" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/role-duties`}
+        exact
+        render={() => <RoleDutiesPage pageName="RoleDuties" />}
       />
       <Redirect to="/not-found" />
     </Switch>

@@ -5,7 +5,7 @@ import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/settings/org/duties-service";
+import service from "../../../../services/settings/org/role-duties-service";
 import { BsFillCircleFill as FillCircleIcon } from "react-icons/bs";
 import {
   getSorter,
@@ -15,30 +15,20 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-import DutyModal from "./duty-modal";
-import DutyDetailsModal from "./duty-details-modal";
+import RoleDutyModal from "./role-duty-modal";
+// import RoleDutyDetailsModal from "./role-duty-details-modal";
 import { usePageContext } from "../../../contexts/page-context";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "Duties",
+    title: "RoleDuties",
     data: records,
     columns: [
-      { label: Words.id, value: "DutyID" },
-      { label: Words.member_id, value: "MemberID" },
-      { label: Words.first_name, value: "FirstName" },
-      { label: Words.last_name, value: "LastName" },
-      { label: Words.national_code, value: "NationalCode" },
-      { label: Words.mobile, value: "Mobile" },
-      { label: Words.duty_level, value: "LevelTitle" },
-      { label: Words.department, value: "DepartmentTitle" },
+      { label: Words.id, value: "RoleDutyID" },
       { label: Words.role, value: "RoleTitle" },
-      {
-        label: Words.department_manager,
-        value: (record) => (record.IsDepartmentManger ? Words.yes : Words.no),
-      },
+      { label: Words.duty_level, value: "LevelTitle" },
       { label: Words.title, value: "Title" },
       { label: Words.descriptions, value: "DetailsText" },
     ],
@@ -50,21 +40,19 @@ const baseColumns = [
     title: Words.id,
     width: 100,
     align: "center",
-    dataIndex: "DutyID",
-    sorter: getSorter("DutyID"),
-    render: (DutyID) => <Text>{utils.farsiNum(`${DutyID}`)}</Text>,
+    dataIndex: "RoleDutyID",
+    sorter: getSorter("RoleDutyID"),
+    render: (RoleDutyID) => <Text>{utils.farsiNum(`${RoleDutyID}`)}</Text>,
   },
   {
-    title: Words.full_name,
+    title: Words.role,
     width: 200,
     align: "center",
     ellipsis: true,
     // dataIndex: "First",
-    sorter: getSorter("LastName"),
+    sorter: getSorter("RoleTitle"),
     render: (record) => (
-      <Text
-        style={{ color: Colors.blue[6] }}
-      >{`${record.FirstName} ${record.LastName}`}</Text>
+      <Text style={{ color: Colors.blue[6] }}>{record.RoleTitle}</Text>
     ),
   },
   {
@@ -89,9 +77,9 @@ const baseColumns = [
   },
 ];
 
-const recordID = "DutyID";
+const recordID = "RoleDutyID";
 
-const DutiesPage = ({ pageName }) => {
+const RoleDutiesPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -157,10 +145,10 @@ const DutiesPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.duties}
+            title={Words.role_duties}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="Duties"
+            fileName="RoleDuties"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={handleSearch}
             onClear={() => setRecords([])}
@@ -177,7 +165,7 @@ const DutiesPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <DutyModal
+        <RoleDutyModal
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
@@ -185,8 +173,8 @@ const DutiesPage = ({ pageName }) => {
         />
       )}
 
-      {showDetails && (
-        <DutyDetailsModal
+      {/* {showDetails && (
+        <RoleDutyDetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
@@ -194,9 +182,9 @@ const DutiesPage = ({ pageName }) => {
           isOpen={showDetails}
           duty={selectedObject}
         />
-      )}
+      )} */}
     </>
   );
 };
 
-export default DutiesPage;
+export default RoleDutiesPage;

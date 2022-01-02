@@ -155,6 +155,8 @@ class Words extends Component {
   static comp_agents = "رابطین شرکت";
   static duty_levels = "سطوح وظایف";
   static duties = "شرح وظایف";
+  static personal_duties = "شرح وظایف فردی";
+  static role_duties = "شرح وظایف سمت";
   static duty_level = "سطح وظیفه";
   //---
   static provinces = "استان ها";

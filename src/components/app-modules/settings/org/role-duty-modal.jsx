@@ -15,7 +15,7 @@ import {
 import DropdownItem from "../../../form-controls/dropdown-item";
 import TextItem from "../../../form-controls/text-item";
 import InputItem from "../../../form-controls/input-item";
-import service from "../../../../services/settings/org/duties-service";
+import service from "../../../../services/settings/org/role-duties-service";
 import utils from "../../../../tools/utils";
 import {
   useModalContext,
@@ -23,8 +23,8 @@ import {
 } from "../../../contexts/modal-context";
 
 const schema = {
-  DutyID: Joi.number().required(),
-  EmployeeID: Joi.number().required().min(1),
+  RoleDutyID: Joi.number().required(),
+  RoleID: Joi.number().required().min(1),
   LevelID: Joi.number().required().min(1),
   Title: Joi.string()
     .min(2)
@@ -40,8 +40,8 @@ const schema = {
 };
 
 const initRecord = {
-  DutyID: 0,
-  EmployeeID: 0,
+  RoleDutyID: 0,
+  RoleID: 0,
   LevelID: 0,
   Title: "",
   DetailsText: "",
@@ -49,7 +49,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const RoleDutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const {
     progress,
     setProgress,
@@ -59,8 +59,8 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setErrors,
     dutyLevels,
     setDutyLevels,
-    employees,
-    setEmployees,
+    roles,
+    setRoles,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -74,7 +74,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.EmployeeID = 0;
+    record.RoleID = 0;
     record.LevelID = 0;
     record.Title = "";
     record.DetailsText = "";
@@ -92,7 +92,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     const data = await service.getParams();
 
     setDutyLevels(data.Levels);
-    setEmployees(data.Employees);
+    setRoles(data.Roles);
   });
 
   const handleSubmit = async () => {
@@ -122,8 +122,8 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           {isEdit && (
             <Col xs={24}>
               <TextItem
-                title={Words.member}
-                value={`${record.FirstName} ${record.LastName}`}
+                title={Words.role}
+                value={record.RoleTitle}
                 valueColor={Colors.magenta[6]}
               />
             </Col>
@@ -132,16 +132,17 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           {!isEdit && (
             <Col xs={24}>
               <DropdownItem
-                title={Words.employee}
-                dataSource={employees}
-                keyColumn="EmployeeID"
-                valueColumn="FullName"
+                title={Words.role}
+                dataSource={roles}
+                keyColumn="RoleID"
+                valueColumn="RoleTitle"
                 formConfig={formConfig}
                 required
                 autoFocus
               />
             </Col>
           )}
+
           <Col xs={24}>
             <DropdownItem
               title={Words.duty_level}
@@ -168,6 +169,7 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               fieldName="DetailsText"
               multiline
               showCount
+              rows={7}
               maxLength={1024}
               formConfig={formConfig}
             />
@@ -199,4 +201,4 @@ const DutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   );
 };
 
-export default DutyModal;
+export default RoleDutyModal;
