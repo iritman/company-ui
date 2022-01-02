@@ -16,7 +16,7 @@ import {
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import RoleDutyModal from "./role-duty-modal";
-// import RoleDutyDetailsModal from "./role-duty-details-modal";
+import RoleDutyDetailsModal from "./role-duty-details-modal";
 import { usePageContext } from "../../../contexts/page-context";
 
 const { Text } = Typography;
@@ -173,7 +173,7 @@ const RoleDutiesPage = ({ pageName }) => {
         />
       )}
 
-      {/* {showDetails && (
+      {showDetails && (
         <RoleDutyDetailsModal
           onOk={() => {
             setShowDetails(false);
@@ -182,7 +182,7 @@ const RoleDutiesPage = ({ pageName }) => {
           isOpen={showDetails}
           duty={selectedObject}
         />
-      )} */}
+      )}
     </>
   );
 };
