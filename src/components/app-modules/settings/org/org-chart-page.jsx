@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useMount } from "react-use";
 import service from "../../../../services/settings/org/departments-service";
 import { OrganizationGraph } from "@ant-design/charts";
+import { Button, Space /*, message */ } from "antd";
+import { FcFlowChart, FcParallelTasks } from "react-icons/fc";
 //---
 import { fileBasicUrl } from "../../../../config.json";
 import utils from "../../../../tools/utils";
@@ -15,16 +17,22 @@ const OrgChartPage = () => {
   const [departmentID, setDepartmentID] = useState(0);
   const [departmentTitle, setDepartmentTitle] = useState("");
 
+  const [chartType, setChartType] = useState("TB");
+
+  const inputRef = useRef(null);
+
   useMount(async () => {
     const data = await service.getAllData();
 
     setDepartments(data);
   });
 
-  const handleShowModal = (departmentID, departmentTitle) => {
-    setDepartmentTitle(departmentTitle);
-    setDepartmentID(departmentID);
-    setShowModal(true);
+  const handleShowModal = (departmentID, departmentTitle, shape) => {
+    if (shape !== "marker") {
+      setDepartmentTitle(departmentTitle);
+      setDepartmentID(departmentID);
+      setShowModal(true);
+    }
   };
 
   const getNodes = (departments) => {
@@ -66,12 +74,57 @@ const OrgChartPage = () => {
     };
   };
 
+  const handleSwitchChart = () => {
+    inputRef.current?.click();
+
+    switch (chartType) {
+      case "TB":
+        setChartType("RL");
+        break;
+
+      case "RL":
+        setChartType("TB");
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <>
+      <Space>
+        <Button
+          type="link"
+          icon={
+            chartType === "RL" ? (
+              <FcParallelTasks
+                style={{ fontSize: "50px", transform: "rotate(180deg)" }}
+              />
+            ) : (
+              <FcFlowChart style={{ fontSize: "50px" }} />
+            )
+          }
+          onClick={handleSwitchChart}
+          ref={inputRef}
+        />
+      </Space>
+
       {departments.length > 0 && (
         <OrganizationGraph
           data={getNodes(departments)}
           behaviors={["drag-canvas", "zoom-canvas", "drag-node"]}
+          markerCfg={{
+            show: true,
+            collapsed: true,
+            position: "bottom",
+
+            //Width of Collapse Icon but didn`t Work
+
+            style: {
+              marginTop: "20px",
+            },
+          }}
           nodeCfg={{
             style: (node) => {
               return {
@@ -185,7 +238,7 @@ const OrgChartPage = () => {
             padding: 20,
           }}
           layout={{
-            direction: "TB",
+            direction: chartType,
             getWidth: () => {
               return 300;
             },
@@ -199,11 +252,16 @@ const OrgChartPage = () => {
               return 25;
             },
           }}
-          onReady={(graph) => {
+          onReady={async (graph) => {
             graph.on("node:click", (evt) => {
               const item = evt.item._cfg;
-              handleShowModal(item.id, item.model.value.text);
+              const shape = evt.shape.cfg;
+
+              handleShowModal(item.id, item.model.value.text, shape.type);
             });
+            // graph.toFullDataURL(() =>
+            //   message.success(Words.messages.success_load_graph)
+            // );
           }}
         />
       )}

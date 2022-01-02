@@ -192,6 +192,7 @@ class Words extends Component {
     no_national_code: "کدملی وارد نشده است",
     page_not_found: "صفحه مورد درخواست شما یافت نشد",
     invalid_access_page: "متاسفانه مجاز به دیدن این صفحه نمی باشید",
+    success_load_graph: "چارت سازمانی با موفقیت بارگذاری شد",
   };
 
   static questions = {
