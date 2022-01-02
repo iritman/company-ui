@@ -1,15 +1,11 @@
 import React from "react";
 import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
-import { AiFillStar as StarIcon } from "react-icons/ai";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
-import utils from "../../../../tools/utils";
 
 const { Text } = Typography;
 
 const RoleDutyDetailsModal = ({ duty, isOpen, onOk }) => {
-  const valueColor = Colors.blue[7];
-
   return (
     <Modal
       visible={isOpen}

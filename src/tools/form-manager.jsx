@@ -319,7 +319,13 @@ export const GetSimplaDataPageMethods = (config) => {
 
       try {
         // await new Promise((resolve) => setTimeout(resolve, 4000));
-        await service.deleteData(row[recordID]);
+        let result = await service.deleteData(row[recordID]);
+
+        if (result.Message) {
+          message.success(result.Message);
+        } else {
+          message.error(result.Error);
+        }
 
         let filteredRecords = records.filter(
           (obj) => obj[recordID] !== row[recordID]

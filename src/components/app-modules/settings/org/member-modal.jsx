@@ -39,6 +39,7 @@ import {
 
 const schema = {
   MemberID: Joi.number().required(),
+  ProvinceID: Joi.number().required().min(1),
   CityID: Joi.number().required().min(1),
   GenderID: Joi.number().required().min(1),
   FirstName: Joi.string()
@@ -93,6 +94,7 @@ const schema = {
 
 const initRecord = {
   MemberID: 0,
+  ProvinceID: 0,
   CityID: 0,
   GenderID: 0,
   FirstName: "",
@@ -289,7 +291,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   useEffect(() => {
     loadFieldsValue(formRef, record);
-  }, [record.Password]);
+  }, [record]);
 
   const handleSubmit = async () => {
     await handleSubmitWithFile(
