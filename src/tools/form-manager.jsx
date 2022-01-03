@@ -192,7 +192,7 @@ export const getColumns = (
   const { CanEdit, CanDelete } = access;
   let columns = baseColumns;
 
-  if (CanEdit || CanDelete) {
+  if (CanEdit || CanDelete || getOperationalButtons) {
     columns = [
       ...columns,
       {

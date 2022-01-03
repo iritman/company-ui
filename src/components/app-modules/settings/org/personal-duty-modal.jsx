@@ -23,7 +23,7 @@ import {
 } from "../../../contexts/modal-context";
 
 const schema = {
-  DutyID: Joi.number().required(),
+  PersonalDutyID: Joi.number().required(),
   EmployeeID: Joi.number().required().min(1),
   LevelID: Joi.number().required().min(1),
   Title: Joi.string()
@@ -40,7 +40,7 @@ const schema = {
 };
 
 const initRecord = {
-  DutyID: 0,
+  PersonalDutyID: 0,
   EmployeeID: 0,
   LevelID: 0,
   Title: "",

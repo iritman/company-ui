@@ -134,6 +134,11 @@ class Words extends Component {
   static can_delete = "امکان حذف";
   static can_view = "امکان مشاهده";
   static back = "بازگشت";
+  static your_duties = "شرح وظایف شما";
+  static member_duties = "شرح وظایف پرسنل";
+  static duty_type = "نوع وظیفه";
+  static by_personal = "فردی";
+  static by_role = "سمت";
 
   static dashboard = "داشبورد";
   //----

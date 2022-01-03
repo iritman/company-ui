@@ -7,7 +7,7 @@ import utils from "../../../../tools/utils";
 
 const { Text } = Typography;
 
-const PersonalDutyDetailsModal = ({ duty, isOpen, onOk }) => {
+const UserDutyDetailsModal = ({ duty, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
   return (
@@ -33,9 +33,7 @@ const PersonalDutyDetailsModal = ({ duty, isOpen, onOk }) => {
           <Row gutter={[10, 10]}>
             <Col xs={24}>
               <Alert
-                message={utils.farsiNum(
-                  `#${duty.EmployeeID} - ${duty.FirstName} ${duty.LastName}`
-                )}
+                message={utils.farsiNum(`${duty.Title}`)}
                 type="info"
                 showIcon
               />
@@ -51,37 +49,6 @@ const PersonalDutyDetailsModal = ({ duty, isOpen, onOk }) => {
                 }}
                 size="middle"
               >
-                {duty.IsDepartmentManager && (
-                  <Descriptions.Item label={Words.department_manager} span={2}>
-                    {/* <Text style={{ color: valueColor }}>
-                      {Words.department_manager}
-                    </Text> */}
-                    <StarIcon style={{ color: Colors.yellow[6] }} />
-                  </Descriptions.Item>
-                )}
-                <Descriptions.Item label={Words.national_code}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${duty.NationalCode}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.mobile}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${duty.Mobile}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.department}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${duty.DepartmentTitle}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.role}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(`${duty.RoleTitle}`)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.duty_title} span={2}>
-                  <Text style={{ color: Colors.green[6] }}>{duty.Title}</Text>
-                </Descriptions.Item>
                 {duty.DetailsText.length > 0 && (
                   <Descriptions.Item label={Words.descriptions} span={2}>
                     <Text
@@ -94,6 +61,20 @@ const PersonalDutyDetailsModal = ({ duty, isOpen, onOk }) => {
                     </Text>
                   </Descriptions.Item>
                 )}
+                <Descriptions.Item label={Words.reg_member}>
+                  <Text style={{ color: valueColor }}>
+                    {`${duty.RegFirstName} ${duty.RegLastName}`}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.reg_date_time}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(
+                      `${utils.slashDate(duty.RegDate)} - ${utils.colonTime(
+                        duty.RegTime
+                      )}`
+                    )}
+                  </Text>
+                </Descriptions.Item>
               </Descriptions>
             </Col>
           </Row>
@@ -103,4 +84,4 @@ const PersonalDutyDetailsModal = ({ duty, isOpen, onOk }) => {
   );
 };
 
-export default PersonalDutyDetailsModal;
+export default UserDutyDetailsModal;
