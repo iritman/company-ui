@@ -139,6 +139,7 @@ class Words extends Component {
   static duty_type = "نوع وظیفه";
   static by_personal = "فردی";
   static by_role = "سمت";
+  static by_role_personal = "سمت - فردی";
 
   static dashboard = "داشبورد";
   //----

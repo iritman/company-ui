@@ -6,7 +6,7 @@ import utils from "../../../../tools/utils";
 
 const { Text } = Typography;
 
-const UserDutyDetailsModal = ({ duty, isOpen, onOk }) => {
+const DutyDetailsModal = ({ duty, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
   return (
@@ -83,4 +83,4 @@ const UserDutyDetailsModal = ({ duty, isOpen, onOk }) => {
   );
 };
 
-export default UserDutyDetailsModal;
+export default DutyDetailsModal;

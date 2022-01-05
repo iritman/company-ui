@@ -5,8 +5,7 @@ import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/org/user-duties-service";
-import { BsFillCircleFill as FillCircleIcon } from "react-icons/bs";
+import service from "../../../../services/official/org/user-members-duties-service";
 import {
   getSorter,
   checkAccess,
@@ -15,37 +14,25 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-import DutyDetailsModal from "./user-duty-details-modal";
+import UserMembersDutiesDetailsModal from "./user-members-duties-details-modal";
 import { usePageContext } from "../../../contexts/page-context";
+import MemberProfileImage from "../../../common/member-profile-image";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "Duties",
+    title: "MembersDuties",
     data: records,
     columns: [
-      { label: Words.id, value: "DutyID" },
-      {
-        label: Words.type,
-        value: (record) =>
-          record.DutyType === "RoleBased" ? Words.by_role : Words.by_personal,
-      },
-      { label: Words.title, value: "Title" },
-      { label: Words.duty_level, value: "LevelTitle" },
-      { label: Words.descriptions, value: "DetailsText" },
-      {
-        label: Words.reg_member,
-        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
-      },
-      {
-        label: Words.reg_date,
-        value: (record) => utils.slashDate(record.RegDate),
-      },
-      {
-        label: Words.reg_time,
-        value: (record) => utils.colonTime(record.RegTime),
-      },
+      { label: Words.id, value: "EmployeeID" },
+      { label: Words.member_id, value: "MemberID" },
+      { label: Words.first_name, value: "FirstName" },
+      { label: Words.last_name, value: "LastName" },
+      { label: Words.national_code, value: "NationalCode" },
+      { label: Words.mobile, value: "Mobile" },
+      { label: Words.department, value: "DepartmentTitle" },
+      { label: Words.role, value: "RoleTitle" },
     ],
   },
 ];
@@ -53,53 +40,47 @@ const getSheets = (records) => [
 const baseColumns = [
   {
     title: Words.id,
-    width: 75,
-    align: "center",
-    dataIndex: "DutyID",
-    sorter: getSorter("DutyID"),
-    render: (DutyID) => <Text>{utils.farsiNum(`${DutyID}`)}</Text>,
-  },
-  {
-    title: Words.duty_type,
     width: 100,
     align: "center",
-    dataIndex: "DutyType",
-    sorter: getSorter("DutyType"),
-    render: (DutyType) => (
+    dataIndex: "EmployeeID",
+    sorter: getSorter("EmployeeID"),
+    render: (EmployeeID) => <Text>{utils.farsiNum(`${EmployeeID}`)}</Text>,
+  },
+  {
+    title: "",
+    width: 75,
+    align: "center",
+    dataIndex: "PicFileName",
+    render: (PicFileName) => <MemberProfileImage fileName={PicFileName} />,
+  },
+  {
+    title: Words.full_name,
+    width: 200,
+    align: "center",
+    ellipsis: true,
+    sorter: getSorter("LastName"),
+    render: (record) => (
       <Text
-        style={{
-          color: DutyType === "PersonalBased" ? Colors.green[7] : Colors.red[7],
-        }}
-      >
-        {DutyType === "PersonalBased" ? Words.by_personal : Words.by_role}
-      </Text>
+        style={{ color: Colors.blue[6] }}
+      >{`${record.FirstName} ${record.LastName}`}</Text>
     ),
   },
   {
-    title: Words.title,
+    title: Words.role,
     width: 200,
-    align: "right",
-    dataIndex: "Title",
-    sorter: getSorter("Title"),
-    render: (Title) => <Text style={{ color: Colors.blue[7] }}>{Title}</Text>,
-  },
-  {
-    title: Words.duty_level,
-    width: 100,
-    align: "right",
-    render: (record) => (
-      <Space>
-        <FillCircleIcon size={15} style={{ color: record.LevelColor }} />
-
-        <Text>{record.LevelTitle}</Text>
-      </Space>
+    align: "center",
+    ellipsis: true,
+    dataIndex: "RoleTitle",
+    sorter: getSorter("RoleTitle"),
+    render: (RoleTitle) => (
+      <Text style={{ color: Colors.magenta[6] }}>{RoleTitle}</Text>
     ),
   },
 ];
 
-const recordID = "DutyID";
+const recordID = "EmployeeID";
 
-const UseDutiesPage = ({ pageName }) => {
+const UserMembersDutiesPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -148,7 +129,13 @@ const UseDutiesPage = ({ pageName }) => {
     ? getColumns(
         baseColumns,
         getOperationalButtons,
-        access,
+        {
+          AccessID: access.AccessID,
+          CanView: access.CanView,
+          CanAdd: false,
+          CanEdit: false,
+          CanDelete: false,
+        },
         handleEdit,
         handleDelete
       )
@@ -161,10 +148,10 @@ const UseDutiesPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.your_duties}
+            title={Words.member_duties}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="YourDuties"
+            fileName="MemberDuties"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={handleSearch}
             onClear={() => setRecords([])}
@@ -181,17 +168,18 @@ const UseDutiesPage = ({ pageName }) => {
       </Spin>
 
       {showDetails && (
-        <DutyDetailsModal
+        <UserMembersDutiesDetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
           isOpen={showDetails}
-          duty={selectedObject}
+          employee={selectedObject}
+          access={access}
         />
       )}
     </>
   );
 };
 
-export default UseDutiesPage;
+export default UserMembersDutiesPage;

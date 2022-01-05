@@ -5,7 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import UserOrgDashboard from "../../components/app-modules/official/org/user-org-dashboard";
 import UserOrgChartPage from "../../components/app-modules/official/org/user-org-chart-page";
 import UserDutiesPage from "../../components/app-modules/official/org/user-duties-page";
-// import UserMembersDutiesPage from "../../components/app-modules/official/org/user-members-duties-page";
+import UserMembersDutiesPage from "../../components/app-modules/official/org/user-members-duties-page";
 //---
 
 const modulePath = "official/org";
@@ -28,11 +28,11 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => <UserDutiesPage pageName="user-Duties" />}
       />
-      {/* <ProtectedRoute
+      <ProtectedRoute
         path={`${path}/${modulePath}/members-duties`}
         exact
         render={() => <UserMembersDutiesPage pageName="user-MembersDuties" />}
-      /> */}
+      />
       <Redirect to="/not-found" />
     </Switch>
   );
