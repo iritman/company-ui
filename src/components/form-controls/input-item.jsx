@@ -1,8 +1,33 @@
 import React from "react";
 import { Form, Input } from "antd";
-import { handleTextChange } from "../../tools/form-manager";
+import utils from "../../tools/utils";
+import Words from "../../resources/words";
+import { validateFormProperty } from "../../tools/form-manager";
 
 const { TextArea, Password } = Input;
+
+const handleTextChange = (data, formConfig) => {
+  const { errors, setErrors, record, setRecord, schema } = formConfig;
+  const rec = { ...record };
+  const errs = { ...errors };
+
+  const { currentTarget: input } = data;
+  const name = input.id.replace("dataForm_", "");
+  const { value } = input;
+
+  const errorMessage = validateFormProperty(name, value, schema);
+  if (errorMessage) errs[name] = errorMessage;
+  //else delete errs[name];
+  else {
+    if (name === "NationalCode" && !utils.checkNationalCode(value)) {
+      errs[name] = Words.invalid_national_code;
+    } else delete errs[name];
+  }
+
+  rec[name] = input.value;
+  setRecord(rec);
+  setErrors(errs);
+};
 
 const InputItem = ({
   title,
@@ -16,10 +41,9 @@ const InputItem = ({
   formConfig,
   ...rest
 }) => {
-  const { errors, schema, record, setRecord, setErrors } = formConfig;
+  const { errors } = formConfig;
 
-  const handleChange = (data) =>
-    handleTextChange(errors, data, schema, record, setRecord, setErrors);
+  const handleChange = (data) => handleTextChange(data, formConfig);
 
   let control = null;
   if (!password && multiline) {

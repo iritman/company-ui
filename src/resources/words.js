@@ -140,6 +140,14 @@ class Words extends Component {
   static by_personal = "فردی";
   static by_role = "سمت";
   static by_role_personal = "سمت - فردی";
+  static work_shifts = "شیفت های کاری";
+  static shift_code = "کد شیفت";
+  static start_time = "زمان شروع";
+  static finish_time = "زمان پایان";
+  static un_delay_in_min = "عدم محاسبه تاخیر";
+  static un_hurryup_in_min = "عدم محاسبه تعجیل";
+  static un_extra_enter_in_min = "عدم محاسبه اضافه کاری ورود";
+  static un_extra_exit_in_min = "عدم محاسبه اضافه کاری خروج";
 
   static dashboard = "داشبورد";
   //----

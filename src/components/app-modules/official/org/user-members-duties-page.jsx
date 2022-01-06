@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button, Space } from "antd";
+import { Spin, Row, Col, Typography, Button } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";

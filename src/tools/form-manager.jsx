@@ -15,6 +15,16 @@ import {
   useResetContext,
 } from "./../components/contexts/page-context";
 
+export const validateFormProperty = (name, value, schema) => {
+  const obj = { [name]: value };
+  const property_schema = { [name]: schema[name] };
+  const options = { language: errorLanguage };
+
+  const { error } = Joi.validate(obj, property_schema, options);
+
+  return error ? error.details[0].message : null;
+};
+
 export const validateProperty = (name, schema, value) => {
   const obj = { [name]: value };
   const fieldSchema = { [name]: schema[name] };
