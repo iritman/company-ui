@@ -19,6 +19,7 @@ const ModalContextProvider = ({ children }) => {
   const [companySearchProgress, setCompanySearchProgress] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [dutyLevels, setDutyLevels] = useState([]);
+  const [workShifts, setWorkShifts] = useState([]);
   const [fileList, setFileList] = useState({});
 
   const contextValue = {
@@ -50,6 +51,8 @@ const ModalContextProvider = ({ children }) => {
     setCompanies,
     dutyLevels,
     setDutyLevels,
+    workShifts,
+    setWorkShifts,
     fileList,
     setFileList,
   };

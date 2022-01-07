@@ -261,6 +261,7 @@ export const GetSimplaDataPageMethods = (config) => {
   const {
     showModal,
     setShowModal,
+    setShowSearchModal,
     selectedObject,
     setSelectedObject,
     setProgress,
@@ -269,6 +270,7 @@ export const GetSimplaDataPageMethods = (config) => {
     setSearched,
     searchText,
     setSearchText,
+    setFilter,
   } = usePageContext();
 
   const resetContext = useResetContext();
@@ -303,13 +305,30 @@ export const GetSimplaDataPageMethods = (config) => {
           const data = await service.searchData(searchText);
 
           setRecords(data);
-          setProgress(false);
           setSearched(true);
         } catch (ex) {
-          setProgress(false);
           handleError(ex);
         }
+
+        setProgress(false);
       }
+    },
+
+    handleAdvancedSearch: async (filter) => {
+      setFilter(filter);
+      setShowSearchModal(false);
+
+      setProgress(true);
+
+      try {
+        const data = await service.searchData(filter);
+        setRecords(data);
+        setSearched(true);
+      } catch (err) {
+        handleError(err);
+      }
+
+      setProgress(false);
     },
 
     handleAdd: () => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Typography, Input, Space, Tooltip, Button } from "antd";
 import {
+  SearchOutlined as SearchIcon,
   ReloadOutlined as ReloadIcon,
   PlusOutlined as PlusIcon,
   DownloadOutlined as DownloadIcon,
@@ -23,6 +24,24 @@ const SimpleDataPageHeader = ({
   onGetAll,
   onAdd,
 }) => {
+  const rightPartSizes = (onGetAll) => {
+    return onGetAll
+      ? {
+          md: 8,
+          lg: 10,
+        }
+      : {};
+  };
+
+  const leftPartSizes = (onGetAll) => {
+    return onGetAll
+      ? {
+          md: 4,
+          lg: 4,
+        }
+      : {};
+  };
+
   return (
     <>
       <Col xs={24}>
@@ -39,18 +58,20 @@ const SimpleDataPageHeader = ({
         </Text>
       </Col>
 
-      <Col xs={24} md={12} lg={10}>
-        <Search
-          placeholder={Words.search_text}
-          onSearch={onSearch}
-          onChange={onSearchTextChanged}
-          value={searchText}
-          enterButton
-          allowClear
-        />
-      </Col>
+      {onGetAll && (
+        <Col xs={24} md={12} lg={10}>
+          <Search
+            placeholder={Words.search_text}
+            onSearch={onSearch}
+            onChange={onSearchTextChanged}
+            value={searchText}
+            enterButton
+            allowClear
+          />
+        </Col>
+      )}
 
-      <Col xs={12} md={8} lg={10}>
+      <Col xs={12} {...rightPartSizes(onGetAll)}>
         {onGetAll ? (
           <Space>
             <Tooltip title={Words.clear}>
@@ -66,13 +87,19 @@ const SimpleDataPageHeader = ({
             </Tooltip>
           </Space>
         ) : (
-          <Tooltip title={Words.clear}>
-            <Button type="primary" icon={<ReloadIcon />} onClick={onClear} />
-          </Tooltip>
+          <Space>
+            <Button type="primary" icon={<SearchIcon />} onClick={onSearch}>
+              {Words.search}
+            </Button>
+
+            <Tooltip title={Words.clear}>
+              <Button type="primary" icon={<ReloadIcon />} onClick={onClear} />
+            </Tooltip>
+          </Space>
         )}
       </Col>
 
-      <Col xs={12} md={4} lg={4} className="rowFlex flexEnd">
+      <Col xs={12} {...leftPartSizes(onGetAll)} className="rowFlex flexEnd">
         {(sheets || onAdd) && (
           <Space>
             {sheets && (

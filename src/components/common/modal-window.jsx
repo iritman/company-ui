@@ -16,6 +16,7 @@ const ModalWindow = (props) => {
     onClear,
     onSubmit,
     onCancel,
+    searchModal,
     ...rest
   } = props;
 
@@ -49,7 +50,7 @@ const ModalWindow = (props) => {
           loading={inProgress}
           disabled={disabled}
         >
-          {Words.submit}
+          {searchModal ? Words.search : Words.submit}
         </Button>,
       ]}
       onCancel={onCancel}

@@ -141,6 +141,7 @@ class Words extends Component {
   static by_role = "سمت";
   static by_role_personal = "سمت - فردی";
   static work_shifts = "شیفت های کاری";
+  static work_shift = "شیفت کاری";
   static shift_code = "کد شیفت";
   static start_time = "زمان شروع";
   static finish_time = "زمان پایان";
@@ -148,6 +149,10 @@ class Words extends Component {
   static un_hurryup_in_min = "عدم محاسبه تعجیل";
   static un_extra_enter_in_min = "عدم محاسبه اضافه کاری ورود";
   static un_extra_exit_in_min = "عدم محاسبه اضافه کاری خروج";
+  static group_shifts = "شیفت های گروهی";
+  static shift_date = "تاریخ شیفت";
+  static start_date = "تاریخ شروع";
+  static finish_date = "تاریخ پایان";
 
   static dashboard = "داشبورد";
   //----
