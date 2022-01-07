@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/settings/timex/group-shifts";
+const apiEndpoint = apiUrl + "/settings/timex/employee-shifts";
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);

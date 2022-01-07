@@ -14,22 +14,21 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/settings/timex/group-shifts-service";
+import service from "../../../../services/settings/timex/employee-shifts-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
-import DateItem from "../../../form-controls/date-item";
 
 const schema = {
-  DepartmentID: Joi.number().min(1).required(),
+  EmployeeID: Joi.number().min(1).required(),
   ShiftID: Joi.number(),
-  StartDate: Joi.string().required(),
-  FinishDate: Joi.string().required(),
+  MonthID: Joi.number(),
+  YearNo: Joi.number().min(1).required(),
 };
 
 const initRecord = {
-  DepartmentID: 0,
+  EmployeeID: 0,
   ShiftID: 0,
-  StartDate: "",
-  FinishDate: "",
+  MonthID: 0,
+  YearNo: 0,
 };
 
 const formRef = React.createRef();
@@ -42,10 +41,14 @@ const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     setRecord,
     errors,
     setErrors,
-    departments,
-    setDepartments,
+    employees,
+    setEmployees,
     workShifts,
     setWorkShifts,
+    monthes,
+    setMonthes,
+    years,
+    setYears,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -59,10 +62,10 @@ const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.DepartmentID = 0;
+    record.EmployeeID = 0;
     record.ShiftID = 0;
-    record.StartDate = "";
-    record.FinishDate = "";
+    record.MonthID = 0;
+    record.YearNo = years.length > 0 ? years[0].YearNo : 0;
 
     setRecord(record);
     setErrors({});
@@ -79,8 +82,12 @@ const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      setDepartments(data.Departments);
-      setWorkShifts(data.WorkShifts);
+      const { Employees, WorkShifts, Years, Monthes } = data;
+
+      setEmployees(Employees);
+      setWorkShifts(WorkShifts);
+      setMonthes(Monthes);
+      setYears(Years);
     } catch (err) {
       handleError(err);
     }
@@ -100,18 +107,18 @@ const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
+          <Col xs={24}>
             <DropdownItem
-              title={Words.department}
-              dataSource={departments}
-              keyColumn="DepartmentID"
-              valueColumn="DepartmentTitle"
+              title={Words.employee}
+              dataSource={employees}
+              keyColumn="EmployeeID"
+              valueColumn="FullName"
               formConfig={formConfig}
               required
               autoFocus
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24}>
             <DropdownItem
               title={Words.work_shift}
               dataSource={workShifts}
@@ -121,21 +128,22 @@ const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
             />
           </Col>
           <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.start_date}
-              fieldName="StartDate"
+            <DropdownItem
+              title={Words.year}
+              dataSource={years}
+              keyColumn="YearNo"
+              valueColumn="YearNo"
               formConfig={formConfig}
               required
             />
           </Col>
           <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.finish_date}
-              fieldName="FinishDate"
+            <DropdownItem
+              title={Words.month}
+              dataSource={monthes}
+              keyColumn="MonthID"
+              valueColumn="MonthName"
               formConfig={formConfig}
-              required
             />
           </Col>
         </Row>

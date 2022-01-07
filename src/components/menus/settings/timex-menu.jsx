@@ -27,7 +27,7 @@ import {
 } from "react-icons/md";
 import {
   FaUsersCog as UsersIcon,
-  FaUserClock as IndividualShiftIcon,
+  FaUserClock as EmployeeShiftIcon,
   FaChartPie as ChartIcon,
 } from "react-icons/fa";
 import {
@@ -138,9 +138,9 @@ const mapper = (pageID) => {
       break;
 
     case 26:
-      link = "individual-shifts";
+      link = "employee-shifts";
       icon = (
-        <IndividualShiftIcon
+        <EmployeeShiftIcon
           style={{ color: Colors.magenta[6] }}
           size={iconSize}
         />
@@ -232,7 +232,7 @@ const tabs = [
       { pageName: "WorkShiftManagers" },
       { pageName: "WorkShifts" },
       { pageName: "GroupShifts" },
-      { pageName: "IndividualShifts" },
+      { pageName: "EmployeeShifts" },
       { pageName: "RegedCards" },
     ],
   },

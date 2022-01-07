@@ -153,6 +153,11 @@ class Words extends Component {
   static shift_date = "تاریخ شیفت";
   static start_date = "تاریخ شروع";
   static finish_date = "تاریخ پایان";
+  static employee_shifts = "شیفت های فردی";
+  static month = "ماه";
+  static year = "سال";
+  static week_day = "روز هفته";
+  static holiday = "تعطیل";
 
   static dashboard = "داشبورد";
   //----

@@ -3,6 +3,7 @@ import { Modal, Space, Button } from "antd";
 import {
   PlusSquareOutlined as PlusBoxIcon,
   EditOutlined as EditIcon,
+  SearchOutlined as SearchIcon,
 } from "@ant-design/icons";
 import Words from "./../../resources/words";
 import Colors from "./../../resources/colors";
@@ -17,6 +18,7 @@ const ModalWindow = (props) => {
     onSubmit,
     onCancel,
     searchModal,
+    title,
     ...rest
   } = props;
 
@@ -27,7 +29,12 @@ const ModalWindow = (props) => {
       maskClosable={true}
       centered={true}
       title={
-        isEdit ? (
+        searchModal ? (
+          <Space>
+            <SearchIcon style={{ color: Colors.blue[6] }} />
+            {Words.search}
+          </Space>
+        ) : isEdit ? (
           <Space>
             <EditIcon style={{ color: Colors.magenta[6] }} />
             {Words.editInfo}

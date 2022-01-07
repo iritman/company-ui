@@ -9,6 +9,7 @@ import MissionTypesPage from "../../components/app-modules/settings/timex/missio
 import HolidaysPage from "../../components/app-modules/settings/timex/holidays-page";
 import WorkShiftsPage from "../../components/app-modules/settings/timex/work-shifts-page";
 import GroupShiftsPage from "../../components/app-modules/settings/timex/group-shifts-page";
+import EmployeeShiftsPage from "../../components/app-modules/settings/timex/employee-shifts-page";
 //---
 
 const modulePath = "settings/timex";
@@ -55,6 +56,11 @@ const BasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/group-shifts`}
         exact
         render={() => <GroupShiftsPage pageName="GroupShifts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/employee-shifts`}
+        exact
+        render={() => <EmployeeShiftsPage pageName="EmployeeShifts" />}
       />
       <Redirect to="/not-found" />
     </Switch>
