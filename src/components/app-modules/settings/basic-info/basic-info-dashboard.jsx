@@ -2,8 +2,19 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
-import { FaMapMarkerAlt as MapIcon } from "react-icons/fa";
+import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import {
+  FaMapMarkerAlt as MapIcon,
+  FaUniversity as UniversityIcon,
+} from "react-icons/fa";
 import { GiModernCity as CityIcon } from "react-icons/gi";
+import {
+  MdCastForEducation as EduLevelIcon,
+  MdMergeType as EmploymentTypeIcon,
+  MdOutlineModelTraining as EmploymentStatusIcon,
+} from "react-icons/md";
+import { BiSelectMultiple as EduFieldIcon } from "react-icons/bi";
+import { HiOutlineOfficeBuilding as WorkPlaceIcon } from "react-icons/hi";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -28,6 +39,42 @@ const mapper = (pageID) => {
       link = "cities";
       icon = <CityIcon {...iconProps} />;
       backColor = Colors.cyan[3];
+      break;
+
+    case 33:
+      link = "edu-levels";
+      icon = <EduLevelIcon {...iconProps} />;
+      backColor = Colors.green[3];
+      break;
+
+    case 34:
+      link = "edu-fields";
+      icon = <EduFieldIcon {...iconProps} />;
+      backColor = Colors.orange[3];
+      break;
+
+    case 35:
+      link = "universities";
+      icon = <UniversityIcon {...iconProps} />;
+      backColor = Colors.blue[3];
+      break;
+
+    case 36:
+      link = "employment-types";
+      icon = <EmploymentTypeIcon {...iconProps} />;
+      backColor = Colors.volcano[3];
+      break;
+
+    case 37:
+      link = "employment-statuses";
+      icon = <EmploymentStatusIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
+      break;
+
+    case 38:
+      link = "work-places";
+      icon = <WorkPlaceIcon {...iconProps} />;
+      backColor = Colors.geekblue[3];
       break;
 
     default:

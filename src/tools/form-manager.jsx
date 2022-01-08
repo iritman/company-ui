@@ -361,11 +361,11 @@ export const GetSimplaDataPageMethods = (config) => {
         );
 
         setRecords(filteredRecords);
-        setProgress(false);
       } catch (ex) {
-        setProgress(false);
         handleError(ex);
       }
+
+      setProgress(false);
     },
 
     handleSave: async (row) => {

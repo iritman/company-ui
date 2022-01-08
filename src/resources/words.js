@@ -159,6 +159,19 @@ class Words extends Component {
   static week_day = "روز هفته";
   static holiday = "تعطیل";
 
+  static edu_levels = "مقاطع تحصیلی";
+  static edu_level = "مقطع تحصیلی";
+  static edu_fields = "رشته های تحصیلی";
+  static edu_field = "رشته تحصیلی";
+  static universities = "دانشگاه ها";
+  static university = "دانشگاه";
+  static employment_types = "انواع استخدام";
+  static employment_type = "نوع استخدام";
+  static employment_statuses = "وضعیت های استخدام";
+  static employment_status = "وضعیت استخدام";
+  static work_places = "محل های خدمت";
+  static work_place = "محل خدمت";
+
   static dashboard = "داشبورد";
   //----
   static official = "اداری";
