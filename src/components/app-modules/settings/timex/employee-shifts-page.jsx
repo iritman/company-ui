@@ -10,7 +10,6 @@ import {
   getColumns,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
-import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import EmployeeShiftModal from "./employee-shift-modal";
 import { usePageContext } from "./../../../contexts/page-context";

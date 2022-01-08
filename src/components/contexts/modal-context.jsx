@@ -22,6 +22,12 @@ const ModalContextProvider = ({ children }) => {
   const [workShifts, setWorkShifts] = useState([]);
   const [monthes, setMonthes] = useState([]);
   const [years, setYears] = useState([]);
+  const [eduLevels, setEduLevels] = useState([]);
+  const [eduFields, setEduFields] = useState([]);
+  const [universities, setUniversities] = useState([]);
+  const [employmentTypes, setEmploymentTypes] = useState([]);
+  const [employmentStatuses, setEmploymentStatuses] = useState([]);
+  const [workPlaces, setWorkPlaces] = useState([]);
   const [fileList, setFileList] = useState({});
 
   const contextValue = {
@@ -59,6 +65,18 @@ const ModalContextProvider = ({ children }) => {
     setMonthes,
     years,
     setYears,
+    eduLevels,
+    setEduLevels,
+    eduFields,
+    setEduFields,
+    universities,
+    setUniversities,
+    employmentTypes,
+    setEmploymentTypes,
+    employmentStatuses,
+    setEmploymentStatuses,
+    workPlaces,
+    setWorkPlaces,
     fileList,
     setFileList,
   };

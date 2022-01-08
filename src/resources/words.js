@@ -158,6 +158,16 @@ class Words extends Component {
   static year = "سال";
   static week_day = "روز هفته";
   static holiday = "تعطیل";
+  static card_no = "شماره کارت";
+  static is_married = "وضعیت تاهل";
+  static marriage_date = "تاریخ ازدواج";
+  static father_name = "نام پدر";
+  static personal_id = "شماره شناسنامه";
+  static latest_edu_average = "آخرین معدل تحصیلی";
+  static employment_start_date = "تاریخ شروع کار";
+  static employment_finish_date = "تاریخ پایان کار";
+  static single = "مجرد";
+  static married = "متاهل";
 
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";

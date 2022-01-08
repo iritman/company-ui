@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import {
   FaMapMarkerAlt as MapIcon,
   FaUniversity as UniversityIcon,

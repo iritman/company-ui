@@ -14,7 +14,10 @@ import {
 } from "../../../../tools/form-manager";
 import DropdownItem from "../../../form-controls/dropdown-item";
 import TextItem from "../../../form-controls/text-item";
+import InputItem from "../../../form-controls/input-item";
 import SwitchItem from "../../../form-controls/switch-item";
+import DateItem from "../../../form-controls/date-item";
+import NumericInputItem from "../../../form-controls/numeric-input-item";
 import employeesService from "../../../../services/settings/org/employees-service";
 import accessesService from "../../../../services/app/accesses-service";
 import MemberProfileImage from "../../../common/member-profile-image";
@@ -29,6 +32,20 @@ const schema = {
   DepartmentID: Joi.number().required().min(1),
   RoleID: Joi.number().required().min(1),
   IsDepartmentManager: Joi.boolean(),
+  CardNo: Joi.number().required().min(1).label(Words.card_no),
+  IsMarried: Joi.boolean(),
+  MarriageDate: Joi.string().allow(""),
+  FatherName: Joi.string().allow(""),
+  PersonalID: Joi.string().allow(""),
+  EduLevelID: Joi.number(),
+  EduFieldID: Joi.number(),
+  UniversityID: Joi.number(),
+  LatestEduAverage: Joi.number().positive().precision(2),
+  EmploymentTypeID: Joi.number(),
+  EmploymentStatusID: Joi.number(),
+  EmploymentStartDate: Joi.string().allow(""),
+  EmploymentFinishDate: Joi.string().allow(""),
+  WorkPlaceID: Joi.number(),
 };
 
 const initRecord = {
@@ -37,6 +54,20 @@ const initRecord = {
   DepartmentID: 0,
   RoleID: 0,
   IsDepartmentManager: false,
+  CardNo: 0,
+  IsMarried: false,
+  MarriageDate: "",
+  FatherName: "",
+  PersonalID: "",
+  EduLevelID: 0,
+  EduFieldID: 0,
+  UniversityID: 0,
+  LatestEduAverage: 0,
+  EmploymentTypeID: 0,
+  EmploymentStatusID: 0,
+  EmploymentStartDate: "",
+  EmploymentFinishDate: "",
+  WorkPlaceID: 0,
 };
 
 const formRef = React.createRef();
@@ -49,6 +80,18 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setDepartments,
     roles,
     setRoles,
+    eduLevels,
+    setEduLevels,
+    eduFields,
+    setEduFields,
+    universities,
+    setUniversities,
+    employmentTypes,
+    setEmploymentTypes,
+    employmentStatuses,
+    setEmploymentStatuses,
+    workPlaces,
+    setWorkPlaces,
     members,
     setMembers,
     progress,
@@ -75,6 +118,20 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.DepartmentID = 0;
     record.RoleID = 0;
     record.IsDepartmentManager = false;
+    record.CardNo = 0;
+    record.IsMarried = false;
+    record.MarriageDate = "";
+    record.FatherName = "";
+    record.PersonalID = "";
+    record.EduLevelID = 0;
+    record.EduFieldID = 0;
+    record.UniversityID = 0;
+    record.LatestEduAverage = 0;
+    record.EmploymentTypeID = 0;
+    record.EmploymentStatusID = 0;
+    record.EmploymentStartDate = "";
+    record.EmploymentFinishDate = "";
+    record.WorkPlaceID = 0;
 
     setRecord(record);
     setErrors({});
@@ -88,8 +145,25 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
     const data = await employeesService.getParams();
 
-    setDepartments(data.Departments);
-    setRoles(data.Roles);
+    const {
+      Departments,
+      Roles,
+      EduLevels,
+      EduFields,
+      Universities,
+      EmploymentTypes,
+      EmploymentStatuses,
+      WorkPlaces,
+    } = data;
+
+    setDepartments(Departments);
+    setRoles(Roles);
+    setEduLevels(EduLevels);
+    setEduFields(EduFields);
+    setUniversities(Universities);
+    setEmploymentTypes(EmploymentTypes);
+    setEmploymentStatuses(EmploymentStatuses);
+    setWorkPlaces(WorkPlaces);
   });
 
   const handleSubmit = async () => {
@@ -130,6 +204,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
+      width={750}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
@@ -152,7 +227,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           )}
 
           {!isEdit && (
-            <Col xs={24}>
+            <Col xs={24} md={12}>
               <DropdownItem
                 title={Words.member}
                 dataSource={members}
@@ -167,7 +242,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             </Col>
           )}
 
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.department}
               dataSource={departments}
@@ -178,7 +253,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               autoFocus={isEdit}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.role}
               dataSource={roles}
@@ -189,12 +264,145 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             />
           </Col>
           <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              required
+              title={Words.card_no}
+              fieldName="CardNo"
+              min={0}
+              max={99999}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
             <SwitchItem
               title={Words.department_manager}
               fieldName="IsDepartmentManager"
               initialValue={false}
               checkedTitle={Words.active}
               unCheckedTitle={Words.inactive}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <SwitchItem
+              title={Words.is_married}
+              fieldName="IsMarried"
+              initialValue={false}
+              checkedTitle={Words.married}
+              unCheckedTitle={Words.single}
+              formConfig={formConfig}
+            />
+          </Col>
+          {record.IsMarried && (
+            <Col xs={24} md={12}>
+              <DateItem
+                horizontal
+                title={Words.marriage_date}
+                fieldName="MarriageDate"
+                formConfig={formConfig}
+              />
+            </Col>
+          )}
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.father_name}
+              fieldName="FatherName"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.personal_id}
+              fieldName="PersonalID"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.edu_level}
+              dataSource={eduLevels}
+              keyColumn="EduLevelID"
+              valueColumn="EduLevelTitle"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.edu_field}
+              dataSource={eduFields}
+              keyColumn="EduFieldID"
+              valueColumn="EduFieldTitle"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.university}
+              dataSource={universities}
+              keyColumn="UniversityID"
+              valueColumn="UniversityTitle"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              required
+              title={Words.latest_edu_average}
+              fieldName="LatestEduAverage"
+              min={0}
+              max={20}
+              precision={2}
+              maxLength={4}
+              step="0.01"
+              stringMode
+              decimalText
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.employment_type}
+              dataSource={employmentTypes}
+              keyColumn="EmploymentTypeID"
+              valueColumn="EmploymentTypeTitle"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.employment_status}
+              dataSource={employmentStatuses}
+              keyColumn="EmploymentStatusID"
+              valueColumn="EmploymentStatusTitle"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DateItem
+              horizontal
+              title={Words.employment_start_date}
+              fieldName="EmploymentStartDate"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DateItem
+              horizontal
+              title={Words.employment_finish_date}
+              fieldName="EmploymentFinishDate"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.work_place}
+              dataSource={workPlaces}
+              keyColumn="WorkPlaceID"
+              valueColumn="WorkPlaceTitle"
               formConfig={formConfig}
             />
           </Col>
