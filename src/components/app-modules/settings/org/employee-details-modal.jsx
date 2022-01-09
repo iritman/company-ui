@@ -19,7 +19,7 @@ const { Text } = Typography;
 
 const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
-
+  console.log(employee);
   return (
     <Modal
       visible={isOpen}
@@ -32,7 +32,7 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
         </Button>,
       ]}
       onCancel={onOk}
-      width={650}
+      width={750}
     >
       <section>
         <article
@@ -93,6 +93,88 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
                 <Descriptions.Item label={Words.role}>
                   <Text style={{ color: valueColor }}>
                     {utils.farsiNum(`${employee.RoleTitle}`)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.card_no}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(`${employee.CardNo}`)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.marriage_status}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.IsMarried ? Words.married : Words.single}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.marriage_date}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.IsMarried && employee.MarriageDate.length > 0
+                      ? utils.farsiNum(
+                          utils.slashDate(`${employee.MarriageDate}`)
+                        )
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.father_name}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.FatherName}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.personal_id}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(employee.PersonalID)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.university}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.UniversityTitle}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.edu_level}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.EduLevelTitle}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.edu_field}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.EduFieldTitle}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.latest_edu_average}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(employee.LatestEduAverage)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.work_place}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.WorkPlaceTitle}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.employment_type}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.EmploymentTypeTitle}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.employment_status}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.EmploymentStatusTitle}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.employment_start_date}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.EmploymentFinishDate.length > 0
+                      ? utils.farsiNum(
+                          utils.slashDate(employee.EmploymentStartDate)
+                        )
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.employment_finish_date}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.EmploymentFinishDate.length > 0
+                      ? utils.farsiNum(
+                          utils.slashDate(employee.EmploymentFinishDate)
+                        )
+                      : "-"}
                   </Text>
                 </Descriptions.Item>
               </Descriptions>

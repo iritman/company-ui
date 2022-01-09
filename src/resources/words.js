@@ -168,6 +168,7 @@ class Words extends Component {
   static employment_finish_date = "تاریخ پایان کار";
   static single = "مجرد";
   static married = "متاهل";
+  static marriage_status = "وضعیت تاهل";
 
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";
