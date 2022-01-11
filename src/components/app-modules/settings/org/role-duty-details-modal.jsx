@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
+import utils from "../../../../tools/utils";
 
 const { Text } = Typography;
 
@@ -52,7 +53,7 @@ const RoleDutyDetailsModal = ({ duty, isOpen, onOk }) => {
                         whiteSpace: "pre-line",
                       }}
                     >
-                      {duty.DetailsText}
+                      {utils.farsiNum(duty.DetailsText)}
                     </Text>
                   </Descriptions.Item>
                 )}

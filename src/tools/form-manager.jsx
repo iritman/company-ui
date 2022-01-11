@@ -197,6 +197,8 @@ export const getColumns = (
   access,
   onEdit,
   onDelete,
+  checkEditableFunc,
+  checkDeletableFunc,
   colWidth
 ) => {
   const { CanEdit, CanDelete } = access;
@@ -214,25 +216,29 @@ export const getColumns = (
           <Space>
             {getOperationalButtons && getOperationalButtons(record)}
 
-            {CanEdit && onEdit && (
-              <Button
-                type="link"
-                icon={<EditIcon />}
-                onClick={() => onEdit(record)}
-              />
-            )}
+            {CanEdit &&
+              onEdit &&
+              (!checkEditableFunc || checkEditableFunc(record) === true) && (
+                <Button
+                  type="link"
+                  icon={<EditIcon />}
+                  onClick={() => onEdit(record)}
+                />
+              )}
 
-            {CanDelete && onDelete && (
-              <Popconfirm
-                title={Words.questions.sure_to_delete_item}
-                onConfirm={async () => await onDelete(record)}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-              >
-                <Button type="link" icon={<DeleteIcon />} danger />
-              </Popconfirm>
-            )}
+            {CanDelete &&
+              onDelete &&
+              (!checkDeletableFunc || checkDeletableFunc(record) === true) && (
+                <Popconfirm
+                  title={Words.questions.sure_to_delete_item}
+                  onConfirm={async () => await onDelete(record)}
+                  okText={Words.yes}
+                  cancelText={Words.no}
+                  icon={<QuestionIcon style={{ color: "red" }} />}
+                >
+                  <Button type="link" icon={<DeleteIcon />} danger />
+                </Popconfirm>
+              )}
           </Space>
         ),
       },

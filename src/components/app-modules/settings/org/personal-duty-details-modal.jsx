@@ -90,7 +90,7 @@ const PersonalDutyDetailsModal = ({ duty, isOpen, onOk }) => {
                         whiteSpace: "pre-line",
                       }}
                     >
-                      {duty.DetailsText}
+                      {utils.farsiNum(duty.DetailsText)}
                     </Text>
                   </Descriptions.Item>
                 )}

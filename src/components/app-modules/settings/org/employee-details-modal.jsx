@@ -19,7 +19,7 @@ const { Text } = Typography;
 
 const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
-  console.log(employee);
+
   return (
     <Modal
       visible={isOpen}

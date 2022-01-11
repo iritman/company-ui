@@ -28,16 +28,16 @@ const getSheets = (records) => [
       { label: Words.department, value: "DepartmentTitle" },
       {
         label: Words.shift_date,
-        value: (record) => utils.farsiNum(utils.slashDate(record.ShiftDate)),
+        value: (record) => utils.slashDate(record.ShiftDate),
       },
       { label: Words.shift_code, value: "ShiftCode" },
       {
         label: Words.start_time,
-        value: (record) => utils.farsiNum(utils.colonTime(record.StartTime)),
+        value: (record) => utils.colonTime(record.StartTime),
       },
       {
         label: Words.finish_time,
-        value: (record) => utils.farsiNum(utils.colonTime(record.FinishTime)),
+        value: (record) => utils.colonTime(record.FinishTime),
       },
       {
         label: Words.reg_member,

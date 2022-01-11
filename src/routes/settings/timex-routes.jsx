@@ -10,6 +10,7 @@ import HolidaysPage from "../../components/app-modules/settings/timex/holidays-p
 import WorkShiftsPage from "../../components/app-modules/settings/timex/work-shifts-page";
 import GroupShiftsPage from "../../components/app-modules/settings/timex/group-shifts-page";
 import EmployeeShiftsPage from "../../components/app-modules/settings/timex/employee-shifts-page";
+import RegedCardsPage from "../../components/app-modules/settings/timex/reged-cards-page";
 //---
 
 const modulePath = "settings/timex";
@@ -61,6 +62,11 @@ const BasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/employee-shifts`}
         exact
         render={() => <EmployeeShiftsPage pageName="EmployeeShifts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/reged-cards`}
+        exact
+        render={() => <RegedCardsPage pageName="RegedCards" />}
       />
       <Redirect to="/not-found" />
     </Switch>
