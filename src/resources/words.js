@@ -49,7 +49,7 @@ class Words extends Component {
   static reg_time = "زمان ثبت";
   static first_name = "نام";
   static last_name = "نام خانوادگی";
-  static reg_date_time = "زمان ثبت";
+  static reg_date_time = "تاریخ و زمان ثبت";
   static full_name = "نام و نام خانوادگی";
   static member_id = "شناسه کاربر";
   static national_code = "کد ملی";

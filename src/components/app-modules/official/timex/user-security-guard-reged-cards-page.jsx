@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/settings/timex/reged-cards-service";
+import service from "../../../../services/official/timex/security-guard-reged-cards-service";
 import {
   getSorter,
   checkAccess,
@@ -40,30 +40,22 @@ const getSheets = (records) => [
         label: Words.reg_time,
         value: (record) => utils.colonTime(record.CardRegTime),
       },
-      {
-        label: Words.reg_type,
-        value: (record) => record.RegTypeTitle,
-      },
+
       {
         label: Words.reg_member,
-        value: (record) =>
-          `${record.RegisterarFirstName} ${record.RegisterarLastName}`,
+        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
       },
       {
-        label: Words.manual_reg_date,
-        value: (record) => utils.slashDate(record.RegisterarRegDate),
+        label: Words.reg_date,
+        value: (record) => utils.slashDate(record.RegRegDate),
       },
       {
-        label: Words.manual_reg_time,
-        value: (record) => utils.colonTime(record.RegisterarRegTime),
+        label: Words.reg_time,
+        value: (record) => utils.colonTime(record.RegRegTime),
       },
       {
         label: Words.descriptions,
-        value: (record) => record.RegisterarDetailsText,
-      },
-      {
-        label: Words.security_guard_reg_id,
-        value: (record) => record.SecurityGuardRegID,
+        value: (record) => record.DetailsText,
       },
     ],
   },
@@ -100,7 +92,9 @@ const baseColumns = [
     sorter: getSorter("CardRegDate"),
     render: (CardRegDate) => (
       <Text style={{ color: Colors.magenta[6] }}>
-        {utils.farsiNum(utils.slashDate(CardRegDate))}
+        {`${utils.weekDayNameFromText(CardRegDate)} - ${utils.farsiNum(
+          utils.slashDate(CardRegDate)
+        )}`}
       </Text>
     ),
   },
@@ -117,21 +111,10 @@ const baseColumns = [
       </Text>
     ),
   },
-  {
-    title: Words.reg_type,
-    width: 100,
-    align: "center",
-    ellipsis: true,
-    dataIndex: "RegTypeTitle",
-    sorter: getSorter("RegTypeTitle"),
-    render: (RegTypeTitle) => (
-      <Text style={{ color: Colors.purple[6] }}>{RegTypeTitle}</Text>
-    ),
-  },
 ];
 
-const handleCheckEditable = (row) => row.RegTypeID !== 1;
-const handleCheckDeletable = (row) => row.RegTypeID !== 1;
+const handleCheckEditable = (row) => row.CanEdit;
+const handleCheckDeletable = (row) => row.CanDelete;
 
 const recordID = "RegID";
 
@@ -236,7 +219,7 @@ const SecurityGuardRegedCardsPage = ({ pageName }) => {
         </Row>
       </Spin>
 
-      {/* {showSearchModal && (
+      {showSearchModal && (
         <RegedCardSearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
@@ -263,7 +246,7 @@ const SecurityGuardRegedCardsPage = ({ pageName }) => {
           isOpen={showDetails}
           regedCard={selectedObject}
         />
-      )} */}
+      )}
     </>
   );
 };
