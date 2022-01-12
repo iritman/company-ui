@@ -33,7 +33,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+const EmployeeShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const {
     progress,
     setProgress,
@@ -152,4 +152,4 @@ const GroupShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   );
 };
 
-export default GroupShiftSearchModal;
+export default EmployeeShiftSearchModal;

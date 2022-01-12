@@ -16,7 +16,7 @@ import {
   useModalContext,
   useResetContext,
 } from "./../../../contexts/modal-context";
-import service from "../../../../services/official/timex/security-guard-reged-cards-service";
+import service from "../../../../services/official/timex/user-security-guard-reged-cards-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 import TimeItem from "../../../form-controls/time-item";

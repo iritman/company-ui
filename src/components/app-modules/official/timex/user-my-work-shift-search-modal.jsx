@@ -14,30 +14,22 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/timex/user-security-guard-reged-cards-service";
+import service from "../../../../services/official/timex/user-my-work-shifts-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
-import DateItem from "../../../form-controls/date-item";
 
 const schema = {
-  EmployeeID: Joi.number().min(1).required(),
-  FromDate: Joi.string().required(),
-  ToDate: Joi.string().allow(""),
+  MonthID: Joi.number(),
+  YearNo: Joi.number().min(1).required(),
 };
 
 const initRecord = {
-  EmployeeID: 0,
-  FromDate: "",
-  ToDate: "",
+  MonthID: 0,
+  YearNo: 0,
 };
 
 const formRef = React.createRef();
 
-const UserSecurityGuardRegedCardSearchModal = ({
-  isOpen,
-  filter,
-  onOk,
-  onCancel,
-}) => {
+const UserMyWorkShiftSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const {
     progress,
     setProgress,
@@ -45,8 +37,10 @@ const UserSecurityGuardRegedCardSearchModal = ({
     setRecord,
     errors,
     setErrors,
-    employees,
-    setEmployees,
+    monthes,
+    setMonthes,
+    years,
+    setYears,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -59,22 +53,14 @@ const UserSecurityGuardRegedCardSearchModal = ({
     setErrors,
   };
 
-  const clearRecord = async () => {
-    setProgress(true);
-    try {
-      const data = await service.getParams();
+  const clearRecord = () => {
+    record.ShiftID = 0;
+    record.MonthID = 0;
+    record.YearNo = years.length > 0 ? years[0].YearNo : 0;
 
-      record.EmployeeID = 0;
-      record.FromDate = data.CurrentDateTime.CurrentDate;
-      record.ToDate = "";
-
-      setRecord(record);
-      setErrors({});
-      loadFieldsValue(formRef, record);
-    } catch (err) {
-      handleError(err);
-    }
-    setProgress(false);
+    setRecord(record);
+    setErrors({});
+    loadFieldsValue(formRef, record);
   };
 
   useMount(async () => {
@@ -87,15 +73,10 @@ const UserSecurityGuardRegedCardSearchModal = ({
     try {
       const data = await service.getParams();
 
-      const { Employees, CurrentDateTime } = data;
+      const { Years, Monthes } = data;
 
-      if (filter === null) {
-        const inr = { ...initRecord };
-        inr.FromDate = CurrentDateTime.CurrentDate;
-        setRecord(inr);
-      }
-
-      setEmployees(Employees);
+      setMonthes(Monthes);
+      setYears(Years);
     } catch (err) {
       handleError(err);
     }
@@ -115,31 +96,22 @@ const UserSecurityGuardRegedCardSearchModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.employee}
-              dataSource={employees}
-              keyColumn="EmployeeID"
-              valueColumn="FullName"
-              formConfig={formConfig}
-              required
-              autoFocus
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.from_date}
-              fieldName="FromDate"
+              title={Words.year}
+              dataSource={years}
+              keyColumn="YearNo"
+              valueColumn="YearNo"
               formConfig={formConfig}
               required
             />
           </Col>
           <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.to_date}
-              fieldName="ToDate"
+            <DropdownItem
+              title={Words.month}
+              dataSource={monthes}
+              keyColumn="MonthID"
+              valueColumn="MonthName"
               formConfig={formConfig}
             />
           </Col>
@@ -149,4 +121,4 @@ const UserSecurityGuardRegedCardSearchModal = ({
   );
 };
 
-export default UserSecurityGuardRegedCardSearchModal;
+export default UserMyWorkShiftSearchModal;

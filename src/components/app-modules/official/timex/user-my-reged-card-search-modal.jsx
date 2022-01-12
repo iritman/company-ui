@@ -14,30 +14,25 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/timex/user-security-guard-reged-cards-service";
+import service from "../../../../services/official/timex/user-my-reged-cards-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
 const schema = {
-  EmployeeID: Joi.number().min(1).required(),
+  RegTypeID: Joi.number(),
   FromDate: Joi.string().required(),
   ToDate: Joi.string().allow(""),
 };
 
 const initRecord = {
-  EmployeeID: 0,
+  RegTypeID: 0,
   FromDate: "",
   ToDate: "",
 };
 
 const formRef = React.createRef();
 
-const UserSecurityGuardRegedCardSearchModal = ({
-  isOpen,
-  filter,
-  onOk,
-  onCancel,
-}) => {
+const UserMyRegedCardSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const {
     progress,
     setProgress,
@@ -45,8 +40,8 @@ const UserSecurityGuardRegedCardSearchModal = ({
     setRecord,
     errors,
     setErrors,
-    employees,
-    setEmployees,
+    regTypes,
+    setRegTypes,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -59,22 +54,14 @@ const UserSecurityGuardRegedCardSearchModal = ({
     setErrors,
   };
 
-  const clearRecord = async () => {
-    setProgress(true);
-    try {
-      const data = await service.getParams();
+  const clearRecord = () => {
+    record.RegTypeID = 0;
+    record.FromDate = "";
+    record.ToDate = "";
 
-      record.EmployeeID = 0;
-      record.FromDate = data.CurrentDateTime.CurrentDate;
-      record.ToDate = "";
-
-      setRecord(record);
-      setErrors({});
-      loadFieldsValue(formRef, record);
-    } catch (err) {
-      handleError(err);
-    }
-    setProgress(false);
+    setRecord(record);
+    setErrors({});
+    loadFieldsValue(formRef, record);
   };
 
   useMount(async () => {
@@ -87,15 +74,9 @@ const UserSecurityGuardRegedCardSearchModal = ({
     try {
       const data = await service.getParams();
 
-      const { Employees, CurrentDateTime } = data;
+      const { RegTypes } = data;
 
-      if (filter === null) {
-        const inr = { ...initRecord };
-        inr.FromDate = CurrentDateTime.CurrentDate;
-        setRecord(inr);
-      }
-
-      setEmployees(Employees);
+      setRegTypes(RegTypes);
     } catch (err) {
       handleError(err);
     }
@@ -117,13 +98,11 @@ const UserSecurityGuardRegedCardSearchModal = ({
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <DropdownItem
-              title={Words.employee}
-              dataSource={employees}
-              keyColumn="EmployeeID"
-              valueColumn="FullName"
+              title={Words.reg_type}
+              dataSource={regTypes}
+              keyColumn="RegTypeID"
+              valueColumn="RegTypeTitle"
               formConfig={formConfig}
-              required
-              autoFocus
             />
           </Col>
           <Col xs={24} md={12}>
@@ -149,4 +128,4 @@ const UserSecurityGuardRegedCardSearchModal = ({
   );
 };
 
-export default UserSecurityGuardRegedCardSearchModal;
+export default UserMyRegedCardSearchModal;
