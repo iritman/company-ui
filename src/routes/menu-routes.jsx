@@ -11,6 +11,7 @@ import TimexMenu from "../components/menus/settings/timex-menu";
 //---
 import UserOfficialMenu from "../components/menus/official/user-official-menu";
 import UserOrgMenu from "../components/menus/official/user-org-menu";
+import UserTimexMenu from "../components/menus/official/user-timex-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -38,6 +39,10 @@ const MenuRoutes = ({ path }) => {
         component={UserOfficialMenu}
       />
       <ProtectedRoute path={`${path}/official/org`} component={UserOrgMenu} />
+      <ProtectedRoute
+        path={`${path}/official/timex`}
+        component={UserTimexMenu}
+      />
       {/* ----------- */}
 
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />

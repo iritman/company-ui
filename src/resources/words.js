@@ -176,6 +176,21 @@ class Words extends Component {
   static manual_reg_time = "ساعت ثبت دستی";
   static registerar = "ثبت کننده";
   static manual_reg_date_time = "تاریخ و ساعت ثبت دستی";
+  static my_cartable = "کارتابل من";
+  static department_cartable = "کارتابل دپارتمان";
+
+  static security_guard_reged_cards = "کنترل تردد نگهبانی";
+  static my_reged_cards = "ترددهای من";
+  static my_work_shifts = "شیفت های کاری من";
+  static my_missions = "ماموریت های من";
+  static my_vacations = "مرخصی های من";
+  static replace_work_requests = "درخواست های جانشینی";
+  static my_work_report = "گزارش کارکرد من";
+  static members_reged_cards = "ترددهای کارکنان";
+  static members_work_shifts = "شیفت های کاری کارکنان";
+  static members_missions = "ماموریت های کارکنان";
+  static members_vacations = "مرخصی های کارکنان";
+  static members_work_report = "گزارش کارکرد کارکنان";
 
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";
