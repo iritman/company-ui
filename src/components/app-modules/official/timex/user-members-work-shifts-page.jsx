@@ -3,7 +3,7 @@ import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/settings/timex/employee-shifts-service";
+import service from "./../../../../services/official/timex/user-members-work-shifts-service";
 import {
   getSorter,
   checkAccess,
@@ -14,21 +14,19 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "./../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
 import DetailsTable from "./../../../common/details-table";
-import EmployeeShiftModal from "./employee-shift-modal";
-import EmployeeShiftSearchModal from "./employee-shift-search-modal";
+import MemberWorkShiftSearchModal from "./user-members-work-shift-search-modal";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "EmployeeShifts",
+    title: "MembersWorkShifts",
     data: records,
     columns: [
-      { label: Words.id, value: "ESID" },
-      {
-        label: Words.employee,
-        value: (record) => `${record.FirstName} ${record.LastName}`,
-      },
+      { label: Words.id, value: "RowID" },
+      { label: Words.card_no, value: "CardNo" },
+      { label: Words.first_name, value: "FirstName" },
+      { label: Words.last_name, value: "LastName" },
       {
         label: Words.week_day,
         value: (record) => utils.weekDayNameFromText(record.ShiftDate),
@@ -46,18 +44,6 @@ const getSheets = (records) => [
         label: Words.finish_time,
         value: (record) => utils.farsiNum(utils.colonTime(record.FinishTime)),
       },
-      {
-        label: Words.reg_member,
-        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
-      },
-      {
-        label: Words.reg_date,
-        value: (record) => utils.slashDate(record.RegDate),
-      },
-      {
-        label: Words.reg_time,
-        value: (record) => utils.colonTime(record.RegTime),
-      },
     ],
   },
 ];
@@ -67,9 +53,32 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "ESID",
-    sorter: getSorter("ESID"),
-    render: (ESID) => <Text>{utils.farsiNum(`${ESID}`)}</Text>,
+    dataIndex: "RowID",
+    sorter: getSorter("RowID"),
+    render: (RowID) => <Text>{utils.farsiNum(`${RowID}`)}</Text>,
+  },
+  {
+    title: Words.card_no,
+    width: 100,
+    align: "center",
+    dataIndex: "CardNo",
+    sorter: getSorter("CardNo"),
+    render: (CardNo) => (
+      <Text style={{ color: Colors.orange[7] }}>
+        {utils.farsiNum(`${CardNo}`)}
+      </Text>
+    ),
+  },
+  {
+    title: Words.full_name,
+    width: 150,
+    align: "center",
+    sorter: getSorter("LastName"),
+    render: (record) => (
+      <Text style={{ color: Colors.blue[6] }}>
+        {`${record.FirstName} ${record.LastName}`}
+      </Text>
+    ),
   },
   {
     title: Words.shift_code,
@@ -79,7 +88,7 @@ const baseColumns = [
     dataIndex: "ShiftCode",
     sorter: getSorter("ShiftCode"),
     render: (ShiftCode) => (
-      <Text style={{ color: Colors.orange[7] }}>{ShiftCode}</Text>
+      <Text style={{ color: Colors.cyan[6] }}>{ShiftCode}</Text>
     ),
   },
   {
@@ -129,7 +138,7 @@ const baseColumns = [
   },
 ];
 
-const recordID = "ESID";
+const recordID = "RowID";
 
 const EmployeeShiftsPage = ({ pageName }) => {
   const {
@@ -142,8 +151,6 @@ const EmployeeShiftsPage = ({ pageName }) => {
     setRecords,
     access,
     setAccess,
-    selectedObject,
-    showModal,
     showSearchModal,
     setShowSearchModal,
     filter,
@@ -155,21 +162,15 @@ const EmployeeShiftsPage = ({ pageName }) => {
     await checkAccess(setAccess, pageName);
   });
 
-  const {
-    handleCloseModal,
-    handleAdd,
-    handleEdit,
-    handleDelete,
-    handleSave,
-    handleResetContext,
-    handleAdvancedSearch,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
+    {
+      service,
+      recordID,
+    }
+  );
 
   const columns = access
-    ? getColumns(baseColumns, null, access, handleEdit, handleDelete)
+    ? getColumns(baseColumns, null, access, null, null)
     : [];
 
   const handleClear = () => {
@@ -185,15 +186,15 @@ const EmployeeShiftsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.employee_shifts}
+            title={Words.members_work_shifts}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="EmployeeShifts"
+            fileName="MembersWorkShifts"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={access?.CanAdd && handleAdd}
+            onAdd={null}
           />
 
           <Col xs={24}>
@@ -203,20 +204,11 @@ const EmployeeShiftsPage = ({ pageName }) => {
       </Spin>
 
       {showSearchModal && (
-        <EmployeeShiftSearchModal
+        <MemberWorkShiftSearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
           filter={filter}
-        />
-      )}
-
-      {showModal && (
-        <EmployeeShiftModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
         />
       )}
     </>

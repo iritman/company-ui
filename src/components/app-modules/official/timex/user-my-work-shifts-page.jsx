@@ -125,8 +125,6 @@ const UserMyWorkShiftsPage = ({ pageName }) => {
     setRecords,
     access,
     setAccess,
-    // selectedObject,
-    // showModal,
     showSearchModal,
     setShowSearchModal,
     filter,
