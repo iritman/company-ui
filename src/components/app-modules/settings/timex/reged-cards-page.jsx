@@ -130,7 +130,7 @@ const baseColumns = [
   },
 ];
 
-const handleCheckEditable = (row) => row.RegTypeID !== 1;
+const handleCheckEditable = (row) => row.RegTypeID === 3;
 const handleCheckDeletable = (row) => row.RegTypeID !== 1;
 
 const recordID = "RegID";

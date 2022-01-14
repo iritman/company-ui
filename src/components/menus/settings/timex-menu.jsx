@@ -12,9 +12,10 @@ import {
   AiOutlineAppstoreAdd as SavableIcon,
   AiOutlineSchedule as WorkShiftIcon,
   AiOutlineFieldTime as WorkTimeIcon,
+  AiFillIdcard as MembersRegedCardIcon,
 } from "react-icons/ai";
 import {
-  GiGuards as SecurityguardIcon,
+  GiGuards as SecurityGuardIcon,
   GiSwipeCard as CardIcon,
 } from "react-icons/gi";
 import {
@@ -49,7 +50,17 @@ const mapper = (pageID) => {
     case 12:
       link = "security-guards";
       icon = (
-        <SecurityguardIcon style={{ color: Colors.green[6] }} size={iconSize} />
+        <SecurityGuardIcon style={{ color: Colors.green[6] }} size={iconSize} />
+      );
+      break;
+
+    case 51:
+      link = "security-guard-reged-cards";
+      icon = (
+        <MembersRegedCardIcon
+          style={{ color: Colors.red[6] }}
+          size={iconSize}
+        />
       );
       break;
 
@@ -174,7 +185,10 @@ const tabs = [
         icon={SecurityIcon}
       />
     ),
-    pages: [{ pageName: "SecurityGuards" }],
+    pages: [
+      { pageName: "SecurityGuards" },
+      { pageName: "SecurityGuardRegedCards" },
+    ],
   },
   {
     name: "indexes",

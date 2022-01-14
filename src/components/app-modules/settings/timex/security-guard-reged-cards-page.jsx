@@ -1,28 +1,33 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
-import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import { Spin, Row, Col, Typography, Button, message } from "antd";
+import {
+  InfoCircleOutlined as InfoIcon,
+  SwapOutlined as SwapIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
-import utils from "./../../../../tools/utils";
-import service from "./../../../../services/official/timex/user-my-reged-cards-service";
+import utils from "../../../../tools/utils";
+import service from "../../../../services/settings/timex/security-guard-reged-cards-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
+  handleError,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-import { usePageContext } from "./../../../contexts/page-context";
+import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import RegedCardSearchModal from "./user-my-reged-card-search-modal";
-import RegedCardDetailsModal from "./user-my-reged-card-details-modal";
+// import RegedCardModal from "./user-security-guard-reged-card-modal";
+import RegedCardSearchModal from "./security-guard-reged-card-search-modal";
+import RegedCardDetailsModal from "./security-guard-reged-card-details-modal";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "RegedCards",
+    title: "SecurityGuardRegedCards",
     data: records,
     columns: [
       { label: Words.id, value: "RegID" },
@@ -40,29 +45,37 @@ const getSheets = (records) => [
         value: (record) => utils.colonTime(record.CardRegTime),
       },
       {
-        label: Words.reg_type,
-        value: (record) => record.RegTypeTitle,
-      },
-      {
         label: Words.reg_member,
-        value: (record) =>
-          `${record.RegisterarFirstName} ${record.RegisterarLastName}`,
+        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
       },
       {
-        label: Words.manual_reg_date,
-        value: (record) => utils.slashDate(record.RegisterarRegDate),
+        label: Words.reg_date,
+        value: (record) => utils.slashDate(record.RegRegDate),
       },
       {
-        label: Words.manual_reg_time,
-        value: (record) => utils.colonTime(record.RegisterarRegTime),
+        label: Words.reg_time,
+        value: (record) => utils.colonTime(record.RegRegTime),
       },
       {
         label: Words.descriptions,
-        value: (record) => record.RegisterarDetailsText,
+        value: (record) => record.DetailsText,
       },
       {
-        label: Words.security_guard_reg_id,
-        value: (record) => record.SecurityGuardRegID,
+        label: Words.is_transfered_to_member_reged_cards,
+        value: (record) =>
+          record.IsTransfered === true ? Words.yes : Words.no,
+      },
+      {
+        label: Words.transferer,
+        value: "TransferMemberFullName",
+      },
+      {
+        label: Words.transfer_date,
+        value: (record) => utils.slashDate(record.TransferDate),
+      },
+      {
+        label: Words.transfer_time,
+        value: (record) => utils.colonTime(record.TransferTime),
       },
     ],
   },
@@ -81,25 +94,36 @@ const baseColumns = [
     title: Words.card_no,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "CardNo",
     sorter: getSorter("CardNo"),
     render: (CardNo) => (
-      <Text style={{ color: Colors.blue[6] }}>
+      <Text style={{ color: Colors.orange[6] }}>
         {utils.farsiNum(`${CardNo}`)}
       </Text>
     ),
   },
   {
-    title: Words.reg_date,
-    width: 100,
+    title: Words.full_name,
+    width: 150,
     align: "center",
-    ellipsis: true,
+    sorter: getSorter("LastName"),
+    render: (record) => (
+      <Text style={{ color: Colors.purple[6] }}>
+        {`${record.FirstName} ${record.LastName}`}
+      </Text>
+    ),
+  },
+  {
+    title: Words.reg_date,
+    width: 120,
+    align: "center",
     dataIndex: "CardRegDate",
     sorter: getSorter("CardRegDate"),
     render: (CardRegDate) => (
       <Text style={{ color: Colors.magenta[6] }}>
-        {utils.farsiNum(utils.slashDate(CardRegDate))}
+        {`${utils.weekDayNameFromText(CardRegDate)} - ${utils.farsiNum(
+          utils.slashDate(CardRegDate)
+        )}`}
       </Text>
     ),
   },
@@ -117,26 +141,26 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.reg_type,
-    width: 100,
+    title: Words.is_transfered,
+    width: 75,
     align: "center",
-    ellipsis: true,
-    dataIndex: "RegTypeTitle",
-    sorter: getSorter("RegTypeTitle"),
-    render: (RegTypeTitle) => (
-      <Text style={{ color: Colors.purple[6] }}>{RegTypeTitle}</Text>
+    dataIndex: "IsTransfered",
+    sorter: getSorter("IsTransfered"),
+    render: (IsTransfered) => (
+      <>{IsTransfered && <SwapIcon style={{ color: Colors.purple[6] }} />}</>
     ),
   },
 ];
 
-const handleCheckEditable = (row) => false;
-const handleCheckDeletable = (row) => false;
+const handleCheckEditable = (row) => row.CanEdit;
+const handleCheckDeletable = (row) => row.CanDelete;
 
 const recordID = "RegID";
 
-const UserMyRegedCardsPage = ({ pageName }) => {
+const SecurityGuardRegedCardsPage = ({ pageName }) => {
   const {
     progress,
+    setProgress,
     searched,
     setSearched,
     searchText,
@@ -209,6 +233,27 @@ const UserMyRegedCardsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleTransfer = async (regID) => {
+    setProgress(true);
+
+    try {
+      const data = await service.transferData(regID);
+
+      message.success(Words.messages.card_reg_transfered_to_primary_list);
+
+      const recs = [...records];
+      const index = recs.findIndex((r) => r.RegID === regID);
+      recs[index] = data;
+
+      setRecords(recs);
+      setSelectedObject(data);
+    } catch (err) {
+      handleError(err);
+    }
+
+    setProgress(false);
+  };
+
   //------
 
   return (
@@ -216,10 +261,10 @@ const UserMyRegedCardsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.my_reged_cards}
+            title={Words.security_guard_reged_cards}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="MyRegedCards"
+            fileName="SecurityGuardRegedCards"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
@@ -244,18 +289,29 @@ const UserMyRegedCardsPage = ({ pageName }) => {
         />
       )}
 
+      {/* {showModal && (
+        <RegedCardModal
+          onOk={handleSave}
+          onCancel={handleCloseModal}
+          isOpen={showModal}
+          selectedObject={selectedObject}
+        />
+      )} */}
+
       {showDetails && (
         <RegedCardDetailsModal
+          canTransfer={access.CanAdd}
+          isOpen={showDetails}
+          regedCard={selectedObject}
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
-          isOpen={showDetails}
-          regedCard={selectedObject}
+          onTransfer={handleTransfer}
         />
       )}
     </>
   );
 };
 
-export default UserMyRegedCardsPage;
+export default SecurityGuardRegedCardsPage;

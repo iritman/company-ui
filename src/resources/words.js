@@ -178,6 +178,14 @@ class Words extends Component {
   static manual_reg_date_time = "تاریخ و ساعت ثبت دستی";
   static my_cartable = "کارتابل من";
   static department_cartable = "کارتابل دپارتمان";
+  static is_transfered_to_member_reged_cards = "انتقال یافته به تردد اصلی";
+  static transfered_to_member_reged_cards = "انتقال به تردد اصلی";
+  static is_transfered = "انتقال یافته";
+  static transferer = "انتقال دهنده";
+  static transfer_date = "تاریخ انتقال";
+  static transfer_time = "ساعت انتقال";
+  static security_guard_reg_date_time = "تاریخ و زمان ثبت نگهبان";
+  static security_guard_descriptions = "توضیحات نگهبان";
 
   static security_guard_reged_cards = "کنترل تردد نگهبانی";
   static my_reged_cards = "ترددهای من";
@@ -263,12 +271,14 @@ class Words extends Component {
     page_not_found: "صفحه مورد درخواست شما یافت نشد",
     invalid_access_page: "متاسفانه مجاز به دیدن این صفحه نمی باشید",
     success_load_graph: "چارت سازمانی با موفقیت بارگذاری شد",
+    card_reg_transfered_to_primary_list: "تردد به لیست اصلی انتقال یافت",
   };
 
   static questions = {
     sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
     sure_to_delete_item: "برای حرف رکورد انتخابی اطمینان دارید؟",
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
+    sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
   };
 
   static monthes = {

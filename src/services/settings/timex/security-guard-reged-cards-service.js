@@ -15,14 +15,10 @@ async function searchData(filter) {
   return data;
 }
 
-export async function saveData(record) {
-  const { data } = await http.post(`${apiEndpoint}`, record);
-
-  return data;
-}
-
-export async function deleteData(recordID) {
-  const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
+export async function transferData(securityGuardRegID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/transfer/${securityGuardRegID}`
+  );
 
   return data;
 }
@@ -30,8 +26,7 @@ export async function deleteData(recordID) {
 const service = {
   getParams,
   searchData,
-  saveData,
-  deleteData,
+  transferData,
 };
 
 export default service;

@@ -4,6 +4,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 //---
 import TimexDashboard from "../../components/app-modules/settings/timex/timex-dashboard";
 import SecurityGuardsPage from "../../components/app-modules/settings/timex/security-guards-page";
+import SecurityGuardRegedCardsPage from "../../components/app-modules/settings/timex/security-guard-reged-cards-page";
 import VacationTypesPage from "../../components/app-modules/settings/timex/vacation-types-page";
 import MissionTypesPage from "../../components/app-modules/settings/timex/mission-types-page";
 import HolidaysPage from "../../components/app-modules/settings/timex/holidays-page";
@@ -27,6 +28,13 @@ const BasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/security-guards`}
         exact
         render={() => <SecurityGuardsPage pageName="SecurityGuards" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/security-guard-reged-cards`}
+        exact
+        render={() => (
+          <SecurityGuardRegedCardsPage pageName="SecurityGuardRegedCards" />
+        )}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/security-guards`}

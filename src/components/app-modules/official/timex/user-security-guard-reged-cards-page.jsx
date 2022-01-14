@@ -118,7 +118,7 @@ const handleCheckDeletable = (row) => row.CanDelete;
 
 const recordID = "RegID";
 
-const SecurityGuardRegedCardsPage = ({ pageName }) => {
+const UserSecurityGuardRegedCardsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -251,4 +251,4 @@ const SecurityGuardRegedCardsPage = ({ pageName }) => {
   );
 };
 
-export default SecurityGuardRegedCardsPage;
+export default UserSecurityGuardRegedCardsPage;

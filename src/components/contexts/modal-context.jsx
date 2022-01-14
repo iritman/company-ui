@@ -13,6 +13,7 @@ const ModalContextProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   const [members, setMembers] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [securityGuards, setSecurityGuards] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [selectedProvinceID, setSelectedProvinceID] = useState(0);
   const [cities, setCities] = useState([]);
@@ -48,6 +49,8 @@ const ModalContextProvider = ({ children }) => {
     setMembers,
     employees,
     setEmployees,
+    securityGuards,
+    setSecurityGuards,
     provinces,
     setProvinces,
     selectedProvinceID,

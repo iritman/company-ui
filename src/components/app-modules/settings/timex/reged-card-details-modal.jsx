@@ -1,5 +1,4 @@
 import React from "react";
-import { useMount } from "react-use";
 import {
   Button,
   Modal,
@@ -19,6 +18,7 @@ const { Text } = Typography;
 
 const RegedCardDetailsModal = ({ regedCard, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
+  const securityGuardValueColor = Colors.red[7];
 
   const {
     FirstName,
@@ -34,14 +34,11 @@ const RegedCardDetailsModal = ({ regedCard, isOpen, onOk }) => {
     RegisterarFirstName,
     RegisterarLastName,
     RegisterarDetailsText,
-    SecurityGuardRegID,
+    SecurityGuardFullName,
+    SecurityGuardDetailsText,
+    SecurityGuardRegDate,
+    SecurityGuardRegTime,
   } = regedCard;
-
-  useMount(async () => {
-    if (SecurityGuardRegID > 0) {
-      console.log(SecurityGuardRegID);
-    }
-  });
 
   return (
     <Modal
@@ -130,6 +127,42 @@ const RegedCardDetailsModal = ({ regedCard, isOpen, onOk }) => {
                           }}
                         >
                           {utils.farsiNum(RegisterarDetailsText)}
+                        </Text>
+                      </Descriptions.Item>
+                    )}
+                  </>
+                )}
+                {/* 2 : SecurityGuard Reg */}
+                {RegTypeID === 2 && (
+                  <>
+                    <Descriptions.Item label={Words.security_guard}>
+                      <Text style={{ color: securityGuardValueColor }}>
+                        {SecurityGuardFullName}
+                      </Text>
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                      label={Words.security_guard_reg_date_time}
+                    >
+                      <Text style={{ color: securityGuardValueColor }}>
+                        {utils.farsiNum(
+                          `${utils.slashDate(
+                            SecurityGuardRegDate
+                          )} - ${utils.colonTime(SecurityGuardRegTime)}`
+                        )}
+                      </Text>
+                    </Descriptions.Item>
+                    {SecurityGuardDetailsText.length > 0 && (
+                      <Descriptions.Item
+                        label={Words.security_guard_descriptions}
+                        span={2}
+                      >
+                        <Text
+                          style={{
+                            color: Colors.purple[7],
+                            whiteSpace: "pre-line",
+                          }}
+                        >
+                          {utils.farsiNum(SecurityGuardDetailsText)}
                         </Text>
                       </Descriptions.Item>
                     )}
