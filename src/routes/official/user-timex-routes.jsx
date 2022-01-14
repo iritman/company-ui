@@ -7,6 +7,8 @@ import UserSecurityGuardRegedCardsPage from "../../components/app-modules/offici
 import UserMyRegedCardsPage from "../../components/app-modules/official/timex/user-my-reged-cards-page";
 import UserMyWorkShiftsPage from "../../components/app-modules/official/timex/user-my-work-shifts-page";
 //---
+import UserMembersRegedCardsPage from "../../components/app-modules/official/timex/user-members-reged-cards-page";
+//---
 
 const modulePath = "official/timex";
 
@@ -34,6 +36,14 @@ const UserOrgRoutes = ({ path }) => {
         path={`${path}/${modulePath}/my-work-shifts`}
         exact
         render={() => <UserMyWorkShiftsPage pageName="user-MyWorkShifts" />}
+      />
+      {/* --- */}
+      <ProtectedRoute
+        path={`${path}/${modulePath}/members-reged-cards`}
+        exact
+        render={() => (
+          <UserMembersRegedCardsPage pageName="user-MembersRegedCards" />
+        )}
       />
       <Redirect to="/not-found" />
     </Switch>

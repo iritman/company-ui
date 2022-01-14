@@ -14,7 +14,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/settings/timex/reged-cards-service";
+import service from "../../../../services/official/timex/user-members-reged-cards-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
@@ -34,7 +34,12 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const RegedCardSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+const UserMembersRegedCardSearchModal = ({
+  isOpen,
+  filter,
+  onOk,
+  onCancel,
+}) => {
   const {
     progress,
     setProgress,
@@ -145,4 +150,4 @@ const RegedCardSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   );
 };
 
-export default RegedCardSearchModal;
+export default UserMembersRegedCardSearchModal;

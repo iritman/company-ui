@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
-import service from "./../../../../services/settings/timex/reged-cards-service";
+import service from "./../../../../services/official/timex/user-members-reged-cards-service";
 import {
   getSorter,
   checkAccess,
@@ -15,15 +15,15 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "./../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import RegedCardModal from "./reged-card-modal";
-import RegedCardSearchModal from "./reged-card-search-modal";
-import RegedCardDetailsModal from "./reged-card-details-modal";
+// import RegedCardModal from "./reged-card-modal";
+import RegedCardSearchModal from "./user-members-reged-card-search-modal";
+import RegedCardDetailsModal from "./user-members-reged-card-details-modal";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "RegedCards",
+    title: "MembersRegedCards",
     data: records,
     columns: [
       { label: Words.id, value: "RegID" },
@@ -141,12 +141,9 @@ const baseColumns = [
   },
 ];
 
-const handleCheckEditable = (row) => row.RegTypeID === 3;
-const handleCheckDeletable = (row) => row.RegTypeID !== 1;
-
 const recordID = "RegID";
 
-const RegedCardsPage = ({ pageName }) => {
+const UsersMembersRegedCardsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -161,7 +158,7 @@ const RegedCardsPage = ({ pageName }) => {
     setSelectedObject,
     showDetails,
     setShowDetails,
-    showModal,
+    // showModal,
     showSearchModal,
     setShowSearchModal,
     filter,
@@ -173,18 +170,12 @@ const RegedCardsPage = ({ pageName }) => {
     await checkAccess(setAccess, pageName);
   });
 
-  const {
-    handleCloseModal,
-    handleAdd,
-    handleEdit,
-    handleDelete,
-    handleSave,
-    handleResetContext,
-    handleAdvancedSearch,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
+    {
+      service,
+      recordID,
+    }
+  );
 
   const getOperationalButtons = (record) => {
     return (
@@ -208,10 +199,10 @@ const RegedCardsPage = ({ pageName }) => {
         baseColumns,
         getOperationalButtons,
         access,
-        handleEdit,
-        handleDelete,
-        handleCheckEditable,
-        handleCheckDeletable
+        null, // handleEdit,
+        null, // handleDelete,
+        null, // handleCheckEditable,
+        null // handleCheckDeletable
       )
     : [];
 
@@ -228,15 +219,15 @@ const RegedCardsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.reged_cards}
+            title={Words.members_reged_cards}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="RegedCards"
+            fileName="MembersRegedCards"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={access?.CanAdd && handleAdd}
+            onAdd={null}
           />
 
           <Col xs={24}>
@@ -256,14 +247,14 @@ const RegedCardsPage = ({ pageName }) => {
         />
       )}
 
-      {showModal && (
+      {/* {showModal && (
         <RegedCardModal
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
         />
-      )}
+      )} */}
 
       {showDetails && (
         <RegedCardDetailsModal
@@ -279,4 +270,4 @@ const RegedCardsPage = ({ pageName }) => {
   );
 };
 
-export default RegedCardsPage;
+export default UsersMembersRegedCardsPage;

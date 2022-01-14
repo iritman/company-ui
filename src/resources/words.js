@@ -169,7 +169,7 @@ class Words extends Component {
   static single = "مجرد";
   static married = "متاهل";
   static marriage_status = "وضعیت تاهل";
-  static reged_cards = "کارت های ثبت شده";
+  static reged_cards = "ترددهای ثبت شده";
   static reg_type = "نوع ثبت";
   static security_guard_reg_id = "شناسه ثبت نگهبان";
   static manual_reg_date = "تاریخ ثبت دستی";
