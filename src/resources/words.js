@@ -192,6 +192,14 @@ class Words extends Component {
   static in_progress = "درحال بررسی";
   static accepted = "تایید شده";
   static rejected = "رد شده";
+  static search_type = "نوع جستجو";
+  static submit_response = "ثبت پاسخ";
+  static your_response = "پاسخ شما";
+  static im_accept_replace_work_request = "درخواست جانشینی را می پذیرم";
+  static im_not_accept_replace_work_request = "درخواست جانشینی را نمی پذیرم";
+  static manager = "مدیر";
+  static official_manager = "مسئول اداری";
+  static swap_member_response = "پاسخ جانشین";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
@@ -290,6 +298,10 @@ class Words extends Component {
     invalid_access_page: "متاسفانه مجاز به دیدن این صفحه نمی باشید",
     success_load_graph: "چارت سازمانی با موفقیت بارگذاری شد",
     card_reg_transfered_to_primary_list: "تردد به لیست اصلی انتقال یافت",
+    your_response_not_submitted: "پاسخ شما ثبت نشده است",
+    your_response_submitted: "پاسخ شما ثبت شد",
+    manager_response_not_submitted: "پاسخ مدیر ثبت نشده است",
+    official_response_not_submitted: "پاسخ مسئول اداری ثبت نشده است",
   };
 
   static questions = {
@@ -297,6 +309,8 @@ class Words extends Component {
     sure_to_delete_item: "برای حذف رکورد انتخابی اطمینان دارید؟",
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
     sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
+    sure_to_submit_response_for_replace_work_request:
+      "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",
   };
 
   static monthes = {

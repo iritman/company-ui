@@ -32,6 +32,7 @@ const ModalContextProvider = ({ children }) => {
   const [regTypes, setRegTypes] = useState([]);
   const [vacationTypes, setVacationTypes] = useState([]);
   const [swapMembers, setSwapMembers] = useState([]);
+  const [searchTypes, setSearchTypes] = useState([]);
   const [fileList, setFileList] = useState({});
 
   const contextValue = {
@@ -89,6 +90,8 @@ const ModalContextProvider = ({ children }) => {
     setVacationTypes,
     swapMembers,
     setSwapMembers,
+    searchTypes,
+    setSearchTypes,
     fileList,
     setFileList,
   };
