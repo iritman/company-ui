@@ -186,6 +186,22 @@ class Words extends Component {
   static transfer_time = "ساعت انتقال";
   static security_guard_reg_date_time = "تاریخ و زمان ثبت نگهبان";
   static security_guard_descriptions = "توضیحات نگهبان";
+  static swap_member = "کارمند جایگزین";
+  static from_time = "ساعت شروع";
+  static to_time = "ساعت پایان";
+  static in_progress = "درحال بررسی";
+  static accepted = "تایید شده";
+  static rejected = "رد شده";
+
+  static step_1 = "مرحله 1";
+  static step_2 = "مرحله 2";
+  static step_3 = "مرحله 3";
+  static step_4 = "مرحله 4";
+
+  static request_info = "اطلاعات درخواست";
+  static swap_member_response = "پاسخ جانشین";
+  static manager_response = "پاسخ مدیر";
+  static official_response = "پاسخ اداری";
 
   static security_guard_reged_cards = "کنترل تردد نگهبانی";
   static my_reged_cards = "ترددهای من";
@@ -255,7 +271,9 @@ class Words extends Component {
   static reports = "گزارش ها";
   //---
   static vacation_types = "انواع مرخصی";
+  static vacation_type = "نوع مرخصی";
   static mission_types = "انواع ماموریت";
+  static mission_type = "نوع ماموریت";
   static holidays = "تعطیلات";
   //---
   static page_accesses = "دسترسی صفحات";
@@ -276,7 +294,7 @@ class Words extends Component {
 
   static questions = {
     sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
-    sure_to_delete_item: "برای حرف رکورد انتخابی اطمینان دارید؟",
+    sure_to_delete_item: "برای حذف رکورد انتخابی اطمینان دارید؟",
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
     sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
   };

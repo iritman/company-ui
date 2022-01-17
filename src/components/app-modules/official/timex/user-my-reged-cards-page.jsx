@@ -22,7 +22,7 @@ const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "RegedCards",
+    title: "MyRegedCards",
     data: records,
     columns: [
       { label: Words.id, value: "RegID" },

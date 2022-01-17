@@ -74,7 +74,6 @@ const UserSecurityGuardRegedCardModal = ({
     try {
       const data = await service.getParams();
 
-      record.RegID = 0;
       record.EmployeeID = 0;
       record.CardRegDate = data.CurrentDateTime.CurrentDate;
       record.CardRegTime = "";
@@ -197,6 +196,7 @@ const UserSecurityGuardRegedCardModal = ({
               formConfig={formConfig}
               multiline
               rows={7}
+              maxLength={512}
               showCount
             />
           </Col>

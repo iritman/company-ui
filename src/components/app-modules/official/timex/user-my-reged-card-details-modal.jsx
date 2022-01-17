@@ -34,14 +34,14 @@ const UserMyRegedCardDetailsModal = ({ regedCard, isOpen, onOk }) => {
     RegisterarFirstName,
     RegisterarLastName,
     RegisterarDetailsText,
-    SecurityGuardRegID,
+    // SecurityGuardRegID,
   } = regedCard;
 
-  useMount(async () => {
-    if (SecurityGuardRegID > 0) {
-      console.log(SecurityGuardRegID);
-    }
-  });
+  // useMount(async () => {
+  //   if (SecurityGuardRegID > 0) {
+  //     console.log(SecurityGuardRegID);
+  //   }
+  // });
 
   return (
     <Modal
