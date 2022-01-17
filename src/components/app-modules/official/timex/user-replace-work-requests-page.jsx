@@ -16,7 +16,6 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-// import VacationModal from "./user-my-vacation-modal";
 import ReplaceWorkRequestSearchModal from "./user-replace-work-request-search-modal";
 import ReplaceWorkRequestDetailsModal from "./user-replace-work-request-details-modal";
 
@@ -220,7 +219,6 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
     setSelectedObject,
     showDetails,
     setShowDetails,
-    showModal,
     showSearchModal,
     setShowSearchModal,
     filter,
@@ -254,18 +252,11 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
     setProgress(false);
   });
 
-  const {
-    handleCloseModal,
-    handleAdd,
-    handleEdit,
-    handleDelete,
-    handleSave,
-    handleResetContext,
-    handleAdvancedSearch,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleEdit, handleDelete, handleResetContext, handleAdvancedSearch } =
+    GetSimplaDataPageMethods({
+      service,
+      recordID,
+    });
 
   const getOperationalButtons = (record) => {
     return (
@@ -327,7 +318,7 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={access?.CanAdd && handleAdd}
+            onAdd={null}
           />
 
           <Col xs={24}>
@@ -346,15 +337,6 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
           filter={filter}
         />
       )}
-
-      {/* {showModal && (
-        <VacationModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
-        />
-      )} */}
 
       {showDetails && (
         <ReplaceWorkRequestDetailsModal
