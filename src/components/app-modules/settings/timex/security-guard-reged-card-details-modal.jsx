@@ -59,7 +59,6 @@ const SecurityGuardRegedCardDetailsModal = ({
     footerButtons = [
       <Popconfirm
         title={Words.questions.sure_to_transfer}
-        // onConfirm={async () => await onDelete(record.DutyID)}
         onConfirm={async () => await onTransfer(regedCard.RegID)}
         okText={Words.yes}
         cancelText={Words.no}

@@ -55,7 +55,7 @@ const UserMyVacationSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.RegTypeID = 0;
+    record.VacationTypeID = 0;
     record.FromDate = "";
     record.ToDate = "";
 
