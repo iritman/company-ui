@@ -305,6 +305,7 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const handleSelectProvince = (value) => {
     record.CityID = 0;
+    record.ProvinceID = value;
     setRecord({ ...record });
     setSelectedProvinceID(value);
   };

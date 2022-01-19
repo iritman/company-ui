@@ -29,6 +29,7 @@ const getSheets = (records) => [
     columns: [
       { label: Words.id, value: "EmployeeID" },
       { label: Words.member_id, value: "MemberID" },
+      { label: Words.card_no, value: "CardNo" },
       { label: Words.first_name, value: "FirstName" },
       { label: Words.last_name, value: "LastName" },
       { label: Words.national_code, value: "NationalCode" },
@@ -69,6 +70,18 @@ const baseColumns = [
       <Text
         style={{ color: Colors.blue[6] }}
       >{`${record.FirstName} ${record.LastName}`}</Text>
+    ),
+  },
+  {
+    title: Words.card_no,
+    width: 100,
+    align: "center",
+    dataIndex: "CardNo",
+    sorter: getSorter("CardNo"),
+    render: (CardNo) => (
+      <Text style={{ color: Colors.green[6] }}>
+        {utils.farsiNum(`${CardNo}`)}
+      </Text>
     ),
   },
   {
