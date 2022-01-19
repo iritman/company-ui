@@ -35,7 +35,7 @@ const schema = {
   DetailsText: Joi.string()
     .allow("")
     .max(1024)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    // .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.descriptions),
 };
 
@@ -116,6 +116,7 @@ const PersonalDutyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
+      width={750}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>

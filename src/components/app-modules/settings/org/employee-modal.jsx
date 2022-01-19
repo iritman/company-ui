@@ -40,7 +40,11 @@ const schema = {
   EduLevelID: Joi.number(),
   EduFieldID: Joi.number(),
   UniversityID: Joi.number(),
-  LatestEduAverage: Joi.number().positive().precision(2),
+  LatestEduAverage: Joi.number()
+    .positive()
+    .allow(0)
+    .precision(2)
+    .label(Words.latest_edu_average),
   EmploymentTypeID: Joi.number(),
   EmploymentStatusID: Joi.number(),
   EmploymentStartDate: Joi.string().allow(""),
@@ -350,7 +354,6 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           <Col xs={24} md={12}>
             <NumericInputItem
               horizontal
-              required
               title={Words.latest_edu_average}
               fieldName="LatestEduAverage"
               min={0}
