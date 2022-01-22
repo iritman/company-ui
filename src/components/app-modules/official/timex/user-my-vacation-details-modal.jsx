@@ -45,8 +45,8 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
     FinishTime,
     // -----------------------
     // SwapMemberID,
-    // SwapMemberFirstName,
-    // SwapMemberLastName,
+    SwapMemberFirstName,
+    SwapMemberLastName,
     SwapIsAccepted,
     SwapResponseDate,
     SwapResponseTime,
@@ -75,25 +75,6 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
     // -----------------------
     // FinalStatusID,
   } = vacation;
-
-  // const steps = [
-  //   {
-  //     title: Words.request_info,
-  //     status: "finish",
-  //   },
-  //   {
-  //     title: Words.swap_member_response,
-  //     status: SwapResponseDate.length > 0 ? "finish" : "wait",
-  //   },
-  //   {
-  //     title: Words.manager_response,
-  //     status: ManagerResponseDate.length > 0 ? "finish" : "wait",
-  //   },
-  //   {
-  //     title: Words.official_response,
-  //     status: OfficialResponseDate.length > 0 ? "finish" : "wait",
-  //   },
-  // ];
 
   const steps = [
     {
@@ -189,13 +170,9 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
               }}
               size="middle"
             >
-              <Descriptions.Item label={Words.reg_date_time}>
-                <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(
-                    `${utils.slashDate(SwapResponseDate)} - ${utils.colonTime(
-                      SwapResponseTime
-                    )}`
-                  )}
+              <Descriptions.Item label={Words.swap_member}>
+                <Text style={{ color: Colors.red[7] }}>
+                  {`${SwapMemberFirstName} ${SwapMemberLastName}`}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.status}>
@@ -207,6 +184,19 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
                   {SwapIsAccepted ? Words.accepted : Words.rejected}
                 </Text>
               </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_date}>
+                <Text style={{ color: valueColor }}>
+                  {`${utils.weekDayNameFromText(
+                    SwapResponseDate
+                  )} ${utils.farsiNum(`${utils.slashDate(SwapResponseDate)}`)}`}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_time}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(`${utils.colonTime(SwapResponseTime)}`)}
+                </Text>
+              </Descriptions.Item>
+
               {SwapDetailsText.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={2}>
                   <Text
