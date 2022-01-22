@@ -30,6 +30,7 @@ import authService from "../services/auth-service";
 
 const { Title, Text } = Typography;
 const { Header, Content, Footer, Sider } = Layout;
+const menu_width = 280;
 
 const PopoverContent = ({ history }) => {
   return (
@@ -157,7 +158,7 @@ const PageSidebar = ({ path, mobileView, drawer, trigger }) => {
           onClose={trigger}
           visible={drawer}
           bodyStyle={{ padding: 0 }}
-          width={240}
+          width={menu_width}
         >
           <div className="scrollbar-normal">
             <MenuRoutes path={path} />
@@ -169,7 +170,7 @@ const PageSidebar = ({ path, mobileView, drawer, trigger }) => {
         breakpoint="lg"
         collapsedWidth="0"
         trigger={null}
-        width={240}
+        width={menu_width}
         style={{
           overflow: "auto",
           height: "calc(100vh - 64px)",
@@ -215,7 +216,7 @@ const HomePage = (props) => {
 
             <Layout
               style={{
-                marginRight: !mobileView ? 240 : 0,
+                marginRight: !mobileView ? menu_width : 0,
                 marginTop: 63,
               }}
             >

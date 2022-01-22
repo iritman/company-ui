@@ -85,6 +85,8 @@ const mapper = (pageID) => {
       );
       break;
 
+    //---------
+
     case 46:
       link = "members-reged-cards";
       icon = (
@@ -99,6 +101,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 49:
+      link = "members-vacations";
+      icon = (
+        <VacationIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
+      );
+      break;
+
     case 48:
       link = "members-missions";
       icon = (
@@ -106,11 +115,28 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 49:
-      link = "members-vacations";
+    case 16:
+      link = "members-vacations-check-manager";
       icon = (
-        <VacationIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
+        <VacationIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
+      break;
+
+    case 21:
+      link = "members-missions-check-manager";
+      icon = (
+        <MissionIcon style={{ color: Colors.purple[5] }} size={iconSize} />
+      );
+      break;
+
+    case 52:
+      link = "members-vacations-check-official";
+      icon = <VacationIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
+      break;
+
+    case 53:
+      link = "members-missions-check-official";
+      icon = <MissionIcon style={{ color: Colors.red[3] }} size={iconSize} />;
       break;
 
     case 50:
@@ -129,7 +155,7 @@ const mapper = (pageID) => {
 
 const tabs = [
   {
-    name: "my-catable",
+    name: "my-cartable",
     title: (
       <TabTitle
         title={Words.my_cartable}
@@ -160,7 +186,11 @@ const tabs = [
       { pageName: "user-MembersRegedCards" },
       { pageName: "user-MembersWorkShifts" },
       { pageName: "user-MembersMissions" },
+      { pageName: "user-MembersMissionsWaitForManager" },
+      { pageName: "user-MembersMissionsWaitForOfficial" },
       { pageName: "user-MembersVacations" },
+      { pageName: "user-MembersVacationsWaitForManager" },
+      { pageName: "user-MembersVacationsWaitForOfficial" },
       { pageName: "user-MembersWorkReport" },
     ],
   },
@@ -287,7 +317,7 @@ const UserTimexMenu = () => {
           <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
         }
       >
-        <Link to={`/home/settings`}>{Words.settings}</Link>
+        <Link to={`/home/settings`}>{Words.admin_panel}</Link>
       </Menu.Item>
       <Menu.Divider />
 
