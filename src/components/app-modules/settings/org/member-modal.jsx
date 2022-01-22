@@ -266,10 +266,11 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.PicFileName = "";
     record.Username = "";
     record.Password = "";
-    record.IsActive = true;
+    record.IsActive = false;
 
     setFileList({});
     setRecord(record);
+    setSelectedProvinceID(0);
     setErrors({});
     loadFieldsValue(formRef, record);
   };
