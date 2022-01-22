@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/timex/user-replace-work-requests-service";
+import service from "../../../../services/official/timex/user-members-vacations-check-manager-service";
 import {
   getSorter,
   checkAccess,
@@ -16,8 +16,8 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import ReplaceWorkRequestSearchModal from "./user-replace-work-request-search-modal";
-import ReplaceWorkRequestDetailsModal from "./user-replace-work-request-details-modal";
+import SearchModal from "./user-members-vacations-check-manager-search-modal";
+import DetailsModal from "./user-members-vacations-check-manager-details-modal";
 
 const { Text } = Typography;
 
@@ -59,7 +59,7 @@ const getVacationStatusTitle = (statusID) => {
 
 const getSheets = (records) => [
   {
-    title: "ReplaceWorkRequests",
+    title: "VacationWaitForManagerCheck",
     data: records,
     columns: [
       { label: Words.id, value: "VacationID" },
@@ -211,12 +211,12 @@ const baseColumns = [
   },
 ];
 
-const handleCheckEditable = (row) => row.Editable;
-const handleCheckDeletable = (row) => row.Deletable;
+const handleCheckEditable = (row) => false;
+const handleCheckDeletable = (row) => false;
 
 const recordID = "VacationID";
 
-const UserReplaceWorkRequestsPage = ({ pageName }) => {
+const UserMembersVacationsCheckManagerPage = ({ pageName }) => {
   const {
     progress,
     setProgress,
@@ -242,7 +242,7 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
     await checkAccess(setAccess, pageName);
 
     const default_filter_for_new_requests = {
-      SearchTypeID: 1,
+      MemberID: 0,
       VacationTypeID: 0,
       FromDate: "",
       ToDate: "",
@@ -323,9 +323,9 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.replace_work_requests}
+            title={Words.members_vacations_check_manager}
             sheets={getSheets(records)}
-            fileName="ReplaceWorkRequests"
+            fileName="VacationWaitForManagerCheck"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
@@ -341,7 +341,7 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
       </Spin>
 
       {showSearchModal && (
-        <ReplaceWorkRequestSearchModal
+        <SearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
@@ -350,7 +350,7 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
       )}
 
       {showDetails && (
-        <ReplaceWorkRequestDetailsModal
+        <DetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
@@ -364,4 +364,4 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
   );
 };
 
-export default UserReplaceWorkRequestsPage;
+export default UserMembersVacationsCheckManagerPage;

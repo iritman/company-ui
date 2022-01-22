@@ -11,7 +11,7 @@ import UserReplaceWorkRequestsPage from "../../components/app-modules/official/t
 //---
 import UserMembersRegedCardsPage from "../../components/app-modules/official/timex/user-members-reged-cards-page";
 import UserMembersWorkShiftsPage from "../../components/app-modules/official/timex/user-members-work-shifts-page";
-import UserMembersVacationsPage from "../../components/app-modules/official/timex/user-members-vacations-page";
+import UserMembersVacationsCheckManagerPage from "../../components/app-modules/official/timex/user-members-vacations-check-manager-page";
 //---
 
 const modulePath = "official/timex";
@@ -69,10 +69,10 @@ const UserOrgRoutes = ({ path }) => {
         )}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/members-vacations`}
+        path={`${path}/${modulePath}/members-vacations-check-manager`}
         exact
         render={() => (
-          <UserMembersVacationsPage pageName="user-MembersVacations" />
+          <UserMembersVacationsCheckManagerPage pageName="user-MembersVacationsWaitForManager" />
         )}
       />
       {/* --- */}

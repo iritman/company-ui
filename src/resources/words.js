@@ -198,9 +198,12 @@ class Words extends Component {
   static your_response = "پاسخ شما";
   static im_accept_replace_work_request = "درخواست جانشینی را می پذیرم";
   static im_not_accept_replace_work_request = "درخواست جانشینی را نمی پذیرم";
+  static im_accept_request = "درخواست را تایید می کنم";
+  static im_not_accept_request = "درخواست را تایید نمی کنم";
   static manager = "مدیر";
   static official_manager = "مسئول اداری";
   static swap_member_response = "پاسخ جانشین";
+  static new_swap_member = "کارمند جایگزین جدید";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
@@ -224,6 +227,11 @@ class Words extends Component {
   static members_missions = "ماموریت های کارکنان";
   static members_vacations = "مرخصی های کارکنان";
   static members_work_report = "گزارش کارکرد کارکنان";
+  static members_vacations_check_manager = "مرخصی های جدید بررسی مدیر";
+  static members_missions_check_manager = "ماموریت های جدید بررسی مدیر";
+  static members_vacations_check_official = "مرخصی های جدید بررسی اداری";
+  static members_missions_check_official = "ماموریت های جدید بررسی اداری";
+  static requester = "متقاضی";
 
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";
@@ -301,6 +309,8 @@ class Words extends Component {
     card_reg_transfered_to_primary_list: "تردد به لیست اصلی انتقال یافت",
     your_response_not_submitted: "پاسخ شما ثبت نشده است",
     your_response_submitted: "پاسخ شما ثبت شد",
+    swap_member_response_not_submitted:
+      "پاسخ جانشین انتخابی کاربر ثبت نشده است",
     manager_response_not_submitted: "پاسخ مدیر ثبت نشده است",
     official_response_not_submitted: "پاسخ مسئول اداری ثبت نشده است",
   };
@@ -312,6 +322,7 @@ class Words extends Component {
     sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
     sure_to_submit_response_for_replace_work_request:
       "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",
+    sure_to_submit_response: "برای ثبت پاسخ درخواست اطمینان دارید؟",
   };
 
   static monthes = {

@@ -328,6 +328,7 @@ export const GetSimplaDataPageMethods = (config) => {
 
       try {
         const data = await service.searchData(filter);
+
         setRecords(data);
         setSearched(true);
       } catch (err) {

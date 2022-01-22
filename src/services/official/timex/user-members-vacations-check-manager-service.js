@@ -1,7 +1,16 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/official/timex/user-replace-work-requests";
+const apiEndpoint =
+  apiUrl + "/official/timex/user-members-vacations-check-manager";
+
+async function getSwapableMembers(vacationMemberID, swapMemberID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/swapables/${vacationMemberID}/${swapMemberID}`
+  );
+
+  return data;
+}
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
@@ -22,6 +31,7 @@ async function saveResponse(response) {
 }
 
 const service = {
+  getSwapableMembers,
   getParams,
   searchData,
   saveResponse,
