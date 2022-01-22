@@ -110,6 +110,7 @@ class Words extends Component {
   static reload_image = "بازیابی تصویر";
   static invalid_national_code = "کدملی نامعتبر";
   static settings = "تنظیمات سامانه";
+  static admin_panel = "پنل مدیریت";
   static basic_settings = "اطلاعات پایه";
   static nafar = "نفر";
   static no_employee = "بدون کارمند!";

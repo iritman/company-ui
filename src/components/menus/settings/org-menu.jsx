@@ -137,7 +137,7 @@ const OrgMenu = () => {
           <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
         }
       >
-        <Link to={`/home/settings`}>{Words.settings}</Link>
+        <Link to={`/home/settings`}>{Words.admin_panel}</Link>
       </Menu.Item>
       <Menu.Divider />
       {accessiblePages.map((page) => (

@@ -88,25 +88,25 @@ const mapper = (pageID) => {
       icon = <CategoryIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
-    case 16:
-      link = "vacation-managers";
-      icon = <UsersIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-      break;
+    // case 16:
+    //   link = "vacation-managers";
+    //   icon = <UsersIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+    //   break;
 
     case 17:
       link = "vacation-requests";
       icon = <RequestIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
-    case 18:
-      link = "savable-vacations";
-      icon = <SavableIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-      break;
+    // case 18:
+    //   link = "savable-vacations";
+    //   icon = <SavableIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+    //   break;
 
-    case 19:
-      link = "saved-vacations";
-      icon = <SaveIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-      break;
+    // case 19:
+    //   link = "saved-vacations";
+    //   icon = <SaveIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+    //   break;
 
     //--- Missions Tab
     case 20:
@@ -116,10 +116,10 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 21:
-      link = "mission-managers";
-      icon = <UsersIcon style={{ color: Colors.volcano[6] }} size={iconSize} />;
-      break;
+    // case 21:
+    //   link = "mission-managers";
+    //   icon = <UsersIcon style={{ color: Colors.volcano[6] }} size={iconSize} />;
+    //   break;
 
     case 22:
       link = "mission-requests";
@@ -212,10 +212,10 @@ const tabs = [
     ),
     pages: [
       { pageName: "VacationTypes" },
-      { pageName: "VacationManagers" },
+      // { pageName: "VacationManagers" },
       { pageName: "VacationRequests" },
-      { pageName: "AnnualSavableVacations" },
-      { pageName: "SavedVacations" },
+      // { pageName: "AnnualSavableVacations" },
+      // { pageName: "SavedVacations" },
     ],
   },
   {
@@ -229,7 +229,7 @@ const tabs = [
     ),
     pages: [
       { pageName: "MissionTypes" },
-      { pageName: "MissionManagers" },
+      // { pageName: "MissionManagers" },
       { pageName: "MissionRequests" },
     ],
   },
@@ -377,7 +377,7 @@ const SettingsTimexMenu = () => {
           <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
         }
       >
-        <Link to={`/home/settings`}>{Words.settings}</Link>
+        <Link to={`/home/settings`}>{Words.admin_panel}</Link>
       </Menu.Item>
       <Menu.Divider />
 
