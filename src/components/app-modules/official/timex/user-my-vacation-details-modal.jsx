@@ -92,12 +92,24 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
           }}
           size="middle"
         >
-          <Descriptions.Item label={Words.reg_date_time}>
+          <Descriptions.Item label={Words.reg_date}>
             <Text style={{ color: valueColor }}>
               {utils.farsiNum(
-                `${utils.slashDate(RegDate)} - ${utils.colonTime(RegTime)}`
+                `${utils.weekDayNameFromText(RegDate)} ${utils.slashDate(
+                  RegDate
+                )}`
               )}
             </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.reg_time}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(`${utils.colonTime(RegTime)}`)}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.swap_member}>
+            <Text
+              style={{ color: Colors.red[7] }}
+            >{`${SwapMemberFirstName} ${SwapMemberLastName}`}</Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.vacation_type}>
             <Text style={{ color: Colors.green[6] }}>{VacationTypeTitle}</Text>
@@ -237,24 +249,6 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
               }}
               size="middle"
             >
-              <Descriptions.Item label={Words.reg_date_time}>
-                <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(
-                    `${utils.slashDate(
-                      ManagerResponseDate
-                    )} - ${utils.colonTime(ManagerResponseTime)}`
-                  )}
-                </Text>
-              </Descriptions.Item>
-              <Descriptions.Item label={Words.status}>
-                <Text
-                  style={{
-                    color: ManagerIsAccepted ? Colors.green[6] : Colors.red[6],
-                  }}
-                >
-                  {ManagerIsAccepted ? Words.accepted : Words.rejected}
-                </Text>
-              </Descriptions.Item>
               <Descriptions.Item label={Words.manager}>
                 <Text
                   style={{
@@ -264,7 +258,16 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
                   {`${ManagerMemberFirstName} ${ManagerMemberLastName}`}
                 </Text>
               </Descriptions.Item>
-              <Descriptions.Item label={Words.swap_member}>
+              <Descriptions.Item label={Words.reg_date_time}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(
+                    `${utils.slashDate(
+                      ManagerResponseDate
+                    )} - ${utils.colonTime(ManagerResponseTime)}`
+                  )}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.new_swap_member}>
                 {ManagerSelectedSwapMemberID > 0 && (
                   <Text
                     style={{
@@ -275,6 +278,16 @@ const UserMyVacationDetailsModal = ({ vacation, isOpen, onOk }) => {
                   </Text>
                 )}
               </Descriptions.Item>
+              <Descriptions.Item label={Words.status}>
+                <Text
+                  style={{
+                    color: ManagerIsAccepted ? Colors.green[6] : Colors.red[6],
+                  }}
+                >
+                  {ManagerIsAccepted ? Words.accepted : Words.rejected}
+                </Text>
+              </Descriptions.Item>
+
               {ManagerDetailsText.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={2}>
                   <Text
