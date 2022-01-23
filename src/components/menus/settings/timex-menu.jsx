@@ -130,7 +130,7 @@ const mapper = (pageID) => {
 
     //--- WorkTime Info Tab
     case 23:
-      link = "work-shift-managers";
+      link = "official-experts";
       icon = <UsersIcon style={{ color: Colors.magenta[6] }} size={iconSize} />;
       break;
 
@@ -243,7 +243,7 @@ const tabs = [
       />
     ),
     pages: [
-      { pageName: "WorkShiftManagers" },
+      { pageName: "OfficialExperts" },
       { pageName: "WorkShifts" },
       { pageName: "GroupShifts" },
       { pageName: "EmployeeShifts" },

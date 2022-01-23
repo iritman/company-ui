@@ -204,6 +204,7 @@ class Words extends Component {
   static official_manager = "مسئول اداری";
   static swap_member_response = "پاسخ جانشین";
   static new_swap_member = "کارمند جایگزین جدید";
+  static reg_info = "اطلاعات ثبت";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
@@ -222,6 +223,7 @@ class Words extends Component {
   static my_vacations = "مرخصی های من";
   static replace_work_requests = "درخواست های جانشینی";
   static my_work_report = "گزارش کارکرد من";
+  static official_experts = "کارشناسان اداری";
   static members_reged_cards = "ترددهای کارکنان";
   static members_work_shifts = "شیفت های کاری کارکنان";
   static members_missions = "ماموریت های کارکنان";
