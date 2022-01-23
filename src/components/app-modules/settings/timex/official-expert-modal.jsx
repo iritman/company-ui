@@ -10,7 +10,7 @@ import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
-  //   handleError,
+  handleError,
 } from "../../../../tools/form-manager";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import TextItem from "./../../../form-controls/text-item";
@@ -73,9 +73,13 @@ const OfficialExpertModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
-    const data = await service.getParams();
+    try {
+      const data = await service.getParams();
 
-    setEmployees(data.Employees);
+      setEmployees(data.Employees);
+    } catch (err) {
+      handleError(err);
+    }
   });
 
   const handleSubmit = async () => {
