@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/timex/user-members-vacations-check-manager-service";
+import service from "../../../../services/official/timex/user-members-new-vacations-check-manager-service";
 import {
   getSorter,
   checkAccess,
@@ -16,8 +16,8 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import SearchModal from "./user-members-vacations-check-manager-search-modal";
-import DetailsModal from "./user-members-vacations-check-manager-details-modal";
+import SearchModal from "./user-members-new-vacations-check-manager-search-modal";
+import DetailsModal from "./user-members-new-vacations-check-manager-details-modal";
 
 const { Text } = Typography;
 
@@ -216,7 +216,7 @@ const handleCheckDeletable = (row) => false;
 
 const recordID = "VacationID";
 
-const UserMembersVacationsCheckManagerPage = ({ pageName }) => {
+const UserMembersNewVacationsCheckManagerPage = ({ pageName }) => {
   const {
     progress,
     setProgress,
@@ -364,4 +364,4 @@ const UserMembersVacationsCheckManagerPage = ({ pageName }) => {
   );
 };
 
-export default UserMembersVacationsCheckManagerPage;
+export default UserMembersNewVacationsCheckManagerPage;

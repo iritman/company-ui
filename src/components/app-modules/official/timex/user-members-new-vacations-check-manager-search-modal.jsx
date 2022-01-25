@@ -14,8 +14,8 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/timex/user-members-vacations-check-manager-service";
-import DropdownItem from "./../../../form-controls/dropdown-item";
+import service from "../../../../services/official/timex/user-members-new-vacations-check-manager-service";
+import DropdownItem from "../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
 const schema = {
@@ -34,7 +34,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserMemersVacationsCheckManagerSearchModal = ({
+const UserMemersNewVacationsCheckManagerSearchModal = ({
   isOpen,
   filter,
   onOk,
@@ -147,4 +147,4 @@ const UserMemersVacationsCheckManagerSearchModal = ({
   );
 };
 
-export default UserMemersVacationsCheckManagerSearchModal;
+export default UserMemersNewVacationsCheckManagerSearchModal;

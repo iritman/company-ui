@@ -15,12 +15,12 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
-import ResponseModal from "./user-members-vacations-check-manager-response-modal";
+import ResponseModal from "./user-members-new-vacations-check-manager-response-modal";
 
 const { Text } = Typography;
 const { Step } = Steps;
 
-const UserMembersVacationsCheckManagerDetailsModal = ({
+const UserMembersNewVacationsCheckManagerDetailsModal = ({
   vacation,
   isOpen,
   onOk,
@@ -456,4 +456,4 @@ const UserMembersVacationsCheckManagerDetailsModal = ({
   );
 };
 
-export default UserMembersVacationsCheckManagerDetailsModal;
+export default UserMembersNewVacationsCheckManagerDetailsModal;

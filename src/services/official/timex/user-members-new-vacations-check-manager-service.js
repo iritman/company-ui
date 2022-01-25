@@ -2,7 +2,7 @@ import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
 const apiEndpoint =
-  apiUrl + "/official/timex/user-members-vacations-check-manager";
+  apiUrl + "/official/timex/user-members-new-vacations-check-manager";
 
 async function getSwapableMembers(vacationMemberID, swapMemberID) {
   const { data } = await http.get(

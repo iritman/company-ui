@@ -16,11 +16,11 @@ import {
 import {
   useModalContext,
   useResetContext,
-} from "./../../../contexts/modal-context";
+} from "../../../contexts/modal-context";
 import InputItem from "../../../form-controls/input-item";
 import SwitchItem from "../../../form-controls/switch-item";
 import DropdownItem from "../../../form-controls/dropdown-item";
-import service from "../../../../services/official/timex/user-members-vacations-check-manager-service";
+import service from "../../../../services/official/timex/user-members-new-vacations-check-manager-service";
 
 const schema = {
   MemberID: Joi.number(),
@@ -40,7 +40,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserMembersVacationsCheckManagerResponseModal = ({
+const UserMembersNewVacationsCheckManagerResponseModal = ({
   isOpen,
   vacation,
   onOk,
@@ -196,4 +196,4 @@ const UserMembersVacationsCheckManagerResponseModal = ({
   );
 };
 
-export default UserMembersVacationsCheckManagerResponseModal;
+export default UserMembersNewVacationsCheckManagerResponseModal;
