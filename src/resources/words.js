@@ -205,6 +205,7 @@ class Words extends Component {
   static swap_member_response = "پاسخ جانشین";
   static new_swap_member = "کارمند جایگزین جدید";
   static reg_info = "اطلاعات ثبت";
+  static request_status = "وضعیت درخواست";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
