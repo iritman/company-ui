@@ -116,26 +116,26 @@ const mapper = (pageID) => {
       break;
 
     case 16:
-      link = "members-vacations-check-manager";
+      link = "members-new-vacations-check-manager";
       icon = (
         <VacationIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
     case 21:
-      link = "members-missions-check-manager";
+      link = "members-new-missions-check-manager";
       icon = (
         <MissionIcon style={{ color: Colors.purple[5] }} size={iconSize} />
       );
       break;
 
     case 52:
-      link = "members-vacations-check-official";
+      link = "members-new-vacations-check-official";
       icon = <VacationIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
     case 53:
-      link = "members-missions-check-official";
+      link = "members-new-missions-check-official";
       icon = <MissionIcon style={{ color: Colors.red[3] }} size={iconSize} />;
       break;
 
@@ -186,11 +186,11 @@ const tabs = [
       { pageName: "user-MembersRegedCards" },
       { pageName: "user-MembersWorkShifts" },
       { pageName: "user-MembersMissions" },
-      { pageName: "user-MembersMissionsWaitForManager" },
-      { pageName: "user-MembersMissionsWaitForOfficial" },
+      { pageName: "user-MembersNewMissionsCheckManager" },
+      { pageName: "user-MembersNewMissionsCheckOfficial" },
       { pageName: "user-MembersVacations" },
-      { pageName: "user-MembersVacationsWaitForManager" },
-      { pageName: "user-MembersVacationsWaitForOfficial" },
+      { pageName: "user-MembersNewVacationsCheckManager" },
+      { pageName: "user-MembersNewVacationsCheckOfficial" },
       { pageName: "user-MembersWorkReport" },
     ],
   },
