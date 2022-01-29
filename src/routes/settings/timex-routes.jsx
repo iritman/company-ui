@@ -7,12 +7,14 @@ import SecurityGuardsPage from "../../components/app-modules/settings/timex/secu
 import SecurityGuardRegedCardsPage from "../../components/app-modules/settings/timex/security-guard-reged-cards-page";
 import VacationTypesPage from "../../components/app-modules/settings/timex/vacation-types-page";
 import MissionTypesPage from "../../components/app-modules/settings/timex/mission-types-page";
+import MissionTargetsPage from "../../components/app-modules/settings/timex/mission-targets-page";
 import HolidaysPage from "../../components/app-modules/settings/timex/holidays-page";
 import WorkShiftsPage from "../../components/app-modules/settings/timex/work-shifts-page";
 import GroupShiftsPage from "../../components/app-modules/settings/timex/group-shifts-page";
 import EmployeeShiftsPage from "../../components/app-modules/settings/timex/employee-shifts-page";
 import RegedCardsPage from "../../components/app-modules/settings/timex/reged-cards-page";
 import OfficialExpertsPage from "../../components/app-modules/settings/timex/official-experts-page";
+import VacationRequestsPage from "../../components/app-modules/settings/timex/vacation-requests-page";
 //---
 
 const modulePath = "settings/timex";
@@ -53,6 +55,11 @@ const BasicInfoRoutes = ({ path }) => {
         render={() => <MissionTypesPage pageName="MissionTypes" />}
       />
       <ProtectedRoute
+        path={`${path}/${modulePath}/mission-targets`}
+        exact
+        render={() => <MissionTargetsPage pageName="MissionTargets" />}
+      />
+      <ProtectedRoute
         path={`${path}/${modulePath}/holidays`}
         exact
         render={() => <HolidaysPage pageName="Holidays" />}
@@ -81,6 +88,11 @@ const BasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/official-experts`}
         exact
         render={() => <OfficialExpertsPage pageName="OfficialExperts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/vacation-requests`}
+        exact
+        render={() => <VacationRequestsPage pageName="VacationRequests" />}
       />
       <Redirect to="/not-found" />
     </Switch>

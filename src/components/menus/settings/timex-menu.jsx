@@ -9,7 +9,7 @@ import TabTitle from "../../common/tab-title";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiOutlineNodeIndex as CalculationBaseIcon,
-  AiOutlineAppstoreAdd as SavableIcon,
+  // AiOutlineAppstoreAdd as SavableIcon,
   AiOutlineSchedule as WorkShiftIcon,
   AiOutlineFieldTime as WorkTimeIcon,
   AiFillIdcard as MembersRegedCardIcon,
@@ -25,6 +25,7 @@ import {
   MdCalculate as CalculateIcon,
   MdCardTravel as VacationIcon,
   MdOutlineWork as MissionIcon,
+  MdOutlineShareLocation as TargetIcon,
 } from "react-icons/md";
 import {
   FaUsersCog as UsersIcon,
@@ -35,7 +36,7 @@ import {
   BiGitPullRequest as RequestIcon,
   BiGroup as GroupShiftIcon,
 } from "react-icons/bi";
-import { HiSaveAs as SaveIcon } from "react-icons/hi";
+// import { HiSaveAs as SaveIcon } from "react-icons/hi";
 
 const { SubMenu } = Menu;
 
@@ -105,7 +106,7 @@ const mapper = (pageID) => {
 
     // case 19:
     //   link = "saved-vacations";
-    //   icon = <SaveIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+    // icon = <SaveIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
     //   break;
 
     //--- Missions Tab
@@ -120,6 +121,13 @@ const mapper = (pageID) => {
     //   link = "mission-managers";
     //   icon = <UsersIcon style={{ color: Colors.volcano[6] }} size={iconSize} />;
     //   break;
+
+    case 54:
+      link = "mission-targets";
+      icon = (
+        <TargetIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
+      );
+      break;
 
     case 22:
       link = "mission-requests";
@@ -230,6 +238,7 @@ const tabs = [
     pages: [
       { pageName: "MissionTypes" },
       // { pageName: "MissionManagers" },
+      { pageName: "MissionTargets" },
       { pageName: "MissionRequests" },
     ],
   },

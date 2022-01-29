@@ -15,8 +15,8 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import SearchModal from "./user-members-vacations-search-modal";
-import DetailsModal from "./user-members-vacations-details-modal";
+import SearchModal from "./vacation-requests-search-modal";
+import DetailsModal from "./vacation-requests-details-modal";
 
 const { Text } = Typography;
 
@@ -58,7 +58,7 @@ const getVacationStatusTitle = (statusID) => {
 
 const getSheets = (records) => [
   {
-    title: "MembersVacations",
+    title: "VacationRequests",
     data: records,
     columns: [
       { label: Words.id, value: "VacationID" },
@@ -215,7 +215,7 @@ const handleCheckDeletable = (row) => false;
 
 const recordID = "VacationID";
 
-const UserMembersVacationsPage = ({ pageName }) => {
+const VacationRequestsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -285,9 +285,9 @@ const UserMembersVacationsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.members_vacations}
+            title={Words.vacation_requests}
             sheets={getSheets(records)}
-            fileName="MembersVacations"
+            fileName="VacationRequests"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
@@ -325,4 +325,4 @@ const UserMembersVacationsPage = ({ pageName }) => {
   );
 };
 
-export default UserMembersVacationsPage;
+export default VacationRequestsPage;

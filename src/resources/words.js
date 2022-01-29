@@ -206,6 +206,8 @@ class Words extends Component {
   static new_swap_member = "کارمند جایگزین جدید";
   static reg_info = "اطلاعات ثبت";
   static request_status = "وضعیت درخواست";
+  static in_province = "داخل استان";
+  static mission_targets = "مقصدهای ماموریت";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
@@ -235,6 +237,7 @@ class Words extends Component {
   static members_vacations_check_official = "مرخصی های جدید بررسی اداری";
   static members_missions_check_official = "ماموریت های جدید بررسی اداری";
   static requester = "متقاضی";
+  static vacation_requests = "درخواست های مرخصی";
 
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";
