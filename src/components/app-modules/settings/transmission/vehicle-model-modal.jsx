@@ -80,7 +80,6 @@ const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
       setBrands(data.Brands);
     } catch (err) {
-      console.log(err);
       handleError(err);
     }
     setProgress(false);

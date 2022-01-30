@@ -208,13 +208,18 @@ class Words extends Component {
   static request_status = "وضعیت درخواست";
   static in_province = "داخل استان";
   static mission_targets = "مقصدهای ماموریت";
+
+  static transmission = "ترابری";
+  static vehicles = "وسایل نقلیه";
   static vehicle_types = "انواع وسایل نقلیه";
+  static vehicle_type = "نوع وسیله نقلیه";
   static vehicle_brands = "برندها";
   static vehicle_brand = "برند خودرو";
   static vehicle_models = "مدل های خودرو";
   static brand = "برند";
   static model = "مدل";
-  static transmission = "ترابری";
+  static product_year = "سال تولید";
+  static pelak = "پلاک";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
