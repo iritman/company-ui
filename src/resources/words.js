@@ -208,6 +208,7 @@ class Words extends Component {
   static request_status = "وضعیت درخواست";
   static in_province = "داخل استان";
   static mission_targets = "مقصدهای ماموریت";
+  static vehicle_types = "انواع وسایل نقلیه";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
