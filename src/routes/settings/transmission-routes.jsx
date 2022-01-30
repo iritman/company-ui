@@ -5,6 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import TransmissionDashboard from "../../components/app-modules/settings/transmission/transmission-dashboard";
 import VehicleTypesPage from "../../components/app-modules/settings/transmission/vehicle-types-page";
 import VehicleBrandsPage from "../../components/app-modules/settings/transmission/vehicle-brands-page";
+import VehicleModelsPage from "../../components/app-modules/settings/transmission/vehicle-models-page";
 //---
 
 const modulePath = "settings/transmission";
@@ -26,6 +27,11 @@ const TransmissionRoutes = ({ path }) => {
         path={`${path}/${modulePath}/vehicle-brands`}
         exact
         render={() => <VehicleBrandsPage pageName="VehicleBrands" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/vehicle-models`}
+        exact
+        render={() => <VehicleModelsPage pageName="VehicleModels" />}
       />
       <Redirect to="/not-found" />
     </Switch>

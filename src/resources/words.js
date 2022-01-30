@@ -210,6 +210,10 @@ class Words extends Component {
   static mission_targets = "مقصدهای ماموریت";
   static vehicle_types = "انواع وسایل نقلیه";
   static vehicle_brands = "برندها";
+  static vehicle_brand = "برند خودرو";
+  static vehicle_models = "مدل های خودرو";
+  static brand = "برند";
+  static model = "مدل";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
