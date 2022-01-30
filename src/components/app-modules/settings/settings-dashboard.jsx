@@ -6,6 +6,7 @@ import { GoSettings as BasicSettingsIcon } from "react-icons/go";
 import {
   AiOutlineFieldTime as TimexSettingsIcon,
   AiFillBank as OrgIcon,
+  AiFillCar as CarIcon,
 } from "react-icons/ai";
 import { SiKeycdn as KeyIcon } from "react-icons/si";
 import Colors from "./../../../resources/colors";
@@ -44,6 +45,12 @@ const mapper = (moduleID) => {
       link = "timex";
       icon = <TimexSettingsIcon {...iconProps} />;
       backColor = Colors.orange[3];
+      break;
+
+    case 7:
+      link = "transmission";
+      icon = <CarIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     default:

@@ -7,6 +7,7 @@ import AccessesRoutes from "./accesses-routes";
 import BasicInfoRoutes from "./basic-info-routes";
 import OrgRoutes from "./org-routes";
 import TimexRoutes from "./timex-routes";
+import TransmissionRoutes from "./transmission-routes";
 //---
 
 const SettingsRoute = ({ path }) => {
@@ -32,6 +33,10 @@ const SettingsRoute = ({ path }) => {
       <ProtectedRoute
         path={`${path}/settings/timex`}
         render={() => <TimexRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/settings/transmission`}
+        render={() => <TransmissionRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

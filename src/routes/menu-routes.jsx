@@ -8,6 +8,7 @@ import AccessesMenu from "../components/menus/settings/accesses-menu";
 import BasicInfoMenu from "../components/menus/settings/basic-info-menu";
 import OrgMenu from "../components/menus/settings/org-menu";
 import TimexMenu from "../components/menus/settings/timex-menu";
+import TransmissionMenu from "../components/menus/settings/transmission-menu";
 //---
 import UserOfficialMenu from "../components/menus/official/user-official-menu";
 import UserOrgMenu from "../components/menus/official/user-org-menu";
@@ -32,6 +33,10 @@ const MenuRoutes = ({ path }) => {
       />
       <ProtectedRoute path={`${path}/settings/org`} component={OrgMenu} />
       <ProtectedRoute path={`${path}/settings/timex`} component={TimexMenu} />
+      <ProtectedRoute
+        path={`${path}/settings/transmission`}
+        component={TransmissionMenu}
+      />
       {/* ----------- */}
       <ProtectedRoute
         path={`${path}/official`}

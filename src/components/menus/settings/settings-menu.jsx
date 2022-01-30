@@ -4,6 +4,7 @@ import {
   AiOutlineDashboard as DashboardIcon,
   AiOutlineFieldTime as TimexSettingsIcon,
   AiFillBank as OrgIcon,
+  AiFillCar as CarIcon,
 } from "react-icons/ai";
 import { GoSettings as BasicSettingsIcon } from "react-icons/go";
 import { SiKeycdn as KeyIcon } from "react-icons/si";
@@ -45,6 +46,11 @@ const mapper = (moduleID) => {
           size={iconSize}
         />
       );
+      break;
+
+    case 7:
+      link = "transmission";
+      icon = <CarIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
     default:
