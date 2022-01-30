@@ -386,7 +386,7 @@ export const GetSimplaDataPageMethods = (config) => {
       );
 
       if (selectedObject !== null) {
-        setSelectedObject({ ...row });
+        setSelectedObject({ ...savedRow });
       }
 
       setRecords(updatedRecords);
