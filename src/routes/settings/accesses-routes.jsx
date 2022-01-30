@@ -8,7 +8,7 @@ import PageAccessesPage from "../../components/app-modules/settings/accesses/pag
 
 const modulePath = "settings/accesses";
 
-const BasicInfoRoutes = ({ path }) => {
+const AccessesRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
@@ -26,4 +26,4 @@ const BasicInfoRoutes = ({ path }) => {
   );
 };
 
-export default BasicInfoRoutes;
+export default AccessesRoutes;

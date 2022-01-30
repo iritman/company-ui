@@ -19,7 +19,7 @@ import VacationRequestsPage from "../../components/app-modules/settings/timex/va
 
 const modulePath = "settings/timex";
 
-const BasicInfoRoutes = ({ path }) => {
+const TimexRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
@@ -99,4 +99,4 @@ const BasicInfoRoutes = ({ path }) => {
   );
 };
 
-export default BasicInfoRoutes;
+export default TimexRoutes;
