@@ -214,6 +214,7 @@ class Words extends Component {
   static vehicle_models = "مدل های خودرو";
   static brand = "برند";
   static model = "مدل";
+  static transmission = "ترابری";
 
   static step_1 = "مرحله 1";
   static step_2 = "مرحله 2";
