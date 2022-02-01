@@ -30,8 +30,8 @@ const schema = {
   SwapMemberID: Joi.number().min(1).required(),
   StartDate: Joi.string().required(),
   FinishDate: Joi.string().required(),
-  StartTime: Joi.string().required(),
-  FinishTime: Joi.string().required(),
+  StartTime: Joi.string().required().allow(""),
+  FinishTime: Joi.string().required().allow(""),
   DetailsText: Joi.string().allow("").max(512),
 };
 
@@ -63,14 +63,6 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   } = useModalContext();
 
   const resetContext = useResetContext();
-
-  const formConfig = {
-    schema,
-    record,
-    setRecord,
-    errors,
-    setErrors,
-  };
 
   const clearRecord = async () => {
     setProgress(true);
@@ -106,6 +98,30 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     if (vacationTypeTitle?.startsWith("D-")) result = "daily";
 
     return result;
+  };
+
+  const getSchema = () => {
+    const isHourly = getVacationType(record.VacationTypeID) === "hourly";
+
+    let result = { ...schema };
+
+    if (isHourly) {
+      result.StartTime = Joi.string().required();
+      result.FinishTime = Joi.string().required();
+    } else {
+      result.StartTime = Joi.string().required().allow("");
+      result.FinishTime = Joi.string().required().allow("");
+    }
+
+    return result;
+  };
+
+  const formConfig = {
+    schema: getSchema(),
+    record,
+    setRecord,
+    errors,
+    setErrors,
   };
 
   useMount(async () => {
@@ -153,7 +169,7 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       isOpen={isOpen}
       isEdit={isEdit}
       inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
+      disabled={validateForm({ record, schema: getSchema() }) && true}
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
@@ -195,7 +211,7 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.vacation_types}
+              title={Words.vacation_type}
               dataSource={vacationTypes}
               keyColumn="VacationTypeID"
               valueColumn="Title"
