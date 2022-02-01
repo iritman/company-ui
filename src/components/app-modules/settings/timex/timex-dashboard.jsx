@@ -79,13 +79,11 @@ import modulesService from "../../../../services/app/modules-service";
 // };
 
 const TimexDashboard = () => {
-  const [accessiblePages, setAccessiblePages] = useState([]);
+  let [accessiblePages, setAccessiblePages] = useState([]);
 
   useMount(async () => {
     const timex_module_id = 4;
-    const accessiblePages = await modulesService.accessiblePages(
-      timex_module_id
-    );
+    accessiblePages = await modulesService.accessiblePages(timex_module_id);
 
     setAccessiblePages(accessiblePages);
   });

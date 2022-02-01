@@ -207,10 +207,21 @@ class Words extends Component {
   static reg_info = "اطلاعات ثبت";
   static request_status = "وضعیت درخواست";
   static in_province = "داخل استان";
+  static requirements = "نیازمندی ها";
+
+  static i_need = "دارم";
+  static i_dont_need = "ندارم";
+
   static mission_targets = "مقصدهای ماموریت";
+  static mission_target = "مقصد ماموریت";
+  static mission_subject = "موضوع ماموریت";
+  static need_vehicle = "نیاز به وسیله نقلیه";
+  static need_hoteling = "نیاز به اقامتگاه";
 
   static transmission = "ترابری";
   static vehicles = "وسایل نقلیه";
+  static vehicle = "وسیله نقلیه";
+  static hoteling = "محل اقامت";
   static vehicle_types = "انواع وسایل نقلیه";
   static vehicle_type = "نوع وسیله نقلیه";
   static vehicle_brands = "برندها";
