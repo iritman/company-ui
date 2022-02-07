@@ -69,7 +69,7 @@ const mapper = (pageID) => {
       break;
 
     case 44:
-      link = "replace-work-requests";
+      link = "vacation-replace-work-requests";
       icon = (
         <ReplaceWorkRequestIcon
           style={{ color: Colors.orange[6] }}
@@ -169,7 +169,7 @@ const tabs = [
       { pageName: "user-MyWorkShifts" },
       { pageName: "user-MyMissions" },
       { pageName: "user-MyVacations" },
-      { pageName: "user-ReplaceWorkRequests" },
+      { pageName: "user-VacationReplaceWorkRequests" },
       { pageName: "user-MyWorkReport" },
     ],
   },

@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/timex/user-replace-work-requests-service";
+import service from "../../../../services/official/timex/user-vacation-replace-work-requests-service";
 import {
   getSorter,
   checkAccess,
@@ -16,8 +16,8 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import ReplaceWorkRequestSearchModal from "./user-replace-work-request-search-modal";
-import ReplaceWorkRequestDetailsModal from "./user-replace-work-request-details-modal";
+import VacationReplaceWorkRequestSearchModal from "./user-vacation-replace-work-request-search-modal";
+import VacationReplaceWorkRequestDetailsModal from "./user-vacation-replace-work-request-details-modal";
 
 const { Text } = Typography;
 
@@ -216,7 +216,7 @@ const handleCheckDeletable = (row) => row.Deletable;
 
 const recordID = "VacationID";
 
-const UserReplaceWorkRequestsPage = ({ pageName }) => {
+const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
   const {
     progress,
     setProgress,
@@ -341,7 +341,7 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
       </Spin>
 
       {showSearchModal && (
-        <ReplaceWorkRequestSearchModal
+        <VacationReplaceWorkRequestSearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
@@ -350,7 +350,7 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
       )}
 
       {showDetails && (
-        <ReplaceWorkRequestDetailsModal
+        <VacationReplaceWorkRequestDetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
@@ -364,4 +364,4 @@ const UserReplaceWorkRequestsPage = ({ pageName }) => {
   );
 };
 
-export default UserReplaceWorkRequestsPage;
+export default UserVacationReplaceWorkRequestsPage;

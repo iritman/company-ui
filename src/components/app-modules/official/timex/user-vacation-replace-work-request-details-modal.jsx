@@ -15,12 +15,12 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
-import ResponseModal from "./user-replace-work-request-response-modal";
+import ResponseModal from "./user-vacation-replace-work-request-response-modal";
 
 const { Text } = Typography;
 const { Step } = Steps;
 
-const UserReplaceWorkRequestDetailsModal = ({
+const UserVacationReplaceWorkRequestDetailsModal = ({
   vacation,
   isOpen,
   onOk,
@@ -459,4 +459,4 @@ const UserReplaceWorkRequestDetailsModal = ({
   );
 };
 
-export default UserReplaceWorkRequestDetailsModal;
+export default UserVacationReplaceWorkRequestDetailsModal;

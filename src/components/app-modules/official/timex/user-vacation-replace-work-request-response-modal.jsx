@@ -16,7 +16,7 @@ import {
 import {
   useModalContext,
   useResetContext,
-} from "./../../../contexts/modal-context";
+} from "../../../contexts/modal-context";
 import InputItem from "../../../form-controls/input-item";
 import SwitchItem from "../../../form-controls/switch-item";
 
@@ -36,7 +36,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserReplaceWorkRequestResponseModal = ({
+const UserVacationReplaceWorkRequestResponseModal = ({
   isOpen,
   vacation,
   onOk,
@@ -159,4 +159,4 @@ const UserReplaceWorkRequestResponseModal = ({
   );
 };
 
-export default UserReplaceWorkRequestResponseModal;
+export default UserVacationReplaceWorkRequestResponseModal;

@@ -8,7 +8,7 @@ import UserMyRegedCardsPage from "../../components/app-modules/official/timex/us
 import UserMyWorkShiftsPage from "../../components/app-modules/official/timex/user-my-work-shifts-page";
 import UserMyVacationsPage from "../../components/app-modules/official/timex/user-my-vacations-page";
 import UserMyMissionsPage from "../../components/app-modules/official/timex/user-my-missions-page";
-import UserReplaceWorkRequestsPage from "../../components/app-modules/official/timex/user-replace-work-requests-page";
+import UserVacationReplaceWorkRequestsPage from "../../components/app-modules/official/timex/user-vacation-replace-work-requests-page";
 //---
 import UserMembersRegedCardsPage from "../../components/app-modules/official/timex/user-members-reged-cards-page";
 import UserMembersWorkShiftsPage from "../../components/app-modules/official/timex/user-members-work-shifts-page";
@@ -55,10 +55,10 @@ const UserOrgRoutes = ({ path }) => {
         render={() => <UserMyMissionsPage pageName="user-MyMissions" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/replace-work-requests`}
+        path={`${path}/${modulePath}/vacation-replace-work-requests`}
         exact
         render={() => (
-          <UserReplaceWorkRequestsPage pageName="user-ReplaceWorkRequests" />
+          <UserVacationReplaceWorkRequestsPage pageName="user-VacationReplaceWorkRequests" />
         )}
       />
       {/* --- */}

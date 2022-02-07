@@ -14,8 +14,8 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/timex/user-replace-work-requests-service";
-import DropdownItem from "./../../../form-controls/dropdown-item";
+import service from "../../../../services/official/timex/user-vacation-replace-work-requests-service";
+import DropdownItem from "../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
 const schema = {
@@ -34,7 +34,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserReplaceWorkRequestSearchModal = ({
+const UserVacationReplaceWorkRequestSearchModal = ({
   isOpen,
   filter,
   onOk,
@@ -148,4 +148,4 @@ const UserReplaceWorkRequestSearchModal = ({
   );
 };
 
-export default UserReplaceWorkRequestSearchModal;
+export default UserVacationReplaceWorkRequestSearchModal;
