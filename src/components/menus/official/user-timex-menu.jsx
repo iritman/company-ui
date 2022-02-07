@@ -78,6 +78,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 59:
+      link = "mission-replace-work-requests";
+      icon = (
+        <ReplaceWorkRequestIcon
+          style={{ color: Colors.green[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     case 45:
       link = "my-work-report";
       icon = (
@@ -170,6 +180,7 @@ const tabs = [
       { pageName: "user-MyMissions" },
       { pageName: "user-MyVacations" },
       { pageName: "user-VacationReplaceWorkRequests" },
+      { pageName: "user-MissionReplaceWorkRequests" },
       { pageName: "user-MyWorkReport" },
     ],
   },

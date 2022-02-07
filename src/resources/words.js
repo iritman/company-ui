@@ -247,7 +247,8 @@ class Words extends Component {
   static my_work_shifts = "شیفت های کاری من";
   static my_missions = "ماموریت های من";
   static my_vacations = "مرخصی های من";
-  static replace_work_requests = "درخواست های جانشینی";
+  static vacation_replace_work_requests = "جانشینی های مرخصی";
+  static mission_replace_work_requests = "جانشینی های ماموریت";
   static my_work_report = "گزارش کارکرد من";
   static official_experts = "کارشناسان اداری";
   static members_reged_cards = "ترددهای کارکنان";

@@ -9,6 +9,7 @@ import UserMyWorkShiftsPage from "../../components/app-modules/official/timex/us
 import UserMyVacationsPage from "../../components/app-modules/official/timex/user-my-vacations-page";
 import UserMyMissionsPage from "../../components/app-modules/official/timex/user-my-missions-page";
 import UserVacationReplaceWorkRequestsPage from "../../components/app-modules/official/timex/user-vacation-replace-work-requests-page";
+import UserMissionReplaceWorkRequestsPage from "../../components/app-modules/official/timex/user-mission-replace-work-requests-page";
 //---
 import UserMembersRegedCardsPage from "../../components/app-modules/official/timex/user-members-reged-cards-page";
 import UserMembersWorkShiftsPage from "../../components/app-modules/official/timex/user-members-work-shifts-page";
@@ -59,6 +60,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserVacationReplaceWorkRequestsPage pageName="user-VacationReplaceWorkRequests" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/mission-replace-work-requests`}
+        exact
+        render={() => (
+          <UserMissionReplaceWorkRequestsPage pageName="user-MissionReplaceWorkRequests" />
         )}
       />
       {/* --- */}

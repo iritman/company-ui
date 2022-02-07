@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/timex/user-vacation-replace-work-requests-service";
+import service from "../../../../services/official/timex/user-mission-replace-work-requests-service";
 import {
   getSorter,
   checkAccess,
@@ -16,12 +16,12 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import VacationReplaceWorkRequestSearchModal from "./user-vacation-replace-work-request-search-modal";
-import VacationReplaceWorkRequestDetailsModal from "./user-vacation-replace-work-request-details-modal";
+import MissionReplaceWorkRequestSearchModal from "./user-mission-replace-work-request-search-modal";
+import MissionReplaceWorkRequestDetailsModal from "./user-mission-replace-work-request-details-modal";
 
 const { Text } = Typography;
 
-const getVacationStatusColor = (statusID) => {
+const getMissionStatusColor = (statusID) => {
   let color = Colors.grey[6];
 
   switch (statusID) {
@@ -39,7 +39,7 @@ const getVacationStatusColor = (statusID) => {
   return color;
 };
 
-const getVacationStatusTitle = (statusID) => {
+const getMissionStatusTitle = (statusID) => {
   let title = Words.in_progress;
 
   switch (statusID) {
@@ -59,17 +59,17 @@ const getVacationStatusTitle = (statusID) => {
 
 const getSheets = (records) => [
   {
-    title: "VacationReplaceWorkRequests",
+    title: "MissionReplaceWorkRequests",
     data: records,
     columns: [
-      { label: Words.id, value: "VacationID" },
+      { label: Words.id, value: "MissionID" },
       {
         label: Words.full_name,
         value: (record) => `${record.FirstName} ${record.LastName}`,
       },
       {
-        label: Words.vacation_type,
-        value: (record) => `${record.VacationTypeTitle}`,
+        label: Words.mission_type,
+        value: (record) => `${record.MissionTypeTitle}`,
       },
       {
         label: Words.reg_date,
@@ -101,7 +101,7 @@ const getSheets = (records) => [
       },
       {
         label: Words.status,
-        value: (record) => getVacationStatusTitle(record.FinalStatusID),
+        value: (record) => getMissionStatusTitle(record.FinalStatusID),
       },
     ],
   },
@@ -112,9 +112,9 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "VacationID",
-    sorter: getSorter("VacationID"),
-    render: (VacationID) => <Text>{utils.farsiNum(`${VacationID}`)}</Text>,
+    dataIndex: "MissionID",
+    sorter: getSorter("MissionID"),
+    render: (MissionID) => <Text>{utils.farsiNum(`${MissionID}`)}</Text>,
   },
   {
     title: Words.requester,
@@ -128,13 +128,13 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.vacation_type,
+    title: Words.mission_type,
     width: 120,
     align: "center",
-    dataIndex: "VacationTypeTitle",
-    sorter: getSorter("VacationTypeTitle"),
-    render: (VacationTypeTitle) => (
-      <Text style={{ color: Colors.blue[6] }}>{VacationTypeTitle}</Text>
+    dataIndex: "MissionTypeTitle",
+    sorter: getSorter("MissionTypeTitle"),
+    render: (MissionTypeTitle) => (
+      <Text style={{ color: Colors.blue[6] }}>{MissionTypeTitle}</Text>
     ),
   },
   {
@@ -204,8 +204,8 @@ const baseColumns = [
     dataIndex: "FinalStatusID",
     sorter: getSorter("FinalStatusID"),
     render: (FinalStatusID) => (
-      <Text style={{ color: getVacationStatusColor(FinalStatusID) }}>
-        {getVacationStatusTitle(FinalStatusID)}
+      <Text style={{ color: getMissionStatusColor(FinalStatusID) }}>
+        {getMissionStatusTitle(FinalStatusID)}
       </Text>
     ),
   },
@@ -214,9 +214,9 @@ const baseColumns = [
 const handleCheckEditable = (row) => row.Editable;
 const handleCheckDeletable = (row) => row.Deletable;
 
-const recordID = "VacationID";
+const recordID = "MissionID";
 
-const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
+const UserMissionReplaceWorkRequestsPage = ({ pageName }) => {
   const {
     progress,
     setProgress,
@@ -243,7 +243,7 @@ const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
 
     const default_filter_for_new_requests = {
       SearchTypeID: 1,
-      VacationTypeID: 0,
+      MissionTypeID: 0,
       FromDate: "",
       ToDate: "",
     };
@@ -309,9 +309,7 @@ const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
   const handleSaveResponse = async (response) => {
     const data = await service.saveResponse(response);
 
-    const index = records.findIndex(
-      (v) => (v.VacationID = response.VacationID)
-    );
+    const index = records.findIndex((m) => (m.MissionID = response.MissionID));
     records[index] = data;
     setSelectedObject(data);
 
@@ -323,9 +321,9 @@ const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.vacation_replace_work_requests}
+            title={Words.mission_replace_work_requests}
             sheets={getSheets(records)}
-            fileName="VacationReplaceWorkRequests"
+            fileName="MissionReplaceWorkRequests"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
@@ -341,7 +339,7 @@ const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
       </Spin>
 
       {showSearchModal && (
-        <VacationReplaceWorkRequestSearchModal
+        <MissionReplaceWorkRequestSearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
@@ -350,13 +348,13 @@ const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
       )}
 
       {showDetails && (
-        <VacationReplaceWorkRequestDetailsModal
+        <MissionReplaceWorkRequestDetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
           isOpen={showDetails}
-          vacation={selectedObject}
+          mission={selectedObject}
           onResponse={handleSaveResponse}
         />
       )}
@@ -364,4 +362,4 @@ const UserVacationReplaceWorkRequestsPage = ({ pageName }) => {
   );
 };
 
-export default UserVacationReplaceWorkRequestsPage;
+export default UserMissionReplaceWorkRequestsPage;
