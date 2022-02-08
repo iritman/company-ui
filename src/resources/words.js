@@ -214,6 +214,9 @@ class Words extends Component {
 
   static mission_targets = "مقصدهای ماموریت";
   static mission_target = "مقصد ماموریت";
+  static mission_target_type = "نوع مقصد";
+  static inside_province = "داخل استان";
+  static outside_province = "خارج از استان";
   static mission_subject = "موضوع ماموریت";
   static need_vehicle = "نیاز به وسیله نقلیه";
   static need_hoteling = "نیاز به اقامتگاه";

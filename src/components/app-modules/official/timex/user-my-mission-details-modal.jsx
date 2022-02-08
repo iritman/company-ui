@@ -39,6 +39,7 @@ const UserMyMissionDetailsModal = ({ mission, isOpen, onOk }) => {
     // MissionTypeID,
     MissionTypeTitle,
     TargetTitle,
+    InProvince,
     Subject,
     NeedVehicle,
     NeedHoteling,
@@ -133,17 +134,23 @@ const UserMyMissionDetailsModal = ({ mission, isOpen, onOk }) => {
           <Descriptions.Item label={Words.mission_type}>
             <Text style={{ color: Colors.green[6] }}>{MissionTypeTitle}</Text>
           </Descriptions.Item>
+          <Descriptions.Item label={Words.mission_subject} span={2}>
+            <Text style={{ color: Colors.orange[6] }}>{Subject}</Text>
+          </Descriptions.Item>
           <Descriptions.Item label={Words.mission_target}>
             <Text style={{ color: Colors.cyan[6] }}>{TargetTitle}</Text>
           </Descriptions.Item>
-          <Descriptions.Item label={Words.requirements}>
+          <Descriptions.Item label={Words.mission_target_type}>
+            <Text style={{ color: Colors.purple[6] }}>
+              {InProvince ? Words.inside_province : Words.outside_province}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.requirements} span={2}>
             <Text style={{ color: Colors.grey[6] }}>
               {getRequirementsTitle()}
             </Text>
           </Descriptions.Item>
-          <Descriptions.Item label={Words.mission_subject} span={2}>
-            <Text style={{ color: Colors.orange[6] }}>{Subject}</Text>
-          </Descriptions.Item>
+
           <Descriptions.Item label={Words.from_date}>
             <Text style={{ color: valueColor }}>
               {`${utils.weekDayNameFromText(StartDate)} ${utils.farsiNum(
