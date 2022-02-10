@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
+import { FaCar as CarIcon } from "react-icons/fa";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiFillBank as OrgIcon,
@@ -34,6 +35,11 @@ const mapper = (moduleID) => {
       icon = (
         <AutomationIcon style={{ color: Colors.red[6] }} size={iconSize} />
       );
+      break;
+
+    case 8:
+      link = "transmission";
+      icon = <CarIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
     default:

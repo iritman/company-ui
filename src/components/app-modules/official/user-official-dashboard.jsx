@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 // import { GoSettings as BasicSettingsIcon } from "react-icons/go";
+import { FaCar as CarIcon } from "react-icons/fa";
 import {
   AiOutlineFieldTime as TimexSettingsIcon,
   AiFillBank as OrgIcon,
@@ -38,6 +39,12 @@ const mapper = (moduleID) => {
       link = "automation";
       icon = <TimexSettingsIcon {...iconProps} />;
       backColor = Colors.red[3];
+      break;
+
+    case 8:
+      link = "transmission";
+      icon = <CarIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     default:

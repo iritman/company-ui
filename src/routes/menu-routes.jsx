@@ -13,6 +13,7 @@ import TransmissionMenu from "../components/menus/settings/transmission-menu";
 import UserOfficialMenu from "../components/menus/official/user-official-menu";
 import UserOrgMenu from "../components/menus/official/user-org-menu";
 import UserTimexMenu from "../components/menus/official/user-timex-menu";
+import UserTransmissionMenu from "../components/menus/official/user-transmission-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -47,6 +48,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/timex`}
         component={UserTimexMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/official/transmission`}
+        component={UserTransmissionMenu}
       />
       {/* ----------- */}
 
