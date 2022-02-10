@@ -335,6 +335,8 @@ class Words extends Component {
   //---
   static automation = "اتوماسیون اداری";
   //---
+  static transmission = "ترابری";
+  //---
 
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",

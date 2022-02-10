@@ -16,6 +16,8 @@ const BreadcrumbMap = ({ location }) => {
     //---
     "/home/official": Words.official,
     "/home/official/org": Words.org_structure,
+    "/home/official/timex": Words.timex,
+    "/home/official/transmission": Words.transmission,
   };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);
