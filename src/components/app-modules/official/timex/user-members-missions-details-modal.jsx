@@ -35,10 +35,16 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     PicFileName,
     RegDate,
     RegTime,
+    Subject,
+    // TargetID,
+    TargetTitle,
+    InProvince,
     DetailsText,
     // MissionTypeID,
     MissionTypeTitle,
     FormatID,
+    NeedVehicle,
+    NeedHoteling,
     StartDate,
     FinishDate,
     StartTime,
@@ -72,9 +78,26 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     OfficialResponseDate,
     OfficialResponseTime,
     OfficialDetailsText,
+    OfficialIsVehicleApproved,
+    OfficialIsHotelingApproved,
     // -----------------------
     // FinalStatusID,
   } = mission;
+
+  const getRequirementsTitle = () => {
+    let result = "-";
+
+    if (NeedVehicle || NeedHoteling) {
+      let requirements = [];
+
+      if (NeedVehicle) requirements = [...requirements, Words.vehicle];
+      if (NeedHoteling) requirements = [...requirements, Words.hoteling];
+
+      result = requirements.join(" - ");
+    }
+
+    return result;
+  };
 
   const steps = [
     {
@@ -92,16 +115,45 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
           }}
           size="middle"
         >
-          <Descriptions.Item label={Words.reg_date_time}>
+          <Descriptions.Item label={Words.reg_date}>
             <Text style={{ color: valueColor }}>
               {utils.farsiNum(
-                `${utils.slashDate(RegDate)} - ${utils.colonTime(RegTime)}`
+                `${utils.weekDayNameFromText(RegDate)} ${utils.slashDate(
+                  RegDate
+                )}`
               )}
             </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.reg_time}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(`${utils.colonTime(RegTime)}`)}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.swap_member}>
+            <Text
+              style={{ color: Colors.red[7] }}
+            >{`${SwapMemberFirstName} ${SwapMemberLastName}`}</Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.mission_type}>
             <Text style={{ color: Colors.green[6] }}>{MissionTypeTitle}</Text>
           </Descriptions.Item>
+          <Descriptions.Item label={Words.mission_subject} span={2}>
+            <Text style={{ color: Colors.orange[6] }}>{Subject}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.mission_target}>
+            <Text style={{ color: Colors.cyan[6] }}>{TargetTitle}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.mission_target_type}>
+            <Text style={{ color: Colors.purple[6] }}>
+              {InProvince ? Words.inside_province : Words.outside_province}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.requirements} span={2}>
+            <Text style={{ color: Colors.grey[6] }}>
+              {getRequirementsTitle()}
+            </Text>
+          </Descriptions.Item>
+
           <Descriptions.Item label={Words.from_date}>
             <Text style={{ color: valueColor }}>
               {`${utils.weekDayNameFromText(StartDate)} ${utils.farsiNum(
@@ -339,6 +391,41 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
                   {utils.farsiNum(`${utils.colonTime(OfficialResponseTime)}`)}
                 </Text>
               </Descriptions.Item>
+              <Descriptions.Item label={Words.vehicle}>
+                {NeedVehicle ? (
+                  <Text
+                    style={{
+                      color: OfficialIsVehicleApproved
+                        ? Colors.green[6]
+                        : Colors.red[6],
+                    }}
+                  >
+                    {OfficialIsVehicleApproved
+                      ? Words.accept_request
+                      : Words.reject_request}
+                  </Text>
+                ) : (
+                  <Text style={{ color: valueColor }}>{"-"}</Text>
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.hoteling}>
+                {NeedHoteling ? (
+                  <Text
+                    style={{
+                      color: OfficialIsHotelingApproved
+                        ? Colors.green[6]
+                        : Colors.red[6],
+                    }}
+                  >
+                    {OfficialIsHotelingApproved
+                      ? Words.accept_request
+                      : Words.reject_request}
+                  </Text>
+                ) : (
+                  <Text style={{ color: valueColor }}>{"-"}</Text>
+                )}
+              </Descriptions.Item>
+
               {OfficialDetailsText.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={2}>
                   <Text
