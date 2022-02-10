@@ -15,12 +15,12 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
-import ResponseModal from "./user-members-new-missions-check-manager-response-modal";
+import ResponseModal from "./user-members-new-missions-check-official-response-modal";
 
 const { Text } = Typography;
 const { Step } = Steps;
 
-const UserMembersNewMissionsCheckManagerDetailsModal = ({
+const UserMembersNewMissionsCheckOfficialDetailsModal = ({
   mission,
   isOpen,
   onOk,
@@ -261,13 +261,13 @@ const UserMembersNewMissionsCheckManagerDetailsModal = ({
     },
     {
       stepID: 2,
-      title: Words.your_response,
+      title: Words.manager_response,
       status: ManagerResponseDate.length > 0 ? "finish" : "wait",
       content: (
         <>
           {ManagerResponseDate.length === 0 ? (
             <Alert
-              message={Words.messages.your_response_not_submitted}
+              message={Words.messages.manager_response_not_submitted}
               type="warning"
               showIcon
             />
@@ -331,13 +331,13 @@ const UserMembersNewMissionsCheckManagerDetailsModal = ({
     },
     {
       stepID: 3,
-      title: Words.official_response,
+      title: Words.your_response,
       status: OfficialResponseDate.length > 0 ? "finish" : "wait",
       content: (
         <>
           {OfficialResponseDate.length === 0 ? (
             <Alert
-              message={Words.messages.official_response_not_submitted}
+              message={Words.messages.your_response_not_submitted}
               type="warning"
               showIcon
             />
@@ -352,13 +352,13 @@ const UserMembersNewMissionsCheckManagerDetailsModal = ({
               }}
               size="middle"
             >
-              <Descriptions.Item label={Words.reg_date_time}>
-                <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(
-                    `${utils.slashDate(
-                      OfficialResponseDate
-                    )} - ${utils.colonTime(OfficialResponseTime)}`
-                  )}
+              <Descriptions.Item label={Words.official_manager}>
+                <Text
+                  style={{
+                    color: Colors.cyan[7],
+                  }}
+                >
+                  {`${OfficialMemberFirstName} ${OfficialMemberLastName}`}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.status}>
@@ -370,13 +370,18 @@ const UserMembersNewMissionsCheckManagerDetailsModal = ({
                   {OfficialIsAccepted ? Words.accepted : Words.rejected}
                 </Text>
               </Descriptions.Item>
-              <Descriptions.Item label={Words.official_manager} span={2}>
-                <Text
-                  style={{
-                    color: Colors.cyan[7],
-                  }}
-                >
-                  {`${OfficialMemberFirstName} ${OfficialMemberLastName}`}
+              <Descriptions.Item label={Words.reg_date}>
+                <Text style={{ color: valueColor }}>
+                  {`${utils.weekDayNameFromText(
+                    OfficialResponseDate
+                  )} - ${utils.farsiNum(
+                    `${utils.slashDate(OfficialResponseDate)}`
+                  )}`}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_time}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(`${utils.colonTime(OfficialResponseTime)}`)}
                 </Text>
               </Descriptions.Item>
               {OfficialDetailsText.length > 0 && (
@@ -405,7 +410,11 @@ const UserMembersNewMissionsCheckManagerDetailsModal = ({
       </Button>,
     ];
 
-    if (SwapResponseDate.length > 0 && ManagerResponseDate.length === 0) {
+    if (
+      SwapResponseDate.length > 0 &&
+      ManagerResponseDate.length > 0 &&
+      OfficialResponseDate.length === 0
+    ) {
       footerButtons = [
         <Button
           key="submit-button"
@@ -493,4 +502,4 @@ const UserMembersNewMissionsCheckManagerDetailsModal = ({
   );
 };
 
-export default UserMembersNewMissionsCheckManagerDetailsModal;
+export default UserMembersNewMissionsCheckOfficialDetailsModal;

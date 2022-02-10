@@ -193,6 +193,8 @@ class Words extends Component {
   static in_progress = "درحال بررسی";
   static accepted = "تایید شده";
   static rejected = "رد شده";
+  static accept_request = "تایید درخواست";
+  static reject_request = "رد درخواست";
   static search_type = "نوع جستجو";
   static submit_response = "ثبت پاسخ";
   static your_response = "پاسخ شما";
@@ -208,6 +210,8 @@ class Words extends Component {
   static request_status = "وضعیت درخواست";
   static in_province = "داخل استان";
   static requirements = "نیازمندی ها";
+
+  static approved_and_reg_vehicle_request = "تایید و ثبت درخواست نقلیه";
 
   static i_need = "دارم";
   static i_dont_need = "ندارم";

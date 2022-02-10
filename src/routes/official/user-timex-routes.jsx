@@ -15,8 +15,9 @@ import UserMembersRegedCardsPage from "../../components/app-modules/official/tim
 import UserMembersWorkShiftsPage from "../../components/app-modules/official/timex/user-members-work-shifts-page";
 import UserMembersNewVacationsCheckManagerPage from "../../components/app-modules/official/timex/user-members-new-vacations-check-manager-page";
 import UserMembersNewVacationsCheckOfficialPage from "../../components/app-modules/official/timex/user-members-new-vacations-check-official-page";
-import UserMembersNewMissionsCheckManagerPage from "../../components/app-modules/official/timex/user-members-new-missions-check-manager-page";
 import UserMembersVacationsPage from "../../components/app-modules/official/timex/user-members-vacations-page";
+import UserMembersNewMissionsCheckManagerPage from "../../components/app-modules/official/timex/user-members-new-missions-check-manager-page";
+import UserMembersNewMissionsCheckOfficialPage from "../../components/app-modules/official/timex/user-members-new-missions-check-official-page";
 //---
 
 const modulePath = "official/timex";
@@ -101,6 +102,13 @@ const UserOrgRoutes = ({ path }) => {
         )}
       />
       <ProtectedRoute
+        path={`${path}/${modulePath}/members-vacations`}
+        exact
+        render={() => (
+          <UserMembersVacationsPage pageName="user-MembersVacations" />
+        )}
+      />
+      <ProtectedRoute
         path={`${path}/${modulePath}/members-new-missions-check-manager`}
         exact
         render={() => (
@@ -108,10 +116,10 @@ const UserOrgRoutes = ({ path }) => {
         )}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/members-vacations`}
+        path={`${path}/${modulePath}/members-new-missions-check-official`}
         exact
         render={() => (
-          <UserMembersVacationsPage pageName="user-MembersVacations" />
+          <UserMembersNewMissionsCheckOfficialPage pageName="user-MembersNewMissionsCheckOfficial" />
         )}
       />
       {/* --- */}
