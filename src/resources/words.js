@@ -210,6 +210,7 @@ class Words extends Component {
   static request_status = "وضعیت درخواست";
   static in_province = "داخل استان";
   static requirements = "نیازمندی ها";
+  static transmission_manager = "مسئول ترابری";
 
   static approved_and_reg_vehicle_request = "تایید و ثبت درخواست نقلیه";
 
@@ -269,6 +270,14 @@ class Words extends Component {
   static members_missions_check_official = "ماموریت های جدید بررسی اداری";
   static requester = "متقاضی";
   static vacation_requests = "درخواست های مرخصی";
+  static request_reg_date = "تاریخ درخواست";
+  static request_reg_time = "زمان درخواست";
+  static transfer_type = "نوع ترابری";
+  static request_from_date = "درخواست از تاریخ";
+  static request_to_date = "درخواست تا تاریخ";
+  static mission_from_date = "ماموریت از تاریخ";
+  static mission_to_date = "ماموریت تا تاریخ";
+  static request_type = "نوع درخواست";
 
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";
@@ -331,11 +340,11 @@ class Words extends Component {
   static holidays = "تعطیلات";
   //---
   static page_accesses = "دسترسی صفحات";
-
   //---
   static automation = "اتوماسیون اداری";
   //---
   static transmission = "ترابری";
+  static transmission_requests = "درخواست های نقلیه";
   //---
 
   static messages = {

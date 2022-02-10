@@ -3,9 +3,7 @@ import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import UserTransmissionDashboard from "../../components/app-modules/official/transmission/user-transmission-dashboard";
-// import UserOrgChartPage from "../../components/app-modules/official/org/user-org-chart-page";
-// import UserDutiesPage from "../../components/app-modules/official/org/user-duties-page";
-// import UserMembersDutiesPage from "../../components/app-modules/official/org/user-members-duties-page";
+import UserTransmissionRequestsPage from "../../components/app-modules/official/transmission/user-transmission-requests-page";
 //---
 
 const modulePath = "official/transmission";
@@ -18,21 +16,13 @@ const UserTransmissionRoutes = ({ path }) => {
         exact
         component={UserTransmissionDashboard}
       />
-      {/* <ProtectedRoute
-        path={`${path}/${modulePath}/org-chart`}
-        exact
-        render={() => <UserOrgChartPage pageName="user-OrgChart" />}
-      />
       <ProtectedRoute
-        path={`${path}/${modulePath}/my-duties`}
+        path={`${path}/${modulePath}/transmission-requests`}
         exact
-        render={() => <UserDutiesPage pageName="user-Duties" />}
+        render={() => (
+          <UserTransmissionRequestsPage pageName="user-TransmissionRequests" />
+        )}
       />
-      <ProtectedRoute
-        path={`${path}/${modulePath}/members-duties`}
-        exact
-        render={() => <UserMembersDutiesPage pageName="user-MembersDuties" />}
-      /> */}
       <Redirect to="/not-found" />
     </Switch>
   );

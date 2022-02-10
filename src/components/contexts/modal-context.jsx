@@ -39,6 +39,8 @@ const ModalContextProvider = ({ children }) => {
   const [brands, setBrands] = useState([]);
   const [models, setModels] = useState([]);
   const [types, setTypes] = useState([]);
+  const [transferTypes, setTransferTypes] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [fileList, setFileList] = useState({});
 
   const contextValue = {
@@ -110,6 +112,10 @@ const ModalContextProvider = ({ children }) => {
     setModels,
     types,
     setTypes,
+    transferTypes,
+    setTransferTypes,
+    vehicles,
+    setVehicles,
     fileList,
     setFileList,
   };

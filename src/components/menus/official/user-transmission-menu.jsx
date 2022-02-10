@@ -17,7 +17,7 @@ const mapper = (pageID) => {
 
   switch (pageID) {
     case 60:
-      link = "transmission-chart";
+      link = "transmission-requests";
       icon = (
         <RequestIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
