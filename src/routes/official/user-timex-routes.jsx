@@ -18,6 +18,7 @@ import UserMembersNewVacationsCheckOfficialPage from "../../components/app-modul
 import UserMembersVacationsPage from "../../components/app-modules/official/timex/user-members-vacations-page";
 import UserMembersNewMissionsCheckManagerPage from "../../components/app-modules/official/timex/user-members-new-missions-check-manager-page";
 import UserMembersNewMissionsCheckOfficialPage from "../../components/app-modules/official/timex/user-members-new-missions-check-official-page";
+import UserMembersMissionsPage from "../../components/app-modules/official/timex/user-members-missions-page";
 //---
 
 const modulePath = "official/timex";
@@ -120,6 +121,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserMembersNewMissionsCheckOfficialPage pageName="user-MembersNewMissionsCheckOfficial" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/members-missions`}
+        exact
+        render={() => (
+          <UserMembersMissionsPage pageName="user-MembersMissions" />
         )}
       />
       {/* --- */}

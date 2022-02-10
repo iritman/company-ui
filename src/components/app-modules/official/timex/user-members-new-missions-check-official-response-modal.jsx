@@ -33,6 +33,8 @@ const schema = {
 
 const initRecord = {
   IsAccepted: false,
+  VehicleApproved: false,
+  HotelingApproved: false,
   DetailsText: "",
 };
 
