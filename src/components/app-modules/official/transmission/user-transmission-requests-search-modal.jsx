@@ -22,6 +22,7 @@ const schema = {
   SearchTypeID: Joi.number().min(1).required().label(Words.search_type),
   MemberID: Joi.number(),
   MissionTypeID: Joi.number(),
+  TargetID: Joi.number(),
   RequestFromDate: Joi.string().allow(""),
   RequestToDate: Joi.string().allow(""),
   MissionFromDate: Joi.string().allow(""),
@@ -32,6 +33,7 @@ const initRecord = {
   SearchTypeID: 0,
   MemberID: 0,
   MissionTypeID: 0,
+  TargetID: 0,
   RequestFromDate: "",
   RequestToDate: "",
   MissionFromDate: "",
@@ -59,6 +61,8 @@ const UserTransmissionRequestsSearchModal = ({
     setSearchTypes,
     missionTypes,
     setMissionTypes,
+    missionTargets,
+    setMissionTargets,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -75,6 +79,7 @@ const UserTransmissionRequestsSearchModal = ({
     record.SearchTypeID = 0;
     record.MemberID = 0;
     record.MissionTypeID = 0;
+    record.TargetID = 0;
     record.RequestFromDate = "";
     record.RequestToDate = "";
     record.MissionFromDate = "";
@@ -95,10 +100,11 @@ const UserTransmissionRequestsSearchModal = ({
     try {
       const data = await service.getParams();
 
-      const { SearchTypes, MissionTypes, Members } = data;
+      const { SearchTypes, MissionTypes, Targets, Members } = data;
 
       setSearchTypes(SearchTypes);
       setMissionTypes(MissionTypes);
+      setMissionTargets(Targets);
       setMembers(Members);
     } catch (err) {
       handleError(err);
@@ -115,7 +121,7 @@ const UserTransmissionRequestsSearchModal = ({
       onClear={clearRecord}
       onSubmit={() => onOk(record)}
       onCancel={onCancel}
-      width={650}
+      width={750}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
@@ -139,12 +145,21 @@ const UserTransmissionRequestsSearchModal = ({
               required
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.employee}
               dataSource={members}
               keyColumn="MemberID"
               valueColumn="FullName"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.mission_target}
+              dataSource={missionTargets}
+              keyColumn="TargetID"
+              valueColumn="Title"
               formConfig={formConfig}
             />
           </Col>
