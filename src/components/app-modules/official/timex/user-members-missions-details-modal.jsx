@@ -8,6 +8,7 @@ import {
   Space,
   Alert,
   Steps,
+  Divider,
   Descriptions,
 } from "antd";
 import Words from "../../../../resources/words";
@@ -81,6 +82,8 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     OfficialIsVehicleApproved,
     OfficialIsHotelingApproved,
     // -----------------------
+    VehicleInfo,
+    // -----------------------
     // FinalStatusID,
   } = mission;
 
@@ -99,7 +102,7 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     return result;
   };
 
-  const steps = [
+  let steps = [
     {
       stepID: 0,
       title: Words.request_info,
@@ -444,6 +447,77 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
       ),
     },
   ];
+
+  if (NeedVehicle && OfficialIsVehicleApproved) {
+    steps = [
+      ...steps,
+      {
+        stepID: 4,
+        title: Words.transmission,
+        status: VehicleInfo.TransferTypeID > 0 ? "finish" : "wait",
+        content: (
+          <>
+            {VehicleInfo.TransferTypeID === 0 ? (
+              <Alert
+                message={Words.messages.transmission_response_not_submitted}
+                type="warning"
+                showIcon
+              />
+            ) : (
+              <Descriptions
+                bordered
+                column={{
+                  //   md: 2, sm: 2,
+                  lg: 2,
+                  md: 2,
+                  xs: 1,
+                }}
+                size="middle"
+              >
+                <Descriptions.Item label={Words.transfer_type} span={2}>
+                  <Text style={{ color: Colors.cyan[6] }}>
+                    {VehicleInfo.TransferTypeID === 1
+                      ? utils.farsiNum(
+                          `${VehicleInfo.VehicleTypeTitle} ${VehicleInfo.BrandTitle} ${VehicleInfo.ModelTitle} - ${VehicleInfo.Pelak}`
+                        )
+                      : VehicleInfo.TransferTypeTitle}
+                  </Text>
+                </Descriptions.Item>
+
+                {DetailsText.length > 0 && (
+                  <Descriptions.Item label={Words.descriptions} span={2}>
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(VehicleInfo.DetailsText)}
+                    </Text>
+                  </Descriptions.Item>
+                )}
+
+                <Descriptions.Item label={Words.transmission_manager}>
+                  <Text style={{ color: valueColor }}>
+                    {`${VehicleInfo.RegFirstName} ${VehicleInfo.RegLastName}`}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.reg_date_time}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(
+                      `${utils.slashDate(
+                        VehicleInfo.RegDate
+                      )} - ${utils.colonTime(VehicleInfo.RegTime)}`
+                    )}
+                  </Text>
+                </Descriptions.Item>
+              </Descriptions>
+            )}
+          </>
+        ),
+      },
+    ];
+  }
 
   return (
     <Modal

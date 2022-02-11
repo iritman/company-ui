@@ -247,6 +247,7 @@ const UserTransmissionRequestsPage = ({ pageName }) => {
       SearchTypeID: 1,
       MemberID: 0,
       MissionTypeID: 0,
+      TargetID: 0,
       RequestFromDate: "",
       RequestToDate: "",
       MissionFromDate: "",

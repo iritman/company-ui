@@ -362,6 +362,7 @@ class Words extends Component {
       "پاسخ جانشین انتخابی کاربر ثبت نشده است",
     manager_response_not_submitted: "پاسخ مدیر ثبت نشده است",
     official_response_not_submitted: "پاسخ مسئول اداری ثبت نشده است",
+    transmission_response_not_submitted: "پاسخ مسئول ترابری ثبت نشده است",
   };
 
   static questions = {
