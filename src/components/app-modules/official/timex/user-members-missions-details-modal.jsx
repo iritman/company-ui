@@ -8,7 +8,6 @@ import {
   Space,
   Alert,
   Steps,
-  Divider,
   Descriptions,
 } from "antd";
 import Words from "../../../../resources/words";

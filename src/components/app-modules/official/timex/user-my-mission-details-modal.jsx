@@ -71,12 +71,16 @@ const UserMyMissionDetailsModal = ({ mission, isOpen, onOk }) => {
     ManagerDetailsText,
     // -----------------------
     // OfficialMemberID,
-    // OfficialMemberFirstName,
-    // OfficialMemberLastName,
-    // OfficialIsAccepted,
-    // OfficialResponseDate,
-    // OfficialResponseTime,
-    // OfficialDetailsText,
+    OfficialMemberFirstName,
+    OfficialMemberLastName,
+    OfficialIsAccepted,
+    OfficialResponseDate,
+    OfficialResponseTime,
+    OfficialDetailsText,
+    OfficialIsVehicleApproved,
+    OfficialIsHotelingApproved,
+    // -----------------------
+    VehicleInfo,
     // -----------------------
     // FinalStatusID,
   } = mission;
@@ -96,7 +100,7 @@ const UserMyMissionDetailsModal = ({ mission, isOpen, onOk }) => {
     return result;
   };
 
-  const steps = [
+  let steps = [
     {
       stepID: 0,
       title: Words.request_info,
@@ -342,74 +346,185 @@ const UserMyMissionDetailsModal = ({ mission, isOpen, onOk }) => {
         </>
       ),
     },
-    // {
-    //   stepID: 3,
-    //   title: Words.official_response,
-    //   status: OfficialResponseDate.length > 0 ? "finish" : "wait",
-    //   content: (
-    //     <>
-    //       {OfficialResponseDate.length === 0 ? (
-    //         <Alert
-    //           message={Words.messages.official_response_not_submitted}
-    //           type="warning"
-    //           showIcon
-    //         />
-    //       ) : (
-    //         <Descriptions
-    //           bordered
-    //           column={{
-    //             //   md: 2, sm: 2,
-    //             lg: 2,
-    //             md: 2,
-    //             xs: 1,
-    //           }}
-    //           size="middle"
-    //         >
-    //           <Descriptions.Item label={Words.reg_date_time}>
-    //             <Text style={{ color: valueColor }}>
-    //               {utils.farsiNum(
-    //                 `${utils.slashDate(
-    //                   OfficialResponseDate
-    //                 )} - ${utils.colonTime(OfficialResponseTime)}`
-    //               )}
-    //             </Text>
-    //           </Descriptions.Item>
-    //           <Descriptions.Item label={Words.status}>
-    //             <Text
-    //               style={{
-    //                 color: OfficialIsAccepted ? Colors.green[6] : Colors.red[6],
-    //               }}
-    //             >
-    //               {OfficialIsAccepted ? Words.accepted : Words.rejected}
-    //             </Text>
-    //           </Descriptions.Item>
-    //           <Descriptions.Item label={Words.official_manager} span={2}>
-    //             <Text
-    //               style={{
-    //                 color: Colors.cyan[7],
-    //               }}
-    //             >
-    //               {`${OfficialMemberFirstName} ${OfficialMemberLastName}`}
-    //             </Text>
-    //           </Descriptions.Item>
-    //           {OfficialDetailsText.length > 0 && (
-    //             <Descriptions.Item label={Words.descriptions} span={2}>
-    //               <Text
-    //                 style={{
-    //                   color: Colors.purple[7],
-    //                   whiteSpace: "pre-line",
-    //                 }}
-    //               >
-    //                 {utils.farsiNum(OfficialDetailsText)}
-    //               </Text>
-    //             </Descriptions.Item>
-    //           )}
-    //         </Descriptions>
-    //       )}
-    //     </>
-    //   ),
-    // },
+    {
+      stepID: 3,
+      title: Words.official_response,
+      status: OfficialResponseDate.length > 0 ? "finish" : "wait",
+      content: (
+        <>
+          {OfficialResponseDate.length === 0 ? (
+            <Alert
+              message={Words.messages.official_response_not_submitted}
+              type="warning"
+              showIcon
+            />
+          ) : (
+            <Descriptions
+              bordered
+              column={{
+                //   md: 2, sm: 2,
+                lg: 2,
+                md: 2,
+                xs: 1,
+              }}
+              size="middle"
+            >
+              <Descriptions.Item label={Words.official_manager}>
+                <Text
+                  style={{
+                    color: Colors.cyan[7],
+                  }}
+                >
+                  {`${OfficialMemberFirstName} ${OfficialMemberLastName}`}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.status}>
+                <Text
+                  style={{
+                    color: OfficialIsAccepted ? Colors.green[6] : Colors.red[6],
+                  }}
+                >
+                  {OfficialIsAccepted ? Words.accepted : Words.rejected}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_date}>
+                <Text style={{ color: valueColor }}>
+                  {`${utils.weekDayNameFromText(
+                    OfficialResponseDate
+                  )} - ${utils.farsiNum(
+                    `${utils.slashDate(OfficialResponseDate)}`
+                  )}`}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_time}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(`${utils.colonTime(OfficialResponseTime)}`)}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.vehicle}>
+                {NeedVehicle ? (
+                  <Text
+                    style={{
+                      color: OfficialIsVehicleApproved
+                        ? Colors.green[6]
+                        : Colors.red[6],
+                    }}
+                  >
+                    {OfficialIsVehicleApproved
+                      ? Words.accept_request
+                      : Words.reject_request}
+                  </Text>
+                ) : (
+                  <Text style={{ color: valueColor }}>{"-"}</Text>
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.hoteling}>
+                {NeedHoteling ? (
+                  <Text
+                    style={{
+                      color: OfficialIsHotelingApproved
+                        ? Colors.green[6]
+                        : Colors.red[6],
+                    }}
+                  >
+                    {OfficialIsHotelingApproved
+                      ? Words.accept_request
+                      : Words.reject_request}
+                  </Text>
+                ) : (
+                  <Text style={{ color: valueColor }}>{"-"}</Text>
+                )}
+              </Descriptions.Item>
+
+              {OfficialDetailsText.length > 0 && (
+                <Descriptions.Item label={Words.descriptions} span={2}>
+                  <Text
+                    style={{
+                      color: Colors.purple[7],
+                      whiteSpace: "pre-line",
+                    }}
+                  >
+                    {utils.farsiNum(OfficialDetailsText)}
+                  </Text>
+                </Descriptions.Item>
+              )}
+            </Descriptions>
+          )}
+        </>
+      ),
+    },
   ];
+
+  if (NeedVehicle && OfficialIsVehicleApproved) {
+    steps = [
+      ...steps,
+      {
+        stepID: 4,
+        title: Words.transmission,
+        status: VehicleInfo.TransferTypeID > 0 ? "finish" : "wait",
+        content: (
+          <>
+            {VehicleInfo.TransferTypeID === 0 ? (
+              <Alert
+                message={Words.messages.transmission_response_not_submitted}
+                type="warning"
+                showIcon
+              />
+            ) : (
+              <Descriptions
+                bordered
+                column={{
+                  //   md: 2, sm: 2,
+                  lg: 2,
+                  md: 2,
+                  xs: 1,
+                }}
+                size="middle"
+              >
+                <Descriptions.Item label={Words.transfer_type} span={2}>
+                  <Text style={{ color: Colors.cyan[6] }}>
+                    {VehicleInfo.TransferTypeID === 1
+                      ? utils.farsiNum(
+                          `${VehicleInfo.VehicleTypeTitle} ${VehicleInfo.BrandTitle} ${VehicleInfo.ModelTitle} - ${VehicleInfo.Pelak}`
+                        )
+                      : VehicleInfo.TransferTypeTitle}
+                  </Text>
+                </Descriptions.Item>
+
+                {DetailsText.length > 0 && (
+                  <Descriptions.Item label={Words.descriptions} span={2}>
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(VehicleInfo.DetailsText)}
+                    </Text>
+                  </Descriptions.Item>
+                )}
+
+                <Descriptions.Item label={Words.transmission_manager}>
+                  <Text style={{ color: valueColor }}>
+                    {`${VehicleInfo.RegFirstName} ${VehicleInfo.RegLastName}`}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.reg_date_time}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(
+                      `${utils.slashDate(
+                        VehicleInfo.RegDate
+                      )} - ${utils.colonTime(VehicleInfo.RegTime)}`
+                    )}
+                  </Text>
+                </Descriptions.Item>
+              </Descriptions>
+            )}
+          </>
+        ),
+      },
+    ];
+  }
 
   return (
     <Modal
