@@ -7,6 +7,7 @@ import {
   Typography,
   Space,
   Alert,
+  Divider,
   Descriptions,
 } from "antd";
 import { PlusOutlined as PlusIcon } from "@ant-design/icons";
@@ -192,31 +193,45 @@ const UserTransmissionRequestsDetailsModal = ({
                       )}
                     </Text>
                   </Descriptions.Item>
-                  {TransferTypeID > 0 && (
-                    <Descriptions.Item label={Words.transfer_type} span={2}>
-                      <Text style={{ color: Colors.cyan[6] }}>
-                        {TransferTypeID === 1
-                          ? utils.farsiNum(
-                              `${VehicleTypeTitle} ${BrandTitle} ${ModelTitle} - ${Pelak}`
-                            )
-                          : TransferTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                  )}
-                  {DetailsText.length > 0 && (
-                    <Descriptions.Item label={Words.descriptions} span={2}>
-                      <Text
-                        style={{
-                          color: Colors.purple[7],
-                          whiteSpace: "pre-line",
-                        }}
-                      >
-                        {utils.farsiNum(DetailsText)}
-                      </Text>
-                    </Descriptions.Item>
-                  )}
-                  {TransferTypeID > 0 && (
-                    <>
+                </Descriptions>
+                {TransferTypeID > 0 && (
+                  <>
+                    <Divider orientation="right" plain>
+                      {Words.transmission_info}
+                    </Divider>
+                    <Descriptions
+                      bordered
+                      column={{
+                        //   md: 2, sm: 2,
+                        lg: 2,
+                        md: 2,
+                        xs: 1,
+                      }}
+                      size="middle"
+                    >
+                      <Descriptions.Item label={Words.transfer_type} span={2}>
+                        <Text style={{ color: Colors.cyan[6] }}>
+                          {TransferTypeID === 1
+                            ? utils.farsiNum(
+                                `${VehicleTypeTitle} ${BrandTitle} ${ModelTitle} - ${Pelak}`
+                              )
+                            : TransferTypeTitle}
+                        </Text>
+                      </Descriptions.Item>
+
+                      {DetailsText.length > 0 && (
+                        <Descriptions.Item label={Words.descriptions} span={2}>
+                          <Text
+                            style={{
+                              color: Colors.purple[7],
+                              whiteSpace: "pre-line",
+                            }}
+                          >
+                            {utils.farsiNum(DetailsText)}
+                          </Text>
+                        </Descriptions.Item>
+                      )}
+
                       <Descriptions.Item label={Words.transmission_manager}>
                         <Text style={{ color: valueColor }}>
                           {`${RegFirstName} ${RegLastName}`}
@@ -231,9 +246,9 @@ const UserTransmissionRequestsDetailsModal = ({
                           )}
                         </Text>
                       </Descriptions.Item>
-                    </>
-                  )}
-                </Descriptions>
+                    </Descriptions>
+                  </>
+                )}
               </Col>
             </Row>
           </article>

@@ -211,6 +211,7 @@ class Words extends Component {
   static in_province = "داخل استان";
   static requirements = "نیازمندی ها";
   static transmission_manager = "مسئول ترابری";
+  static transmission_info = "اطلاعات ترابری";
 
   static approved_and_reg_vehicle_request = "تایید و ثبت درخواست نقلیه";
 
