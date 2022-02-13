@@ -154,7 +154,7 @@ const UserMyMissionsReportModal = ({
         )}
       </>,
 
-      <Button key="close-button" onClick={onOk}>
+      <Button key="close-button" onClick={onCancel}>
         {Words.close}
       </Button>,
     ];
