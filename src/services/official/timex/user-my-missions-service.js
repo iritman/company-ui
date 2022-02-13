@@ -21,6 +21,12 @@ export async function saveData(record) {
   return data;
 }
 
+export async function saveReport(record) {
+  const { data } = await http.post(`${apiEndpoint}/report`, record);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -31,6 +37,7 @@ const service = {
   getParams,
   searchData,
   saveData,
+  saveReport,
   deleteData,
 };
 

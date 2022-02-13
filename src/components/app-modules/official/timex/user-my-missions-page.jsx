@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button, Space } from "antd";
+import { Spin, Row, Col, Typography, Button, Space, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
@@ -304,6 +304,16 @@ const UserMyMissionsPage = ({ pageName }) => {
 
   //------
 
+  const handleSaveResponse = async (report) => {
+    const data = await service.saveReport(report);
+
+    const index = records.findIndex((m) => (m.MissionID = report.MissionID));
+    records[index] = data;
+    setSelectedObject(data);
+
+    message.success(Words.messages.your_report_submitted);
+  };
+
   return (
     <>
       <Spin spinning={progress}>
@@ -352,6 +362,7 @@ const UserMyMissionsPage = ({ pageName }) => {
           }}
           isOpen={showDetails}
           mission={selectedObject}
+          onResponse={handleSaveResponse}
         />
       )}
     </>

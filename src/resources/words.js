@@ -212,6 +212,8 @@ class Words extends Component {
   static requirements = "نیازمندی ها";
   static transmission_manager = "مسئول ترابری";
   static transmission_info = "اطلاعات ترابری";
+  static mission_report = "گزارش ماموریت";
+  static report_text = "متن گزارش";
 
   static approved_and_reg_vehicle_request = "تایید و ثبت درخواست نقلیه";
 
@@ -363,6 +365,8 @@ class Words extends Component {
     manager_response_not_submitted: "پاسخ مدیر ثبت نشده است",
     official_response_not_submitted: "پاسخ مسئول اداری ثبت نشده است",
     transmission_response_not_submitted: "پاسخ مسئول ترابری ثبت نشده است",
+    your_report_submitted: "گزارش شما ثبت شد",
+    no_report_submitted_yet: "گزارشی ثبت نشده است",
   };
 
   static questions = {
@@ -373,6 +377,7 @@ class Words extends Component {
     sure_to_submit_response_for_replace_work_request:
       "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",
     sure_to_submit_response: "برای ثبت پاسخ درخواست اطمینان دارید؟",
+    sure_to_submit_report: "برای ثبت گزارش اطمینان دارید؟",
   };
 
   static monthes = {
