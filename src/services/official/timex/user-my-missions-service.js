@@ -33,12 +33,19 @@ export async function deleteData(recordID) {
   return data;
 }
 
+export async function deleteReport(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
+
+  return data;
+}
+
 const service = {
   getParams,
   searchData,
   saveData,
   saveReport,
   deleteData,
+  deleteReport,
 };
 
 export default service;

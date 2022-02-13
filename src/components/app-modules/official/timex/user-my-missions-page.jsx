@@ -304,14 +304,26 @@ const UserMyMissionsPage = ({ pageName }) => {
 
   //------
 
-  const handleSaveResponse = async (report) => {
+  const handleSaveReport = async (report) => {
     const data = await service.saveReport(report);
 
     const index = records.findIndex((m) => (m.MissionID = report.MissionID));
     records[index] = data;
+
     setSelectedObject(data);
 
     message.success(Words.messages.your_report_submitted);
+  };
+
+  const handleDeleteReport = async (report) => {
+    const data = await service.deleteReport(report.ReportID);
+
+    const index = records.findIndex((m) => (m.MissionID = report.MissionID));
+    records[index] = data;
+
+    setSelectedObject(data);
+
+    message.success(Words.messages.your_report_deleted);
   };
 
   return (
@@ -362,7 +374,8 @@ const UserMyMissionsPage = ({ pageName }) => {
           }}
           isOpen={showDetails}
           mission={selectedObject}
-          onResponse={handleSaveResponse}
+          onSaveReport={handleSaveReport}
+          onDeleteReport={handleDeleteReport}
         />
       )}
     </>

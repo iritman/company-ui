@@ -20,7 +20,13 @@ import ReportModal from "./user-my-missions-report-modal";
 const { Text } = Typography;
 const { Step } = Steps;
 
-const UserMyMissionDetailsModal = ({ onResponse, mission, isOpen, onOk }) => {
+const UserMyMissionDetailsModal = ({
+  onSaveReport,
+  onDeleteReport,
+  mission,
+  isOpen,
+  onOk,
+}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
@@ -615,7 +621,8 @@ const UserMyMissionDetailsModal = ({ onResponse, mission, isOpen, onOk }) => {
 
       {showModal && (
         <ReportModal
-          onOk={onResponse}
+          onOk={onSaveReport}
+          onDelete={onDeleteReport}
           onCancel={() => setShowModal(false)}
           isOpen={showModal}
           mission={mission}

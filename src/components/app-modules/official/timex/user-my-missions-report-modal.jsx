@@ -20,6 +20,8 @@ import {
   CheckCircleOutlined as ApprovedIcon,
   CloseCircleOutlined as CloseIcon,
   FieldTimeOutlined as WaitingIcon,
+  DeleteOutlined as DeleteIcon,
+  ThunderboltOutlined as CorrectionIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import Words from "../../../../resources/words";
@@ -54,7 +56,13 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserMyMissionsReportModal = ({ isOpen, mission, onOk, onCancel }) => {
+const UserMyMissionsReportModal = ({
+  isOpen,
+  mission,
+  onOk,
+  onDelete,
+  onCancel,
+}) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
@@ -89,11 +97,26 @@ const UserMyMissionsReportModal = ({ isOpen, mission, onOk, onCancel }) => {
     try {
       record.MissionID = mission.MissionID;
       await onOk(record);
-      onCancel();
+
+      clearRecord();
     } catch (err) {
       handleError(err);
-      setProgress(false);
     }
+
+    setProgress(false);
+  };
+
+  const handleDelete = async (record) => {
+    setProgress(true);
+
+    try {
+      record.MissionID = mission.MissionID;
+      await onDelete(record);
+    } catch (err) {
+      handleError(err);
+    }
+
+    setProgress(false);
   };
 
   const disabled = validateForm({ record, schema }) && true;
@@ -139,6 +162,63 @@ const UserMyMissionsReportModal = ({ isOpen, mission, onOk, onCancel }) => {
     return footerButtons;
   };
 
+  const genExtra = (report) => (
+    <>
+      {report.ManagerMemberID === 0 && (
+        <Popconfirm
+          title={Words.questions.sure_to_delete_report}
+          onConfirm={async () => await handleDelete(report)}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+          key="submit-confirm"
+        >
+          <DeleteIcon style={{ color: Colors.red[6] }} />
+        </Popconfirm>
+      )}
+    </>
+  );
+
+  const getStatusTag = (report) => {
+    let result = <></>;
+
+    switch (report.StatusID) {
+      case 1:
+        result = (
+          <Tag icon={<WaitingIcon />} color="warning">
+            {Words.in_progress}
+          </Tag>
+        );
+        break;
+
+      case 2:
+        result = (
+          <Tag icon={<ApprovedIcon />} color="success">
+            {Words.accepted}
+          </Tag>
+        );
+        break;
+
+      case 3:
+        <Tag icon={<CloseIcon />} color="error">
+          {Words.rejected}
+        </Tag>;
+        break;
+
+      case 4:
+        <Tag icon={<CorrectionIcon />} color="error">
+          {Words.need_correction}
+        </Tag>;
+        break;
+
+      default:
+        <></>;
+        break;
+    }
+
+    return result;
+  };
+
   return (
     <Modal
       visible={isOpen}
@@ -158,34 +238,26 @@ const UserMyMissionsReportModal = ({ isOpen, mission, onOk, onCancel }) => {
                   {mission.ReportInfo.map((report) => (
                     <Panel
                       header={
-                        <>
-                          <Tag icon={<CalendarIcon />} color="processing">
-                            {`${utils.weekDayNameFromText(
-                              report.RegDate
-                            )} ${utils.farsiNum(
-                              utils.slashDate(report.RegDate)
-                            )}`}
-                          </Tag>
-                          <Tag icon={<ClockIcon />} color="processing">
-                            {utils.farsiNum(utils.colonTime(report.RegTime))}
-                          </Tag>
-
-                          {report.IsAccepted ? (
-                            <Tag icon={<ApprovedIcon />} color="success">
-                              {Words.accepted}
+                        <Row gutter={[1, 5]}>
+                          <Col xs={24} md={17}>
+                            <Tag icon={<CalendarIcon />} color="processing">
+                              {`${utils.weekDayNameFromText(
+                                report.RegDate
+                              )} ${utils.farsiNum(
+                                utils.slashDate(report.RegDate)
+                              )}`}
                             </Tag>
-                          ) : report.ManagerMemberID > 0 ? (
-                            <Tag icon={<CloseIcon />} color="error">
-                              {Words.rejected}
+                            <Tag icon={<ClockIcon />} color="processing">
+                              {utils.farsiNum(utils.colonTime(report.RegTime))}
                             </Tag>
-                          ) : (
-                            <Tag icon={<WaitingIcon />} color="warning">
-                              {Words.in_progress}
-                            </Tag>
-                          )}
-                        </>
+                          </Col>
+                          <Col xs={24} md={7}>
+                            {getStatusTag(report)}
+                          </Col>
+                        </Row>
                       }
                       key="1"
+                      extra={genExtra(report)}
                     >
                       <Text
                         style={{
@@ -201,7 +273,7 @@ const UserMyMissionsReportModal = ({ isOpen, mission, onOk, onCancel }) => {
               ) : (
                 <Alert
                   message={Words.messages.no_report_submitted_yet}
-                  type="warn"
+                  type="warning"
                   showIcon
                 />
               )}
@@ -212,6 +284,7 @@ const UserMyMissionsReportModal = ({ isOpen, mission, onOk, onCancel }) => {
             <Col xs={24}>
               <InputItem
                 horizontal
+                autoFocus
                 title={Words.report_text}
                 fieldName="DetailsText"
                 formConfig={formConfig}
