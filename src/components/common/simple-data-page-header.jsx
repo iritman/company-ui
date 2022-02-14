@@ -88,13 +88,21 @@ const SimpleDataPageHeader = ({
           </Space>
         ) : (
           <Space>
-            <Button type="primary" icon={<SearchIcon />} onClick={onSearch}>
-              {Words.search}
-            </Button>
+            {onSearch && (
+              <Button type="primary" icon={<SearchIcon />} onClick={onSearch}>
+                {Words.search}
+              </Button>
+            )}
 
-            <Tooltip title={Words.clear}>
-              <Button type="primary" icon={<ReloadIcon />} onClick={onClear} />
-            </Tooltip>
+            {onClear && (
+              <Tooltip title={Words.clear}>
+                <Button
+                  type="primary"
+                  icon={<ReloadIcon />}
+                  onClick={onClear}
+                />
+              </Tooltip>
+            )}
           </Space>
         )}
       </Col>

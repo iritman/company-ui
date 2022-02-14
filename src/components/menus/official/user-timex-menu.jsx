@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
+// import { SnippetsOutlined as ReportIcon } from "@ant-design/icons";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiFillIdcard as MembersRegedCardIcon,
@@ -9,6 +10,7 @@ import {
 import {
   MdCardTravel as VacationIcon,
   MdOutlineWork as MissionIcon,
+  MdSpeakerNotes as ReportIcon,
 } from "react-icons/md";
 import { FaChartPie as WorkReportIcon } from "react-icons/fa";
 import { GiSwipeCard as RegedCardIcon } from "react-icons/gi";
@@ -149,6 +151,11 @@ const mapper = (pageID) => {
       icon = <MissionIcon style={{ color: Colors.red[3] }} size={iconSize} />;
       break;
 
+    case 61:
+      link = "members-new-mission-reports";
+      icon = <ReportIcon style={{ color: Colors.red[4] }} size={iconSize} />;
+      break;
+
     case 50:
       link = "members-work-report";
       icon = (
@@ -202,6 +209,7 @@ const tabs = [
       { pageName: "user-MembersVacations" },
       { pageName: "user-MembersNewVacationsCheckManager" },
       { pageName: "user-MembersNewVacationsCheckOfficial" },
+      { pageName: "user-MembersNewMissionReports" },
       { pageName: "user-MembersWorkReport" },
     ],
   },

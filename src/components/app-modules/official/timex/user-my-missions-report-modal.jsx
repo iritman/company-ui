@@ -239,7 +239,7 @@ const UserMyMissionsReportModal = ({
                     <Panel
                       header={
                         <Row gutter={[1, 5]}>
-                          <Col xs={24} md={17}>
+                          <Col xs={24} md={19}>
                             <Tag icon={<CalendarIcon />} color="processing">
                               {`${utils.weekDayNameFromText(
                                 report.RegDate
@@ -251,7 +251,7 @@ const UserMyMissionsReportModal = ({
                               {utils.farsiNum(utils.colonTime(report.RegTime))}
                             </Tag>
                           </Col>
-                          <Col xs={24} md={7}>
+                          <Col xs={24} md={5}>
                             {getStatusTag(report)}
                           </Col>
                         </Row>

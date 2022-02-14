@@ -15,12 +15,12 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
-import ReportModal from "./user-my-missions-report-modal";
+import ReportModal from "./user-members-mission-new-reports-modal";
 
 const { Text } = Typography;
 const { Step } = Steps;
 
-const UserMyMissionDetailsModal = ({
+const UserMembersMissionNewReportsDetailsModal = ({
   onSaveReport,
   onDeleteReport,
   mission,
@@ -44,15 +44,16 @@ const UserMyMissionDetailsModal = ({
     PicFileName,
     RegDate,
     RegTime,
+    Subject,
+    // TargetID,
+    TargetTitle,
+    InProvince,
     DetailsText,
     // MissionTypeID,
     MissionTypeTitle,
-    TargetTitle,
-    InProvince,
-    Subject,
+    FormatID,
     NeedVehicle,
     NeedHoteling,
-    FormatID,
     StartDate,
     FinishDate,
     StartTime,
@@ -67,8 +68,8 @@ const UserMyMissionDetailsModal = ({
     SwapDetailsText,
     // -----------------------
     // ManagerMemberID,
-    ManagerMemberFirstName,
-    ManagerMemberLastName,
+    // ManagerMemberFirstName,
+    // ManagerMemberLastName,
     ManagerSelectedSwapMemberID,
     ManagerSelectedSwapMemberFirstName,
     ManagerSelectedSwapMemberLastName,
@@ -217,7 +218,7 @@ const UserMyMissionDetailsModal = ({
           ManagerResponseDate.length === 0 &&
           SwapResponseDate.length === 0 ? (
             <Alert
-              message={Words.messages.your_response_not_submitted}
+              message={Words.messages.swap_member_response_not_submitted}
               type="warning"
               showIcon
             />
@@ -299,34 +300,12 @@ const UserMyMissionDetailsModal = ({
               }}
               size="middle"
             >
-              <Descriptions.Item label={Words.manager}>
-                <Text
-                  style={{
-                    color: Colors.cyan[7],
-                  }}
-                >
-                  {`${ManagerMemberFirstName} ${ManagerMemberLastName}`}
-                </Text>
-              </Descriptions.Item>
-              <Descriptions.Item label={Words.reg_date_time}>
-                <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(
-                    `${utils.slashDate(
-                      ManagerResponseDate
-                    )} - ${utils.colonTime(ManagerResponseTime)}`
-                  )}
-                </Text>
-              </Descriptions.Item>
               <Descriptions.Item label={Words.new_swap_member}>
-                {ManagerSelectedSwapMemberID > 0 && (
-                  <Text
-                    style={{
-                      color: Colors.red[7],
-                    }}
-                  >
-                    {`${ManagerSelectedSwapMemberFirstName} ${ManagerSelectedSwapMemberLastName}`}
-                  </Text>
-                )}
+                <Text style={{ color: Colors.red[7] }}>
+                  {ManagerSelectedSwapMemberID > 0
+                    ? `${ManagerSelectedSwapMemberFirstName} ${ManagerSelectedSwapMemberLastName}`
+                    : "-"}
+                </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.status}>
                 <Text
@@ -337,7 +316,20 @@ const UserMyMissionDetailsModal = ({
                   {ManagerIsAccepted ? Words.accepted : Words.rejected}
                 </Text>
               </Descriptions.Item>
-
+              <Descriptions.Item label={Words.reg_date}>
+                <Text style={{ color: valueColor }}>
+                  {`${utils.weekDayNameFromText(
+                    ManagerResponseDate
+                  )} ${utils.farsiNum(
+                    `${utils.slashDate(ManagerResponseDate)}`
+                  )}`}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_time}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(`${utils.colonTime(ManagerResponseTime)}`)}
+                </Text>
+              </Descriptions.Item>
               {ManagerDetailsText.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={2}>
                   <Text
@@ -563,7 +555,7 @@ const UserMyMissionDetailsModal = ({
         title={Words.more_details}
         footer={getFooterButtons()}
         onCancel={onOk}
-        width={800}
+        width={750}
       >
         <section>
           <article
@@ -625,4 +617,4 @@ const UserMyMissionDetailsModal = ({
   );
 };
 
-export default UserMyMissionDetailsModal;
+export default UserMembersMissionNewReportsDetailsModal;

@@ -12,6 +12,12 @@ async function getSwapableMembers(missionMemberID, swapMemberID) {
   return data;
 }
 
+async function getNewReports() {
+  const { data } = await http.get(`${apiEndpoint}/reports/new`);
+
+  return data;
+}
+
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
@@ -24,6 +30,11 @@ async function searchData(filter) {
   return data;
 }
 
+async function saveReportResponse(response) {
+  const { data } = await http.post(`${apiEndpoint}/report/response`, response);
+
+  return data;
+}
 async function saveResponse(response) {
   const { data } = await http.post(`${apiEndpoint}/response`, response);
 
@@ -32,8 +43,10 @@ async function saveResponse(response) {
 
 const service = {
   getSwapableMembers,
+  getNewReports,
   getParams,
   searchData,
+  saveReportResponse,
   saveResponse,
 };
 

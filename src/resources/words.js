@@ -216,6 +216,9 @@ class Words extends Component {
   static report_text = "متن گزارش";
   static need_correction = "اعلام نقص";
 
+  static mission_new_reports = "گزارش های جدید ماموریت";
+  static mission_reply_status = "نتیجه بررسی گزارش";
+
   static approved_and_reg_vehicle_request = "تایید و ثبت درخواست نقلیه";
 
   static i_need = "دارم";
@@ -380,6 +383,7 @@ class Words extends Component {
       "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",
     sure_to_submit_response: "برای ثبت پاسخ درخواست اطمینان دارید؟",
     sure_to_submit_report: "برای ثبت گزارش اطمینان دارید؟",
+    sure_to_submit_report_reply: "برای ثبت پاسخ گزارش اطمینان دارید؟",
     sure_to_delete_report: "برای حذف گزارش اطمینان دارید؟",
   };
 
