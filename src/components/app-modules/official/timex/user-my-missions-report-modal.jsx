@@ -11,6 +11,7 @@ import {
   Alert,
   Tag,
   Typography,
+  Divider,
 } from "antd";
 import {
   QuestionCircleOutlined as QuestionIcon,
@@ -22,6 +23,7 @@ import {
   FieldTimeOutlined as WaitingIcon,
   DeleteOutlined as DeleteIcon,
   ThunderboltOutlined as CorrectionIcon,
+  UserOutlined as PersonIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import Words from "../../../../resources/words";
@@ -38,6 +40,7 @@ import {
 import InputItem from "../../../form-controls/input-item";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
+import ModalWindow from "./../../../common/modal-window";
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -200,19 +203,23 @@ const UserMyMissionsReportModal = ({
         break;
 
       case 3:
-        <Tag icon={<CloseIcon />} color="error">
-          {Words.rejected}
-        </Tag>;
+        result = (
+          <Tag icon={<CloseIcon />} color="error">
+            {Words.rejected}
+          </Tag>
+        );
         break;
 
       case 4:
-        <Tag icon={<CorrectionIcon />} color="error">
-          {Words.need_correction}
-        </Tag>;
+        result = (
+          <Tag icon={<CorrectionIcon />} color="error">
+            {Words.need_correction}
+          </Tag>
+        );
         break;
 
       default:
-        <></>;
+        result = <></>;
         break;
     }
 
@@ -220,7 +227,7 @@ const UserMyMissionsReportModal = ({
   };
 
   return (
-    <Modal
+    <ModalWindow
       visible={isOpen}
       maskClosable={false}
       centered={true}
@@ -237,6 +244,7 @@ const UserMyMissionsReportModal = ({
                 <Collapse accordion>
                   {mission.ReportInfo.map((report) => (
                     <Panel
+                      key={report.ReportID}
                       header={
                         <Row gutter={[1, 5]}>
                           <Col xs={24} md={19}>
@@ -256,17 +264,67 @@ const UserMyMissionsReportModal = ({
                           </Col>
                         </Row>
                       }
-                      key="1"
                       extra={genExtra(report)}
                     >
-                      <Text
-                        style={{
-                          color: Colors.purple[7],
-                          whiteSpace: "pre-line",
-                        }}
-                      >
-                        {utils.farsiNum(report.DetailsText)}
-                      </Text>
+                      <Row gutter={[1, 5]}>
+                        <Col xs={24}>
+                          <Text
+                            style={{
+                              color: Colors.purple[7],
+                              whiteSpace: "pre-line",
+                            }}
+                          >
+                            {utils.farsiNum(report.DetailsText)}
+                          </Text>
+                        </Col>
+                        {report.ManagerMemberID > 0 && (
+                          <>
+                            <Col xs={24}>
+                              <Divider orientation="right" plain>
+                                <Text style={{ fontSize: 12 }}>
+                                  {Words.manager_response}
+                                </Text>
+                              </Divider>
+                            </Col>
+                            <Col xs={24}>
+                              <Text
+                                style={{
+                                  color: Colors.grey[7],
+                                  whiteSpace: "pre-line",
+                                }}
+                              >
+                                {utils.farsiNum(report.ManagerDetailsText)}
+                              </Text>
+                            </Col>
+                            <Col xs={24}>
+                              <Row gutter={[1, 5]}>
+                                <Col xs={24} md={8}>
+                                  <Tag icon={<CalendarIcon />} color="magenta">
+                                    {`${utils.weekDayNameFromText(
+                                      report.ManagerResponseDate
+                                    )} ${utils.farsiNum(
+                                      utils.slashDate(report.RegDate)
+                                    )}`}
+                                  </Tag>
+
+                                  <Tag icon={<ClockIcon />} color="magenta">
+                                    {utils.farsiNum(
+                                      utils.colonTime(
+                                        report.ManagerResponseTime
+                                      )
+                                    )}
+                                  </Tag>
+                                </Col>
+                                <Col xs={24} md={16}>
+                                  <Tag icon={<PersonIcon />} color="purple">
+                                    {`${report.ManagerFirstName} ${report.ManagerLastName}`}
+                                  </Tag>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </>
+                        )}
+                      </Row>
                     </Panel>
                   ))}
                 </Collapse>
@@ -297,7 +355,7 @@ const UserMyMissionsReportModal = ({
           )}
         </Row>
       </Form>
-    </Modal>
+    </ModalWindow>
   );
 };
 

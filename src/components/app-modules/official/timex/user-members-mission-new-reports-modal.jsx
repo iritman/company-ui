@@ -243,6 +243,7 @@ const UserMembersMissionNewReportsModal = ({
                 <Collapse accordion>
                   {mission.ReportInfo.map((report) => (
                     <Panel
+                      key={report.ReportID}
                       header={
                         <Row gutter={[1, 5]}>
                           <Col xs={24} md={19}>
@@ -262,7 +263,6 @@ const UserMembersMissionNewReportsModal = ({
                           </Col>
                         </Row>
                       }
-                      key="1"
                     >
                       <Row gutter={[1, 5]}>
                         <Col xs={24}>
