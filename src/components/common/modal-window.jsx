@@ -29,7 +29,12 @@ const ModalWindow = (props) => {
       maskClosable={true}
       centered={true}
       title={
-        searchModal ? (
+        title ? (
+          <Space>
+            <PlusBoxIcon style={{ color: Colors.blue[6] }} />
+            {title}
+          </Space>
+        ) : searchModal ? (
           <Space>
             <SearchIcon style={{ color: Colors.blue[6] }} />
             {Words.search}

@@ -123,8 +123,6 @@ const UserMembersNewMissionsCheckOfficialResponseModal = ({
     return footerButtons;
   };
 
-  console.log(mission);
-
   return (
     <Modal
       visible={isOpen}
