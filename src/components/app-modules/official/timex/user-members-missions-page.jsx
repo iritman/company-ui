@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
+import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
@@ -281,11 +281,27 @@ const UserMembersMissionsPage = ({ pageName }) => {
   //------
 
   const handleSaveNote = async (note) => {
-    console.log(note);
+    const data = await service.saveNote(note);
+
+    const index = records.findIndex(
+      (m) => m.Notes.findIndex((r) => r.NoteID === note.NoteID) !== -1
+    );
+    records[index] = data;
+
+    setSelectedObject(data);
+
+    message.success(Words.messages.your_note_submitted);
   };
 
   const handleDeleteNote = async (note) => {
-    console.log(note);
+    const data = await service.deleteNote(note.NoteID);
+
+    const index = records.findIndex((m) => (m.MissionID = note.MissionID));
+    records[index] = data;
+
+    setSelectedObject(data);
+
+    message.success(Words.messages.note_deleted);
   };
 
   return (

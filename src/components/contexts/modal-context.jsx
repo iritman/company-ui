@@ -41,6 +41,7 @@ const ModalContextProvider = ({ children }) => {
   const [types, setTypes] = useState([]);
   const [transferTypes, setTransferTypes] = useState([]);
   const [vehicles, setVehicles] = useState([]);
+  const [showModal, setShowModal] = useState([]);
   const [fileList, setFileList] = useState({});
 
   const contextValue = {
@@ -116,6 +117,8 @@ const ModalContextProvider = ({ children }) => {
     setTransferTypes,
     vehicles,
     setVehicles,
+    showModal,
+    setShowModal,
     fileList,
     setFileList,
   };

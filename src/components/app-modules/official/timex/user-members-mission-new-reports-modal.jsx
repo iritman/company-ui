@@ -5,7 +5,6 @@ import {
   Row,
   Col,
   Button,
-  Modal,
   Popconfirm,
   Collapse,
   Alert,
@@ -22,7 +21,6 @@ import {
   CheckCircleOutlined as ApprovedIcon,
   CloseCircleOutlined as CloseIcon,
   StarOutlined as StarIcon,
-  // DeleteOutlined as DeleteIcon,
   ThunderboltOutlined as CorrectionIcon,
   UserOutlined as PersonIcon,
 } from "@ant-design/icons";
@@ -72,7 +70,6 @@ const UserMembersMissionNewReportsModal = ({
   isOpen,
   mission,
   onOk,
-  // onDelete,
   onCancel,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
@@ -120,37 +117,7 @@ const UserMembersMissionNewReportsModal = ({
     setProgress(false);
   };
 
-  // const handleDelete = async (record) => {
-  //   setProgress(true);
-
-  //   try {
-  //     record.MissionID = mission.MissionID;
-  //     await onDelete(record);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-
-  //   setProgress(false);
-  // };
-
   const disabled = validateForm({ record, schema }) && true;
-
-  // const genExtra = (report) => (
-  //   <>
-  //     {report.ManagerMemberID === 0 && (
-  //       <Popconfirm
-  //         title={Words.questions.sure_to_delete_report}
-  //         onConfirm={async () => await handleDelete(report)}
-  //         okText={Words.yes}
-  //         cancelText={Words.no}
-  //         icon={<QuestionIcon style={{ color: "red" }} />}
-  //         key="submit-confirm"
-  //       >
-  //         <DeleteIcon style={{ color: Colors.red[6] }} />
-  //       </Popconfirm>
-  //     )}
-  //   </>
-  // );
 
   const getStatusTag = (report) => {
     let result = <></>;

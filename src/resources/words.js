@@ -215,6 +215,13 @@ class Words extends Component {
   static mission_report = "گزارش ماموریت";
   static report_text = "متن گزارش";
   static need_correction = "اعلام نقص";
+  static notes = "یادداشت ها";
+  static mission_notes = "یادداشت های ماموریت";
+  static note_text = "متن یادداشت";
+  static visible_for_employee = "نمایش برای کارمند";
+  static note_visible_for_employee = "عدم نمایش برای کارمند";
+  static new_note = "یادداشت جدید";
+  static edit_note = "ویرایش یادداشت";
 
   static mission_new_reports = "گزارش های جدید ماموریت";
   static mission_reply_status = "نتیجه بررسی گزارش";
@@ -372,6 +379,9 @@ class Words extends Component {
     your_report_submitted: "گزارش شما ثبت شد",
     no_report_submitted_yet: "گزارشی ثبت نشده است",
     your_report_deleted: "گزارش ماموریت شما حذف شد",
+    no_note_submitted_yet: "یادداشتی ثبت نشده است",
+    your_note_submitted: "یادداشت شما ثبت شد",
+    note_deleted: "یادداشت مورد نظر حذف شد",
   };
 
   static questions = {
@@ -385,6 +395,8 @@ class Words extends Component {
     sure_to_submit_report: "برای ثبت گزارش اطمینان دارید؟",
     sure_to_submit_report_reply: "برای ثبت پاسخ گزارش اطمینان دارید؟",
     sure_to_delete_report: "برای حذف گزارش اطمینان دارید؟",
+    sure_to_submit_note: "برای ثبت یادداشت ماموریت اطمینان دارید؟",
+    sure_to_delete_note: "برای حذف یادداشت ماموریت اطمینان دارید؟",
   };
 
   static monthes = {
