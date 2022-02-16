@@ -10,16 +10,19 @@ import {
   Steps,
   Descriptions,
 } from "antd";
+import { SnippetsOutlined as ReportIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
+import ReportModal from "./user-members-missions-report-modal";
 
 const { Text } = Typography;
 const { Step } = Steps;
 
 const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const handleStepChange = (current) => {
     setCurrentStep(current);
@@ -82,6 +85,7 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     OfficialIsHotelingApproved,
     // -----------------------
     VehicleInfo,
+    ReportInfo,
     // -----------------------
     // FinalStatusID,
   } = mission;
@@ -518,66 +522,91 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     ];
   }
 
+  const getFooterButtons = () => {
+    let footerButtons = [
+      <Button
+        key="submit-button"
+        type="primary"
+        icon={<ReportIcon />}
+        danger
+        onClick={() => setShowModal(true)}
+      >
+        {Words.mission_report}
+      </Button>,
+      <Button key="close-button" type="primary" onClick={onOk}>
+        {Words.close}
+      </Button>,
+    ];
+
+    return footerButtons;
+  };
+
   return (
-    <Modal
-      visible={isOpen}
-      maskClosable={false}
-      centered={true}
-      title={Words.more_details}
-      footer={[
-        <Button key="close-button" type="primary" onClick={onOk}>
-          {Words.close}
-        </Button>,
-      ]}
-      onCancel={onOk}
-      width={750}
-    >
-      <section>
-        <article
-          id="info-content"
-          className="scrollbar-normal"
-          style={{ maxHeight: "calc(100vh - 180px)" }}
-        >
-          <Row gutter={[10, 10]}>
-            <Col xs={24}>
-              <Alert
-                message={
-                  <Space>
-                    <MemberProfileImage fileName={PicFileName} />
-                    <Text>{`${FirstName} ${LastName}`}</Text>
-                  </Space>
-                }
-                type="info"
-              />
-            </Col>
-            <Col xs={24}>
-              <Steps current={currentStep} onChange={handleStepChange}>
-                {steps.map((item) => (
-                  <Step
-                    key={item.title}
-                    title={
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color:
-                            item.stepID === currentStep
-                              ? Colors.orange[6]
-                              : Colors.grey[8],
-                        }}
-                      >
-                        {item.title}
-                      </Text>
-                    }
-                    status={item.status}
-                  />
-                ))}
-              </Steps>
-            </Col>
-            <Col xs={24}>{steps[currentStep].content}</Col>
-          </Row>
-        </article>
-      </section>
-    </Modal>
+    <>
+      <Modal
+        visible={isOpen}
+        maskClosable={false}
+        centered={true}
+        title={Words.more_details}
+        footer={getFooterButtons()}
+        onCancel={onOk}
+        width={750}
+      >
+        <section>
+          <article
+            id="info-content"
+            className="scrollbar-normal"
+            style={{ maxHeight: "calc(100vh - 180px)" }}
+          >
+            <Row gutter={[10, 10]}>
+              <Col xs={24}>
+                <Alert
+                  message={
+                    <Space>
+                      <MemberProfileImage fileName={PicFileName} />
+                      <Text>{`${FirstName} ${LastName}`}</Text>
+                    </Space>
+                  }
+                  type="info"
+                />
+              </Col>
+              <Col xs={24}>
+                <Steps current={currentStep} onChange={handleStepChange}>
+                  {steps.map((item) => (
+                    <Step
+                      key={item.title}
+                      title={
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            color:
+                              item.stepID === currentStep
+                                ? Colors.orange[6]
+                                : Colors.grey[8],
+                          }}
+                        >
+                          {item.title}
+                        </Text>
+                      }
+                      status={item.status}
+                    />
+                  ))}
+                </Steps>
+              </Col>
+              <Col xs={24}>{steps[currentStep].content}</Col>
+            </Row>
+          </article>
+        </section>
+      </Modal>
+
+      {showModal && (
+        <ReportModal
+          onCancel={() => setShowModal(false)}
+          isOpen={showModal}
+          mission={mission}
+        />
+      )}
+    </>
   );
 };
 
