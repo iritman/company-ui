@@ -327,6 +327,7 @@ const UserMembersMissionNewReportsModal = ({
                                   icon={
                                     <QuestionIcon style={{ color: "red" }} />
                                   }
+                                  disabled={disabled}
                                   key="submit-confirm"
                                 >
                                   <Button

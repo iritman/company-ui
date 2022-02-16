@@ -280,6 +280,14 @@ const UserMembersMissionsPage = ({ pageName }) => {
 
   //------
 
+  const handleSaveNote = async (note) => {
+    console.log(note);
+  };
+
+  const handleDeleteNote = async (note) => {
+    console.log(note);
+  };
+
   return (
     <>
       <Spin spinning={progress}>
@@ -319,6 +327,8 @@ const UserMembersMissionsPage = ({ pageName }) => {
           }}
           isOpen={showDetails}
           mission={selectedObject}
+          onSaveNote={handleSaveNote}
+          onDeleteNote={handleDeleteNote}
         />
       )}
     </>

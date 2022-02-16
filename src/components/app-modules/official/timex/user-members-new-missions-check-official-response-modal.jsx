@@ -99,6 +99,7 @@ const UserMembersNewMissionsCheckOfficialResponseModal = ({
         cancelText={Words.no}
         icon={<QuestionIcon style={{ color: "red" }} />}
         key="submit-confirm"
+        disabled={disabled}
       >
         <Button
           type="primary"

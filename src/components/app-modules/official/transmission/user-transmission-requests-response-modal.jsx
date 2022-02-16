@@ -119,6 +119,7 @@ const UserTransmissionRequestsResponseModal = ({
         okText={Words.yes}
         cancelText={Words.no}
         icon={<QuestionIcon style={{ color: "red" }} />}
+        disabled={disabled}
         key="submit-confirm"
       >
         <Button

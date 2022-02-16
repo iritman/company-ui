@@ -10,19 +10,30 @@ import {
   Steps,
   Descriptions,
 } from "antd";
-import { SnippetsOutlined as ReportIcon } from "@ant-design/icons";
+import {
+  SnippetsOutlined as ReportIcon,
+  ContainerOutlined as NoteIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
 import ReportModal from "./user-members-missions-report-modal";
+import NoteModal from "./user-members-missions-notes-modal";
 
 const { Text } = Typography;
 const { Step } = Steps;
 
-const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
+const UserMembersMissionsDetailsModal = ({
+  mission,
+  isOpen,
+  onOk,
+  onSaveNote,
+  onDeleteNote,
+}) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [showModal, setShowModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showNoteModal, setShowNoteModal] = useState(false);
 
   const handleStepChange = (current) => {
     setCurrentStep(current);
@@ -85,7 +96,8 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
     OfficialIsHotelingApproved,
     // -----------------------
     VehicleInfo,
-    ReportInfo,
+    // ReportInfo,
+    // Notes,
     // -----------------------
     // FinalStatusID,
   } = mission;
@@ -525,15 +537,23 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
   const getFooterButtons = () => {
     let footerButtons = [
       <Button
-        key="submit-button"
+        key="note-button"
+        type="primary"
+        icon={<NoteIcon />}
+        onClick={() => setShowNoteModal(true)}
+      >
+        {Words.notes}
+      </Button>,
+      <Button
+        key="report-button"
         type="primary"
         icon={<ReportIcon />}
         danger
-        onClick={() => setShowModal(true)}
+        onClick={() => setShowReportModal(true)}
       >
         {Words.mission_report}
       </Button>,
-      <Button key="close-button" type="primary" onClick={onOk}>
+      <Button key="close-button" onClick={onOk}>
         {Words.close}
       </Button>,
     ];
@@ -599,10 +619,20 @@ const UserMembersMissionsDetailsModal = ({ mission, isOpen, onOk }) => {
         </section>
       </Modal>
 
-      {showModal && (
+      {showNoteModal && (
+        <NoteModal
+          onCancel={() => setShowNoteModal(false)}
+          isOpen={showNoteModal}
+          mission={mission}
+          onSaveNote={onSaveNote}
+          onDeleteNote={onDeleteNote}
+        />
+      )}
+
+      {showReportModal && (
         <ReportModal
-          onCancel={() => setShowModal(false)}
-          isOpen={showModal}
+          onCancel={() => setShowReportModal(false)}
+          isOpen={showReportModal}
           mission={mission}
         />
       )}
