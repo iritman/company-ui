@@ -168,6 +168,24 @@ const UserMembersMissionsNotesModal = ({
                             </Text>
                           </Col>
                           <Col xs={24}>
+                            {note.EmployeeSeenDate.length > 0 && (
+                              <>
+                                <Tag icon={<VisibleIcon />} color="green">
+                                  {`${utils.weekDayNameFromText(
+                                    note.EmployeeSeenDate
+                                  )} ${utils.farsiNum(
+                                    utils.slashDate(note.EmployeeSeenDate)
+                                  )}`}
+                                </Tag>
+
+                                <Tag icon={<ClockIcon />} color="green">
+                                  {utils.farsiNum(
+                                    utils.colonTime(note.EmployeeSeenTime)
+                                  )}
+                                </Tag>
+                              </>
+                            )}
+
                             <Tag
                               icon={
                                 note.VisibleForEmployee ? (
@@ -176,7 +194,9 @@ const UserMembersMissionsNotesModal = ({
                                   <InvisibleIcon />
                                 )
                               }
-                              color={note.VisibleForEmployee ? "green" : "red"}
+                              color={
+                                note.VisibleForEmployee ? "magenta" : "red"
+                              }
                             >
                               {note.VisibleForEmployee
                                 ? Words.visible_for_employee

@@ -541,25 +541,6 @@ const UserMyMissionDetailsModal = ({
     ];
   }
 
-  // const getFooterButtons = () => {
-  //   let footerButtons = [
-  //     <Button
-  //       key="submit-button"
-  //       type="primary"
-  //       icon={<ReportIcon />}
-  //       danger
-  //       onClick={() => setShowModal(true)}
-  //     >
-  //       {Words.mission_report}
-  //     </Button>,
-  //     <Button key="close-button" type="primary" onClick={onOk}>
-  //       {Words.close}
-  //     </Button>,
-  //   ];
-
-  //   return footerButtons;
-  // };
-
   const getFooterButtons = () => {
     let footerButtons = [
       <Button
