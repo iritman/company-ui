@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  Modal,
   Row,
   Col,
   Typography,
@@ -20,6 +19,7 @@ import utils from "../../../../tools/utils";
 import MemberProfileImage from "../../../common/member-profile-image";
 import ReportModal from "./user-members-missions-report-modal";
 import NoteModal from "./user-members-missions-notes-modal";
+import ModalWindow from "../../../common/modal-window";
 
 const { Text } = Typography;
 const { Step } = Steps;
@@ -563,7 +563,7 @@ const UserMembersMissionsDetailsModal = ({
 
   return (
     <>
-      <Modal
+      <ModalWindow
         visible={isOpen}
         maskClosable={false}
         centered={true}
@@ -572,52 +572,44 @@ const UserMembersMissionsDetailsModal = ({
         onCancel={onOk}
         width={750}
       >
-        <section>
-          <article
-            id="info-content"
-            className="scrollbar-normal"
-            style={{ maxHeight: "calc(100vh - 180px)" }}
-          >
-            <Row gutter={[10, 10]}>
-              <Col xs={24}>
-                <Alert
-                  message={
-                    <Space>
-                      <MemberProfileImage fileName={PicFileName} />
-                      <Text>{`${FirstName} ${LastName}`}</Text>
-                    </Space>
+        <Row gutter={[10, 10]}>
+          <Col xs={24}>
+            <Alert
+              message={
+                <Space>
+                  <MemberProfileImage fileName={PicFileName} />
+                  <Text>{`${FirstName} ${LastName}`}</Text>
+                </Space>
+              }
+              type="info"
+            />
+          </Col>
+          <Col xs={24}>
+            <Steps current={currentStep} onChange={handleStepChange}>
+              {steps.map((item) => (
+                <Step
+                  key={item.title}
+                  title={
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        color:
+                          item.stepID === currentStep
+                            ? Colors.orange[6]
+                            : Colors.grey[8],
+                      }}
+                    >
+                      {item.title}
+                    </Text>
                   }
-                  type="info"
+                  status={item.status}
                 />
-              </Col>
-              <Col xs={24}>
-                <Steps current={currentStep} onChange={handleStepChange}>
-                  {steps.map((item) => (
-                    <Step
-                      key={item.title}
-                      title={
-                        <Text
-                          style={{
-                            fontSize: 13,
-                            color:
-                              item.stepID === currentStep
-                                ? Colors.orange[6]
-                                : Colors.grey[8],
-                          }}
-                        >
-                          {item.title}
-                        </Text>
-                      }
-                      status={item.status}
-                    />
-                  ))}
-                </Steps>
-              </Col>
-              <Col xs={24}>{steps[currentStep].content}</Col>
-            </Row>
-          </article>
-        </section>
-      </Modal>
+              ))}
+            </Steps>
+          </Col>
+          <Col xs={24}>{steps[currentStep].content}</Col>
+        </Row>
+      </ModalWindow>
 
       {showNoteModal && (
         <NoteModal

@@ -39,6 +39,15 @@ export async function deleteReport(recordID) {
   return data;
 }
 
+export async function saveNoteSeenDateTime(record) {
+  const { data } = await http.post(
+    `${apiEndpoint}/note/seen/${record.NoteID}`,
+    {}
+  );
+
+  return data;
+}
+
 const service = {
   getParams,
   searchData,
@@ -46,6 +55,7 @@ const service = {
   saveReport,
   deleteData,
   deleteReport,
+  saveNoteSeenDateTime,
 };
 
 export default service;

@@ -326,6 +326,15 @@ const UserMyMissionsPage = ({ pageName }) => {
     message.success(Words.messages.your_report_deleted);
   };
 
+  const handleSaveSeenDateTime = async (note) => {
+    const data = await service.saveNoteSeenDateTime(note);
+
+    const index = records.findIndex((m) => (m.MissionID = note.MissionID));
+    records[index] = data;
+
+    setSelectedObject(data);
+  };
+
   return (
     <>
       <Spin spinning={progress}>
@@ -376,6 +385,7 @@ const UserMyMissionsPage = ({ pageName }) => {
           mission={selectedObject}
           onSaveReport={handleSaveReport}
           onDeleteReport={handleDeleteReport}
+          onSaveSeenDateTime={handleSaveSeenDateTime}
         />
       )}
     </>
