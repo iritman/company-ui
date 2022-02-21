@@ -59,7 +59,6 @@ const OfficialExpertModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.ExpertID = 0;
     record.MemberID = 0;
     record.IsActive = false;
 
