@@ -224,6 +224,7 @@ class Words extends Component {
   static edit_note = "ویرایش یادداشت";
   static department_extra_work_capacities = "ظرفیت اضافه کار دپارتمان ها";
   static capacity_in_hours = "ظرفیت (ساعت)";
+  static extra_work_command_sources = "منابع دستور اضافه کار";
 
   static mission_new_reports = "گزارش های جدید ماموریت";
   static mission_reply_status = "نتیجه بررسی گزارش";

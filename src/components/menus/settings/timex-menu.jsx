@@ -13,6 +13,7 @@ import {
   AiOutlineSchedule as WorkShiftIcon,
   AiOutlineFieldTime as WorkTimeIcon,
   AiFillIdcard as MembersRegedCardIcon,
+  AiFillMacCommand as CommandIcon,
 } from "react-icons/ai";
 import {
   GiGuards as SecurityGuardIcon,
@@ -78,6 +79,13 @@ const mapper = (pageID) => {
       link = "department-extra-work-capacities";
       icon = (
         <CapacityIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
+    case 63:
+      link = "extra-work-command-sources";
+      icon = (
+        <CommandIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
@@ -218,6 +226,7 @@ const tabs = [
     pages: [
       { pageName: "Holidays" },
       { pageName: "DepartmentExtraWorkCapacities" },
+      { pageName: "ExtraWorkCommandSources" },
       { pageName: "CalculationBases" },
     ],
   },
