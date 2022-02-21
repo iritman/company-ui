@@ -9,6 +9,7 @@ import VacationTypesPage from "../../components/app-modules/settings/timex/vacat
 import MissionTypesPage from "../../components/app-modules/settings/timex/mission-types-page";
 import MissionTargetsPage from "../../components/app-modules/settings/timex/mission-targets-page";
 import HolidaysPage from "../../components/app-modules/settings/timex/holidays-page";
+import DepartmentExtraWorkCapacitiesPage from "../../components/app-modules/settings/timex/department-extra-work-capacities-page";
 import WorkShiftsPage from "../../components/app-modules/settings/timex/work-shifts-page";
 import GroupShiftsPage from "../../components/app-modules/settings/timex/group-shifts-page";
 import EmployeeShiftsPage from "../../components/app-modules/settings/timex/employee-shifts-page";
@@ -40,11 +41,6 @@ const TimexRoutes = ({ path }) => {
         )}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/security-guards`}
-        exact
-        render={() => <SecurityGuardsPage pageName="SecurityGuards" />}
-      />
-      <ProtectedRoute
         path={`${path}/${modulePath}/vacation-types`}
         exact
         render={() => <VacationTypesPage pageName="VacationTypes" />}
@@ -64,6 +60,12 @@ const TimexRoutes = ({ path }) => {
         exact
         render={() => <HolidaysPage pageName="Holidays" />}
       />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/department-extra-work-capacities`}
+        exact
+        render={() => <DepartmentExtraWorkCapacitiesPage pageName="Holidays" />}
+      />
+
       <ProtectedRoute
         path={`${path}/${modulePath}/work-shifts`}
         exact

@@ -222,6 +222,8 @@ class Words extends Component {
   static note_visible_for_employee = "عدم نمایش برای کارمند";
   static new_note = "یادداشت جدید";
   static edit_note = "ویرایش یادداشت";
+  static department_extra_work_capacities = "ظرفیت اضافه کار دپارتمان ها";
+  static capacity_in_hours = "ظرفیت (ساعت)";
 
   static mission_new_reports = "گزارش های جدید ماموریت";
   static mission_reply_status = "نتیجه بررسی گزارش";

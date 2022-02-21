@@ -31,6 +31,7 @@ import {
   FaUsersCog as UsersIcon,
   FaUserClock as EmployeeShiftIcon,
   FaChartPie as ChartIcon,
+  FaBusinessTime as CapacityIcon,
 } from "react-icons/fa";
 import {
   BiGitPullRequest as RequestIcon,
@@ -70,6 +71,13 @@ const mapper = (pageID) => {
       link = "holidays";
       icon = (
         <HolidayIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
+    case 62:
+      link = "department-extra-work-capacities";
+      icon = (
+        <CapacityIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
@@ -207,7 +215,11 @@ const tabs = [
         icon={CalculateIcon}
       />
     ),
-    pages: [{ pageName: "Holidays" }, { pageName: "CalculationBases" }],
+    pages: [
+      { pageName: "Holidays" },
+      { pageName: "DepartmentExtraWorkCapacities" },
+      { pageName: "CalculationBases" },
+    ],
   },
   {
     name: "vacations",
@@ -291,7 +303,7 @@ const SettingsTimexMenu = () => {
   useEffect(() => {
     const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
-      .replace("-", "")
+      .replaceAll("-", "")
       .toLocaleLowerCase();
 
     setLastPathKey(_lastPathKey);
