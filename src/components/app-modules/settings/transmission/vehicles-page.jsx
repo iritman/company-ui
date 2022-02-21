@@ -58,6 +58,18 @@ const baseColumns = [
     render: (VehicleID) => <Text>{utils.farsiNum(`${VehicleID}`)}</Text>,
   },
   {
+    title: Words.vehicle_type,
+    width: 150,
+    align: "center",
+    dataIndex: "VehicleTypeTitle",
+    sorter: getSorter("VehicleTypeTitle"),
+    render: (VehicleTypeTitle) => (
+      <Text style={{ color: Colors.orange[6] }}>
+        {utils.farsiNum(VehicleTypeTitle)}
+      </Text>
+    ),
+  },
+  {
     title: Words.brand,
     width: 200,
     align: "center",
