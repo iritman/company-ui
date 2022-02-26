@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
-// import { GoSettings as BasicSettingsIcon } from "react-icons/go";
-import { FaCar as CarIcon } from "react-icons/fa";
+import { FaCar as CarIcon, FaTasks as TasksIcon } from "react-icons/fa";
 import {
   AiOutlineFieldTime as TimexSettingsIcon,
   AiFillBank as OrgIcon,
 } from "react-icons/ai";
-// import { SiKeycdn as KeyIcon } from "react-icons/si";
 import Colors from "../../../resources/colors";
 import modulesService from "../../../services/app/modules-service";
 
@@ -45,6 +43,12 @@ const mapper = (moduleID) => {
       link = "transmission";
       icon = <CarIcon {...iconProps} />;
       backColor = Colors.cyan[3];
+      break;
+
+    case 9:
+      link = "tasks";
+      icon = <TasksIcon {...iconProps} />;
+      backColor = Colors.purple[3];
       break;
 
     default:

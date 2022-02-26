@@ -5,6 +5,7 @@ import UserOfficialDashboard from "../../components/app-modules/official/user-of
 import UserOrgRoutes from "./user-org-routes";
 import UserTimexRoutes from "./user-timex-routes";
 import UserTransmissionRoutes from "./user-transmission-routes";
+import UserTasksRoutes from "./user-tasks-routes";
 //---
 
 const UserOfficialRoutes = ({ path }) => {
@@ -26,6 +27,10 @@ const UserOfficialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/transmission`}
         render={() => <UserTransmissionRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/tasks`}
+        render={() => <UserTasksRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>
