@@ -3,7 +3,7 @@ import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import UserTasksDashboard from "../../components/app-modules/official/tasks/user-tasks-dashboard";
-import UserTaskTags from "../../components/app-modules/official/tasks/tags-page";
+import UserTaskTags from "../../components/app-modules/official/tasks/user-tags-page";
 //---
 
 const modulePath = "official/tasks";
