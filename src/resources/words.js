@@ -115,7 +115,7 @@ class Words extends Component {
   static basic_settings = "اطلاعات پایه";
   static nafar = "نفر";
   static no_employee = "بدون کارمند!";
-  static no_department_manager = "بدون مدیر دپارتمان!";
+  static no_department_manager_or_supervisor = "بدون مدیر یا سرپرست!";
   static vacation_format = "قالب مرخصی";
   static mission_format = "قالب ماموریت";
   static by_day = "روزانه";

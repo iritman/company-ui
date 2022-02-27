@@ -37,6 +37,8 @@ const OrgChartPage = () => {
   useMount(async () => {
     setProgress(true);
     const data = await service.getAllData();
+
+    console.log(data);
     setDepartments(data);
     setProgress(false);
   });
@@ -65,8 +67,13 @@ const OrgChartPage = () => {
   const getAntdNodes = (department, depList) => {
     let children = [];
 
-    const { DepartmentID, DepartmentTitle, Manager, EmployeesCount } =
-      department;
+    const {
+      DepartmentID,
+      DepartmentTitle,
+      Manager,
+      Supervisor,
+      EmployeesCount,
+    } = department;
 
     const subDepartments = depList.filter(
       (d) => d.ParentDepartmentID === DepartmentID
@@ -80,9 +87,19 @@ const OrgChartPage = () => {
       id: `${DepartmentID}`,
       value: {
         text: utils.farsiNum(DepartmentTitle),
-        image: Manager?.PicFileName || "",
+        image: Manager
+          ? Manager.PicFileName
+          : Supervisor
+          ? Supervisor.PicFileName
+          : "",
         employeesCount: EmployeesCount,
-        fullName: Manager ? `${Manager.FirstName} ${Manager.LastName}` : "",
+        fullName: Manager
+          ? `${Manager.FirstName} ${Manager.LastName}`
+          : Supervisor
+          ? `${Supervisor.FirstName} ${Supervisor.LastName}`
+          : "",
+        isManager: Manager !== null,
+        isSupervisor: Manager !== null,
       },
       children,
     };
@@ -214,7 +231,14 @@ const OrgChartPage = () => {
 
             customContent: (item, group, cfg) => {
               const { startX, startY, width } = cfg;
-              const { text, image, fullName, employeesCount } = item;
+              const {
+                text,
+                image,
+                fullName,
+                employeesCount,
+                isManager,
+                // isSupervisor,
+              } = item;
 
               const textShape1 =
                 text &&
@@ -244,8 +268,12 @@ const OrgChartPage = () => {
                     y: startY + 50,
                     text:
                       fullName.length > 0
-                        ? `${Words.department_manager} : ${fullName}`
-                        : Words.no_department_manager,
+                        ? `${
+                            isManager
+                              ? Words.department_manager
+                              : Words.department_supervisor
+                          } : ${fullName}`
+                        : Words.no_department_manager_or_supervisor,
                     fill: "black",
                     textAlign: "center",
                     justifyContent: "center",
