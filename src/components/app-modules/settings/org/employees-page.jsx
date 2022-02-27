@@ -40,6 +40,11 @@ const getSheets = (records) => [
         label: Words.department_manager,
         value: (record) => (record.IsDepartmentManger ? Words.yes : Words.no),
       },
+      {
+        label: Words.department_supervisor,
+        value: (record) =>
+          record.IsDepartmentSupervisor ? Words.yes : Words.no,
+      },
     ],
   },
 ];
@@ -108,12 +113,21 @@ const baseColumns = [
   },
   {
     title: Words.department_manager,
-    width: 120,
+    width: 130,
     align: "center",
-    ellipsis: true,
     sorter: getSorter("IsDepartmentManager"),
     render: (record) =>
       record.IsDepartmentManager && (
+        <CheckIcon style={{ color: Colors.green[6] }} />
+      ),
+  },
+  {
+    title: Words.department_supervisor,
+    width: 130,
+    align: "center",
+    sorter: getSorter("IsDepartmentSupervisor"),
+    render: (record) =>
+      record.IsDepartmentSupervisor && (
         <CheckIcon style={{ color: Colors.green[6] }} />
       ),
   },

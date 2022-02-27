@@ -98,6 +98,7 @@ class Words extends Component {
   static limit_upload_file_size =
     "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
   static department_manager = "مدیر دپارتمان";
+  static department_supervisor = "سرپرست دپارتمان";
   static descriptions = "توضیحات";
   static generate_random_account_info = "تولید نام کاربری و رمز عبور تصادفی";
   static color_code = "کد رنگ";

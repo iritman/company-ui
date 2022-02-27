@@ -32,6 +32,7 @@ const schema = {
   DepartmentID: Joi.number().required().min(1),
   RoleID: Joi.number().required().min(1),
   IsDepartmentManager: Joi.boolean(),
+  IsDepartmentSupervisor: Joi.boolean(),
   CardNo: Joi.number().required().min(1).label(Words.card_no),
   IsMarried: Joi.boolean(),
   MarriageDate: Joi.string().allow(""),
@@ -58,6 +59,7 @@ const initRecord = {
   DepartmentID: 0,
   RoleID: 0,
   IsDepartmentManager: false,
+  IsDepartmentSupervisor: false,
   CardNo: 0,
   IsMarried: false,
   MarriageDate: "",
@@ -122,6 +124,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.DepartmentID = 0;
     record.RoleID = 0;
     record.IsDepartmentManager = false;
+    record.IsDepartmentSupervisor = false;
     record.CardNo = 0;
     record.IsMarried = false;
     record.MarriageDate = "";
@@ -199,6 +202,24 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const isEdit = selectedObject !== null;
 
+  const handleDepartmentManagerChange = (checked) => {
+    record.IsDepartmentManager = checked;
+
+    if (checked === true) record.IsDepartmentSupervisor = false;
+
+    setRecord({ ...record });
+    loadFieldsValue(formRef, record);
+  };
+
+  const handleDepartmentSupervisorChange = (checked) => {
+    record.IsDepartmentSupervisor = checked;
+
+    if (checked === true) record.IsDepartmentManager = false;
+
+    setRecord({ ...record });
+    loadFieldsValue(formRef, record);
+  };
+
   return (
     <ModalWindow
       isOpen={isOpen}
@@ -231,7 +252,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           )}
 
           {!isEdit && (
-            <Col xs={24} md={12}>
+            <Col xs={24}>
               <DropdownItem
                 title={Words.member}
                 dataSource={members}
@@ -280,22 +301,32 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           </Col>
           <Col xs={24} md={12}>
             <SwitchItem
-              title={Words.department_manager}
-              fieldName="IsDepartmentManager"
-              initialValue={false}
-              checkedTitle={Words.active}
-              unCheckedTitle={Words.inactive}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <SwitchItem
               title={Words.is_married}
               fieldName="IsMarried"
               initialValue={false}
               checkedTitle={Words.married}
               unCheckedTitle={Words.single}
               formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <SwitchItem
+              title={Words.department_manager}
+              fieldName="IsDepartmentManager"
+              initialValue={false}
+              checkedTitle={Words.active}
+              unCheckedTitle={Words.inactive}
+              onChange={handleDepartmentManagerChange}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <SwitchItem
+              title={Words.department_supervisor}
+              fieldName="IsDepartmentSupervisor"
+              initialValue={false}
+              checkedTitle={Words.active}
+              unCheckedTitle={Words.inactive}
+              onChange={handleDepartmentSupervisorChange}
             />
           </Col>
           {record.IsMarried && (

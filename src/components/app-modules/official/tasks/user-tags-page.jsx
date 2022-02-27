@@ -15,7 +15,6 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import TagModal from "./user-tag-modal";
 import { usePageContext } from "../../../contexts/page-context";
-import Colors from "../../../../resources/colors";
 
 const { Text } = Typography;
 

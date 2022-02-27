@@ -17,6 +17,7 @@ const SwitchItem = ({
   unCheckedTitle,
   initialValue,
   formConfig,
+  onChange,
 }) => {
   return (
     <Form.Item
@@ -31,7 +32,9 @@ const SwitchItem = ({
         defaultChecked
         checkedChildren={checkedTitle}
         unCheckedChildren={unCheckedTitle}
-        onChange={(e) => handleSwitchChange(fieldName, e, formConfig)}
+        onChange={(e) =>
+          onChange ? onChange(e) : handleSwitchChange(fieldName, e, formConfig)
+        }
       />
     </Form.Item>
   );

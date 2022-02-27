@@ -69,9 +69,14 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
               >
                 {employee.IsDepartmentManager && (
                   <Descriptions.Item label={Words.department_manager} span={2}>
-                    {/* <Text style={{ color: valueColor }}>
-                      {Words.department_manager}
-                    </Text> */}
+                    <StarIcon style={{ color: Colors.red[6] }} />
+                  </Descriptions.Item>
+                )}
+                {employee.IsDepartmentSupervisor && (
+                  <Descriptions.Item
+                    label={Words.department_supervisor}
+                    span={2}
+                  >
                     <StarIcon style={{ color: Colors.yellow[6] }} />
                   </Descriptions.Item>
                 )}
