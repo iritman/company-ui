@@ -10,6 +10,7 @@ import NotFoundPage from "./pages/not-found-page";
 import { PageContextProvider } from "./components/contexts/page-context";
 import { ModalContextProvider } from "./components/contexts/modal-context";
 import composeComponents from "react-component-composer";
+import TestPage from "./pages/test-page";
 
 const Providers = composeComponents(PageContextProvider, ModalContextProvider);
 
@@ -17,6 +18,7 @@ const App = () => {
   return (
     <Providers>
       <Switch>
+        <Route path="/test" component={TestPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/logout" component={LogoutPage} />
         <ProtectedRoute path="/home" component={HomePage} />

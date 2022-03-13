@@ -14,6 +14,7 @@ import {
 } from "react-icons/md";
 import { FaChartPie as WorkReportIcon } from "react-icons/fa";
 import { GiSwipeCard as RegedCardIcon } from "react-icons/gi";
+import { BiAlarmAdd as ExtraWorkIcon } from "react-icons/bi";
 import { FiUser as UserIcon, FiUsers as UsersIcon } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -163,6 +164,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 66:
+      link = "new-extra-work-request";
+      icon = (
+        <ExtraWorkIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }
@@ -211,6 +219,7 @@ const tabs = [
       { pageName: "user-MembersNewVacationsCheckOfficial" },
       { pageName: "user-MembersNewMissionReports" },
       { pageName: "user-MembersWorkReport" },
+      { pageName: "user-NewExtraWorkRequest" },
     ],
   },
 ];

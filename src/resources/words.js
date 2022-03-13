@@ -228,6 +228,13 @@ class Words extends Component {
   static extra_work_command_sources = "منابع دستور اضافه کار";
   static tasks = "مدیریت وظایف";
   static tags = "برچسب ها";
+  static interval_tasks = "وظایف تکرارشونده";
+  static response_member = "پیگیری کننده";
+  static interval_type = "نوع تکرار";
+  static task_info = "اطلاعات وظیفه";
+  static timing = "زمانبندی";
+  static run_time = "زمان اجرا";
+  static supervisors = "ناظران";
 
   static mission_new_reports = "گزارش های جدید ماموریت";
   static mission_reply_status = "نتیجه بررسی گزارش";
