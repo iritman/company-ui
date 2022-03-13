@@ -15,8 +15,8 @@ async function getParams() {
   return data;
 }
 
-async function searchData(searchText) {
-  const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
+async function searchData(filter) {
+  const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
   return data;
 }

@@ -21,8 +21,10 @@ import {
   useModalContext,
   useResetContext,
 } from "./../../../contexts/modal-context";
+
 const schema = {
   CapacityID: Joi.number().required(),
+  Year: Joi.number().min(1400).required().label(Words.year),
   DepartmentID: Joi.number().required().min(1),
   CapacityInHours: Joi.number().min(0).max(1000).required(),
 };
@@ -109,6 +111,18 @@ const DepartmentExtraWorkCapacityModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+          <Col xs={24}>
+            <NumericInputItem
+              horizontal
+              required
+              title={Words.year}
+              fieldName="Year"
+              min={1400}
+              max={1499}
+              formConfig={formConfig}
+            />
+          </Col>
+
           <Col xs={24}>
             <DropdownItem
               title={Words.department}

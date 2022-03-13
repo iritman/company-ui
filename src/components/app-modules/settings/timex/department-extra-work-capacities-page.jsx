@@ -12,9 +12,10 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-import DepartmentExtraWorkCapacityModal from "./department-extra-work-capacity-modal";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
+import DepartmentExtraWorkCapacityModal from "./department-extra-work-capacity-modal";
+import DepartmentExtraWorkSearchModal from "./department-extra-work-capacity-search-modal";
 
 const { Text } = Typography;
 
@@ -25,6 +26,7 @@ const getSheets = (records) => [
     columns: [
       { label: Words.id, value: "CapacityID" },
       { label: Words.title, value: "DepartmentTitle" },
+      { label: Words.year, value: "Year" },
       {
         label: Words.capacity_in_hours,
         value: (record) => utils.fileName(record.CapacityInHours),
@@ -53,6 +55,16 @@ const baseColumns = [
     dataIndex: "CapacityID",
     sorter: getSorter("CapacityID"),
     render: (CapacityID) => <Text>{utils.farsiNum(`${CapacityID}`)}</Text>,
+  },
+  {
+    title: Words.year,
+    width: 100,
+    align: "center",
+    dataIndex: "Year",
+    sorter: getSorter("Year"),
+    render: (Year) => (
+      <Text style={{ color: Colors.red[7] }}>{utils.farsiNum(`${Year}`)}</Text>
+    ),
   },
   {
     title: Words.department,
@@ -86,6 +98,7 @@ const DepartmentExtraWorkCapacitiesPage = ({ pageName }) => {
   const {
     progress,
     searched,
+    setSearched,
     searchText,
     setSearchText,
     records,
@@ -94,6 +107,10 @@ const DepartmentExtraWorkCapacitiesPage = ({ pageName }) => {
     setAccess,
     selectedObject,
     showModal,
+    showSearchModal,
+    setShowSearchModal,
+    filter,
+    setFilter,
   } = usePageContext();
 
   useMount(async () => {
@@ -103,13 +120,12 @@ const DepartmentExtraWorkCapacitiesPage = ({ pageName }) => {
 
   const {
     handleCloseModal,
-    handleGetAll,
-    handleSearch,
     handleAdd,
     handleEdit,
     handleDelete,
     handleSave,
     handleResetContext,
+    handleAdvancedSearch,
   } = GetSimplaDataPageMethods({
     service,
     recordID,
@@ -118,6 +134,12 @@ const DepartmentExtraWorkCapacitiesPage = ({ pageName }) => {
   const columns = access
     ? getColumns(baseColumns, null, access, handleEdit, handleDelete)
     : [];
+
+  const handleClear = () => {
+    setRecords([]);
+    setFilter(null);
+    setSearched(false);
+  };
 
   //------
 
@@ -131,9 +153,9 @@ const DepartmentExtraWorkCapacitiesPage = ({ pageName }) => {
             sheets={getSheets(records)}
             fileName="DepartmentExtraWorkCapacities"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
-            onSearch={handleSearch}
-            onClear={() => setRecords([])}
-            onGetAll={handleGetAll}
+            onSearch={() => setShowSearchModal(true)}
+            onClear={handleClear}
+            onGetAll={null}
             onAdd={access?.CanAdd && handleAdd}
           />
 
@@ -151,6 +173,15 @@ const DepartmentExtraWorkCapacitiesPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
+        />
+      )}
+
+      {showSearchModal && (
+        <DepartmentExtraWorkSearchModal
+          onOk={handleAdvancedSearch}
+          onCancel={() => setShowSearchModal(false)}
+          isOpen={showSearchModal}
+          filter={filter}
         />
       )}
     </>
