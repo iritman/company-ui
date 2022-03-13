@@ -165,7 +165,7 @@ const mapper = (pageID) => {
       break;
 
     case 66:
-      link = "new-extra-work-request";
+      link = "members-extra-work-requests";
       icon = (
         <ExtraWorkIcon style={{ color: Colors.purple[6] }} size={iconSize} />
       );
@@ -219,7 +219,7 @@ const tabs = [
       { pageName: "user-MembersNewVacationsCheckOfficial" },
       { pageName: "user-MembersNewMissionReports" },
       { pageName: "user-MembersWorkReport" },
-      { pageName: "user-NewExtraWorkRequest" },
+      { pageName: "user-MembersExtraWorkRequests" },
     ],
   },
 ];

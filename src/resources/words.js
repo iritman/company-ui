@@ -236,6 +236,8 @@ class Words extends Component {
   static run_time = "زمان اجرا";
   static supervisors = "ناظران";
 
+  static new_extra_work_request = "ثبت درخواست اضافه کار";
+
   static mission_new_reports = "گزارش های جدید ماموریت";
   static mission_reply_status = "نتیجه بررسی گزارش";
 
