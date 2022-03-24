@@ -425,6 +425,17 @@ export function checkNationalCode(nationalCode) {
   }
 }
 
+export function minToTime(minutes) {
+  let result = "";
+
+  let hh = Math.trunc(minutes / 60);
+  let mm = minutes % 60;
+
+  result = `${addFirstZero(hh)}:${addFirstZero(mm)}`;
+
+  return result;
+}
+
 const methods = {
   addFirstZero,
   farsiNum,
@@ -461,6 +472,7 @@ const methods = {
   jalaliDate,
   generateRandomNumericPassword,
   checkNationalCode,
+  minToTime,
 };
 
 export default methods;

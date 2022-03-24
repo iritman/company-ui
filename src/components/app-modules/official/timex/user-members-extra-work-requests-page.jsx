@@ -1,10 +1,13 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button, message } from "antd";
-import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import { Spin, Row, Col, Typography, Button, Space, Alert } from "antd";
+import {
+  InfoCircleOutlined as InfoIcon,
+  ClockCircleOutlined as ClockIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/timex/user-members-missions-service";
+import service from "../../../../services/official/timex/user-members-extra-work-requests-service";
 import {
   getSorter,
   checkAccess,
@@ -15,60 +18,75 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
-import SearchModal from "./user-members-missions-search-modal";
-import DetailsModal from "./user-members-missions-details-modal";
+import ExtraWorkModal from "./user-members-extra-work-request-modal";
+import SearchModal from "./user-members-extra-work-requests-search-modal";
+import DetailsModal from "./user-members-extra-work-request-details-modal";
 
 const { Text } = Typography;
 
-const getMissionStatusColor = (statusID) => {
+const getRequestStatusColor = (record) => {
   let color = Colors.grey[6];
 
-  switch (statusID) {
-    case 2:
-      color = Colors.green[6];
-      break;
-    case 3:
-      color = Colors.red[6];
-      break;
-    default:
-      color = Colors.grey[6];
-      break;
-  }
+  const { IsAccepted, ResponseMemberID } = record;
+
+  if (ResponseMemberID > 0 && !IsAccepted) color = Colors.red[6];
+  else if (ResponseMemberID > 0 && IsAccepted) color = Colors.green[6];
 
   return color;
 };
 
-const getMissionStatusTitle = (statusID) => {
+const getRequestStatusTitle = (record) => {
   let title = Words.in_progress;
 
-  switch (statusID) {
-    case 2:
-      title = Words.accepted;
-      break;
-    case 3:
-      title = Words.rejected;
-      break;
-    default:
-      title = Words.in_progress;
-      break;
-  }
+  const { IsAccepted, ResponseMemberID } = record;
+
+  if (ResponseMemberID > 0 && !IsAccepted) title = Words.rejected;
+  else if (ResponseMemberID > 0 && IsAccepted) title = Words.accepted;
 
   return title;
 };
 
 const getSheets = (records) => [
   {
-    title: "MembersMissions",
+    title: "ExtraWorkRequests",
     data: records,
     columns: [
-      { label: Words.id, value: "MissionID" },
+      { label: Words.id, value: "RequestID" },
       {
-        label: Words.full_name,
-        value: (record) => `${record.FirstName} ${record.LastName}`,
+        label: Words.extra_work_command_source,
+        value: (record) => `${record.CommandSourceTitle}`,
       },
       {
-        label: Words.mission_type,
-        value: (record) => `${record.MissionTypeTitle}`,
+        label: Words.start_date,
+        value: (record) => `${record.StartDate}`,
+      },
+      {
+        label: Words.start_time,
+        value: (record) => `${record.StartTime}`,
+      },
+      {
+        label: Words.finish_date,
+        value: (record) => `${record.FinishDate}`,
+      },
+      {
+        label: Words.finish_time,
+        value: (record) => `${record.FinishTime}`,
+      },
+      {
+        label: Words.request_duration,
+        value: (record) => `${utils.minToTime(record.DurationInMin)}`,
+      },
+      {
+        label: Words.descriptions,
+        value: "DetailsText",
+      },
+      {
+        label: Words.reg_member,
+        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
+      },
+      {
+        label: Words.department,
+        value: "DepartmentTitle",
       },
       {
         label: Words.reg_date,
@@ -79,28 +97,31 @@ const getSheets = (records) => [
         value: (record) => utils.colonTime(record.RegTime),
       },
       {
-        label: Words.from_date,
-        value: (record) => utils.slashDate(record.StartDate),
+        label: Words.official_expert,
+        value: (record) =>
+          `${record.ResponseFirstName} ${record.ResponseLastName}`,
       },
       {
-        label: Words.from_time,
-        value: (record) => utils.colonTime(record.StartTime),
-      },
-      {
-        label: Words.to_date,
-        value: (record) => utils.slashDate(record.FinishDate),
-      },
-      {
-        label: Words.to_time,
-        value: (record) => utils.colonTime(record.FinishTime),
-      },
-      {
-        label: Words.descriptions,
-        value: (record) => record.DetailsText,
+        label: Words.official_response,
+        value: "ResponseDetailsText",
       },
       {
         label: Words.status,
-        value: (record) => getMissionStatusTitle(record.FinalStatusID),
+        value: (record) => getRequestStatusTitle(record),
+      },
+      {
+        label: Words.response_reg_date,
+        value: (record) =>
+          record.ResponseRegDate.length > 0
+            ? utils.slashDate(record.ResponseRegDate)
+            : "",
+      },
+      {
+        label: Words.response_reg_time,
+        value: (record) =>
+          record.ResponseRegTime.length > 0
+            ? utils.colonTime(record.ResponseRegTime)
+            : "",
       },
     ],
   },
@@ -111,111 +132,88 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "MissionID",
-    sorter: getSorter("MissionID"),
-    render: (MissionID) => <Text>{utils.farsiNum(`${MissionID}`)}</Text>,
+    dataIndex: "RequestID",
+    sorter: getSorter("RequestID"),
+    render: (RequestID) => <Text>{utils.farsiNum(`${RequestID}`)}</Text>,
   },
   {
-    title: Words.requester,
+    title: Words.extra_work_command_source,
     width: 150,
     align: "center",
-    sorter: getSorter("LastName"),
-    render: (record) => (
-      <Text
-        style={{ color: Colors.red[7] }}
-      >{`${record.FirstName} ${record.LastName}`}</Text>
+    dataIndex: "CommandSourceTitle",
+    sorter: getSorter("CommandSourceTitle"),
+    render: (CommandSourceTitle) => (
+      <Text style={{ color: Colors.blue[6] }}>{CommandSourceTitle}</Text>
     ),
   },
   {
-    title: Words.mission_type,
-    width: 120,
+    title: Words.start,
+    width: 150,
     align: "center",
-    dataIndex: "MissionTypeTitle",
-    sorter: getSorter("MissionTypeTitle"),
-    render: (MissionTypeTitle) => (
-      <Text style={{ color: Colors.blue[6] }}>{MissionTypeTitle}</Text>
-    ),
-  },
-  {
-    title: Words.from_date,
-    width: 120,
-    align: "center",
-    dataIndex: "StartDate",
     sorter: getSorter("StartDate"),
-    render: (StartDate) => (
-      <Text style={{ color: Colors.green[6] }}>
-        {`${utils.weekDayNameFromText(StartDate)} - ${utils.farsiNum(
-          utils.slashDate(StartDate)
-        )}`}
-      </Text>
+    render: (record) => (
+      <Space direction="vertical">
+        <Text style={{ color: Colors.cyan[6] }}>
+          {utils.farsiNum(
+            `${utils.weekDayNameFromText(record.StartDate)} ${utils.slashDate(
+              record.StartDate
+            )}`
+          )}
+        </Text>
+        <Text style={{ color: Colors.orange[6] }}>
+          {utils.farsiNum(utils.colonTime(record.StartTime))}
+        </Text>
+      </Space>
     ),
   },
   {
-    title: Words.from_time,
-    width: 100,
+    title: Words.finish,
+    width: 150,
     align: "center",
-    dataIndex: "StartTime",
-    sorter: getSorter("StartTime"),
-    render: (StartTime) => (
-      <>
-        {StartTime.Length > 0 && (
-          <Text style={{ color: Colors.magenta[6] }}>
-            {`${utils.farsiNum(utils.colonTime(StartTime))}`}
-          </Text>
-        )}
-      </>
-    ),
-  },
-  {
-    title: Words.to_date,
-    width: 120,
-    align: "center",
-    dataIndex: "FinishDate",
     sorter: getSorter("FinishDate"),
-    render: (FinishDate) => (
-      <Text style={{ color: Colors.green[6] }}>
-        {`${utils.weekDayNameFromText(FinishDate)} - ${utils.farsiNum(
-          utils.slashDate(FinishDate)
-        )}`}
-      </Text>
+    render: (record) => (
+      <Space direction="vertical">
+        <Text style={{ color: Colors.cyan[6] }}>
+          {utils.farsiNum(
+            `${utils.weekDayNameFromText(record.FinishDate)} ${utils.slashDate(
+              record.FinishDate
+            )}`
+          )}
+        </Text>
+        <Text style={{ color: Colors.orange[6] }}>
+          {utils.farsiNum(utils.colonTime(record.FinishTime))}
+        </Text>
+      </Space>
     ),
   },
   {
-    title: Words.to_time,
+    title: Words.request_duration,
     width: 100,
     align: "center",
-    dataIndex: "FinishTime",
-    sorter: getSorter("FinishTime"),
-    render: (FinishTime) => (
-      <>
-        {FinishTime.Length > 0 && (
-          <Text style={{ color: Colors.magenta[6] }}>
-            {`${utils.farsiNum(utils.colonTime(FinishTime))}`}
-          </Text>
-        )}
-      </>
+    render: (record) => (
+      <Text style={{ color: Colors.magenta[6] }}>
+        {utils.farsiNum(utils.minToTime(record.DurationInMin))}
+      </Text>
     ),
   },
   {
     title: Words.status,
     width: 100,
     align: "center",
-    dataIndex: "FinalStatusID",
-    sorter: getSorter("FinalStatusID"),
-    render: (FinalStatusID) => (
-      <Text style={{ color: getMissionStatusColor(FinalStatusID) }}>
-        {getMissionStatusTitle(FinalStatusID)}
+    render: (record) => (
+      <Text style={{ color: getRequestStatusColor(record) }}>
+        {getRequestStatusTitle(record)}
       </Text>
     ),
   },
 ];
 
-const handleCheckEditable = (row) => false;
-const handleCheckDeletable = (row) => false;
+const handleCheckEditable = (row) => row.ResponseMemberID === 0;
+const handleCheckDeletable = (row) => row.ResponseMemberID === 0;
 
-const recordID = "MissionID";
+const recordID = "RequestID";
 
-const UserMembersExtraWorkRequests = ({ pageName }) => {
+const UserMembersExtraWorkRequestsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -228,6 +226,7 @@ const UserMembersExtraWorkRequests = ({ pageName }) => {
     setSelectedObject,
     showDetails,
     setShowDetails,
+    showModal,
     showSearchModal,
     setShowSearchModal,
     filter,
@@ -236,27 +235,36 @@ const UserMembersExtraWorkRequests = ({ pageName }) => {
 
   useMount(async () => {
     handleResetContext();
-
     await checkAccess(setAccess, pageName);
   });
 
-  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
-    {
-      service,
-      recordID,
-    }
-  );
+  const {
+    handleCloseModal,
+    handleAdd,
+    handleEdit,
+    handleDelete,
+    handleSave,
+    handleResetContext,
+    handleAdvancedSearch,
+  } = GetSimplaDataPageMethods({
+    service,
+    recordID,
+  });
 
   const getOperationalButtons = (record) => {
     return (
-      <Button
-        type="link"
-        icon={<InfoIcon style={{ color: Colors.green[6] }} />}
-        onClick={() => {
-          setSelectedObject(record);
-          setShowDetails(true);
-        }}
-      />
+      <>
+        {record.RegTypeID !== 1 && (
+          <Button
+            type="link"
+            icon={<InfoIcon style={{ color: Colors.green[6] }} />}
+            onClick={() => {
+              setSelectedObject(record);
+              setShowDetails(true);
+            }}
+          />
+        )}
+      </>
     );
   };
 
@@ -265,8 +273,8 @@ const UserMembersExtraWorkRequests = ({ pageName }) => {
         baseColumns,
         getOperationalButtons,
         access,
-        null,
-        null,
+        handleEdit,
+        handleDelete,
         handleCheckEditable,
         handleCheckDeletable
       )
@@ -278,45 +286,50 @@ const UserMembersExtraWorkRequests = ({ pageName }) => {
     setSearched(false);
   };
 
+  const getTotalRequestedDurationInMin = () => {
+    let result = 0;
+
+    records.forEach((req) => {
+      result += req.DurationInMin;
+    });
+
+    return result;
+  };
+
   //------
-
-  const handleSaveNote = async (note) => {
-    const data = await service.saveNote(note);
-
-    const index = records.findIndex(
-      (m) => m.Notes.findIndex((r) => r.NoteID === note.NoteID) !== -1
-    );
-    records[index] = data;
-
-    setSelectedObject(data);
-
-    message.success(Words.messages.your_note_submitted);
-  };
-
-  const handleDeleteNote = async (note) => {
-    const data = await service.deleteNote(note.NoteID);
-
-    const index = records.findIndex((m) => (m.MissionID = note.MissionID));
-    records[index] = data;
-
-    setSelectedObject(data);
-
-    message.success(Words.messages.note_deleted);
-  };
 
   return (
     <>
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.new_extra_work_request}
+            title={Words.extra_work_requests}
             sheets={getSheets(records)}
-            fileName="MembersMissions"
+            fileName="ExtraWorkRequests"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={null}
+            onAdd={access?.CanAdd && handleAdd}
           />
+
+          {records.length > 0 && (
+            <Col xs={24}>
+              <Alert
+                message={
+                  <Space>
+                    <ClockIcon />
+                    <Text>{`${Words.total_request_duration}:`}</Text>
+                    <Text style={{ color: Colors.orange[6] }}>
+                      {`${utils.farsiNum(
+                        utils.minToTime(getTotalRequestedDurationInMin())
+                      )}`}
+                    </Text>
+                  </Space>
+                }
+                type="warning"
+              />
+            </Col>
+          )}
 
           <Col xs={24}>
             {searched && (
@@ -335,6 +348,15 @@ const UserMembersExtraWorkRequests = ({ pageName }) => {
         />
       )}
 
+      {showModal && (
+        <ExtraWorkModal
+          onOk={handleSave}
+          onCancel={handleCloseModal}
+          isOpen={showModal}
+          selectedObject={selectedObject}
+        />
+      )}
+
       {showDetails && (
         <DetailsModal
           onOk={() => {
@@ -342,13 +364,11 @@ const UserMembersExtraWorkRequests = ({ pageName }) => {
             setSelectedObject(null);
           }}
           isOpen={showDetails}
-          mission={selectedObject}
-          onSaveNote={handleSaveNote}
-          onDeleteNote={handleDeleteNote}
+          extraWorkRequest={selectedObject}
         />
       )}
     </>
   );
 };
 
-export default UserMembersExtraWorkRequests;
+export default UserMembersExtraWorkRequestsPage;

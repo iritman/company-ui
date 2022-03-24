@@ -226,6 +226,7 @@ class Words extends Component {
   static department_extra_work_capacities = "ظرفیت اضافه کار دپارتمان ها";
   static capacity_in_hours = "ظرفیت (ساعت)";
   static extra_work_command_sources = "منابع دستور اضافه کار";
+  static extra_work_command_source = "منبع دستور اضافه کار";
   static tasks = "مدیریت وظایف";
   static tags = "برچسب ها";
   static interval_tasks = "وظایف تکرارشونده";
@@ -235,8 +236,16 @@ class Words extends Component {
   static timing = "زمانبندی";
   static run_time = "زمان اجرا";
   static supervisors = "ناظران";
+  static extra_work_capacity = "ظرفیت اضافه کاری";
+  static request_duration = "مدت درخواست";
+  static total_request_duration = "مجموع مدت درخواست";
+
+  static total = "کل";
+  static used = "مصرف شده";
+  static remain = "باقیمانده";
 
   static new_extra_work_request = "ثبت درخواست اضافه کار";
+  static extra_work_requests = "درخواست های اضافه کار";
 
   static mission_new_reports = "گزارش های جدید ماموریت";
   static mission_reply_status = "نتیجه بررسی گزارش";
@@ -278,6 +287,11 @@ class Words extends Component {
   static swap_member_response = "پاسخ جانشین";
   static manager_response = "پاسخ مدیر";
   static official_response = "پاسخ اداری";
+  static official_expert = "کارشناس اداری";
+  static response_reg_date = "تاریخ ثبت پاسخ";
+  static response_reg_time = "زمان ثبت پاسخ";
+  static start = "شروع";
+  static finish = "پایان";
 
   static security_guard_reged_cards = "کنترل تردد نگهبانی";
   static my_reged_cards = "ترددهای من";
