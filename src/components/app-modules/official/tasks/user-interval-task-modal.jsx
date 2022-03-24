@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import {
-  Form,
-  Row,
-  Col,
-  Steps,
-  Button,
-  Typography,
-  message,
-  Divider,
-} from "antd";
+import { Form, Row, Col, Steps, Button, Typography, message } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
