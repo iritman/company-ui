@@ -1,23 +1,40 @@
 import React from "react";
-import { Button } from "antd";
+import { Select, Row, Col, Typography } from "antd";
+
+const { Text } = Typography;
+const options = [];
+
+for (let i = 10; i < 36; i++) {
+  const value = i;
+  options.push({
+    label: <Text style={{ color: "red" }}>{`Long Label: ${value}`}</Text>,
+    value,
+  });
+}
 
 const TestPage = (props) => {
-  console.log("hash", props.history);
+  const [value, setValue] = React.useState([10, 12]);
 
-  const handlePush = () => {
-    props.history.replace("/test/books#abc");
-  };
-
-  const handlePop = () => {
-    props.history.replace("/test/books#123");
+  const selectProps = {
+    mode: "multiple",
+    style: {
+      width: "100%",
+    },
+    value,
+    options,
+    onChange: (newValue) => {
+      setValue(newValue);
+    },
+    placeholder: "Select Item...",
+    // maxTagCount: "responsive",
   };
 
   return (
-    <div>
-      <h1>Test Page</h1>
-      <Button onClick={handlePush}>Books</Button>
-      <Button onClick={handlePop}>back</Button>
-    </div>
+    <Row>
+      <Col xs={5}>
+        <Select {...selectProps} />
+      </Col>
+    </Row>
   );
 };
 
