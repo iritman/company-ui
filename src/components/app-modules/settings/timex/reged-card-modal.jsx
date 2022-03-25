@@ -42,7 +42,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const CardRegModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const RegedCardModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const {
     progress,
     setProgress,
@@ -183,4 +183,4 @@ const CardRegModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   );
 };
 
-export default CardRegModal;
+export default RegedCardModal;
