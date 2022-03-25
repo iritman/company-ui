@@ -29,7 +29,23 @@ const getSheets = (records) => [
       { label: Words.year, value: "Year" },
       {
         label: Words.capacity_in_hours,
-        value: (record) => utils.fileName(record.CapacityInHours),
+        value: (record) => record.CapacityInHours,
+      },
+      {
+        label: Words.used,
+        value: (record) =>
+          record.UsedCapacityInMin > 0
+            ? utils.minToTime(record.UsedCapacityInMin)
+            : "-",
+      },
+      {
+        label: Words.remain,
+        value: (record) =>
+          record.RemainCapacityInMin !== 0
+            ? `${record.UsedCapacityInMin < 0 ? "-" : ""}${utils.minToTime(
+                record.UsedCapacityInMin
+              )}`
+            : "-",
       },
       {
         label: Words.reg_member,
@@ -70,23 +86,55 @@ const baseColumns = [
     title: Words.department,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "DepartmentTitle",
     sorter: getSorter("DepartmentTitle"),
     render: (DepartmentTitle) => (
-      <Text style={{ color: Colors.blue[7] }}>{DepartmentTitle}</Text>
+      <Text style={{ color: Colors.cyan[6] }}>{DepartmentTitle}</Text>
     ),
   },
   {
     title: Words.capacity_in_hours,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "CapacityInHours",
     sorter: getSorter("CapacityInHours"),
     render: (CapacityInHours) => (
-      <Text style={{ color: Colors.green[6] }}>
+      <Text style={{ color: Colors.blue[7] }}>
         {utils.farsiNum(`${CapacityInHours}`)}
+      </Text>
+    ),
+  },
+  {
+    title: Words.used,
+    width: 100,
+    align: "center",
+    dataIndex: "UsedCapacityInMin",
+    sorter: getSorter("UsedCapacityInMin"),
+    render: (UsedCapacityInMin) => (
+      <Text style={{ color: Colors.red[6] }}>
+        {UsedCapacityInMin > 0
+          ? utils.farsiNum(utils.minToTime(`${UsedCapacityInMin}`))
+          : "-"}
+      </Text>
+    ),
+  },
+  {
+    title: Words.remain,
+    width: 100,
+    align: "center",
+    dataIndex: "RemainCapacityInMin",
+    sorter: getSorter("RemainCapacityInMin"),
+    render: (RemainCapacityInMin) => (
+      <Text
+        style={{
+          color: RemainCapacityInMin > 0 ? Colors.green[6] : Colors.red[7],
+        }}
+      >
+        {RemainCapacityInMin !== 0
+          ? `${utils.farsiNum(
+              utils.minToTime(`${Math.abs(RemainCapacityInMin)}`)
+            )}${RemainCapacityInMin < 0 ? "-" : ""}`
+          : "-"}
       </Text>
     ),
   },
