@@ -13,7 +13,7 @@ const SimpleDataTable = ({ records, columns }) => {
           scroll={{
             scrollToFirstRowOnChange: true,
             x: "100%",
-            y: 300,
+            y: 500,
           }}
           showSorterTooltip={false}
           locale={{
