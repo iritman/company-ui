@@ -21,7 +21,6 @@ const columns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "CityTitle",
     render: (CityTitle) => (
       <Text style={{ color: Colors.magenta[6] }}>

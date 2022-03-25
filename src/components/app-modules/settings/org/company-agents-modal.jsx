@@ -21,7 +21,6 @@ const columns = [
     title: Words.full_name,
     width: 200,
     align: "center",
-    ellipsis: true,
     render: (record) => (
       <Text style={{ color: Colors.green[7] }}>
         {`${record.FirstName} ${record.LastName}`}
@@ -41,7 +40,6 @@ const columns = [
     title: Words.mobile,
     width: 100,
     align: "center",
-    ellipsis: true,
     render: (record) => (
       <Text style={{ color: Colors.red[6] }}>
         {utils.farsiNum(`${record.Mobile}`)}

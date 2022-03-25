@@ -58,7 +58,6 @@ const baseColumns = [
     title: Words.shift_code,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "ShiftCode",
     sorter: getSorter("ShiftCode"),
     render: (ShiftCode) => (
@@ -88,7 +87,6 @@ const baseColumns = [
     title: Words.start_time,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "StartTime",
     sorter: getSorter("StartTime"),
     render: (StartTime) => (
@@ -101,7 +99,6 @@ const baseColumns = [
     title: Words.finish_time,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "FinishTime",
     sorter: getSorter("FinishTime"),
     render: (FinishTime) => (

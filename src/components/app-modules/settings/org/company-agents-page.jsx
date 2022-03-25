@@ -52,7 +52,6 @@ const baseColumns = [
     title: Words.full_name,
     width: 200,
     align: "center",
-    ellipsis: true,
     // dataIndex: "First",
     sorter: getSorter("LastName"),
     render: (record) => (
@@ -65,7 +64,6 @@ const baseColumns = [
     title: Words.company,
     width: 250,
     align: "center",
-    ellipsis: true,
     dataIndex: "CompanyTitle",
     sorter: getSorter("CompanyTitle"),
     render: (CompanyTitle) => (
@@ -76,7 +74,6 @@ const baseColumns = [
     title: Words.role,
     width: 150,
     align: "center",
-    ellipsis: true,
     dataIndex: "RoleTitle",
     sorter: getSorter("RoleTitle"),
     render: (RoleTitle) => (

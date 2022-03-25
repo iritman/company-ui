@@ -82,7 +82,6 @@ const baseColumns = [
     title: Words.card_no,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "CardNo",
     sorter: getSorter("CardNo"),
     render: (CardNo) => (
@@ -106,7 +105,6 @@ const baseColumns = [
     title: Words.reg_date,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "CardRegDate",
     sorter: getSorter("CardRegDate"),
     render: (CardRegDate) => (
@@ -119,7 +117,6 @@ const baseColumns = [
     title: Words.reg_time,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "CardRegTime",
     sorter: getSorter("CardRegTime"),
     render: (CardRegTime) => (
@@ -132,7 +129,6 @@ const baseColumns = [
     title: Words.reg_type,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "RegTypeTitle",
     sorter: getSorter("RegTypeTitle"),
     render: (RegTypeTitle) => (

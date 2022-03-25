@@ -43,7 +43,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "CityTitle",
     sorter: getSorter("CityTitle"),
     render: (CityTitle) => <Text>{utils.farsiNum(CityTitle)}</Text>,
@@ -52,7 +51,6 @@ const baseColumns = [
     title: Words.province,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "ProvinceTitle",
     sorter: getSorter("ProvinceTitle"),
     render: (ProvinceTitle) => (

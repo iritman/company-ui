@@ -60,8 +60,6 @@ const baseColumns = [
     title: Words.full_name,
     width: 200,
     align: "center",
-    ellipsis: true,
-    // dataIndex: "First",
     sorter: getSorter("LastName"),
     render: (record) => (
       <Text

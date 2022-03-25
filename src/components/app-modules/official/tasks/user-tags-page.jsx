@@ -51,7 +51,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "Title",
     sorter: getSorter("Title"),
     render: (Title) => <Text>{utils.farsiNum(Title)}</Text>,
@@ -60,7 +59,6 @@ const baseColumns = [
     title: Words.color_id,
     width: 75,
     align: "center",
-    ellipsis: true,
     render: (record) => <ColorIcon size="20" style={{ color: record.Color }} />,
   },
 ];

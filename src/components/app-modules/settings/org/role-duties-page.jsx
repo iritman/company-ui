@@ -48,8 +48,6 @@ const baseColumns = [
     title: Words.role,
     width: 200,
     align: "center",
-    ellipsis: true,
-    // dataIndex: "First",
     sorter: getSorter("RoleTitle"),
     render: (record) => (
       <Text style={{ color: Colors.blue[6] }}>{record.RoleTitle}</Text>

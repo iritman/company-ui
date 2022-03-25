@@ -31,7 +31,6 @@ const columns = [
     title: Words.full_name,
     width: 200,
     align: "center",
-    ellipsis: true,
     sorter: getSorter("LastName"),
     render: (record) => (
       <Text
@@ -43,7 +42,6 @@ const columns = [
     title: Words.role,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "RoleTitle",
     sorter: getSorter("RoleTitle"),
     render: (RoleTitle) => (
@@ -54,7 +52,6 @@ const columns = [
     title: Words.department_manager,
     width: 120,
     align: "center",
-    ellipsis: true,
     sorter: getSorter("IsDepartmentManager"),
     render: (record) =>
       record.IsDepartmentManager && (

@@ -42,7 +42,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "DepartmentTitle",
     sorter: getSorter("DepartmentTitle"),
     render: (DepartmentTitle) => <Text>{utils.farsiNum(DepartmentTitle)}</Text>,
@@ -51,7 +50,6 @@ const baseColumns = [
     title: Words.parent_department,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "ParentDepartmentTitle",
     sorter: getSorter("ParentDepartmentTitle"),
     render: (ParentDepartmentTitle) => (

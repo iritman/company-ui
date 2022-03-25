@@ -48,7 +48,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     render: (record) => (
       <Text style={{ color: record.LevelColor }}>{record.LevelTitle}</Text>
     ),
@@ -57,7 +56,6 @@ const baseColumns = [
     title: Words.color_id,
     width: 75,
     align: "center",
-    ellipsis: true,
     render: (record) => (
       <ColorIcon size="20" style={{ color: record.LevelColor }} />
     ),

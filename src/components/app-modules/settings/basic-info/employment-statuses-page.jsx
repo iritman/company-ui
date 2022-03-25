@@ -43,7 +43,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "EmploymentStatusTitle",
     sorter: getSorter("EmploymentStatusTitle"),
     render: (EmploymentStatusTitle) => (

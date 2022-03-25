@@ -49,7 +49,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "Title",
     sorter: getSorter("Title"),
     render: (Title) => (
@@ -60,7 +59,6 @@ const baseColumns = [
     title: Words.vacation_format,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "FormatID",
     sorter: getSorter("FormatID"),
     render: (FormatID) => (

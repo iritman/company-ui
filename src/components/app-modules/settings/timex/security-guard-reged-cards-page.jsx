@@ -131,7 +131,6 @@ const baseColumns = [
     title: Words.reg_time,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "CardRegTime",
     sorter: getSorter("CardRegTime"),
     render: (CardRegTime) => (

@@ -41,7 +41,6 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    ellipsis: true,
     dataIndex: "WorkPlaceTitle",
     sorter: getSorter("WorkPlaceTitle"),
     render: (WorkPlaceTitle) => <Text>{utils.farsiNum(WorkPlaceTitle)}</Text>,

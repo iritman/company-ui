@@ -77,7 +77,6 @@ const baseColumns = [
     title: Words.full_name,
     width: 250,
     align: "center",
-    ellipsis: true,
     sorter: getSorter("LastName"),
     render: (record) => (
       <Text
@@ -89,7 +88,6 @@ const baseColumns = [
     title: Words.national_code,
     width: 100,
     align: "center",
-    ellipsis: true,
     dataIndex: "NationalCode",
     sorter: getSorter("NationalCode"),
     render: (NationalCode) => (
@@ -102,7 +100,6 @@ const baseColumns = [
     title: Words.mobile,
     width: 120,
     align: "center",
-    ellipsis: true,
     dataIndex: "Mobile",
     sorter: getSorter("Mobile"),
     render: (Mobile) => (
@@ -113,7 +110,6 @@ const baseColumns = [
     title: Words.status,
     width: 75,
     align: "center",
-    ellipsis: true,
     sorter: getSorter("IsActive"),
     render: (record) =>
       record.IsActive ? (
