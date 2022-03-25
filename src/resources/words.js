@@ -179,7 +179,9 @@ class Words extends Component {
   static registerar = "ثبت کننده";
   static manual_reg_date_time = "تاریخ و ساعت ثبت دستی";
   static my_cartable = "کارتابل من";
+  static security_cartable = "کارتابل نگهبانی";
   static department_cartable = "کارتابل دپارتمان";
+  static official_cartable = "کارتابل اداری";
   static is_transfered_to_member_reged_cards = "انتقال یافته به تردد اصلی";
   static transfered_to_member_reged_cards = "انتقال به تردد اصلی";
   static is_transfered = "انتقال یافته";

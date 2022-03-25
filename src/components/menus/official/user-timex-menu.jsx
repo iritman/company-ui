@@ -11,8 +11,12 @@ import {
   MdCardTravel as VacationIcon,
   MdOutlineWork as MissionIcon,
   MdSpeakerNotes as ReportIcon,
+  MdSecurity as SecurityIcon,
 } from "react-icons/md";
-import { FaChartPie as WorkReportIcon } from "react-icons/fa";
+import {
+  FaChartPie as WorkReportIcon,
+  FaLandmark as OfficialIcon,
+} from "react-icons/fa";
 import { GiSwipeCard as RegedCardIcon } from "react-icons/gi";
 import { BiAlarmAdd as ExtraWorkIcon } from "react-icons/bi";
 import { FiUser as UserIcon, FiUsers as UsersIcon } from "react-icons/fi";
@@ -171,6 +175,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 67:
+      link = "official-check-extra-work-requests";
+      icon = (
+        <ExtraWorkIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }
@@ -184,12 +195,11 @@ const tabs = [
     title: (
       <TabTitle
         title={Words.my_cartable}
-        color={Colors.red[6]}
+        color={Colors.orange[6]}
         icon={UserIcon}
       />
     ),
     pages: [
-      { pageName: "user-SecurityGuardRegedCards" },
       { pageName: "user-MyRegedCards" },
       { pageName: "user-MyWorkShifts" },
       { pageName: "user-MyMissions" },
@@ -198,6 +208,17 @@ const tabs = [
       { pageName: "user-MissionReplaceWorkRequests" },
       { pageName: "user-MyWorkReport" },
     ],
+  },
+  {
+    name: "security-cartable",
+    title: (
+      <TabTitle
+        title={Words.security_cartable}
+        color={Colors.red[6]}
+        icon={SecurityIcon}
+      />
+    ),
+    pages: [{ pageName: "user-SecurityGuardRegedCards" }],
   },
   {
     name: "department-cartable",
@@ -213,13 +234,36 @@ const tabs = [
       { pageName: "user-MembersWorkShifts" },
       { pageName: "user-MembersMissions" },
       { pageName: "user-MembersNewMissionsCheckManager" },
-      { pageName: "user-MembersNewMissionsCheckOfficial" },
+      // { pageName: "user-MembersNewMissionsCheckOfficial" },
       { pageName: "user-MembersVacations" },
       { pageName: "user-MembersNewVacationsCheckManager" },
-      { pageName: "user-MembersNewVacationsCheckOfficial" },
+      // { pageName: "user-MembersNewVacationsCheckOfficial" },
       { pageName: "user-MembersNewMissionReports" },
       { pageName: "user-MembersWorkReport" },
       { pageName: "user-MembersExtraWorkRequests" },
+    ],
+  },
+  {
+    name: "official-cartable",
+    title: (
+      <TabTitle
+        title={Words.official_cartable}
+        color={Colors.cyan[6]}
+        icon={OfficialIcon}
+      />
+    ),
+    pages: [
+      { pageName: "user-MembersRegedCards" },
+      // { pageName: "user-MembersWorkShifts" },
+      // { pageName: "user-MembersMissions" },
+      // { pageName: "user-MembersNewMissionsCheckManager" },
+      { pageName: "user-MembersNewMissionsCheckOfficial" },
+      // { pageName: "user-MembersVacations" },
+      // { pageName: "user-MembersNewVacationsCheckManager" },
+      { pageName: "user-MembersNewVacationsCheckOfficial" },
+      // { pageName: "user-MembersNewMissionReports" },
+      // { pageName: "user-MembersWorkReport" },
+      { pageName: "user-OfficialCheckExtraWorkRequests" },
     ],
   },
 ];
