@@ -182,6 +182,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 68:
+      link = "official-check-reged-cards";
+      icon = (
+        <RegedCardIcon style={{ color: Colors.green[6] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }
@@ -253,7 +260,7 @@ const tabs = [
       />
     ),
     pages: [
-      { pageName: "user-MembersRegedCards" },
+      { pageName: "user-OfficialCheckRegedCards" },
       // { pageName: "user-MembersWorkShifts" },
       // { pageName: "user-MembersMissions" },
       // { pageName: "user-MembersNewMissionsCheckManager" },
