@@ -69,6 +69,16 @@ const baseColumns = [
     ),
   },
   {
+    title: Words.department_supervisor,
+    width: 120,
+    align: "center",
+    sorter: getSorter("IsDepartmentSupervisor"),
+    render: (record) =>
+      record.IsDepartmentSupervisor && (
+        <CheckIcon style={{ color: Colors.green[6] }} />
+      ),
+  },
+  {
     title: Words.department_manager,
     width: 120,
     align: "center",
