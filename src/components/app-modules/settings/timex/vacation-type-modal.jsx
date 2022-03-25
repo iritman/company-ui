@@ -12,6 +12,7 @@ import {
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
+import SwitchItem from "./../../../form-controls/switch-item";
 import {
   useModalContext,
   useResetContext,
@@ -26,12 +27,14 @@ const schema = {
     .label(Words.title)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
   FormatID: Joi.number().min(1).required(),
+  WithoutFee: Joi.boolean(),
 };
 
 const initRecord = {
   VacationTypeID: 0,
   Title: "",
   FormatID: 0,
+  WithoutFee: false,
 };
 
 const formRef = React.createRef();
@@ -58,6 +61,7 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const clearRecord = () => {
     record.Title = "";
     record.FormatID = 0;
+    record.WithoutFee = false;
 
     setRecord(record);
     setErrors({});
@@ -93,7 +97,7 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onCancel={onCancel}
     >
       <Form ref={formRef} name="dataForm">
-        <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+        <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <InputItem
               title={Words.title}
@@ -104,7 +108,7 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24}>
             <DropdownItem
               title={Words.vacation_format}
               dataSource={vacationFormats}
@@ -112,6 +116,16 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               valueColumn="FormatTitle"
               formConfig={formConfig}
               required
+            />
+          </Col>
+          <Col xs={24}>
+            <SwitchItem
+              title={Words.without_fee}
+              fieldName="WithoutFee"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
+              formConfig={formConfig}
             />
           </Col>
         </Row>

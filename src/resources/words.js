@@ -241,6 +241,9 @@ class Words extends Component {
   static extra_work_capacity = "ظرفیت اضافه کاری";
   static request_duration = "مدت درخواست";
   static total_request_duration = "مجموع مدت درخواست";
+  static with_fee = "با حقوق";
+  static without_fee = "بدون حقوق";
+  static fee_status = "وضعیت حقوق";
 
   static total = "کل";
   static used = "مصرف شده";

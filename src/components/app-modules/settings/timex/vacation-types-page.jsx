@@ -1,6 +1,7 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
+import { AiOutlineCheck as CheckIcon } from "react-icons/ai";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/settings/timex/vacation-types-service";
@@ -66,6 +67,14 @@ const baseColumns = [
         {FormatID === 1 ? Words.by_hour : Words.by_day}
       </Text>
     ),
+  },
+  {
+    title: Words.without_fee,
+    width: 100,
+    align: "center",
+    sorter: getSorter("WithoutFee"),
+    render: (record) =>
+      record.WithoutFee && <CheckIcon style={{ color: Colors.green[6] }} />,
   },
 ];
 
