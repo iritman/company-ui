@@ -1,5 +1,4 @@
 import React from "react";
-// import { useMount } from "react-use";
 import {
   Button,
   Modal,
@@ -36,12 +35,6 @@ const UserMyRegedCardDetailsModal = ({ regedCard, isOpen, onOk }) => {
     RegisterarDetailsText,
     // SecurityGuardRegID,
   } = regedCard;
-
-  // useMount(async () => {
-  //   if (SecurityGuardRegID > 0) {
-  //     console.log(SecurityGuardRegID);
-  //   }
-  // });
 
   return (
     <Modal

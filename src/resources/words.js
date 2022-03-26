@@ -244,6 +244,7 @@ class Words extends Component {
   static with_fee = "با حقوق";
   static without_fee = "بدون حقوق";
   static fee_status = "وضعیت حقوق";
+  static no_alternative_employees = "پرسنل بدون جانشین";
 
   static total = "کل";
   static used = "مصرف شده";

@@ -12,6 +12,7 @@ import {
   MdOutlineWork as MissionIcon,
   MdSpeakerNotes as ReportIcon,
   MdSecurity as SecurityIcon,
+  MdOutlineSwapCalls as AlternativeIcon,
 } from "react-icons/md";
 import {
   FaChartPie as WorkReportIcon,
@@ -189,6 +190,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 69:
+      link = "official-check-no-alternative-employees";
+      icon = (
+        <AlternativeIcon style={{ color: Colors.red[6] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }
@@ -241,10 +249,8 @@ const tabs = [
       { pageName: "user-MembersWorkShifts" },
       { pageName: "user-MembersMissions" },
       { pageName: "user-MembersNewMissionsCheckManager" },
-      // { pageName: "user-MembersNewMissionsCheckOfficial" },
       { pageName: "user-MembersVacations" },
       { pageName: "user-MembersNewVacationsCheckManager" },
-      // { pageName: "user-MembersNewVacationsCheckOfficial" },
       { pageName: "user-MembersNewMissionReports" },
       { pageName: "user-MembersWorkReport" },
       { pageName: "user-MembersExtraWorkRequests" },
@@ -260,17 +266,11 @@ const tabs = [
       />
     ),
     pages: [
-      { pageName: "user-OfficialCheckRegedCards" },
-      // { pageName: "user-MembersWorkShifts" },
-      // { pageName: "user-MembersMissions" },
-      // { pageName: "user-MembersNewMissionsCheckManager" },
-      { pageName: "user-MembersNewMissionsCheckOfficial" },
-      // { pageName: "user-MembersVacations" },
-      // { pageName: "user-MembersNewVacationsCheckManager" },
-      { pageName: "user-MembersNewVacationsCheckOfficial" },
-      // { pageName: "user-MembersNewMissionReports" },
-      // { pageName: "user-MembersWorkReport" },
       { pageName: "user-OfficialCheckExtraWorkRequests" },
+      { pageName: "user-OfficialCheckRegedCards" },
+      { pageName: "user-OfficialCheckNoAlternativeEmployees" },
+      { pageName: "user-MembersNewMissionsCheckOfficial" },
+      { pageName: "user-MembersNewVacationsCheckOfficial" },
     ],
   },
 ];

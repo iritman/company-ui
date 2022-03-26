@@ -23,6 +23,7 @@ import UserMembersMissionNewReportsPage from "../../components/app-modules/offic
 import UserMembersExtraWorkRequestsPage from "../../components/app-modules/official/timex/user-members-extra-work-requests-page";
 import UserOfficialCheckExtraWorkRequestsPage from "../../components/app-modules/official/timex/user-official-check-extra-work-requests-page";
 import UserOfficialCheckRegedCardsPage from "../../components/app-modules/official/timex/user-official-check-reged-cards-page";
+import UserOfficialNoAlternativeEmployeesPage from "../../components/app-modules/official/timex/user-official-check-no-alternative-employees-page";
 //---
 
 const modulePath = "official/timex";
@@ -160,6 +161,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserOfficialCheckRegedCardsPage pageName="user-OfficialCheckRegedCards" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/official-check-no-alternative-employees`}
+        exact
+        render={() => (
+          <UserOfficialNoAlternativeEmployeesPage pageName="user-OfficialCheckNoAlternativeEmployees" />
         )}
       />
       {/* --- */}
