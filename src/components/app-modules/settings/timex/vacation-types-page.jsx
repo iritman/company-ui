@@ -137,7 +137,7 @@ const VacationTypesPage = ({ pageName }) => {
 
           <Col xs={24}>
             {searched && (
-              <SimpleDataTable records={[...records]} columns={columns} />
+              <SimpleDataTable records={records} columns={columns} />
             )}
           </Col>
         </Row>

@@ -245,6 +245,10 @@ export const getColumns = (
     ];
   }
 
+  columns.forEach((col, index) => {
+    col.key = index;
+  });
+
   return columns;
 };
 

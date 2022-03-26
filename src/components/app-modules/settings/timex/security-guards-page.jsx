@@ -27,7 +27,7 @@ const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "Employees",
+    title: "SecurityGuards",
     data: records,
     columns: [
       { label: Words.id, value: "GuardID" },

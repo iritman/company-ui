@@ -1,19 +1,18 @@
 import React from "react";
-import { Select, Row, Col, Typography } from "antd";
+import { Select, Row, Col } from "antd";
 
-const { Text } = Typography;
 const options = [];
 
 for (let i = 10; i < 36; i++) {
-  const value = i;
+  const value = i.toString(36) + i;
   options.push({
-    label: <Text style={{ color: "red" }}>{`Long Label: ${value}`}</Text>,
+    label: `Long Label: ${value}`,
     value,
   });
 }
 
 const TestPage = (props) => {
-  const [value, setValue] = React.useState([10, 12]);
+  const [value, setValue] = React.useState(["a10", "c12", "h17", "j19", "k20"]);
 
   const selectProps = {
     mode: "multiple",
@@ -26,7 +25,7 @@ const TestPage = (props) => {
       setValue(newValue);
     },
     placeholder: "Select Item...",
-    // maxTagCount: "responsive",
+    maxTagCount: "responsive",
   };
 
   return (

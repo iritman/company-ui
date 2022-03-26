@@ -10,6 +10,9 @@ const SimpleDataTable = ({ records, columns }) => {
         <Table
           columns={columns}
           dataSource={getData(records)}
+          pagination={{
+            hideOnSinglePage: true,
+          }}
           scroll={{
             scrollToFirstRowOnChange: true,
             x: "100%",
@@ -19,7 +22,7 @@ const SimpleDataTable = ({ records, columns }) => {
           locale={{
             filterConfirm: Words.ok,
             filterReset: Words.clear,
-            emptyText: Words.emptyData,
+            emptyText: Words.empty_data,
           }}
           size="small"
         />
