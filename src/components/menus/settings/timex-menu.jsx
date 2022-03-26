@@ -27,6 +27,7 @@ import {
   MdCardTravel as VacationIcon,
   MdOutlineWork as MissionIcon,
   MdOutlineShareLocation as TargetIcon,
+  MdOutlineSwapCalls as AlternativeIcon,
 } from "react-icons/md";
 import {
   FaUsersCog as UsersIcon,
@@ -82,13 +83,6 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 63:
-      link = "extra-work-command-sources";
-      icon = (
-        <CommandIcon style={{ color: Colors.orange[6] }} size={iconSize} />
-      );
-      break;
-
     case 14:
       link = "calculation-bases";
       icon = (
@@ -96,6 +90,20 @@ const mapper = (pageID) => {
           style={{ color: Colors.orange[6] }}
           size={iconSize}
         />
+      );
+      break;
+
+    case 63:
+      link = "extra-work-command-sources";
+      icon = (
+        <CommandIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
+    case 70:
+      link = "no-alternative-employees";
+      icon = (
+        <AlternativeIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
@@ -226,8 +234,9 @@ const tabs = [
     pages: [
       { pageName: "Holidays" },
       { pageName: "DepartmentExtraWorkCapacities" },
-      { pageName: "ExtraWorkCommandSources" },
       { pageName: "CalculationBases" },
+      { pageName: "ExtraWorkCommandSources" },
+      { pageName: "NoAlternativeEmployees" },
     ],
   },
   {

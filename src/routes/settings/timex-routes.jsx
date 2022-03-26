@@ -11,6 +11,7 @@ import MissionTargetsPage from "../../components/app-modules/settings/timex/miss
 import HolidaysPage from "../../components/app-modules/settings/timex/holidays-page";
 import DepartmentExtraWorkCapacitiesPage from "../../components/app-modules/settings/timex/department-extra-work-capacities-page";
 import ExtraWorkCommandSourcesPage from "../../components/app-modules/settings/timex/extra-work-command-sources-page";
+import NoAlternativeEmployeesPage from "../../components/app-modules/settings/timex/no-alternative-employees-page";
 import WorkShiftsPage from "../../components/app-modules/settings/timex/work-shifts-page";
 import GroupShiftsPage from "../../components/app-modules/settings/timex/group-shifts-page";
 import EmployeeShiftsPage from "../../components/app-modules/settings/timex/employee-shifts-page";
@@ -73,6 +74,13 @@ const TimexRoutes = ({ path }) => {
         exact
         render={() => (
           <ExtraWorkCommandSourcesPage pageName="ExtraWorkCommandSources" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/no-alternative-employees`}
+        exact
+        render={() => (
+          <NoAlternativeEmployeesPage pageName="NoAlternativeEmployees" />
         )}
       />
       <ProtectedRoute
