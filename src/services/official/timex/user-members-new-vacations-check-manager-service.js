@@ -4,10 +4,8 @@ import { apiUrl } from "../../../config.json";
 const apiEndpoint =
   apiUrl + "/official/timex/user-members-new-vacations-check-manager";
 
-async function getSwapableMembers(vacationMemberID, swapMemberID) {
-  const { data } = await http.get(
-    `${apiEndpoint}/swapables/${vacationMemberID}/${swapMemberID}`
-  );
+async function getRole() {
+  const { data } = await http.get(`${apiEndpoint}/role`);
 
   return data;
 }
@@ -31,7 +29,7 @@ async function saveResponse(response) {
 }
 
 const service = {
-  getSwapableMembers,
+  getRole,
   getParams,
   searchData,
   saveResponse,

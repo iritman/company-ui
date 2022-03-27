@@ -19,11 +19,8 @@ import {
 } from "../../../contexts/modal-context";
 import InputItem from "../../../form-controls/input-item";
 import SwitchItem from "../../../form-controls/switch-item";
-import DropdownItem from "../../../form-controls/dropdown-item";
-import service from "../../../../services/official/timex/user-members-new-vacations-check-manager-service";
 
 const schema = {
-  MemberID: Joi.number(),
   IsAccepted: Joi.boolean(),
   DetailsText: Joi.string()
     .allow("")
@@ -33,7 +30,6 @@ const schema = {
 };
 
 const initRecord = {
-  MemberID: 0,
   IsAccepted: false,
   DetailsText: "",
 };
@@ -46,16 +42,8 @@ const UserMembersNewVacationsCheckManagerResponseModal = ({
   onOk,
   onCancel,
 }) => {
-  const {
-    progress,
-    setProgress,
-    record,
-    setRecord,
-    members,
-    setMembers,
-    errors,
-    setErrors,
-  } = useModalContext();
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
 
   const resetContext = useResetContext();
 
@@ -68,7 +56,6 @@ const UserMembersNewVacationsCheckManagerResponseModal = ({
   };
 
   const clearRecord = async () => {
-    record.MemberID = 0;
     record.IsAccepted = false;
     record.DetailsText = "";
 
@@ -82,18 +69,6 @@ const UserMembersNewVacationsCheckManagerResponseModal = ({
 
     setRecord(initRecord);
     initModal(formRef, initRecord, setRecord);
-
-    try {
-      const { MemberID, SwapMemberID } = vacation;
-
-      const data = await service.getSwapableMembers(MemberID, SwapMemberID);
-
-      const { Members } = data;
-
-      setMembers([...Members]);
-    } catch (err) {
-      handleError(err);
-    }
   });
 
   const handleSubmit = async (record) => {
@@ -167,17 +142,6 @@ const UserMembersNewVacationsCheckManagerResponseModal = ({
               autoFocus
             />
           </Col>
-          {members.length > 0 && (
-            <Col xs={24}>
-              <DropdownItem
-                title={Words.swap_member}
-                dataSource={members}
-                keyColumn="MemberID"
-                valueColumn="FullName"
-                formConfig={formConfig}
-              />
-            </Col>
-          )}
           <Col xs={24}>
             <InputItem
               horizontal

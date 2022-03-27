@@ -315,10 +315,10 @@ class Words extends Component {
   static members_missions = "ماموریت های کارکنان";
   static members_vacations = "مرخصی های کارکنان";
   static members_work_report = "گزارش کارکرد کارکنان";
-  static members_vacations_check_manager = "مرخصی های جدید بررسی مدیر";
-  static members_missions_check_manager = "ماموریت های جدید بررسی مدیر";
-  static members_vacations_check_official = "مرخصی های جدید بررسی اداری";
-  static members_missions_check_official = "ماموریت های جدید بررسی اداری";
+  static members_vacations_check_manager = "مرخصی های جدید";
+  static members_missions_check_manager = "ماموریت های جدید";
+  static members_vacations_check_official = "مرخصی های جدید";
+  static members_missions_check_official = "ماموریت های جدید";
   static requester = "متقاضی";
   static vacation_requests = "درخواست های مرخصی";
   static request_reg_date = "تاریخ درخواست";
