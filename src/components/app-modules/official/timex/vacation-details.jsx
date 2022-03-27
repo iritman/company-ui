@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Row, Col, Typography, Space, Alert, Steps, Descriptions } from "antd";
 import {
-  AiOutlineCloseCircle as CloseIcon,
-  AiOutlineCheckCircle as CheckIcon,
-} from "react-icons/ai";
+  CloseCircleOutlined as CloseIcon,
+  CheckCircleOutlined as CheckIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
@@ -168,9 +168,11 @@ const VacationDetails = ({ vacation }) => {
               >
                 <Space>
                   {action.IsAccepted ? (
-                    <CheckIcon style={{ color: Colors.green[7] }} />
+                    <CheckIcon
+                      style={{ color: Colors.green[7], fontSize: 18 }}
+                    />
                   ) : (
-                    <CloseIcon style={{ color: Colors.red[7] }} />
+                    <CloseIcon style={{ color: Colors.red[7], fontSize: 18 }} />
                   )}
                   <Text
                     style={{
