@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
@@ -49,6 +49,8 @@ const initRecord = {
 const formRef = React.createRef();
 
 const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+  const [noAlternative, setNoAlternative] = useState(false);
+
   const {
     progress,
     setProgress,
@@ -134,7 +136,10 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { VacationTypes, SwapMembers, CurrentDateTime } = data;
+      const { VacationTypes, SwapMembers, CurrentDateTime, NoAlternative } =
+        data;
+
+      if (NoAlternative) schema.SwapMemberID = Joi.number();
 
       if (selectedObject === null) {
         const inr = { ...initRecord };
@@ -146,6 +151,7 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
       setVacationTypes(VacationTypes);
       setSwapMembers(SwapMembers);
+      setNoAlternative(NoAlternative);
     } catch (err) {
       handleError(err);
     }
@@ -177,38 +183,6 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          {/* {isEdit && (
-            <>
-              <Col
-                xs={24}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <MemberProfileImage fileName={record.PicFileName} size={60} />
-              </Col>
-              <Col xs={24}>
-                <TextItem
-                  title={Words.member}
-                  value={`${record.FirstName} ${record.LastName}`}
-                  valueColor={Colors.magenta[6]}
-                />
-              </Col>
-            </>
-          )} */}
-
-          {/* {!isEdit && (
-            <Col xs={24}>
-              <DropdownItem
-                title={Words.employee}
-                dataSource={employees}
-                keyColumn="EmployeeID"
-                valueColumn="FullName"
-                formConfig={formConfig}
-                required
-                autoFocus
-              />
-            </Col>
-          )} */}
-
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.vacation_type}
@@ -227,7 +201,7 @@ const UserMyVacationModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               keyColumn="SwapMemberID"
               valueColumn="FullName"
               formConfig={formConfig}
-              required
+              required={!noAlternative}
             />
           </Col>
           {record.VacationTypeID > 0 && (

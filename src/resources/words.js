@@ -245,6 +245,8 @@ class Words extends Component {
   static without_fee = "بدون حقوق";
   static fee_status = "وضعیت حقوق";
   static no_alternative_employees = "پرسنل بدون جانشین";
+  static response = "پاسخ";
+  static no_alternative_employee = "بدون جانشین";
 
   static total = "کل";
   static used = "مصرف شده";
@@ -417,6 +419,7 @@ class Words extends Component {
     no_note_submitted_yet: "یادداشتی ثبت نشده است",
     your_note_submitted: "یادداشت شما ثبت شد",
     note_deleted: "یادداشت مورد نظر حذف شد",
+    no_response_submitted: "پاسخ # ثبت نشده است",
   };
 
   static questions = {
