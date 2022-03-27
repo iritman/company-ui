@@ -16,7 +16,7 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
 import SearchModal from "./user-members-vacations-search-modal";
-import DetailsModal from "./user-members-vacations-details-modal";
+import DetailsModal from "./vacation-details-modal";
 
 const { Text } = Typography;
 

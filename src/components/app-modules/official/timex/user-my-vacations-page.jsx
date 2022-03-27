@@ -16,8 +16,8 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
 import VacationModal from "./user-my-vacation-modal";
-import VacationSearchModal from "./user-my-vacation-search-modal";
-import VacationDetailsModal from "./user-my-vacation-details-modal";
+import SearchModal from "./user-my-vacation-search-modal";
+import DetailsModal from "./vacation-details-modal";
 
 const { Text } = Typography;
 
@@ -303,7 +303,7 @@ const UserMyVacationsPage = ({ pageName }) => {
       </Spin>
 
       {showSearchModal && (
-        <VacationSearchModal
+        <SearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
@@ -321,7 +321,7 @@ const UserMyVacationsPage = ({ pageName }) => {
       )}
 
       {showDetails && (
-        <VacationDetailsModal
+        <DetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
