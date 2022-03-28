@@ -1,7 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Button } from "antd";
-import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import { Spin, Row, Col } from "antd";
 import Words from "../../../../resources/words";
 import service from "../../../../services/official/timex/user-official-check-members-vacations-service";
 import {
@@ -12,10 +11,10 @@ import {
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
-import Colors from "../../../../resources/colors";
 import SearchModal from "./user-official-check-members-vacations-search-modal";
 import DetailsModal from "./vacation-details-modal";
 import { getSheets, baseColumns } from "./vacations-page-items";
+import DetailsButton from "../../../common/details-button";
 
 const handleCheckEditable = (row) => false;
 const handleCheckDeletable = (row) => false;
@@ -56,13 +55,10 @@ const UserOfficialCheckMembersVacations = ({ pageName }) => {
 
   const getOperationalButtons = (record) => {
     return (
-      <Button
-        type="link"
-        icon={<InfoIcon style={{ color: Colors.green[6] }} />}
-        onClick={() => {
-          setSelectedObject(record);
-          setShowDetails(true);
-        }}
+      <DetailsButton
+        record={record}
+        setSelectedObject={setSelectedObject}
+        setShowDetails={setShowDetails}
       />
     );
   };
