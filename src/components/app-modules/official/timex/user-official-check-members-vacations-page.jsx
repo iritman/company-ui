@@ -12,8 +12,8 @@ import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import SearchModal from "./user-official-check-members-vacations-search-modal";
-import DetailsModal from "./vacation-details-modal";
-import { getSheets, baseColumns } from "./vacations-page-items";
+import DetailsModal from "../../../common/vacation-details-modal";
+import { getSheets, baseColumns } from "../../../common/vacations-page-items";
 import DetailsButton from "../../../common/details-button";
 
 const handleCheckEditable = (row) => false;

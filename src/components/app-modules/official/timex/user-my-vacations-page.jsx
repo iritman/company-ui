@@ -13,8 +13,8 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import VacationModal from "./user-my-vacation-modal";
 import SearchModal from "./user-my-vacation-search-modal";
-import DetailsModal from "./vacation-details-modal";
-import { getSheets, baseColumns } from "./vacations-page-items";
+import DetailsModal from "../../../common/vacation-details-modal";
+import { getSheets, baseColumns } from "../../../common/vacations-page-items";
 import DetailsButton from "../../../common/details-button";
 
 const handleCheckEditable = (row) => row.Editable;

@@ -4,10 +4,10 @@ import {
   CloseCircleOutlined as CloseIcon,
   CheckCircleOutlined as CheckIcon,
 } from "@ant-design/icons";
-import Words from "../../../../resources/words";
-import Colors from "../../../../resources/colors";
-import utils from "../../../../tools/utils";
-import MemberProfileImage from "../../../common/member-profile-image";
+import Words from "../../resources/words";
+import Colors from "../../resources/colors";
+import utils from "../../tools/utils";
+import MemberProfileImage from "./member-profile-image";
 
 const { Text } = Typography;
 const { Step } = Steps;

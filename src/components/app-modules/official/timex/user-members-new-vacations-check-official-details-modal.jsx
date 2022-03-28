@@ -3,7 +3,7 @@ import { Button, Modal } from "antd";
 import { PlusOutlined as PlusIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import ResponseModal from "./user-members-new-vacations-check-official-response-modal";
-import VacationDetails from "./vacation-details";
+import VacationDetails from "../../../common/vacation-details";
 
 const UserMembersNewVacationsCheckOfficialDetailsModal = ({
   vacation,

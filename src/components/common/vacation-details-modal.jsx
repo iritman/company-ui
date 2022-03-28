@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal } from "antd";
-import Words from "../../../../resources/words";
+import Words from "../../resources/words";
 import VacationDetails from "./vacation-details";
 
 const VacationDetailsModal = ({ vacation, isOpen, onOk }) => {

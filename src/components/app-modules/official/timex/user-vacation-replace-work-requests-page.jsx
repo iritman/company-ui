@@ -14,7 +14,7 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import SearchModal from "./user-vacation-replace-work-request-search-modal";
 import DetailsModal from "./user-vacation-replace-work-request-details-modal";
-import { getSheets, baseColumns } from "./vacations-page-items";
+import { getSheets, baseColumns } from "../../../common/vacations-page-items";
 import DetailsButton from "../../../common/details-button";
 
 const handleCheckEditable = (row) => row.Editable;

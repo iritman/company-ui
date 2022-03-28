@@ -1,9 +1,9 @@
 import React from "react";
 import { Typography } from "antd";
-import Colors from "../../../../resources/colors";
-import Words from "../../../../resources/words";
-import utils from "../../../../tools/utils";
-import { getSorter } from "../../../../tools/form-manager";
+import Colors from "../../resources/colors";
+import Words from "../../resources/words";
+import utils from "../../tools/utils";
+import { getSorter } from "../../tools/form-manager";
 
 const { Text } = Typography;
 
