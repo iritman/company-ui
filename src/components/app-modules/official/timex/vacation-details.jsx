@@ -164,7 +164,6 @@ const VacationDetails = ({ vacation }) => {
             >
               <Descriptions.Item
                 label={`${Words.response} ${action.SysRoleTitle}`}
-                span={2}
               >
                 <Space>
                   {action.IsAccepted ? (
@@ -184,6 +183,15 @@ const VacationDetails = ({ vacation }) => {
                     {action.IsAccepted ? Words.accepted : Words.rejected}
                   </Text>
                 </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.reg_member}>
+                <Text
+                  style={{
+                    color: Colors.orange[7],
+                  }}
+                >
+                  {`${action.FirstName} ${action.LastName}`}
+                </Text>
               </Descriptions.Item>
               {action.DetailsText.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={2}>
