@@ -197,6 +197,20 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 64:
+      link = "official-check-members-vacations";
+      icon = (
+        <VacationIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
+      );
+      break;
+
+    case 65:
+      link = "official-check-members-missions";
+      icon = (
+        <MissionIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }
@@ -271,6 +285,8 @@ const tabs = [
       { pageName: "user-OfficialCheckNoAlternativeEmployees" },
       { pageName: "user-MembersNewMissionsCheckOfficial" },
       { pageName: "user-MembersNewVacationsCheckOfficial" },
+      { pageName: "user-OfficialCheckMembersVacations" },
+      { pageName: "user-OfficialCheckMembersMissions" },
     ],
   },
 ];
