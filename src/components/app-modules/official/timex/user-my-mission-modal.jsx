@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
@@ -55,6 +55,8 @@ const initRecord = {
 const formRef = React.createRef();
 
 const UserMyMissionModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+  const [noAlternative, setNoAlternative] = useState(false);
+
   const {
     progress,
     setProgress,
@@ -146,8 +148,15 @@ const UserMyMissionModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { MissionTypes, MissionTargets, SwapMembers, CurrentDateTime } =
-        data;
+      const {
+        MissionTypes,
+        MissionTargets,
+        SwapMembers,
+        CurrentDateTime,
+        NoAlternative,
+      } = data;
+
+      if (NoAlternative) schema.SwapMemberID = Joi.number();
 
       if (selectedObject === null) {
         const inr = { ...initRecord };
@@ -157,9 +166,10 @@ const UserMyMissionModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
         setRecord(inr);
       }
 
-      setMissionTypes(MissionTypes);
       setMissionTargets(MissionTargets);
+      setMissionTypes(MissionTypes);
       setSwapMembers(SwapMembers);
+      setNoAlternative(NoAlternative);
     } catch (err) {
       handleError(err);
     }
@@ -209,7 +219,7 @@ const UserMyMissionModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               keyColumn="SwapMemberID"
               valueColumn="FullName"
               formConfig={formConfig}
-              required
+              required={!noAlternative}
             />
           </Col>
           <Col xs={24} md={12}>

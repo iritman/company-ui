@@ -4,7 +4,6 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
-// import Colors from "../../../../resources/colors";
 import {
   validateForm,
   loadFieldsValue,
@@ -21,8 +20,6 @@ import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 import TimeItem from "../../../form-controls/time-item";
 import InputItem from "../../../form-controls/input-item";
-// import TextItem from "../../../form-controls/text-item";
-// import MemberProfileImage from "../../../common/member-profile-image";
 
 const schema = {
   VacationID: Joi.number().required(),
