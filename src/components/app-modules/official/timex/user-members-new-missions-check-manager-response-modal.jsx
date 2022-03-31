@@ -19,8 +19,6 @@ import {
 } from "../../../contexts/modal-context";
 import InputItem from "../../../form-controls/input-item";
 import SwitchItem from "../../../form-controls/switch-item";
-import DropdownItem from "../../../form-controls/dropdown-item";
-import service from "../../../../services/official/timex/user-members-new-missions-check-manager-service";
 
 const schema = {
   MemberID: Joi.number(),
@@ -46,16 +44,8 @@ const UserMembersNewMissionsCheckManagerResponseModal = ({
   onOk,
   onCancel,
 }) => {
-  const {
-    progress,
-    setProgress,
-    record,
-    setRecord,
-    members,
-    setMembers,
-    errors,
-    setErrors,
-  } = useModalContext();
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
 
   const resetContext = useResetContext();
 
@@ -82,18 +72,6 @@ const UserMembersNewMissionsCheckManagerResponseModal = ({
 
     setRecord(initRecord);
     initModal(formRef, initRecord, setRecord);
-
-    try {
-      const { MemberID, SwapMemberID } = mission;
-
-      const data = await service.getSwapableMembers(MemberID, SwapMemberID);
-
-      const { Members } = data;
-
-      setMembers([...Members]);
-    } catch (err) {
-      handleError(err);
-    }
   });
 
   const handleSubmit = async (record) => {
@@ -168,17 +146,7 @@ const UserMembersNewMissionsCheckManagerResponseModal = ({
               autoFocus
             />
           </Col>
-          {members.length > 0 && (
-            <Col xs={24}>
-              <DropdownItem
-                title={Words.swap_member}
-                dataSource={members}
-                keyColumn="MemberID"
-                valueColumn="FullName"
-                formConfig={formConfig}
-              />
-            </Col>
-          )}
+
           <Col xs={24}>
             <InputItem
               horizontal
