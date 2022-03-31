@@ -16,9 +16,10 @@ const UserMembersNewVacationsCheckOfficialDetailsModal = ({
   const { Actions } = vacation;
 
   const canResponse = () => {
+    const managerAction = Actions.filter((action) => action.StepID === 3)[0];
     const officialAction = Actions.filter((action) => action.StepID === 4)[0];
 
-    return officialAction.MemberID === 0;
+    return managerAction.IsAccepted && officialAction.MemberID === 0;
   };
 
   const getFooterButtons = () => {
