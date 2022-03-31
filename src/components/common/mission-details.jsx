@@ -70,6 +70,8 @@ const MissionDetails = ({ mission }) => {
     return result;
   };
 
+  const officialChecked = () => Actions[2].MemberID > 0;
+
   let steps = [
     {
       stepID: 0,
@@ -86,20 +88,6 @@ const MissionDetails = ({ mission }) => {
           }}
           size="middle"
         >
-          <Descriptions.Item label={Words.reg_date}>
-            <Text style={{ color: valueColor }}>
-              {utils.farsiNum(
-                `${utils.weekDayNameFromText(RegDate)} ${utils.slashDate(
-                  RegDate
-                )}`
-              )}
-            </Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.reg_time}>
-            <Text style={{ color: valueColor }}>
-              {utils.farsiNum(`${utils.colonTime(RegTime)}`)}
-            </Text>
-          </Descriptions.Item>
           <Descriptions.Item label={Words.swap_member}>
             <Text
               style={{ color: Colors.red[7] }}
@@ -119,13 +107,14 @@ const MissionDetails = ({ mission }) => {
               {InProvince ? Words.inside_province : Words.outside_province}
             </Text>
           </Descriptions.Item>
+
           <Descriptions.Item label={Words.requirements} span={2}>
             <Text style={{ color: Colors.grey[6] }}>
               {getRequirementsTitle()}
             </Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.vehicle}>
-            {NeedVehicle ? (
+            {NeedVehicle && officialChecked() ? (
               <Text
                 style={{
                   color: OfficialIsVehicleApproved
@@ -142,7 +131,7 @@ const MissionDetails = ({ mission }) => {
             )}
           </Descriptions.Item>
           <Descriptions.Item label={Words.hoteling}>
-            {NeedHoteling ? (
+            {NeedHoteling && officialChecked() ? (
               <Text
                 style={{
                   color: OfficialIsHotelingApproved
@@ -199,6 +188,20 @@ const MissionDetails = ({ mission }) => {
               </Text>
             </Descriptions.Item>
           )}
+          <Descriptions.Item label={Words.reg_date}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(
+                `${utils.weekDayNameFromText(RegDate)} ${utils.slashDate(
+                  RegDate
+                )}`
+              )}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.reg_time}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(`${utils.colonTime(RegTime)}`)}
+            </Text>
+          </Descriptions.Item>
         </Descriptions>
       ),
     },
