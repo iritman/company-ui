@@ -19,10 +19,10 @@ import DropdownItem from "../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
 const schema = {
-  MemberID: Joi.number().min(1).required(),
+  MemberID: Joi.number().required(),
   VacationTypeID: Joi.number(),
   StatusID: Joi.number(),
-  FromDate: Joi.string().allow(""),
+  FromDate: Joi.string(),
   ToDate: Joi.string().allow(""),
 };
 
@@ -120,7 +120,6 @@ const UserMembersVacationsSearchModal = ({
               keyColumn="MemberID"
               valueColumn="FullName"
               formConfig={formConfig}
-              required
             />
           </Col>
           <Col xs={24} md={12}>
@@ -147,6 +146,7 @@ const UserMembersVacationsSearchModal = ({
               title={Words.from_date}
               fieldName="FromDate"
               formConfig={formConfig}
+              required
             />
           </Col>
           <Col xs={24} md={12}>
