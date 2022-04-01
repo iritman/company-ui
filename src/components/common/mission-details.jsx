@@ -308,10 +308,13 @@ const MissionDetails = ({ mission }) => {
       {
         stepID: 4,
         title: Words.transmission,
-        status: VehicleInfo.TransferTypeID > 0 ? "finish" : "wait",
+        status:
+          VehicleInfo.length > 0 && VehicleInfo.TransferTypeID > 0
+            ? "finish"
+            : "wait",
         content: (
           <>
-            {VehicleInfo.TransferTypeID === 0 ? (
+            {VehicleInfo.length === 0 || VehicleInfo.TransferTypeID === 0 ? (
               <Alert
                 message={Words.messages.transmission_response_not_submitted}
                 type="warning"
