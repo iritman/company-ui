@@ -22,7 +22,7 @@ const schema = {
   MissionTypeID: Joi.number(),
   TargetID: Joi.number(),
   FromDate: Joi.string().required(),
-  ToDate: Joi.string().required(),
+  ToDate: Joi.string().allow(""),
 };
 
 const initRecord = {
@@ -135,7 +135,6 @@ const UserMyMissionSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
               title={Words.to_date}
               fieldName="ToDate"
               formConfig={formConfig}
-              required
             />
           </Col>
         </Row>
