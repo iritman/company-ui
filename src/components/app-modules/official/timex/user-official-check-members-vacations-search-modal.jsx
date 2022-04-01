@@ -36,7 +36,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserOfficialCheckMembersVacations = ({
+const UserOfficialCheckMembersVacationsSearchModal = ({
   isOpen,
   filter,
   onOk,
@@ -163,4 +163,4 @@ const UserOfficialCheckMembersVacations = ({
   );
 };
 
-export default UserOfficialCheckMembersVacations;
+export default UserOfficialCheckMembersVacationsSearchModal;
