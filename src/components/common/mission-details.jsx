@@ -309,7 +309,7 @@ const MissionDetails = ({ mission }) => {
         stepID: 4,
         title: Words.transmission,
         status:
-          VehicleInfo.length > 0 && VehicleInfo.TransferTypeID > 0
+          typeof VehicleInfo === "object" && VehicleInfo.TransferTypeID > 0
             ? "finish"
             : "wait",
         content: (
