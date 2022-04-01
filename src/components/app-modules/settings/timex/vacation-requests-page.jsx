@@ -83,8 +83,6 @@ const VacationRequestsPage = ({ pageName }) => {
 
   //------
 
-  console.log(records);
-
   return (
     <>
       <Spin spinning={progress}>
