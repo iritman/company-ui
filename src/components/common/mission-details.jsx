@@ -314,7 +314,7 @@ const MissionDetails = ({ mission }) => {
             : "wait",
         content: (
           <>
-            {VehicleInfo.length === 0 || VehicleInfo.TransferTypeID === 0 ? (
+            {typeof VehicleInfo !== "object" ? (
               <Alert
                 message={Words.messages.transmission_response_not_submitted}
                 type="warning"
