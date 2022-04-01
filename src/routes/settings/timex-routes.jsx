@@ -18,6 +18,7 @@ import EmployeeShiftsPage from "../../components/app-modules/settings/timex/empl
 import RegedCardsPage from "../../components/app-modules/settings/timex/reged-cards-page";
 import OfficialExpertsPage from "../../components/app-modules/settings/timex/official-experts-page";
 import VacationRequestsPage from "../../components/app-modules/settings/timex/vacation-requests-page";
+import MissionRequestsPage from "../../components/app-modules/settings/timex/mission-requests-page";
 //---
 
 const modulePath = "settings/timex";
@@ -112,6 +113,11 @@ const TimexRoutes = ({ path }) => {
         path={`${path}/${modulePath}/vacation-requests`}
         exact
         render={() => <VacationRequestsPage pageName="VacationRequests" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/mission-requests`}
+        exact
+        render={() => <MissionRequestsPage pageName="MissionRequests" />}
       />
       <Redirect to="/not-found" />
     </Switch>

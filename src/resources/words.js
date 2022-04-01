@@ -321,6 +321,7 @@ class Words extends Component {
   static members_missions_check_official = "ماموریت های جدید";
   static requester = "متقاضی";
   static vacation_requests = "درخواست های مرخصی";
+  static mission_requests = "درخواست های ماموریت";
   static request_reg_date = "تاریخ درخواست";
   static request_reg_time = "زمان درخواست";
   static transfer_type = "نوع ترابری";
