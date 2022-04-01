@@ -315,7 +315,9 @@ const UserTransmissionRequestsPage = ({ pageName }) => {
   const handleSaveResponse = async (response) => {
     const data = await service.saveResponse(response);
 
-    const index = records.findIndex((v) => (v.RowID = response.RowID));
+    const index = records.findIndex(
+      (vehicle_request) => (vehicle_request.RowID = response.RowID)
+    );
     records[index] = data;
     setSelectedObject(data);
 

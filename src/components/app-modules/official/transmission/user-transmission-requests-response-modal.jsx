@@ -100,6 +100,7 @@ const UserTransmissionRequestsResponseModal = ({
     setProgress(true);
 
     try {
+      record.RowID = request.RowID;
       record.MissionID = request.MissionID;
       await onOk(record);
       onCancel();
