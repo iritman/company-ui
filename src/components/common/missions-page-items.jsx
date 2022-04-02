@@ -121,6 +121,13 @@ export const baseColumns = [
     render: (MissionID) => <Text>{utils.farsiNum(`${MissionID}`)}</Text>,
   },
   {
+    title: Words.full_name,
+    width: 175,
+    align: "center",
+    sorter: getSorter("LastName"),
+    render: (record) => <Text>{`${record.FirstName} ${record.LastName}`}</Text>,
+  },
+  {
     title: Words.mission_type,
     width: 120,
     align: "center",

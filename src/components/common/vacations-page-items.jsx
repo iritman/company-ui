@@ -105,6 +105,13 @@ export const baseColumns = [
     render: (VacationID) => <Text>{utils.farsiNum(`${VacationID}`)}</Text>,
   },
   {
+    title: Words.full_name,
+    width: 175,
+    align: "center",
+    sorter: getSorter("LastName"),
+    render: (record) => <Text>{`${record.FirstName} ${record.LastName}`}</Text>,
+  },
+  {
     title: Words.vacation_type,
     width: 120,
     align: "center",
