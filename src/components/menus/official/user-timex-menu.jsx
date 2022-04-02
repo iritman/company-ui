@@ -55,6 +55,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 83:
+      link = "approved-missions";
+      icon = (
+        <MissionIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
+      );
+      break;
+
     case 40:
       link = "my-reged-cards";
       icon = (
@@ -257,6 +264,7 @@ const tabs = [
     pages: [
       { pageName: "user-SecurityGuardRegedCards" },
       { pageName: "user-ApprovedVacations" },
+      { pageName: "user-ApprovedMissions" },
     ],
   },
   {

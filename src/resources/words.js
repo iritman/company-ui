@@ -315,6 +315,7 @@ class Words extends Component {
   static members_missions = "ماموریت های کارکنان";
   static members_vacations = "مرخصی های کارکنان";
   static approved_vacations = "مرخصی های تایید شده";
+  static approved_missions = "ماموریت های تایید شده";
   static members_work_report = "گزارش کارکرد کارکنان";
   static members_vacations_check_manager = "مرخصی های جدید";
   static members_missions_check_manager = "ماموریت های جدید";
