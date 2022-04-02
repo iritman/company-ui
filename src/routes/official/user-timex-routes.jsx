@@ -3,7 +3,10 @@ import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import UserTimexDashboard from "../../components/app-modules/official/timex/user-timex-dashboard";
+//---
 import UserSecurityGuardRegedCardsPage from "../../components/app-modules/official/timex/user-security-guard-reged-cards-page";
+import UserApprovedVacationsPage from "../../components/app-modules/official/timex/user-approved-vacations-page";
+//---
 import UserMyRegedCardsPage from "../../components/app-modules/official/timex/user-my-reged-cards-page";
 import UserMyWorkShiftsPage from "../../components/app-modules/official/timex/user-my-work-shifts-page";
 import UserMyVacationsPage from "../../components/app-modules/official/timex/user-my-vacations-page";
@@ -38,6 +41,7 @@ const UserOrgRoutes = ({ path }) => {
         exact
         component={UserTimexDashboard}
       />
+      {/* ------------ */}
       <ProtectedRoute
         path={`${path}/${modulePath}/security-guard-reged-cards`}
         exact
@@ -45,6 +49,14 @@ const UserOrgRoutes = ({ path }) => {
           <UserSecurityGuardRegedCardsPage pageName="user-SecurityGuardRegedCards" />
         )}
       />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/approved-vacations`}
+        exact
+        render={() => (
+          <UserApprovedVacationsPage pageName="user-ApprovedVacations" />
+        )}
+      />
+      {/* ------------ */}
       <ProtectedRoute
         path={`${path}/${modulePath}/my-reged-cards`}
         exact

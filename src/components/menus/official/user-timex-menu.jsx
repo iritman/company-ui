@@ -48,6 +48,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 82:
+      link = "approved-vacations";
+      icon = (
+        <VacationIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
+      );
+      break;
+
     case 40:
       link = "my-reged-cards";
       icon = (
@@ -247,7 +254,10 @@ const tabs = [
         icon={SecurityIcon}
       />
     ),
-    pages: [{ pageName: "user-SecurityGuardRegedCards" }],
+    pages: [
+      { pageName: "user-SecurityGuardRegedCards" },
+      { pageName: "user-ApprovedVacations" },
+    ],
   },
   {
     name: "department-cartable",
