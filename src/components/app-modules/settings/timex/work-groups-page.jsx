@@ -24,7 +24,7 @@ const getSheets = (records) => [
     data: records,
     columns: [
       { label: Words.id, value: "GroupID" },
-      { label: Words.title, value: "GroupTitle" },
+      { label: Words.title, value: "Title" },
     ],
   },
 ];
@@ -42,12 +42,10 @@ const baseColumns = [
     title: Words.title,
     width: 200,
     align: "center",
-    dataIndex: "GroupTitle",
-    sorter: getSorter("GroupTitle"),
-    render: (GroupTitle) => (
-      <Text style={{ color: Colors.blue[7] }}>
-        {utils.farsiNum(GroupTitle)}
-      </Text>
+    dataIndex: "Title",
+    sorter: getSorter("Title"),
+    render: (Title) => (
+      <Text style={{ color: Colors.blue[7] }}>{utils.farsiNum(Title)}</Text>
     ),
   },
 ];

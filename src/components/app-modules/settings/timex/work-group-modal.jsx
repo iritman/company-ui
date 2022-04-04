@@ -55,9 +55,8 @@ const WorkGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     loadFieldsValue(formRef, record);
   };
 
-  useMount(async () => {
+  useMount(() => {
     resetContext();
-
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
   });
