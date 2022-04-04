@@ -13,8 +13,7 @@ import DepartmentExtraWorkCapacitiesPage from "../../components/app-modules/sett
 import ExtraWorkCommandSourcesPage from "../../components/app-modules/settings/timex/extra-work-command-sources-page";
 import NoAlternativeEmployeesPage from "../../components/app-modules/settings/timex/no-alternative-employees-page";
 import WorkShiftsPage from "../../components/app-modules/settings/timex/work-shifts-page";
-import GroupShiftsPage from "../../components/app-modules/settings/timex/group-shifts-page";
-import EmployeeShiftsPage from "../../components/app-modules/settings/timex/employee-shifts-page";
+import WorkGroupsPage from "../../components/app-modules/settings/timex/work-groups-page";
 import RegedCardsPage from "../../components/app-modules/settings/timex/reged-cards-page";
 import OfficialExpertsPage from "../../components/app-modules/settings/timex/official-experts-page";
 import VacationRequestsPage from "../../components/app-modules/settings/timex/vacation-requests-page";
@@ -90,14 +89,9 @@ const TimexRoutes = ({ path }) => {
         render={() => <WorkShiftsPage pageName="WorkShifts" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/group-shifts`}
+        path={`${path}/${modulePath}/work-groups`}
         exact
-        render={() => <GroupShiftsPage pageName="GroupShifts" />}
-      />
-      <ProtectedRoute
-        path={`${path}/${modulePath}/employee-shifts`}
-        exact
-        render={() => <EmployeeShiftsPage pageName="EmployeeShifts" />}
+        render={() => <WorkGroupsPage pageName="WorkGroups" />}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/reged-cards`}

@@ -9,7 +9,6 @@ import TabTitle from "../../common/tab-title";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiOutlineNodeIndex as CalculationBaseIcon,
-  // AiOutlineAppstoreAdd as SavableIcon,
   AiOutlineSchedule as WorkShiftIcon,
   AiOutlineFieldTime as WorkTimeIcon,
   AiFillIdcard as MembersRegedCardIcon,
@@ -31,7 +30,6 @@ import {
 } from "react-icons/md";
 import {
   FaUsersCog as UsersIcon,
-  FaUserClock as EmployeeShiftIcon,
   FaChartPie as ChartIcon,
   FaBusinessTime as CapacityIcon,
 } from "react-icons/fa";
@@ -39,7 +37,6 @@ import {
   BiGitPullRequest as RequestIcon,
   BiGroup as GroupShiftIcon,
 } from "react-icons/bi";
-// import { HiSaveAs as SaveIcon } from "react-icons/hi";
 
 const { SubMenu } = Menu;
 
@@ -113,25 +110,10 @@ const mapper = (pageID) => {
       icon = <CategoryIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
-    // case 16:
-    //   link = "vacation-managers";
-    //   icon = <UsersIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-    //   break;
-
     case 17:
       link = "vacation-requests";
       icon = <RequestIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
-
-    // case 18:
-    //   link = "savable-vacations";
-    //   icon = <SavableIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-    //   break;
-
-    // case 19:
-    //   link = "saved-vacations";
-    // icon = <SaveIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
-    //   break;
 
     //--- Missions Tab
     case 20:
@@ -140,11 +122,6 @@ const mapper = (pageID) => {
         <CategoryIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
       );
       break;
-
-    // case 21:
-    //   link = "mission-managers";
-    //   icon = <UsersIcon style={{ color: Colors.volcano[6] }} size={iconSize} />;
-    //   break;
 
     case 54:
       link = "mission-targets";
@@ -174,19 +151,9 @@ const mapper = (pageID) => {
       break;
 
     case 25:
-      link = "group-shifts";
+      link = "work-groups";
       icon = (
         <GroupShiftIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
-      );
-      break;
-
-    case 26:
-      link = "employee-shifts";
-      icon = (
-        <EmployeeShiftIcon
-          style={{ color: Colors.magenta[6] }}
-          size={iconSize}
-        />
       );
       break;
 
@@ -248,13 +215,7 @@ const tabs = [
         icon={VacationIcon}
       />
     ),
-    pages: [
-      { pageName: "VacationTypes" },
-      // { pageName: "VacationManagers" },
-      { pageName: "VacationRequests" },
-      // { pageName: "AnnualSavableVacations" },
-      // { pageName: "SavedVacations" },
-    ],
+    pages: [{ pageName: "VacationTypes" }, { pageName: "VacationRequests" }],
   },
   {
     name: "missions",
@@ -267,7 +228,6 @@ const tabs = [
     ),
     pages: [
       { pageName: "MissionTypes" },
-      // { pageName: "MissionManagers" },
       { pageName: "MissionTargets" },
       { pageName: "MissionRequests" },
     ],
@@ -284,8 +244,7 @@ const tabs = [
     pages: [
       { pageName: "OfficialExperts" },
       { pageName: "WorkShifts" },
-      { pageName: "GroupShifts" },
-      { pageName: "EmployeeShifts" },
+      { pageName: "WorkGroups" },
       { pageName: "RegedCards" },
     ],
   },
