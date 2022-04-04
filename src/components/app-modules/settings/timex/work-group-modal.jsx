@@ -9,15 +9,12 @@ import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
-  handleError,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
-import DropdownItem from "./../../../form-controls/dropdown-item";
 import {
   useModalContext,
   useResetContext,
 } from "./../../../contexts/modal-context";
-import service from "../../../../services/settings/timex/work-groups-service";
 
 const schema = {
   GroupID: Joi.number().required(),
@@ -27,28 +24,18 @@ const schema = {
     .required()
     .label(Words.title)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
-  ShiftID: Joi.number().min(1).required(),
 };
 
 const initRecord = {
   GroupID: 0,
   Title: "",
-  ShiftID: 0,
 };
 
 const formRef = React.createRef();
 
 const WorkGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  const {
-    progress,
-    setProgress,
-    record,
-    setRecord,
-    errors,
-    setErrors,
-    workShifts,
-    setWorkShifts,
-  } = useModalContext();
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
 
   const resetContext = useResetContext();
 
@@ -62,7 +49,6 @@ const WorkGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.Title = "";
-    record.ShiftID = 0;
 
     setRecord(record);
     setErrors({});
@@ -74,18 +60,6 @@ const WorkGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
-
-    setProgress(true);
-    try {
-      const data = await service.getParams();
-
-      const { WorkShifts } = data;
-
-      setWorkShifts(WorkShifts);
-    } catch (err) {
-      handleError(err);
-    }
-    setProgress(false);
   });
 
   const handleSubmit = async () => {
@@ -120,16 +94,6 @@ const WorkGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               autoFocus
               maxLength={50}
               formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <DropdownItem
-              title={Words.work_shift}
-              dataSource={workShifts}
-              keyColumn="ShiftID"
-              valueColumn="ShiftInfo"
-              formConfig={formConfig}
-              required
             />
           </Col>
         </Row>

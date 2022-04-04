@@ -25,20 +25,6 @@ const getSheets = (records) => [
     columns: [
       { label: Words.id, value: "GroupID" },
       { label: Words.title, value: "GroupTitle" },
-      { label: Words.shift_code, value: "ShiftCode" },
-      {
-        label: Words.start_time,
-        value: (record) => utils.colonTime(record.StartTime),
-      },
-      {
-        label: Words.finish_time,
-        value: (record) => utils.colonTime(record.FinishTime),
-      },
-      { label: Words.un_delay_in_min, value: "UnDelayInMin" },
-      {
-        label: Words.un_hurryup_in_min,
-        value: "UnHurryupInMin",
-      },
     ],
   },
 ];
@@ -61,42 +47,6 @@ const baseColumns = [
     render: (GroupTitle) => (
       <Text style={{ color: Colors.blue[7] }}>
         {utils.farsiNum(GroupTitle)}
-      </Text>
-    ),
-  },
-  {
-    title: Words.shift_code,
-    width: 100,
-    align: "center",
-    dataIndex: "ShiftCode",
-    sorter: getSorter("ShiftCode"),
-    render: (ShiftCode) => (
-      <Text style={{ color: Colors.green[6] }}>
-        {utils.farsiNum(ShiftCode)}
-      </Text>
-    ),
-  },
-  {
-    title: Words.start_time,
-    width: 100,
-    align: "center",
-    dataIndex: "StartTime",
-    sorter: getSorter("StartTime"),
-    render: (StartTime) => (
-      <Text style={{ color: Colors.orange[7] }}>
-        {utils.farsiNum(utils.colonTime(`${StartTime}`))}
-      </Text>
-    ),
-  },
-  {
-    title: Words.finish_time,
-    width: 100,
-    align: "center",
-    dataIndex: "FinishTime",
-    sorter: getSorter("FinishTime"),
-    render: (FinishTime) => (
-      <Text style={{ color: Colors.orange[7] }}>
-        {utils.farsiNum(utils.colonTime(FinishTime))}
       </Text>
     ),
   },
