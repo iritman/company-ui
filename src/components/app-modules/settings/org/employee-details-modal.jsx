@@ -182,6 +182,36 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
                       : "-"}
                   </Text>
                 </Descriptions.Item>
+                <Descriptions.Item label={Words.work_group}>
+                  <Text
+                    style={{
+                      color:
+                        employee.WorkGroupTitle.length > 0
+                          ? Colors.green[6]
+                          : Colors.red[6],
+                    }}
+                  >
+                    {employee.WorkGroupTitle.length > 0
+                      ? employee.WorkGroupTitle
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.shift_info}>
+                  <Text
+                    style={{
+                      color:
+                        employee.ShiftCode.length > 0
+                          ? Colors.green[6]
+                          : Colors.red[6],
+                    }}
+                  >
+                    {employee.ShiftCode.length > 0
+                      ? `${utils.farsiNum(
+                          `${Words.from} ${employee.StartTime} ${Words.to} ${employee.FinishTime}`
+                        )}`
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
               </Descriptions>
             </Col>
           </Row>

@@ -51,6 +51,7 @@ const schema = {
   EmploymentStartDate: Joi.string().allow(""),
   EmploymentFinishDate: Joi.string().allow(""),
   WorkPlaceID: Joi.number(),
+  WorkGroupID: Joi.number().min(1),
 };
 
 const initRecord = {
@@ -74,6 +75,7 @@ const initRecord = {
   EmploymentStartDate: "",
   EmploymentFinishDate: "",
   WorkPlaceID: 0,
+  WorkGroupID: 0,
 };
 
 const formRef = React.createRef();
@@ -98,6 +100,8 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setEmploymentStatuses,
     workPlaces,
     setWorkPlaces,
+    workGroups,
+    setWorkGroups,
     members,
     setMembers,
     progress,
@@ -139,6 +143,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.EmploymentStartDate = "";
     record.EmploymentFinishDate = "";
     record.WorkPlaceID = 0;
+    record.WorkGroupID = 0;
 
     setRecord(record);
     setErrors({});
@@ -161,6 +166,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       EmploymentTypes,
       EmploymentStatuses,
       WorkPlaces,
+      WorkGroups,
     } = data;
 
     setDepartments(Departments);
@@ -171,6 +177,7 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setEmploymentTypes(EmploymentTypes);
     setEmploymentStatuses(EmploymentStatuses);
     setWorkPlaces(WorkPlaces);
+    setWorkGroups(WorkGroups);
   });
 
   const handleSubmit = async () => {
@@ -438,6 +445,16 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               keyColumn="WorkPlaceID"
               valueColumn="WorkPlaceTitle"
               formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.work_groups}
+              dataSource={workGroups}
+              keyColumn="WorkGroupID"
+              valueColumn="WorkGroupTitle"
+              formConfig={formConfig}
+              required
             />
           </Col>
         </Row>

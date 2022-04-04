@@ -29,6 +29,7 @@ const ModalContextProvider = ({ children }) => {
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [employmentStatuses, setEmploymentStatuses] = useState([]);
   const [workPlaces, setWorkPlaces] = useState([]);
+  const [workGroups, setWorkGroups] = useState([]);
   const [regTypes, setRegTypes] = useState([]);
   const [vacationTypes, setVacationTypes] = useState([]);
   const [missionTypes, setMissionTypes] = useState([]);
@@ -95,6 +96,8 @@ const ModalContextProvider = ({ children }) => {
     setEmploymentStatuses,
     workPlaces,
     setWorkPlaces,
+    workGroups,
+    setWorkGroups,
     regTypes,
     setRegTypes,
     vacationTypes,

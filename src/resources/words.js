@@ -247,7 +247,9 @@ class Words extends Component {
   static no_alternative_employees = "پرسنل بدون جانشین";
   static response = "پاسخ";
   static no_alternative_employee = "بدون جانشین";
+  static work_group = "گروه کاری";
   static work_groups = "گروه های کاری";
+  static shift_info = "اطلاعات شیفت";
 
   static total = "کل";
   static used = "مصرف شده";
