@@ -252,6 +252,7 @@ class Words extends Component {
   static work_groups = "گروه های کاری";
   static shift_info = "اطلاعات شیفت";
   static view = "مشاهده";
+  static update = "بروزرسانی";
 
   static total = "کل";
   static used = "مصرف شده";
