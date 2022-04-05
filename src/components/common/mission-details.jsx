@@ -44,6 +44,7 @@ const MissionDetails = ({ mission, securityPersonView }) => {
     FinishTime,
     OfficialIsVehicleApproved,
     OfficialIsHotelingApproved,
+    OfficialTransmissionDetailsText,
     // -----------------------
     // SwapMemberID,
     SwapMemberFirstName,
@@ -284,6 +285,22 @@ const MissionDetails = ({ mission, securityPersonView }) => {
                     </Text>
                   </Descriptions.Item>
                 )}
+                {action.StepID === 3 &&
+                  OfficialTransmissionDetailsText.length > 0 && (
+                    <Descriptions.Item
+                      label={Words.transmission_descriptions}
+                      span={2}
+                    >
+                      <Text
+                        style={{
+                          color: Colors.purple[7],
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {utils.farsiNum(OfficialTransmissionDetailsText)}
+                      </Text>
+                    </Descriptions.Item>
+                  )}
                 <Descriptions.Item label={Words.reg_date}>
                   <Text style={{ color: valueColor }}>
                     {utils.farsiNum(
@@ -306,19 +323,19 @@ const MissionDetails = ({ mission, securityPersonView }) => {
     });
   }
 
+  const hasTransmissionResponse = () =>
+    typeof VehicleInfo === "object" && VehicleInfo?.RegMemberID > 0;
+
   if (NeedVehicle && OfficialIsVehicleApproved) {
     steps = [
       ...steps,
       {
         stepID: 4,
         title: Words.transmission,
-        status:
-          typeof VehicleInfo === "object" && VehicleInfo.TransferTypeID > 0
-            ? "finish"
-            : "wait",
+        status: hasTransmissionResponse() ? "finish" : "wait",
         content: (
           <>
-            {typeof VehicleInfo !== "object" ? (
+            {!hasTransmissionResponse() ? (
               <Alert
                 message={Words.messages.transmission_response_not_submitted}
                 type="warning"
