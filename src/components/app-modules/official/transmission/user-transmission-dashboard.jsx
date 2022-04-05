@@ -6,6 +6,7 @@ import { handleError } from "./../../../../tools/form-manager";
 import Words from "./../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import LinkButton from "../../../common/link-button";
+import ReloadButton from "../../../common/reload-button";
 
 const { Text } = Typography;
 
@@ -13,6 +14,10 @@ const UserTransmissionDashboard = () => {
   const [newRequestsCount, setNewRequestsCount] = useState([]);
 
   useMount(async () => {
+    await loadNewRequests();
+  });
+
+  const loadNewRequests = async () => {
     try {
       const data = await service.getNewRequestsCount();
 
@@ -20,7 +25,7 @@ const UserTransmissionDashboard = () => {
     } catch (ex) {
       handleError(ex);
     }
-  });
+  };
 
   return (
     <Row gutter={[10, 16]}>
@@ -61,6 +66,9 @@ const UserTransmissionDashboard = () => {
             showIcon
             message={Words.messages.no_new_requests}
             type="warning"
+            action={
+              <ReloadButton tooltip={Words.update} onClick={loadNewRequests} />
+            }
           />
         )}
       </Col>
