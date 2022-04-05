@@ -55,6 +55,7 @@ const UserTransmissionRequestsDetailsModal = ({
     TransferTypeID,
     TransferTypeTitle,
     DetailsText,
+    OfficialTransmissionDetailsText,
     //VehicleID,
     Pelak,
     //ProductYear,
@@ -178,6 +179,21 @@ const UserTransmissionRequestsDetailsModal = ({
                         </Text>
                       </Descriptions.Item>
                     </>
+                  )}
+                  {OfficialTransmissionDetailsText.length > 0 && (
+                    <Descriptions.Item
+                      label={Words.transmission_descriptions}
+                      span={2}
+                    >
+                      <Text
+                        style={{
+                          color: Colors.purple[7],
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {utils.farsiNum(OfficialTransmissionDetailsText)}
+                      </Text>
+                    </Descriptions.Item>
                   )}
                   <Descriptions.Item label={Words.official_manager}>
                     <Text style={{ color: valueColor }}>
