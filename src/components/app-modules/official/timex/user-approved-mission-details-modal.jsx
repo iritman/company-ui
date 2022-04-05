@@ -15,8 +15,6 @@ const UserApprovedMissionDetailsModal = ({ mission, isOpen, onOk }) => {
     return footerButtons;
   };
 
-  console.log(mission);
-
   return (
     <ModalWindow
       visible={isOpen}
