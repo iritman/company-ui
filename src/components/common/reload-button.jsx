@@ -1,12 +1,23 @@
 import React from "react";
-import { Button, Tooltip } from "antd";
-import { ReloadOutlined as ReloadIcon } from "@ant-design/icons";
+import { Button, Tooltip, Spin } from "antd";
+import {
+  ReloadOutlined as ReloadIcon,
+  LoadingOutlined as LoadingIcon,
+} from "@ant-design/icons";
 
-const ReloadButton = ({ tooltip, onClick }) => {
+const antIcon = <LoadingIcon style={{ fontSize: 24 }} spin />;
+
+const ReloadButton = ({ tooltip, inProgress, onClick }) => {
   return (
-    <Tooltip title={tooltip}>
-      <Button size="small" icon={<ReloadIcon />} onClick={onClick} />
-    </Tooltip>
+    <>
+      {inProgress ? (
+        <Spin indicator={antIcon} />
+      ) : (
+        <Tooltip title={tooltip}>
+          <Button size="small" icon={<ReloadIcon />} onClick={onClick} />
+        </Tooltip>
+      )}
+    </>
   );
 };
 
