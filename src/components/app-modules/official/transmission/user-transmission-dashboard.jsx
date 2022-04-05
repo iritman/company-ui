@@ -11,13 +11,16 @@ import ReloadButton from "../../../common/reload-button";
 const { Text } = Typography;
 
 const UserTransmissionDashboard = () => {
-  const [newRequestsCount, setNewRequestsCount] = useState([]);
+  const [inProgress, setInProgress] = useState(false);
+  const [newRequestsCount, setNewRequestsCount] = useState(0);
 
   useMount(async () => {
     await loadNewRequests();
   });
 
   const loadNewRequests = async () => {
+    setInProgress(true);
+
     try {
       const data = await service.getNewRequestsCount();
 
@@ -25,6 +28,8 @@ const UserTransmissionDashboard = () => {
     } catch (ex) {
       handleError(ex);
     }
+
+    setInProgress(false);
   };
 
   return (
@@ -67,7 +72,11 @@ const UserTransmissionDashboard = () => {
             message={Words.messages.no_new_requests}
             type="warning"
             action={
-              <ReloadButton tooltip={Words.update} onClick={loadNewRequests} />
+              <ReloadButton
+                tooltip={Words.update}
+                inProgress={inProgress}
+                onClick={loadNewRequests}
+              />
             }
           />
         )}
