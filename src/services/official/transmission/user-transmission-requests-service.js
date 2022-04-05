@@ -10,6 +10,12 @@ async function getResponseParams() {
   return data;
 }
 
+async function getNewRequestsCount() {
+  const { data } = await http.get(`${apiEndpoint}/new/count`);
+
+  return data;
+}
+
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
@@ -30,6 +36,7 @@ async function saveResponse(response) {
 
 const service = {
   getResponseParams,
+  getNewRequestsCount,
   getParams,
   searchData,
   saveResponse,

@@ -19,7 +19,7 @@ import {
 } from "../../../contexts/modal-context";
 import InputItem from "../../../form-controls/input-item";
 import DropdownItem from "../../../form-controls/dropdown-item";
-import service from "../../../../services/official/transmission/user-transmission-requests";
+import service from "../../../../services/official/transmission/user-transmission-requests-service";
 
 const schema = {
   TransferTypeID: Joi.number().min(1).required(),

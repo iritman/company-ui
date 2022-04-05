@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Button, message, Space } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/transmission/user-transmission-requests";
+import service from "../../../../services/official/transmission/user-transmission-requests-service";
 import {
   getSorter,
   checkAccess,

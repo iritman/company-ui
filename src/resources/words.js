@@ -251,6 +251,7 @@ class Words extends Component {
   static work_group = "گروه کاری";
   static work_groups = "گروه های کاری";
   static shift_info = "اطلاعات شیفت";
+  static view = "مشاهده";
 
   static total = "کل";
   static used = "مصرف شده";
@@ -427,6 +428,8 @@ class Words extends Component {
     your_note_submitted: "یادداشت شما ثبت شد",
     note_deleted: "یادداشت مورد نظر حذف شد",
     no_response_submitted: "پاسخ # ثبت نشده است",
+    num_of_new_requests_submitted: "# درخواست جدید ثبت شده است",
+    no_new_requests: "درخواست جدیدی ثبت نشده است",
   };
 
   static questions = {

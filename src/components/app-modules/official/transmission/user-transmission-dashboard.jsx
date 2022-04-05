@@ -1,59 +1,69 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Row, Col } from "antd";
-import DashboardTile from "../../../common/dashboard-tile";
-import { MdTransferWithinAStation as RequestIcon } from "react-icons/md";
-import Colors from "../../../../resources/colors";
-import modulesService from "../../../../services/app/modules-service";
+import { Row, Col, Typography, Alert } from "antd";
+import service from "../../../../services/official/transmission/user-transmission-requests-service";
+import { handleError } from "./../../../../tools/form-manager";
+import Words from "./../../../../resources/words";
+import utils from "./../../../../tools/utils";
+import LinkButton from "../../../common/link-button";
 
-const iconProps = {
-  size: 55,
-  style: { marginTop: 10 },
-};
-
-const mapper = (pageID) => {
-  let link = "";
-  let icon = null;
-  let backColor = Colors.blue[3];
-
-  switch (pageID) {
-    case 60:
-      link = "transmission-requests";
-      icon = <RequestIcon {...iconProps} />;
-      backColor = Colors.orange[3];
-      break;
-
-    default:
-      break;
-  }
-
-  return { link, icon, backColor };
-};
+const { Text } = Typography;
 
 const UserTransmissionDashboard = () => {
-  const [accessiblePages, setAccessiblePages] = useState([]);
+  const [newRequestsCount, setNewRequestsCount] = useState([]);
 
   useMount(async () => {
-    const transmission_module_id = 8;
-    const accessiblePages = await modulesService.accessiblePages(
-      transmission_module_id
-    );
+    try {
+      const data = await service.getNewRequestsCount();
 
-    setAccessiblePages(accessiblePages);
+      setNewRequestsCount(data.NewRequests);
+    } catch (ex) {
+      handleError(ex);
+    }
   });
 
   return (
     <Row gutter={[10, 16]}>
-      {accessiblePages.map((page) => (
-        <Col xs={24} md={8} lg={6} key={page.PageID}>
-          <DashboardTile
-            to={`transmission/${mapper(page.PageID).link}`}
-            icon={mapper(page.PageID).icon}
-            backColor={mapper(page.PageID).backColor}
-            title={page.PageTitle}
+      <Col xs={24}>
+        <Text
+          style={{
+            paddingBottom: 20,
+            paddingRight: 5,
+            fontSize: 18,
+          }}
+          strong
+          type="success"
+        >
+          {Words.transmission}
+        </Text>
+      </Col>
+      <Col xs={24}>
+        {newRequestsCount > 0 ? (
+          <Alert
+            showIcon
+            message={
+              <Text>
+                {utils.farsiNum(
+                  Words.messages.num_of_new_requests_submitted.replace(
+                    "#",
+                    newRequestsCount
+                  )
+                )}
+              </Text>
+            }
+            type="info"
+            action={
+              <LinkButton title={Words.view} link="transmission-requests" />
+            }
           />
-        </Col>
-      ))}
+        ) : (
+          <Alert
+            showIcon
+            message={Words.messages.no_new_requests}
+            type="warning"
+          />
+        )}
+      </Col>
     </Row>
   );
 };

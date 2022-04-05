@@ -14,7 +14,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/transmission/user-transmission-requests";
+import service from "../../../../services/official/transmission/user-transmission-requests-service";
 import DropdownItem from "../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
