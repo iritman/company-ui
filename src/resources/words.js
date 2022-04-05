@@ -100,6 +100,7 @@ class Words extends Component {
   static department_manager = "مدیر دپارتمان";
   static department_supervisor = "سرپرست دپارتمان";
   static descriptions = "توضیحات";
+  static transmission_descriptions = "توضیحات ویژه واحد نقلیه";
   static generate_random_account_info = "تولید نام کاربری و رمز عبور تصادفی";
   static color_code = "کد رنگ";
   static color_id = "شناسه رنگ";

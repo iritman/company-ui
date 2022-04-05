@@ -29,6 +29,11 @@ const schema = {
     .max(512)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.descriptions),
+  TransmissionDetailsText: Joi.string()
+    .allow("")
+    .max(512)
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.transmission_descriptions),
 };
 
 const initRecord = {
@@ -36,6 +41,7 @@ const initRecord = {
   VehicleApproved: false,
   HotelingApproved: false,
   DetailsText: "",
+  TransmissionDetailsText: "",
 };
 
 const formRef = React.createRef();
@@ -61,7 +67,10 @@ const UserMembersNewMissionsCheckOfficialResponseModal = ({
 
   const clearRecord = async () => {
     record.IsAccepted = false;
+    record.VehicleApproved = false;
+    record.HotelingApproved = false;
     record.DetailsText = "";
+    record.TransmissionDetailsText = "";
 
     setRecord(record);
     setErrors({});
@@ -80,6 +89,8 @@ const UserMembersNewMissionsCheckOfficialResponseModal = ({
 
     try {
       record.MissionID = mission.MissionID;
+      if (!record.VehicleApproved) record.TransmissionDetailsText = "";
+
       await onOk(record);
       onCancel();
     } catch (err) {
@@ -189,6 +200,20 @@ const UserMembersNewMissionsCheckOfficialResponseModal = ({
               showCount
             />
           </Col>
+          {record.VehicleApproved && (
+            <Col xs={24}>
+              <InputItem
+                vertical
+                title={Words.transmission_descriptions}
+                fieldName="TransmissionDetailsText"
+                formConfig={formConfig}
+                multiline
+                rows={7}
+                maxLength={512}
+                showCount
+              />
+            </Col>
+          )}
         </Row>
       </Form>
     </Modal>
