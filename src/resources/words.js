@@ -253,6 +253,7 @@ class Words extends Component {
   static shift_info = "اطلاعات شیفت";
   static view = "مشاهده";
   static update = "بروزرسانی";
+  static new_request = "درخواست جدید";
 
   static total = "کل";
   static used = "مصرف شده";
@@ -431,6 +432,14 @@ class Words extends Component {
     no_response_submitted: "پاسخ # ثبت نشده است",
     num_of_new_requests_submitted: "# درخواست جدید ثبت شده است",
     no_new_requests: "درخواست جدیدی ثبت نشده است",
+    num_of_new_vacation_replace_work_requests:
+      "# درخواست جانشینی مرخصی ثبت شده است",
+    num_of_new_mission_replace_work_requests:
+      "# درخواست جانشینی ماموریت ثبت شده است",
+    num_of_new_vacation_requests: "# درخواست مرخصی ثبت شده است",
+    num_of_new_mission_requests: "# درخواست ماموریت ثبت شده است",
+    num_of_new_mission_reports: "# گزارش جدید ماموریت ثبت شده است",
+    num_of_new_extra_work_requests: "# درخواست اضافه کاری ثبت شده است",
   };
 
   static questions = {
