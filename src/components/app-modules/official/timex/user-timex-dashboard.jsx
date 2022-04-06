@@ -34,6 +34,9 @@ const UserTimexDashboard = () => {
     NewVacationRequestsForOfficial: 0,
     NewMissionRequestsForOfficial: 0,
     NewExtraWorkRequestsForOfficial: 0,
+    IsSupervisor: false,
+    IsManager: false,
+    IsOfficialExpert: false,
   });
 
   // const initStatistics = () => {
@@ -46,6 +49,9 @@ const UserTimexDashboard = () => {
   //     NewVacationRequestsForOfficial: 1,
   //     NewMissionRequestsForOfficial: 2,
   //     NewExtraWorkRequestsForOfficial: 3,
+  //     IsSupervisor: false,
+  //     IsManager: true,
+  //     IsOfficialExpert: true,
   //   });
   // };
 
@@ -77,6 +83,9 @@ const UserTimexDashboard = () => {
     NewVacationRequestsForOfficial,
     NewMissionRequestsForOfficial,
     NewExtraWorkRequestsForOfficial,
+    IsSupervisor,
+    IsManager,
+    IsOfficialExpert,
   } = statistics;
 
   const my_cartable_requests =
@@ -91,6 +100,10 @@ const UserTimexDashboard = () => {
     NewVacationRequestsForOfficial +
     NewMissionRequestsForOfficial +
     NewExtraWorkRequestsForOfficial;
+
+  const has_department_cartable = IsSupervisor || IsManager;
+
+  const has_official_cartable = IsOfficialExpert;
 
   return (
     <Row gutter={[20, 16]}>
@@ -166,128 +179,132 @@ const UserTimexDashboard = () => {
           </Card>
         </Badge.Ribbon>
       </Col>
-      <Col xs={24}>
-        <Badge.Ribbon
-          text={
-            department_cartable_requests > 0
-              ? utils.farsiNum(
-                  `${department_cartable_requests} ${Words.new_request}`
-                )
-              : ""
-          }
-          color="green"
-        >
-          <Card
-            title={
-              <Text style={{ color: Colors.red[6] }}>
-                {Words.department_cartable}
-              </Text>
+      {has_department_cartable && (
+        <Col xs={24}>
+          <Badge.Ribbon
+            text={
+              department_cartable_requests > 0
+                ? utils.farsiNum(
+                    `${department_cartable_requests} ${Words.new_request}`
+                  )
+                : ""
             }
-            size="small"
+            color="green"
           >
-            {department_cartable_requests > 0 ? (
-              <Row gutter={[10, 5]}>
-                {NewVacationRequestsForManager > 0 && (
-                  <Col xs={24}>
-                    <InfoAlert
-                      value={NewVacationRequestsForManager}
-                      message={Words.messages.num_of_new_vacation_requests}
-                      link="members-new-vacations-check-manager"
-                    />
-                  </Col>
-                )}
+            <Card
+              title={
+                <Text style={{ color: Colors.red[6] }}>
+                  {Words.department_cartable}
+                </Text>
+              }
+              size="small"
+            >
+              {department_cartable_requests > 0 ? (
+                <Row gutter={[10, 5]}>
+                  {NewVacationRequestsForManager > 0 && (
+                    <Col xs={24}>
+                      <InfoAlert
+                        value={NewVacationRequestsForManager}
+                        message={Words.messages.num_of_new_vacation_requests}
+                        link="members-new-vacations-check-manager"
+                      />
+                    </Col>
+                  )}
 
-                {NewMissionRequestsForManager > 0 && (
-                  <Col xs={24}>
-                    <InfoAlert
-                      value={NewMissionRequestsForManager}
-                      message={Words.messages.num_of_new_mission_requests}
-                      link="members-new-missions-check-manager"
-                    />
-                  </Col>
-                )}
+                  {NewMissionRequestsForManager > 0 && (
+                    <Col xs={24}>
+                      <InfoAlert
+                        value={NewMissionRequestsForManager}
+                        message={Words.messages.num_of_new_mission_requests}
+                        link="members-new-missions-check-manager"
+                      />
+                    </Col>
+                  )}
 
-                {NewMissionReportsForManager > 0 && (
-                  <Col xs={24}>
-                    <InfoAlert
-                      value={NewMissionReportsForManager}
-                      message={Words.messages.num_of_new_mission_reports}
-                      link="members-new-mission-reports"
-                    />
-                  </Col>
-                )}
-              </Row>
-            ) : (
-              <Alert
-                showIcon
-                type="warning"
-                message={Words.messages.no_new_requests}
-              />
-            )}
-          </Card>
-        </Badge.Ribbon>
-      </Col>
-      <Col xs={24}>
-        <Badge.Ribbon
-          text={
-            official_cartable_requests > 0
-              ? utils.farsiNum(
-                  `${official_cartable_requests} ${Words.new_request}`
-                )
-              : ""
-          }
-          color="volcano"
-        >
-          <Card
-            title={
-              <Text style={{ color: Colors.red[6] }}>
-                {Words.official_cartable}
-              </Text>
+                  {NewMissionReportsForManager > 0 && (
+                    <Col xs={24}>
+                      <InfoAlert
+                        value={NewMissionReportsForManager}
+                        message={Words.messages.num_of_new_mission_reports}
+                        link="members-new-mission-reports"
+                      />
+                    </Col>
+                  )}
+                </Row>
+              ) : (
+                <Alert
+                  showIcon
+                  type="warning"
+                  message={Words.messages.no_new_requests}
+                />
+              )}
+            </Card>
+          </Badge.Ribbon>
+        </Col>
+      )}
+      {has_official_cartable && (
+        <Col xs={24}>
+          <Badge.Ribbon
+            text={
+              official_cartable_requests > 0
+                ? utils.farsiNum(
+                    `${official_cartable_requests} ${Words.new_request}`
+                  )
+                : ""
             }
-            size="small"
+            color="volcano"
           >
-            {official_cartable_requests > 0 ? (
-              <Row gutter={[10, 5]}>
-                {NewVacationRequestsForOfficial > 0 && (
-                  <Col xs={24}>
-                    <InfoAlert
-                      value={NewVacationRequestsForOfficial}
-                      message={Words.messages.num_of_new_vacation_requests}
-                      link="members-new-vacations-check-official"
-                    />
-                  </Col>
-                )}
+            <Card
+              title={
+                <Text style={{ color: Colors.red[6] }}>
+                  {Words.official_cartable}
+                </Text>
+              }
+              size="small"
+            >
+              {official_cartable_requests > 0 ? (
+                <Row gutter={[10, 5]}>
+                  {NewVacationRequestsForOfficial > 0 && (
+                    <Col xs={24}>
+                      <InfoAlert
+                        value={NewVacationRequestsForOfficial}
+                        message={Words.messages.num_of_new_vacation_requests}
+                        link="members-new-vacations-check-official"
+                      />
+                    </Col>
+                  )}
 
-                {NewMissionRequestsForOfficial > 0 && (
-                  <Col xs={24}>
-                    <InfoAlert
-                      value={NewMissionRequestsForOfficial}
-                      message={Words.messages.num_of_new_mission_requests}
-                      link="members-new-missions-check-official"
-                    />
-                  </Col>
-                )}
+                  {NewMissionRequestsForOfficial > 0 && (
+                    <Col xs={24}>
+                      <InfoAlert
+                        value={NewMissionRequestsForOfficial}
+                        message={Words.messages.num_of_new_mission_requests}
+                        link="members-new-missions-check-official"
+                      />
+                    </Col>
+                  )}
 
-                {NewExtraWorkRequestsForOfficial > 0 && (
-                  <Col xs={24}>
-                    <InfoAlert
-                      value={NewExtraWorkRequestsForOfficial}
-                      message={Words.messages.num_of_new_extra_work_requests}
-                      link="official-check-extra-work-requests"
-                    />
-                  </Col>
-                )}
-              </Row>
-            ) : (
-              <Alert
-                showIcon
-                type="warning"
-                message={Words.messages.no_new_requests}
-              />
-            )}
-          </Card>
-        </Badge.Ribbon>
-      </Col>
+                  {NewExtraWorkRequestsForOfficial > 0 && (
+                    <Col xs={24}>
+                      <InfoAlert
+                        value={NewExtraWorkRequestsForOfficial}
+                        message={Words.messages.num_of_new_extra_work_requests}
+                        link="official-check-extra-work-requests"
+                      />
+                    </Col>
+                  )}
+                </Row>
+              ) : (
+                <Alert
+                  showIcon
+                  type="warning"
+                  message={Words.messages.no_new_requests}
+                />
+              )}
+            </Card>
+          </Badge.Ribbon>
+        </Col>
+      )}
     </Row>
   );
 };
