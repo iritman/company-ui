@@ -31,6 +31,14 @@ const getSheets = (records) => [
         value: (record) =>
           record.FormatID === 1 ? Words.by_hour : Words.by_day,
       },
+      {
+        label: Words.is_personal_vacation,
+        value: (record) => (record.IsPersonal ? "*" : ""),
+      },
+      {
+        label: Words.without_fee,
+        value: (record) => (record.WithoutFee ? "*" : ""),
+      },
     ],
   },
 ];
@@ -67,6 +75,14 @@ const baseColumns = [
         {FormatID === 1 ? Words.by_hour : Words.by_day}
       </Text>
     ),
+  },
+  {
+    title: Words.is_personal_vacation,
+    width: 120,
+    align: "center",
+    sorter: getSorter("IsPersonal"),
+    render: (record) =>
+      record.IsPersonal && <CheckIcon style={{ color: Colors.green[6] }} />,
   },
   {
     title: Words.without_fee,

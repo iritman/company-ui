@@ -27,6 +27,7 @@ const schema = {
     .label(Words.title)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
   FormatID: Joi.number().min(1).required(),
+  IsPersonal: Joi.boolean(),
   WithoutFee: Joi.boolean(),
 };
 
@@ -34,6 +35,7 @@ const initRecord = {
   VacationTypeID: 0,
   Title: "",
   FormatID: 0,
+  IsPersonal: false,
   WithoutFee: false,
 };
 
@@ -61,6 +63,7 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const clearRecord = () => {
     record.Title = "";
     record.FormatID = 0;
+    record.IsPersonal = false;
     record.WithoutFee = false;
 
     setRecord(record);
@@ -118,10 +121,20 @@ const VacationTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               required
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={12}>
             <SwitchItem
               title={Words.without_fee}
               fieldName="WithoutFee"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={12}>
+            <SwitchItem
+              title={Words.is_personal_vacation}
+              fieldName="IsPersonal"
               initialValue={false}
               checkedTitle={Words.yes}
               unCheckedTitle={Words.no}
