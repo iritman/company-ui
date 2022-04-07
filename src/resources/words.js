@@ -254,6 +254,10 @@ class Words extends Component {
   static view = "مشاهده";
   static update = "بروزرسانی";
   static new_request = "درخواست جدید";
+  static vacation_cardex_settings = "تنظیمات کاردکس مرخصی";
+  static total_valid_personal_vacation = "ظرفیت مجاز مرخصی استحقاقی";
+  static total_valid_personal_vacation_in_min =
+    "ظرفیت مجاز مرخصی استحقاقی (دقیقه)";
 
   static total = "کل";
   static used = "مصرف شده";

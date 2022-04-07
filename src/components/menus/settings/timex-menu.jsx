@@ -8,7 +8,7 @@ import Words from "../../../resources/words";
 import TabTitle from "../../common/tab-title";
 import {
   AiOutlineDashboard as DashboardIcon,
-  AiOutlineNodeIndex as CalculationBaseIcon,
+  AiOutlineSetting as SettingIcon,
   AiOutlineSchedule as WorkShiftIcon,
   AiOutlineFieldTime as WorkTimeIcon,
   AiFillIdcard as MembersRegedCardIcon,
@@ -80,16 +80,6 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 14:
-      link = "calculation-bases";
-      icon = (
-        <CalculationBaseIcon
-          style={{ color: Colors.orange[6] }}
-          size={iconSize}
-        />
-      );
-      break;
-
     case 63:
       link = "extra-work-command-sources";
       icon = (
@@ -113,6 +103,11 @@ const mapper = (pageID) => {
     case 17:
       link = "vacation-requests";
       icon = <RequestIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 14:
+      link = "vacation-cardex-settings";
+      icon = <SettingIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
     //--- Missions Tab
@@ -201,7 +196,7 @@ const tabs = [
     pages: [
       { pageName: "Holidays" },
       { pageName: "DepartmentExtraWorkCapacities" },
-      { pageName: "CalculationBases" },
+
       { pageName: "ExtraWorkCommandSources" },
       { pageName: "NoAlternativeEmployees" },
     ],
@@ -215,7 +210,11 @@ const tabs = [
         icon={VacationIcon}
       />
     ),
-    pages: [{ pageName: "VacationTypes" }, { pageName: "VacationRequests" }],
+    pages: [
+      { pageName: "VacationTypes" },
+      { pageName: "VacationRequests" },
+      { pageName: "VacationCardexSettings" },
+    ],
   },
   {
     name: "missions",
