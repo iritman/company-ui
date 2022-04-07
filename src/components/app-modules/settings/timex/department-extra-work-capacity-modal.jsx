@@ -31,6 +31,7 @@ const schema = {
 
 const initRecord = {
   CapacityID: 0,
+  Year: 0,
   DepartmentID: 0,
   CapacityInHours: 0,
 };
@@ -65,6 +66,7 @@ const DepartmentExtraWorkCapacityModal = ({
   };
 
   const clearRecord = () => {
+    record.Year = 0;
     record.DepartmentID = 0;
     record.CapacityInHours = 0;
 
