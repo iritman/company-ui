@@ -24,11 +24,11 @@ const SimpleDataPageHeader = ({
   onGetAll,
   onAdd,
 }) => {
-  const rightPartSizes = (onGetAll) => {
+  const rightPartSizes = (onGetAll, onSearch) => {
     return onGetAll
       ? {
-          md: 8,
-          lg: 10,
+          md: onSearch ? 8 : 20,
+          lg: onSearch ? 10 : 20,
         }
       : {};
   };
@@ -58,7 +58,7 @@ const SimpleDataPageHeader = ({
         </Text>
       </Col>
 
-      {onGetAll && (
+      {onGetAll && onSearch && (
         <Col xs={24} md={12} lg={10}>
           <Search
             placeholder={Words.search_text}
@@ -71,7 +71,7 @@ const SimpleDataPageHeader = ({
         </Col>
       )}
 
-      <Col xs={12} {...rightPartSizes(onGetAll)}>
+      <Col xs={12} {...rightPartSizes(onGetAll, onSearch)}>
         {onGetAll ? (
           <Space>
             <Tooltip title={Words.clear}>
