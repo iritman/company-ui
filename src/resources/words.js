@@ -259,6 +259,11 @@ class Words extends Component {
   static total_valid_personal_vacation_in_min =
     "ظرفیت مجاز مرخصی استحقاقی (دقیقه)";
   static is_personal_vacation = "مرخصی استحقاقی";
+  static vacation_cardexes = "کاردکس های مرخصی";
+  static personal_vacation_capacity = "ظرفیت مرخصی استحقاقی";
+  static personal_vacation_capacity_in_min = "ظرفیت مرخصی استحقاقی (دقیقه)";
+  static used_capacity = "ظرفیت مورد استفاده";
+  static remain_capacity = "ظرفیت باقی مانده";
 
   static total = "کل";
   static used = "مصرف شده";

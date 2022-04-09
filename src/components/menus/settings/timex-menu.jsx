@@ -13,6 +13,7 @@ import {
   AiOutlineFieldTime as WorkTimeIcon,
   AiFillIdcard as MembersRegedCardIcon,
   AiFillMacCommand as CommandIcon,
+  AiOutlineIdcard as CardexIcon,
 } from "react-icons/ai";
 import {
   GiGuards as SecurityGuardIcon,
@@ -103,6 +104,11 @@ const mapper = (pageID) => {
     case 17:
       link = "vacation-requests";
       icon = <RequestIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 84:
+      link = "vacation-cardexes";
+      icon = <CardexIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
     case 14:
@@ -213,6 +219,7 @@ const tabs = [
     pages: [
       { pageName: "VacationTypes" },
       { pageName: "VacationRequests" },
+      { pageName: "VacationCardexes" },
       { pageName: "VacationCardexSettings" },
     ],
   },
