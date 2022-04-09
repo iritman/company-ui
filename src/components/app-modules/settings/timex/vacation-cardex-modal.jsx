@@ -86,9 +86,15 @@ const VacationcardexModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { Members } = data;
+      const { Members, MaxCapacityInMin } = data;
 
       setMembers(Members);
+
+      if (selectedObject === null) {
+        record.CapacityInMin = MaxCapacityInMin;
+        setRecord(record);
+        loadFieldsValue(formRef, record);
+      }
     } catch (err) {
       handleError(err);
     }
