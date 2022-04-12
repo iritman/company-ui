@@ -172,6 +172,67 @@ export function weekDayName(dayID) {
   return result;
 }
 
+export function monthName(monthID) {
+  let result = "";
+
+  switch (monthID) {
+    case 1: {
+      result = "فروردین";
+      break;
+    }
+    case 2: {
+      result = "اردیبهشت";
+      break;
+    }
+    case 3: {
+      result = "خرداد";
+      break;
+    }
+    case 4: {
+      result = "تیر";
+      break;
+    }
+    case 5: {
+      result = "مرداد";
+      break;
+    }
+    case 6: {
+      result = "شهریور";
+      break;
+    }
+    case 7: {
+      result = "مهر";
+      break;
+    }
+    case 8: {
+      result = "آبان";
+      break;
+    }
+    case 9: {
+      result = "آذر";
+      break;
+    }
+    case 10: {
+      result = "دی";
+      break;
+    }
+    case 11: {
+      result = "بهمن";
+      break;
+    }
+    case 12: {
+      result = "اسفند";
+      break;
+    }
+    default: {
+      result = "";
+      break;
+    }
+  }
+
+  return result;
+}
+
 export function currentDate() {
   const pdate = jalaliMoment().locale("fa").format("dddd DD MMMM YYYY");
 
@@ -230,20 +291,31 @@ export function getPersianDate(addDays) {
     .locale("fa")
     .format("YYYY/M/D");
 
-  const firstSlashIndex = currentDate.indexOf("/");
-  const lastSlashIndex = currentDate.lastIndexOf("/");
-
-  const year = currentDate.substr(0, 4);
-  const month = currentDate.substr(
-    firstSlashIndex + 1,
-    lastSlashIndex - firstSlashIndex - 1
-  );
-  const day = currentDate.substr(lastSlashIndex + 1);
+  const date_items = currentDate.split("/");
 
   return {
-    year: parseInt(year, 10),
-    month: parseInt(month, 10),
-    day: parseInt(day, 10),
+    year: parseInt(date_items[0]),
+    month: parseInt(date_items[1]),
+    day: parseInt(date_items[2]),
+  };
+}
+
+export function nextDay(day) {
+  const miladiDay = jalaliMoment
+    .from(`${day.year}/${day.month}/${day.day}`, "fa", "YYYY/MM/DD")
+    .format("YYYY/MM/DD");
+
+  const persianDate = jalaliMoment(miladiDay, "YYYY/MM/DD")
+    .add(1, "day")
+    .locale("fa")
+    .format("YYYY/M/D");
+
+  const date_items = persianDate.split("/");
+
+  return {
+    year: parseInt(date_items[0]),
+    month: parseInt(date_items[1]),
+    day: parseInt(date_items[2]),
   };
 }
 
@@ -268,6 +340,20 @@ export function dayNameFromText(day) {
     jalaliMoment(miladiDay, "YYYY/MM/DD")
       .locale("fa")
       .format("dddd DD MMMM YYYY")
+  );
+}
+
+export function weekDayNameFromDay(d) {
+  const { year, month, day } = d;
+
+  const date = `${year}${addFirstZero(month)}${addFirstZero(day)}`;
+
+  const miladiDay = jalaliMoment
+    .from(`${date}`, "fa", "YYYYMMDD")
+    .format("YYYY/MM/DD");
+
+  return farsiNum(
+    jalaliMoment(miladiDay, "YYYY/MM/DD").locale("fa").format("dddd")
   );
 }
 
@@ -452,8 +538,10 @@ const methods = {
   currentDayName,
   nextDaysName,
   getPersianDate,
+  nextDay,
   dayName,
   dayNameFromText,
+  weekDayNameFromDay,
   weekDayNameFromText,
   dateToText,
   persianTime,
@@ -467,6 +555,7 @@ const methods = {
   colonTime,
   formattedDateTime,
   weekDayName,
+  monthName,
   jalaliToMiladi,
   isImageFile,
   jalaliDate,
