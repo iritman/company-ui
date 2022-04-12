@@ -2,7 +2,7 @@ import React from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "./../../../common/modal-window";
+import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
 import {
   validateForm,
@@ -13,18 +13,18 @@ import {
 import {
   useModalContext,
   useResetContext,
-} from "./../../../contexts/modal-context";
-import TimeItem from "./../../../form-controls/time-item";
-import InputItem from "./../../../form-controls/input-item";
-import NumericInputItem from "./../../../form-controls/numeric-input-item";
+} from "../../../contexts/modal-context";
+import TimeItem from "../../../form-controls/time-item";
+import InputItem from "../../../form-controls/input-item";
+import NumericInputItem from "../../../form-controls/numeric-input-item";
 
 const schema = {
-  ShiftID: Joi.number().required(),
-  ShiftCode: Joi.string()
+  HourID: Joi.number().required(),
+  HourCode: Joi.string()
     .min(1)
     .max(5)
     .required()
-    .label(Words.shift_code)
+    .label(Words.work_hour_code)
     // .regex(/^[a-zA-Z0-9.\-()\s]+$/),
     .regex(/^[a-zA-Z0-9]+$/),
   StartTime: Joi.string().required(),
@@ -36,8 +36,8 @@ const schema = {
 };
 
 const initRecord = {
-  ShiftID: 0,
-  ShiftCode: "",
+  HourID: 0,
+  HourCode: "",
   StartTime: "",
   FinishTime: "",
   UnDelayInMin: 0,
@@ -48,7 +48,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const WorkShiftModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const WorkHourModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
@@ -63,7 +63,7 @@ const WorkShiftModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.ShiftCode = "";
+    record.HourCode = "";
     record.StartTime = "";
     record.FinishTime = "";
     record.UnDelayInMin = 0;
@@ -109,8 +109,8 @@ const WorkShiftModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <InputItem
-              title={Words.shift_code}
-              fieldName="ShiftCode"
+              title={Words.work_hour_code}
+              fieldName="HourCode"
               required
               autoFocus
               maxLength={5}
@@ -157,7 +157,7 @@ const WorkShiftModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          {/* <Col xs={24} md={12}>
             <NumericInputItem
               horizontal
               required
@@ -178,11 +178,11 @@ const WorkShiftModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               max={60}
               formConfig={formConfig}
             />
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     </ModalWindow>
   );
 };
 
-export default WorkShiftModal;
+export default WorkHourModal;

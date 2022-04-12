@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/settings/timex/work-shifts";
+const apiEndpoint = apiUrl + "/settings/timex/work-hours";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);

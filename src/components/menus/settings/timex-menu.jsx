@@ -9,7 +9,7 @@ import TabTitle from "../../common/tab-title";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiOutlineSetting as SettingIcon,
-  AiOutlineSchedule as WorkShiftIcon,
+  AiOutlineSchedule as WorkHourIcon,
   AiOutlineFieldTime as WorkTimeIcon,
   AiFillIdcard as MembersRegedCardIcon,
   AiFillMacCommand as CommandIcon,
@@ -145,9 +145,9 @@ const mapper = (pageID) => {
       break;
 
     case 24:
-      link = "work-shifts";
+      link = "work-hours";
       icon = (
-        <WorkShiftIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
+        <WorkHourIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
       );
       break;
 
@@ -249,7 +249,7 @@ const tabs = [
     ),
     pages: [
       { pageName: "OfficialExperts" },
-      { pageName: "WorkShifts" },
+      { pageName: "WorkHours" },
       { pageName: "WorkGroups" },
       { pageName: "RegedCards" },
     ],

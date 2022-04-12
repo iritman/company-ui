@@ -2,8 +2,8 @@ import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../resources/words";
-import utils from "./../../../../tools/utils";
-import service from "./../../../../services/settings/timex/work-shifts-service";
+import utils from "../../../../tools/utils";
+import service from "../../../../services/settings/timex/work-hours-service";
 import {
   getSorter,
   checkAccess,
@@ -12,19 +12,19 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
-import WorkShiftModal from "./work-shift-modal";
-import { usePageContext } from "./../../../contexts/page-context";
+import WorkHourModal from "./work-hour-modal";
+import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "WorkShifts",
+    title: "WorkHours",
     data: records,
     columns: [
-      { label: Words.id, value: "ShiftID" },
-      { label: Words.shift_code, value: "ShiftCode" },
+      { label: Words.id, value: "HourID" },
+      { label: Words.work_hour_code, value: "HourCode" },
       {
         label: Words.start_time,
         value: (record) => utils.farsiNum(utils.colonTime(record.StartTime)),
@@ -42,18 +42,18 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "ShiftID",
-    sorter: getSorter("ShiftID"),
-    render: (ShiftID) => <Text>{utils.farsiNum(`${ShiftID}`)}</Text>,
+    dataIndex: "HourID",
+    sorter: getSorter("HourID"),
+    render: (HourID) => <Text>{utils.farsiNum(`${HourID}`)}</Text>,
   },
   {
-    title: Words.shift_code,
+    title: Words.work_hour_code,
     width: 150,
     align: "center",
-    dataIndex: "ShiftCode",
-    sorter: getSorter("ShiftCode"),
-    render: (ShiftCode) => (
-      <Text style={{ color: Colors.blue[7] }}>{ShiftCode}</Text>
+    dataIndex: "HourCode",
+    sorter: getSorter("HourCode"),
+    render: (HourCode) => (
+      <Text style={{ color: Colors.blue[7] }}>{HourCode}</Text>
     ),
   },
   {
@@ -82,9 +82,9 @@ const baseColumns = [
   },
 ];
 
-const recordID = "ShiftID";
+const recordID = "HourID";
 
-const WorkShiftsPage = ({ pageName }) => {
+const WorkHoursPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -128,10 +128,10 @@ const WorkShiftsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.work_shifts}
+            title={Words.work_hours}
             searchText={searchText}
             sheets={getSheets(records)}
-            fileName="WorkShifts"
+            fileName="WorkHours"
             onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={handleSearch}
             onClear={() => setRecords([])}
@@ -148,7 +148,7 @@ const WorkShiftsPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <WorkShiftModal
+        <WorkHourModal
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
@@ -159,4 +159,4 @@ const WorkShiftsPage = ({ pageName }) => {
   );
 };
 
-export default WorkShiftsPage;
+export default WorkHoursPage;
