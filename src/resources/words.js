@@ -452,6 +452,8 @@ class Words extends Component {
     num_of_new_mission_requests: "# درخواست ماموریت ثبت شده است",
     num_of_new_mission_reports: "# گزارش جدید ماموریت ثبت شده است",
     num_of_new_extra_work_requests: "# درخواست اضافه کاری ثبت شده است",
+    no_work_shift_defined: "شیفت کاری تعریف نشده است",
+    work_shift_deleted: "شیف کاری حذف شد",
   };
 
   static questions = {
@@ -467,6 +469,7 @@ class Words extends Component {
     sure_to_delete_report: "برای حذف گزارش اطمینان دارید؟",
     sure_to_submit_note: "برای ثبت یادداشت ماموریت اطمینان دارید؟",
     sure_to_delete_note: "برای حذف یادداشت ماموریت اطمینان دارید؟",
+    sure_to_delete_work_shift: "برای حذف شیفت کاری اطمینان دارید؟",
   };
 
   static monthes = {

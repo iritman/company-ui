@@ -37,6 +37,7 @@ import {
 import {
   BiGitPullRequest as RequestIcon,
   BiGroup as GroupShiftIcon,
+  BiCalendar as WorkShiftIcon,
 } from "react-icons/bi";
 
 const { SubMenu } = Menu;
@@ -158,6 +159,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 26:
+      link = "work-shifts";
+      icon = (
+        <WorkShiftIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
+      );
+      break;
+
     case 27:
       link = "reged-cards";
       icon = <CardIcon style={{ color: Colors.magenta[6] }} size={iconSize} />;
@@ -251,6 +259,7 @@ const tabs = [
       { pageName: "OfficialExperts" },
       { pageName: "WorkHours" },
       { pageName: "WorkGroups" },
+      { pageName: "WorkShifts" },
       { pageName: "RegedCards" },
     ],
   },
