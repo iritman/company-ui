@@ -1,157 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, Alert } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/official/timex/user-members-work-shifts-service";
 import {
-  getSorter,
   checkAccess,
-  getColumns,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "./../../../contexts/page-context";
-import Colors from "../../../../resources/colors";
-import DetailsTable from "./../../../common/details-table";
+import DetailsModal from "./user-members-work-shift-details-modal";
 import MemberWorkShiftSearchModal from "./user-members-work-shift-search-modal";
+import { handleError } from "../../../../tools/form-manager";
+import PersianCalendar from "../../../common/persian-calendar";
 
 const { Text } = Typography;
 
-const getSheets = (records) => [
-  {
-    title: "MembersWorkShifts",
-    data: records,
-    columns: [
-      { label: Words.id, value: "RowID" },
-      { label: Words.card_no, value: "CardNo" },
-      { label: Words.first_name, value: "FirstName" },
-      { label: Words.last_name, value: "LastName" },
-      {
-        label: Words.week_day,
-        value: (record) => utils.weekDayNameFromText(record.ShiftDate),
-      },
-      {
-        label: Words.shift_date,
-        value: (record) => utils.farsiNum(utils.slashDate(record.ShiftDate)),
-      },
-      { label: Words.shift_code, value: "ShiftCode" },
-      {
-        label: Words.start_time,
-        value: (record) => utils.farsiNum(utils.colonTime(record.StartTime)),
-      },
-      {
-        label: Words.finish_time,
-        value: (record) => utils.farsiNum(utils.colonTime(record.FinishTime)),
-      },
-    ],
-  },
-];
-
-const baseColumns = [
-  {
-    title: Words.id,
-    width: 75,
-    align: "center",
-    dataIndex: "RowID",
-    sorter: getSorter("RowID"),
-    render: (RowID) => <Text>{utils.farsiNum(`${RowID}`)}</Text>,
-  },
-  {
-    title: Words.card_no,
-    width: 100,
-    align: "center",
-    dataIndex: "CardNo",
-    sorter: getSorter("CardNo"),
-    render: (CardNo) => (
-      <Text style={{ color: Colors.orange[7] }}>
-        {utils.farsiNum(`${CardNo}`)}
-      </Text>
-    ),
-  },
-  {
-    title: Words.full_name,
-    width: 150,
-    align: "center",
-    sorter: getSorter("LastName"),
-    render: (record) => (
-      <Text style={{ color: Colors.blue[6] }}>
-        {`${record.FirstName} ${record.LastName}`}
-      </Text>
-    ),
-  },
-  {
-    title: Words.shift_code,
-    width: 100,
-    align: "center",
-    dataIndex: "ShiftCode",
-    sorter: getSorter("ShiftCode"),
-    render: (ShiftCode) => (
-      <Text style={{ color: Colors.cyan[6] }}>{ShiftCode}</Text>
-    ),
-  },
-  {
-    title: Words.shift_date,
-    width: 150,
-    align: "center",
-    // dataIndex: "ShiftDate",
-    sorter: getSorter("ShiftDate"),
-    render: (record) => (
-      <Text
-        style={{ color: record.IsHoliday ? Colors.red[6] : Colors.green[6] }}
-      >
-        {utils.farsiNum(
-          `${utils.weekDayNameFromText(record.ShiftDate)} - ${utils.slashDate(
-            record.ShiftDate
-          )}`
-        )}
-      </Text>
-    ),
-  },
-
-  {
-    title: Words.start_time,
-    width: 100,
-    align: "center",
-    dataIndex: "StartTime",
-    sorter: getSorter("StartTime"),
-    render: (StartTime) => (
-      <Text style={{ color: Colors.blue[7] }}>
-        {utils.farsiNum(utils.colonTime(StartTime))}
-      </Text>
-    ),
-  },
-  {
-    title: Words.finish_time,
-    width: 100,
-    align: "center",
-    dataIndex: "FinishTime",
-    sorter: getSorter("FinishTime"),
-    render: (FinishTime) => (
-      <Text style={{ color: Colors.blue[7] }}>
-        {utils.farsiNum(utils.colonTime(FinishTime))}
-      </Text>
-    ),
-  },
-];
-
-const recordID = "RowID";
+const recordID = "ShiftID";
 
 const EmployeeShiftsPage = ({ pageName }) => {
+  const [holidays, setHolidays] = useState([]);
+  const [workShifts, setWorkShifts] = useState([]);
+  const [employee, setEmployee] = useState(null);
+
   const {
     progress,
-    searched,
-    setSearched,
-    searchText,
-    setSearchText,
-    records,
-    setRecords,
-    access,
+    setProgress,
     setAccess,
     showSearchModal,
     setShowSearchModal,
+    showModal,
+    setShowModal,
     filter,
     setFilter,
+    selectedObject,
+    setSelectedObject,
   } = usePageContext();
 
   useMount(async () => {
@@ -159,21 +43,48 @@ const EmployeeShiftsPage = ({ pageName }) => {
     await checkAccess(setAccess, pageName);
   });
 
-  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
-    {
-      service,
-      recordID,
-    }
-  );
+  const { handleCloseModal, handleResetContext } = GetSimplaDataPageMethods({
+    service,
+    recordID,
+  });
 
-  const columns = access
-    ? getColumns(baseColumns, null, access, null, null)
-    : [];
+  const loadWorkShifts = async (filter) => {
+    setFilter(filter);
+
+    setProgress(true);
+    try {
+      setShowSearchModal(false);
+
+      const data = await service.searchData(filter);
+
+      const { Holidays, WorkShifts, FirstName, LastName, PicFileName } = data;
+
+      setHolidays(Holidays);
+      setWorkShifts(WorkShifts);
+      setEmployee({ FirstName, LastName, PicFileName });
+    } catch (err) {
+      handleError(err);
+    }
+    setProgress(false);
+  };
+
+  const handleClickDate = (date) => {
+    const workShift = workShifts.find(
+      (ws) => ws.ShiftDate === utils.dateToText(date)
+    );
+
+    if (workShift) {
+      const data = { date };
+      data.workShift = workShift;
+
+      setSelectedObject(data);
+      setShowModal(true);
+    }
+  };
 
   const handleClear = () => {
-    setRecords([]);
     setFilter(null);
-    setSearched(false);
+    setEmployee(null);
   };
 
   //------
@@ -184,25 +95,56 @@ const EmployeeShiftsPage = ({ pageName }) => {
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
             title={Words.members_work_shifts}
-            searchText={searchText}
-            sheets={getSheets(records)}
-            fileName="MembersWorkShifts"
-            onSearchTextChanged={(e) => setSearchText(e.target.value)}
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
-            onGetAll={null}
-            onAdd={null}
           />
 
-          <Col xs={24}>
-            {searched && <DetailsTable records={records} columns={columns} />}
-          </Col>
+          {filter && employee && (
+            <Col xs={24}>
+              <Alert
+                type="success"
+                message={
+                  <Text>
+                    {utils.farsiNum(
+                      `${employee.FirstName} ${employee.LastName} (${filter.YearNo})`
+                    )}
+                  </Text>
+                }
+                showIcon
+              />
+            </Col>
+          )}
+
+          {filter &&
+            filter?.YearNo &&
+            utils.getMonthList().map((month) => (
+              <Col xs={24} md={8} key={month.monthID}>
+                <PersianCalendar
+                  year={filter.YearNo}
+                  month={month.monthID}
+                  makeHolidaysRed={true}
+                  holidays={holidays}
+                  holidayField="HolidayDate"
+                  selectedDays={workShifts}
+                  selectedDayField="ShiftDate"
+                  onClick={handleClickDate}
+                />
+              </Col>
+            ))}
         </Row>
       </Spin>
 
+      {showModal && (
+        <DetailsModal
+          onOk={handleCloseModal}
+          isOpen={showModal}
+          selectedObject={selectedObject}
+        />
+      )}
+
       {showSearchModal && (
         <MemberWorkShiftSearchModal
-          onOk={handleAdvancedSearch}
+          onOk={loadWorkShifts}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
           filter={filter}

@@ -15,7 +15,7 @@ import PersianCalendar from "./../../../common/persian-calendar";
 
 const { Text } = Typography;
 
-const recordID = "RowID";
+const recordID = "ShiftID";
 
 const currentYear = parseInt(
   utils.currentPersianDateWithoutSlash().substring(0, 4)
