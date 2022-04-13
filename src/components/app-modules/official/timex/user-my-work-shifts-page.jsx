@@ -1,153 +1,103 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, Space, InputNumber } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/official/timex/user-my-work-shifts-service";
 import {
-  getSorter,
   checkAccess,
-  getColumns,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
-import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "./../../../contexts/page-context";
-import Colors from "../../../../resources/colors";
-import WorkShiftSearchModal from "./user-my-work-shift-search-modal";
-import DetailsTable from "./../../../common/details-table";
+import DetailsModal from "./user-my-work-shift-details-modal";
+import { handleError } from "./../../../../tools/form-manager";
+import PersianCalendar from "./../../../common/persian-calendar";
 
 const { Text } = Typography;
 
-const getSheets = (records) => [
-  {
-    title: "MyWorkShifts",
-    data: records,
-    columns: [
-      { label: Words.id, value: "RowID" },
-      {
-        label: Words.week_day,
-        value: (record) => utils.weekDayNameFromText(record.ShiftDate),
-      },
-      {
-        label: Words.shift_date,
-        value: (record) => utils.farsiNum(utils.slashDate(record.ShiftDate)),
-      },
-      { label: Words.shift_code, value: "ShiftCode" },
-      {
-        label: Words.start_time,
-        value: (record) => utils.farsiNum(utils.colonTime(record.StartTime)),
-      },
-      {
-        label: Words.finish_time,
-        value: (record) => utils.farsiNum(utils.colonTime(record.FinishTime)),
-      },
-    ],
-  },
-];
-
-const baseColumns = [
-  {
-    title: Words.id,
-    width: 75,
-    align: "center",
-    dataIndex: "RowID",
-    sorter: getSorter("RowID"),
-    render: (RowID) => <Text>{utils.farsiNum(`${RowID}`)}</Text>,
-  },
-  {
-    title: Words.shift_code,
-    width: 100,
-    align: "center",
-    dataIndex: "ShiftCode",
-    sorter: getSorter("ShiftCode"),
-    render: (ShiftCode) => (
-      <Text style={{ color: Colors.orange[7] }}>{ShiftCode}</Text>
-    ),
-  },
-  {
-    title: Words.shift_date,
-    width: 150,
-    align: "center",
-    // dataIndex: "ShiftDate",
-    sorter: getSorter("ShiftDate"),
-    render: (record) => (
-      <Text
-        style={{ color: record.IsHoliday ? Colors.red[6] : Colors.green[6] }}
-      >
-        {utils.farsiNum(
-          `${utils.weekDayNameFromText(record.ShiftDate)} - ${utils.slashDate(
-            record.ShiftDate
-          )}`
-        )}
-      </Text>
-    ),
-  },
-
-  {
-    title: Words.start_time,
-    width: 100,
-    align: "center",
-    dataIndex: "StartTime",
-    sorter: getSorter("StartTime"),
-    render: (StartTime) => (
-      <Text style={{ color: Colors.blue[7] }}>
-        {utils.farsiNum(utils.colonTime(StartTime))}
-      </Text>
-    ),
-  },
-  {
-    title: Words.finish_time,
-    width: 100,
-    align: "center",
-    dataIndex: "FinishTime",
-    sorter: getSorter("FinishTime"),
-    render: (FinishTime) => (
-      <Text style={{ color: Colors.blue[7] }}>
-        {utils.farsiNum(utils.colonTime(FinishTime))}
-      </Text>
-    ),
-  },
-];
-
 const recordID = "RowID";
 
+const currentYear = parseInt(
+  utils.currentPersianDateWithoutSlash().substring(0, 4)
+);
+
+const monthes = [
+  { monthID: 1 },
+  { monthID: 2 },
+  { monthID: 3 },
+  { monthID: 4 },
+  { monthID: 5 },
+  { monthID: 6 },
+  { monthID: 7 },
+  { monthID: 8 },
+  { monthID: 9 },
+  { monthID: 10 },
+  { monthID: 11 },
+  { monthID: 12 },
+];
+
 const UserMyWorkShiftsPage = ({ pageName }) => {
+  const [holidays, setHolidays] = useState([]);
+  const [workShifts, setWorkShifts] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
   const {
     progress,
-    searched,
-    setSearched,
-    searchText,
-    setSearchText,
-    records,
-    setRecords,
-    access,
+    setProgress,
     setAccess,
-    showSearchModal,
-    setShowSearchModal,
-    filter,
-    setFilter,
+    selectedObject,
+    setSelectedObject,
+    showModal,
+    setShowModal,
   } = usePageContext();
 
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
+
+    await loadWorkShifts(currentYear);
   });
 
-  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
-    {
-      service,
-      recordID,
+  const { handleCloseModal, handleResetContext } = GetSimplaDataPageMethods({
+    service,
+    recordID,
+  });
+
+  const loadWorkShifts = async (year) => {
+    setProgress(true);
+
+    try {
+      const data = await service.searchData(year);
+
+      const { Holidays, WorkShifts } = data;
+
+      setHolidays(Holidays);
+      setWorkShifts(WorkShifts);
+    } catch (err) {
+      handleError(err);
     }
-  );
 
-  const columns = access
-    ? getColumns(baseColumns, null, access, null, null)
-    : [];
+    setProgress(false);
+  };
 
-  const handleClear = () => {
-    setRecords([]);
-    setFilter(null);
-    setSearched(false);
+  const handleYearChange = (value) => {
+    setSelectedYear(value);
+
+    loadWorkShifts(value);
+  };
+
+  const handleClickDate = (date) => {
+    const workShift = workShifts.find(
+      (ws) => ws.ShiftDate === utils.dateToText(date)
+    );
+
+    if (workShift) {
+      const data = { date };
+      data.workShift = workShift;
+
+      setSelectedObject(data);
+      setShowModal(true);
+    }
   };
 
   //------
@@ -156,30 +106,59 @@ const UserMyWorkShiftsPage = ({ pageName }) => {
     <>
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
-          <SimpleDataPageHeader
-            title={Words.my_work_shifts}
-            searchText={searchText}
-            sheets={getSheets(records)}
-            fileName="MyWorkShifts"
-            onSearchTextChanged={(e) => setSearchText(e.target.value)}
-            onSearch={() => setShowSearchModal(true)}
-            onClear={handleClear}
-            onGetAll={null}
-            onAdd={null}
-          />
+          <Col xs={24}>
+            <Text
+              style={{
+                paddingBottom: 20,
+                paddingRight: 5,
+                fontSize: 18,
+              }}
+              strong
+              type="success"
+            >
+              {Words.my_work_shifts}
+            </Text>
+          </Col>
 
           <Col xs={24}>
-            {searched && <DetailsTable records={records} columns={columns} />}
+            <Space>
+              <Text>{Words.year}</Text>
+
+              <InputNumber
+                min={1400}
+                max={1499}
+                defaultValue={currentYear}
+                onChange={handleYearChange}
+              />
+            </Space>
           </Col>
+
+          <Col xs={24}>
+            <hr />
+          </Col>
+
+          {monthes.map((month) => (
+            <Col xs={24} md={8} key={month.monthID}>
+              <PersianCalendar
+                year={selectedYear}
+                month={month.monthID}
+                makeHolidaysRed={true}
+                holidays={holidays}
+                holidayField="HolidayDate"
+                selectedDays={workShifts}
+                selectedDayField="ShiftDate"
+                onClick={handleClickDate}
+              />
+            </Col>
+          ))}
         </Row>
       </Spin>
 
-      {showSearchModal && (
-        <WorkShiftSearchModal
-          onOk={handleAdvancedSearch}
-          onCancel={() => setShowSearchModal(false)}
-          isOpen={showSearchModal}
-          filter={filter}
+      {showModal && (
+        <DetailsModal
+          onOk={handleCloseModal}
+          isOpen={showModal}
+          selectedObject={selectedObject}
         />
       )}
     </>

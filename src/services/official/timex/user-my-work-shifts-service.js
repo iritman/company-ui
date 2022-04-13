@@ -3,27 +3,27 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/official/timex/user-my-work-shifts";
 
-async function getParams() {
-  const { data } = await http.get(`${apiEndpoint}/params`);
+// async function getParams() {
+//   const { data } = await http.get(`${apiEndpoint}/params`);
 
-  return data;
-}
+//   return data;
+// }
 
-async function getAllData() {
-  const { data } = await http.get(`${apiEndpoint}`);
+// async function getAllData() {
+//   const { data } = await http.get(`${apiEndpoint}`);
 
-  return data;
-}
+//   return data;
+// }
 
-async function searchData(filter) {
-  const { data } = await http.post(`${apiEndpoint}/search`, filter);
+async function searchData(year) {
+  const { data } = await http.get(`${apiEndpoint}/${year}`);
 
   return data;
 }
 
 const service = {
-  getParams,
-  getAllData,
+  // getParams,
+  // getAllData,
   searchData,
 };
 
