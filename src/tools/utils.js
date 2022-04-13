@@ -522,6 +522,23 @@ export function minToTime(minutes) {
   return result;
 }
 
+export function getMonthList() {
+  return [
+    { monthID: 1 },
+    { monthID: 2 },
+    { monthID: 3 },
+    { monthID: 4 },
+    { monthID: 5 },
+    { monthID: 6 },
+    { monthID: 7 },
+    { monthID: 8 },
+    { monthID: 9 },
+    { monthID: 10 },
+    { monthID: 11 },
+    { monthID: 12 },
+  ];
+}
+
 const methods = {
   addFirstZero,
   farsiNum,
@@ -562,6 +579,7 @@ const methods = {
   generateRandomNumericPassword,
   checkNationalCode,
   minToTime,
+  getMonthList,
 };
 
 export default methods;

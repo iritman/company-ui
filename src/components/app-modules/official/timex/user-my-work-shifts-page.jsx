@@ -21,21 +21,6 @@ const currentYear = parseInt(
   utils.currentPersianDateWithoutSlash().substring(0, 4)
 );
 
-const monthes = [
-  { monthID: 1 },
-  { monthID: 2 },
-  { monthID: 3 },
-  { monthID: 4 },
-  { monthID: 5 },
-  { monthID: 6 },
-  { monthID: 7 },
-  { monthID: 8 },
-  { monthID: 9 },
-  { monthID: 10 },
-  { monthID: 11 },
-  { monthID: 12 },
-];
-
 const UserMyWorkShiftsPage = ({ pageName }) => {
   const [holidays, setHolidays] = useState([]);
   const [workShifts, setWorkShifts] = useState([]);
@@ -137,7 +122,7 @@ const UserMyWorkShiftsPage = ({ pageName }) => {
             <hr />
           </Col>
 
-          {monthes.map((month) => (
+          {utils.getMonthList().map((month) => (
             <Col xs={24} md={8} key={month.monthID}>
               <PersianCalendar
                 year={selectedYear}
