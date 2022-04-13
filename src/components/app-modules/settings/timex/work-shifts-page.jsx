@@ -52,7 +52,7 @@ const WorkShiftsPage = ({ pageName }) => {
   const [holidays, setHolidays] = useState([]);
   const [workGroups, setWorkGroups] = useState([]);
   const [workHours, setWorkHours] = useState([]);
-  const [selectedYear, setSelectedYear] = useState(parseInt(currentYear));
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedWorkGroupID, setSelectedWorkGroupID] = useState(0);
   const [filter, setFilter] = useState({
     ShiftYear: currentYear,
@@ -263,7 +263,7 @@ const WorkShiftsPage = ({ pageName }) => {
             monthes.map((month) => (
               <Col xs={24} md={8} key={month.monthID}>
                 <PersianCalendar
-                  year={1401}
+                  year={filter.ShiftYear}
                   month={month.monthID}
                   makeHolidaysRed={true}
                   holidays={holidays}

@@ -15,6 +15,12 @@ async function getParams() {
   return data;
 }
 
+export async function setJomeHolidays(year) {
+  const { data } = await http.post(`${apiEndpoint}/${year}`);
+
+  return data;
+}
+
 export async function saveData(record) {
   const { data } = await http.post(`${apiEndpoint}`, record);
 
@@ -30,6 +36,7 @@ export async function deleteData(recordID) {
 const service = {
   getHolidays,
   getParams,
+  setJomeHolidays,
   saveData,
   deleteData,
 };

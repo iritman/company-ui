@@ -266,6 +266,7 @@ class Words extends Component {
   static personal_vacation_capacity_in_min = "ظرفیت مرخصی استحقاقی (دقیقه)";
   static used_capacity = "ظرفیت مورد استفاده";
   static remain_capacity = "ظرفیت باقی مانده";
+  static reg_jome_holidays = "ثبت تعطیلات جمعه";
 
   static total = "کل";
   static used = "مصرف شده";
@@ -454,6 +455,7 @@ class Words extends Component {
     num_of_new_extra_work_requests: "# درخواست اضافه کاری ثبت شده است",
     no_work_shift_defined: "شیفت کاری تعریف نشده است",
     work_shift_deleted: "شیف کاری حذف شد",
+    jome_holidays_submitted: "تعطیلات روزهای جمعه ثبت شدند",
   };
 
   static questions = {
@@ -470,6 +472,7 @@ class Words extends Component {
     sure_to_submit_note: "برای ثبت یادداشت ماموریت اطمینان دارید؟",
     sure_to_delete_note: "برای حذف یادداشت ماموریت اطمینان دارید؟",
     sure_to_delete_work_shift: "برای حذف شیفت کاری اطمینان دارید؟",
+    sure_to_reg_jome_holidays: "برای ثبت تعطیلات روزهای جمعه اطمینان دارید؟",
   };
 
   static monthes = {
