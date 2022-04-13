@@ -92,10 +92,10 @@ const FirstEmptyDates = ({ days }) => {
   return result;
 };
 
-const isHoliday = (date, holidays) => {
+const isHoliday = (date, holidays, field) => {
   const date_text = utils.dateToText(date);
 
-  return holidays.filter((d) => d === date_text).length > 0;
+  return holidays.filter((d) => d[field] === date_text).length > 0;
 };
 
 const isSelectedDay = (date, selectedDays, field) => {
@@ -109,6 +109,7 @@ const PersianCalendar = ({
   month,
   makeHolidaysRed,
   holidays,
+  holidayField,
   selectedDays,
   selectedDaysColor,
   selectedDayField,
@@ -136,9 +137,9 @@ const PersianCalendar = ({
       <FirstEmptyDates days={days} />
 
       {days.map((d) => (
-        <>
+        <React.Fragment key={utils.dateToText(d.date)}>
           {d.dayID === 1 && d.date.day > 1 && <Col xs={2} />}
-          <Col xs={3} key={`d_${d.date.day}`}>
+          <Col xs={3}>
             <Tag
               style={{ ...dayBoxStyle, cursor: "pointer" }}
               color={
@@ -150,7 +151,7 @@ const PersianCalendar = ({
             >
               <Text
                 style={
-                  makeHolidaysRed && isHoliday(d.date, holidays)
+                  makeHolidaysRed && isHoliday(d.date, holidays, holidayField)
                     ? { fontSize: day_no_font_size, color: Colors.red[6] }
                     : { fontSize: day_no_font_size }
                 }
@@ -160,7 +161,7 @@ const PersianCalendar = ({
             </Tag>
           </Col>
           {d.dayID === 7 && <Col xs={1} />}
-        </>
+        </React.Fragment>
       ))}
     </Row>
   );
