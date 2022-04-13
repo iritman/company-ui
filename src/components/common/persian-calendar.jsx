@@ -8,6 +8,7 @@ const { Text } = Typography;
 const box_size = 30;
 const day_name_font_size = 13;
 const day_no_font_size = 14;
+const default_selected_day_color = "#87d068";
 
 const weekDays = [
   { dayID: 1, title: "ش" },
@@ -97,10 +98,10 @@ const isHoliday = (date, holidays) => {
   return holidays.filter((d) => d === date_text).length > 0;
 };
 
-const hasWorkShift = (date, workShifts) => {
+const isSelectedDay = (date, selectedDays, field) => {
   const date_text = utils.dateToText(date);
 
-  return workShifts.filter((ws) => ws.ShiftDate === date_text).length > 0;
+  return selectedDays.filter((sd) => sd[field] === date_text).length > 0;
 };
 
 const PersianCalendar = ({
@@ -108,7 +109,9 @@ const PersianCalendar = ({
   month,
   makeHolidaysRed,
   holidays,
-  workShifts,
+  selectedDays,
+  selectedDaysColor,
+  selectedDayField,
   onClick,
 }) => {
   const days = getDays(year, month);
@@ -138,7 +141,11 @@ const PersianCalendar = ({
           <Col xs={3} key={`d_${d.date.day}`}>
             <Tag
               style={{ ...dayBoxStyle, cursor: "pointer" }}
-              color={hasWorkShift(d.date, workShifts) ? "#87d068" : "default"}
+              color={
+                isSelectedDay(d.date, selectedDays, selectedDayField)
+                  ? selectedDaysColor || default_selected_day_color
+                  : "default"
+              }
               onClick={() => onClick(d.date)}
             >
               <Text
