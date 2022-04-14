@@ -10,7 +10,7 @@ import {
   initModal,
   saveModalChanges,
 } from "../../../../tools/form-manager";
-import service from "../../../../services/settings/timex/vacation-cardexes-service";
+import service from "../../../../services/official/timex/user-official-check-vacation-cardexes-service";
 import utils from "./../../../../tools/utils";
 import {
   useModalContext,
@@ -42,7 +42,12 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const VacationCardexModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const UserOfficialCheckVacationCardexModal = ({
+  isOpen,
+  selectedObject,
+  onOk,
+  onCancel,
+}) => {
   const {
     progress,
     setProgress,
@@ -175,4 +180,4 @@ const VacationCardexModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   );
 };
 
-export default VacationCardexModal;
+export default UserOfficialCheckVacationCardexModal;

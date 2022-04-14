@@ -6,6 +6,7 @@ import {
   AiFillIdcard as MembersRegedCardIcon,
   AiOutlineSchedule as WorkShiftIcon,
   AiOutlineUserSwitch as ReplaceWorkRequestIcon,
+  AiOutlineIdcard as CardexIcon,
 } from "react-icons/ai";
 import {
   MdCardTravel as VacationIcon,
@@ -225,6 +226,11 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 85:
+      link = "official-check-vacation-cardexes";
+      icon = <CardexIcon style={{ color: Colors.blue[5] }} size={iconSize} />;
+      break;
+
     default:
       break;
   }
@@ -304,6 +310,7 @@ const tabs = [
       { pageName: "user-MembersNewMissionsCheckOfficial" },
       { pageName: "user-MembersNewVacationsCheckOfficial" },
       { pageName: "user-OfficialCheckMembersVacations" },
+      { pageName: "user-OfficialCheckVacationCardexes" },
       { pageName: "user-OfficialCheckMembersMissions" },
     ],
   },
