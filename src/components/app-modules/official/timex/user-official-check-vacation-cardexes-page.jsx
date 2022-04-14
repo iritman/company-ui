@@ -115,7 +115,9 @@ const baseColumns = [
           color: RemainVacationInMin < 0 ? Colors.red[6] : Colors.purple[6],
         }}
       >
-        {utils.farsiNum(`${utils.minToTime(RemainVacationInMin)}`)}
+        {`${utils.farsiNum(
+          `${utils.minToTime(Math.abs(RemainVacationInMin))}`
+        )} ${RemainVacationInMin < 0 ? "-" : ""}`}
       </Text>
     ),
   },
