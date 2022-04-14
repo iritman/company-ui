@@ -19,7 +19,7 @@ import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 
 const schema = {
-  EmployeeID: Joi.number().min(1).required(),
+  EmployeeID: Joi.number().required(),
   FromDate: Joi.string().required(),
   ToDate: Joi.string().allow(""),
 };
@@ -122,7 +122,6 @@ const UserSecurityGuardRegedCardSearchModal = ({
               keyColumn="EmployeeID"
               valueColumn="FullName"
               formConfig={formConfig}
-              required
               autoFocus
             />
           </Col>

@@ -16,8 +16,8 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
 import RegedCardModal from "./user-security-guard-reged-card-modal";
-import RegedCardSearchModal from "./user-security-guard-reged-card-search-modal";
-import RegedCardDetailsModal from "./user-security-guard-reged-card-details-modal";
+import SearchModal from "./user-security-guard-reged-card-search-modal";
+import DetailsModal from "./user-security-guard-reged-card-details-modal";
 
 const { Text } = Typography;
 
@@ -71,13 +71,24 @@ const baseColumns = [
     render: (RegID) => <Text>{utils.farsiNum(`${RegID}`)}</Text>,
   },
   {
+    title: Words.full_name,
+    width: 150,
+    align: "center",
+    sorter: getSorter("LastName"),
+    render: (record) => (
+      <Text style={{ color: Colors.blue[6] }}>
+        {`${record.FirstName} ${record.LastName}`}
+      </Text>
+    ),
+  },
+  {
     title: Words.card_no,
     width: 100,
     align: "center",
     dataIndex: "CardNo",
     sorter: getSorter("CardNo"),
     render: (CardNo) => (
-      <Text style={{ color: Colors.blue[6] }}>
+      <Text style={{ color: Colors.orange[6] }}>
         {utils.farsiNum(`${CardNo}`)}
       </Text>
     ),
@@ -217,7 +228,7 @@ const UserSecurityGuardRegedCardsPage = ({ pageName }) => {
       </Spin>
 
       {showSearchModal && (
-        <RegedCardSearchModal
+        <SearchModal
           onOk={handleAdvancedSearch}
           onCancel={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
@@ -235,7 +246,7 @@ const UserSecurityGuardRegedCardsPage = ({ pageName }) => {
       )}
 
       {showDetails && (
-        <RegedCardDetailsModal
+        <DetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);

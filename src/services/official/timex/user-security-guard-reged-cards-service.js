@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/settings/timex/security-guard-reged-cards";
+const apiEndpoint = apiUrl + "/official/timex/user-security-guard-reged-cards";
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
