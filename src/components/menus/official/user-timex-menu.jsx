@@ -437,7 +437,7 @@ const UserTimexMenu = () => {
           <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
         }
       >
-        <Link to={`/home/settings`}>{Words.admin_panel}</Link>
+        <Link to={`/home/official`}>{Words.official}</Link>
       </Menu.Item>
       <Menu.Divider />
 

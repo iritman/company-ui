@@ -102,7 +102,7 @@ const UserTasksMenu = () => {
           <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
         }
       >
-        <Link to={`/home/tasks`}>{Words.official}</Link>
+        <Link to={`/home/official`}>{Words.official}</Link>
       </Menu.Item>
       <Menu.Divider />
       {accessiblePages.map((page) => (
