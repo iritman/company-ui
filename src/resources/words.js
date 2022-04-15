@@ -267,6 +267,15 @@ class Words extends Component {
   static used_capacity = "ظرفیت مورد استفاده";
   static remain_capacity = "ظرفیت باقی مانده";
   static reg_jome_holidays = "ثبت تعطیلات جمعه";
+  static repeat_work_shifts = "تکرار شیفت";
+  static from_month = "از ماه";
+  static from_day = "از روز";
+  static to_month = "تا ماه";
+  static to_day = "تا روز";
+  static skip_jome_days = "پرزش از جمعه ها";
+  static skip_holidays = "پرش از روزهای تعطیل";
+  static repeat_work_shifts_to_date = "تکرار شیفت تا تاریخ";
+  static delete_work_shifts = "حذف شیفت های کاری";
 
   static total = "کل";
   static used = "مصرف شده";
@@ -456,6 +465,10 @@ class Words extends Component {
     no_work_shift_defined: "شیفت کاری تعریف نشده است",
     work_shift_deleted: "شیف کاری حذف شد",
     jome_holidays_submitted: "تعطیلات روزهای جمعه ثبت شدند",
+    repeat_work_shifts_message:
+      "این دوره از بعد از خودش بطور متوالی تکرار خواهد شد",
+    work_shift_repeated: "تکرار شیفت با موفقیت انجام شد",
+    work_shifts_deleted: "شیفت های کاری حذف شدند",
   };
 
   static questions = {

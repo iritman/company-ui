@@ -9,6 +9,12 @@ async function getParams() {
   return data;
 }
 
+async function repeatWorkShift(repeat_config) {
+  const { data } = await http.post(`${apiEndpoint}/repeat`, repeat_config);
+
+  return data;
+}
+
 async function searchData(filter) {
   const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
@@ -27,11 +33,19 @@ export async function deleteData(recordID) {
   return data;
 }
 
+export async function deleteWorkShifts(delete_config) {
+  const { data } = await http.post(`${apiEndpoint}/delete`, delete_config);
+
+  return data;
+}
+
 const service = {
   getParams,
+  repeatWorkShift,
   searchData,
   saveData,
   deleteData,
+  deleteWorkShifts,
 };
 
 export default service;

@@ -12,7 +12,11 @@ import {
   Tooltip,
   Select,
 } from "antd";
-import { SearchOutlined as SearchIcon } from "@ant-design/icons";
+import {
+  SearchOutlined as SearchIcon,
+  SettingOutlined as SettingIcon,
+  DeleteOutlined as DeleteIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
 import service from "../../../../services/settings/timex/work-shifts-service";
@@ -21,6 +25,8 @@ import {
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import WorkShiftModal from "./work-shift-modal";
+import RepeatModal from "./work-shift-repeat-modal";
+import DeleteModal from "./work-shift-delete-modal";
 import { usePageContext } from "../../../contexts/page-context";
 import PersianCalendar from "../../../common/persian-calendar";
 import { handleError } from "./../../../../tools/form-manager";
@@ -45,6 +51,8 @@ const WorkShiftsPage = ({ pageName }) => {
     ShiftYear: currentYear,
     WorkGroupID: 0,
   });
+  const [showRepeatModal, setShowRepeatModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const {
     progress,
@@ -175,6 +183,28 @@ const WorkShiftsPage = ({ pageName }) => {
 
   //------
 
+  const handleRepeatWorkShifts = async (repeat_data) => {
+    const config = { ...repeat_data, ...filter };
+
+    const workShifts = await service.repeatWorkShift(config);
+
+    setWorkShifts(workShifts);
+
+    message.success(Words.messages.work_shift_repeated);
+  };
+
+  const handleDeleteWorkShifts = async (delete_data) => {
+    const config = { ...delete_data, ...filter };
+
+    const workShifts = await service.deleteWorkShifts(config);
+
+    setWorkShifts(workShifts);
+
+    message.success(Words.messages.work_shifts_deleted);
+  };
+
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -194,52 +224,78 @@ const WorkShiftsPage = ({ pageName }) => {
           </Col>
 
           <Col xs={24}>
-            <Space>
-              <Text>{Words.year}</Text>
-              <InputNumber
-                min={1400}
-                max={1499}
-                defaultValue={currentYear}
-                onChange={handleYearChange}
-              />
+            <Row gutter={[10, 5]}>
+              <Col xs={24} md={12}>
+                <Space>
+                  <Text>{Words.year}</Text>
+                  <InputNumber
+                    min={1400}
+                    max={1499}
+                    defaultValue={currentYear}
+                    onChange={handleYearChange}
+                  />
 
-              <Select
-                allowClear
-                showSearch
-                style={{ width: 150 }}
-                placeholder={Words.work_group}
-                optionFilterProp="children"
-                onChange={(selectedValue) =>
-                  handleWorkGroupChange(selectedValue)
-                }
-                filterOption={(input, option) =>
-                  option?.children
-                    ?.toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
-                }
-              >
-                <Option key={`group_id_0`} value={0}>
-                  {Words.select_please}
-                </Option>
-                {workGroups.map((group) => (
-                  <Option
-                    key={`group_id_${group.GroupID}`}
-                    value={group.GroupID}
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%" }}
+                    placeholder={Words.work_group}
+                    optionFilterProp="children"
+                    onChange={(selectedValue) =>
+                      handleWorkGroupChange(selectedValue)
+                    }
+                    filterOption={(input, option) =>
+                      option?.children
+                        ?.toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
                   >
-                    {group.Title}
-                  </Option>
-                ))}
-              </Select>
+                    <Option key={`group_id_0`} value={0}>
+                      {Words.select_please}
+                    </Option>
+                    {workGroups.map((group) => (
+                      <Option
+                        key={`group_id_${group.GroupID}`}
+                        value={group.GroupID}
+                      >
+                        {group.Title}
+                      </Option>
+                    ))}
+                  </Select>
 
-              <Tooltip title={Words.search}>
-                <Button
-                  disabled={selectedWorkGroupID === 0}
-                  type="primary"
-                  icon={<SearchIcon />}
-                  onClick={handleSearchWorkShifts}
-                />
-              </Tooltip>
-            </Space>
+                  <Tooltip title={Words.search}>
+                    <Button
+                      disabled={selectedWorkGroupID === 0}
+                      type="primary"
+                      icon={<SearchIcon />}
+                      onClick={handleSearchWorkShifts}
+                    />
+                  </Tooltip>
+                </Space>
+              </Col>
+              <Col xs={24} md={12} className="rowFlex flexEnd">
+                <Space>
+                  <Tooltip title={Words.repeat_work_shifts}>
+                    <Button
+                      disabled={filter.WorkGroupID === 0}
+                      type="primary"
+                      icon={<SettingIcon />}
+                      onClick={() => setShowRepeatModal(true)}
+                    />
+                  </Tooltip>
+
+                  <Tooltip title={Words.delete_work_shifts}>
+                    <Button
+                      disabled={filter.WorkGroupID === 0}
+                      type="primary"
+                      danger
+                      icon={<DeleteIcon />}
+                      onClick={() => setShowDeleteModal(true)}
+                    />
+                  </Tooltip>
+                </Space>
+              </Col>
+            </Row>
           </Col>
 
           <Col xs={24}>
@@ -276,6 +332,24 @@ const WorkShiftsPage = ({ pageName }) => {
           onOk={handleCloseModal}
           onDelete={handleDeleteWorkShift}
           onSave={handleSaveWorkShift}
+        />
+      )}
+
+      {showRepeatModal && (
+        <RepeatModal
+          access={access}
+          isOpen={showRepeatModal}
+          onCancel={() => setShowRepeatModal(false)}
+          onSave={handleRepeatWorkShifts}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteModal
+          access={access}
+          isOpen={showDeleteModal}
+          onCancel={() => setShowDeleteModal(false)}
+          onSave={handleDeleteWorkShifts}
         />
       )}
     </>
