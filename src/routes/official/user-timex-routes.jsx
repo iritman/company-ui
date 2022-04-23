@@ -32,6 +32,8 @@ import UserOfficialCheckMembersVacationsPage from "../../components/app-modules/
 import UserOfficialCheckMembersMissionsPage from "../../components/app-modules/official/timex/user-official-check-members-missions-page";
 import UserOfficialCheckVacationCardexesPage from "../../components/app-modules/official/timex/user-official-check-vacation-cardexes-page";
 //---
+import UserReportMyInOutCardsPage from "../../components/app-modules/official/timex/reports/user-report-my-in-out-cards-page";
+//---
 
 const modulePath = "official/timex";
 
@@ -212,6 +214,14 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserOfficialCheckVacationCardexesPage pageName="user-OfficialCheckVacationCardexes" />
+        )}
+      />
+      {/* --- My Reports --- */}
+      <ProtectedRoute
+        path={`${path}/${modulePath}/report-my-in-out-cards`}
+        exact
+        render={() => (
+          <UserReportMyInOutCardsPage pageName="user-ReportMyInOutCards" />
         )}
       />
       {/* --- */}

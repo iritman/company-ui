@@ -276,6 +276,13 @@ class Words extends Component {
   static skip_holidays = "پرش از روزهای تعطیل";
   static repeat_work_shifts_to_date = "تکرار شیفت تا تاریخ";
   static delete_work_shifts = "حذف شیفت های کاری";
+  static my_reports_cartable = "گزارش های من";
+  static employees_reports_cartable = "گزارش های کارکنان";
+  static in_reg_time = "زمان ورود";
+  static out_reg_time = "زمان خروج";
+  static duration = "مدت";
+
+  static report_my_in_out_cards = "گزارش ورود و خروج من";
 
   static total = "کل";
   static used = "مصرف شده";

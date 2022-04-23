@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-// import { SnippetsOutlined as ReportIcon } from "@ant-design/icons";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiFillIdcard as MembersRegedCardIcon,
@@ -21,6 +20,7 @@ import {
 } from "react-icons/fa";
 import { GiSwipeCard as RegedCardIcon } from "react-icons/gi";
 import { BiAlarmAdd as ExtraWorkIcon } from "react-icons/bi";
+import { CgArrowsExchange as ExchangeIcon } from "react-icons/cg";
 import { FiUser as UserIcon, FiUsers as UsersIcon } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -231,6 +231,13 @@ const mapper = (pageID) => {
       icon = <CardexIcon style={{ color: Colors.blue[5] }} size={iconSize} />;
       break;
 
+    //--- my reports
+
+    case 86:
+      link = "report-my-in-out-cards";
+      icon = <ExchangeIcon style={{ color: Colors.blue[5] }} size={iconSize} />;
+      break;
+
     default:
       break;
   }
@@ -312,6 +319,34 @@ const tabs = [
       { pageName: "user-OfficialCheckMembersVacations" },
       { pageName: "user-OfficialCheckVacationCardexes" },
       { pageName: "user-OfficialCheckMembersMissions" },
+    ],
+  },
+  {
+    name: "my-reports-cartable",
+    title: (
+      <TabTitle
+        title={Words.my_reports_cartable}
+        color={Colors.orange[6]}
+        icon={WorkReportIcon}
+      />
+    ),
+    pages: [
+      { pageName: "user-ReportMyInOutCards" },
+      // { pageName: "user-OfficialCheckRegedCards33" },
+    ],
+  },
+  {
+    name: "employees-reports-cartable",
+    title: (
+      <TabTitle
+        title={Words.employees_reports_cartable}
+        color={Colors.purple[6]}
+        icon={WorkReportIcon}
+      />
+    ),
+    pages: [
+      // { pageName: "user-OfficialCheckExtraWorkRequests11" },
+      // { pageName: "user-OfficialCheckRegedCards22" },
     ],
   },
 ];

@@ -1,6 +1,6 @@
 {
-  "apiUrl": "http://localhost:3030/api",
-  "fileBasicUrl": "http://localhost:3030/static",
+  "apiUrl": "https://api.seentra.ir/api",
+  "fileBasicUrl": "https://api.seentra.ir/static",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|mp4",
