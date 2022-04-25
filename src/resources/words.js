@@ -282,6 +282,14 @@ class Words extends Component {
   static out_reg_time = "زمان خروج";
   static duration = "مدت";
 
+  static employees_tasks = "پیگیری از دیگران";
+  static my_tasks = "وظایف من";
+  static task_supervisions = "نظارت ها";
+  static new_task = "وظیفه جدید";
+  static reminder_date = "تاریخ سررسید";
+  static reminder_time = "زمان سررسید";
+  static task_responsible = "مسئول انجام";
+
   static report_my_in_out_cards = "گزارش ورود و خروج من";
 
   static total = "کل";
