@@ -5,6 +5,7 @@ import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
+import utils from "../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -38,6 +39,13 @@ const schema = {
   MarriageDate: Joi.string().allow(""),
   FatherName: Joi.string().allow(""),
   PersonalID: Joi.string().allow(""),
+  Childs: Joi.number(),
+  RelativeTelRole1: Joi.string().allow(""),
+  RelativeTel1: Joi.string().allow(""),
+  RelativeTelRole2: Joi.string().allow(""),
+  RelativeTel2: Joi.string().allow(""),
+  SaftehNo1: Joi.string().allow(""),
+  SaftehNo2: Joi.string().allow(""),
   EduLevelID: Joi.number(),
   EduFieldID: Joi.number(),
   UniversityID: Joi.number(),
@@ -66,6 +74,13 @@ const initRecord = {
   MarriageDate: "",
   FatherName: "",
   PersonalID: "",
+  Childs: 0,
+  RelativeTelRole1: "",
+  RelativeTel1: "",
+  RelativeTelRole2: "",
+  RelativeTel2: "",
+  SaftehNo1: "",
+  SaftehNo2: "",
   EduLevelID: 0,
   EduFieldID: 0,
   UniversityID: 0,
@@ -134,6 +149,13 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.MarriageDate = "";
     record.FatherName = "";
     record.PersonalID = "";
+    record.Childs = 0;
+    record.RelativeTelRole1 = "";
+    record.RelativeTel1 = "";
+    record.RelativeTelRole2 = "";
+    record.RelativeTel2 = "";
+    record.SaftehNo1 = "";
+    record.SaftehNo2 = "";
     record.EduLevelID = 0;
     record.EduFieldID = 0;
     record.UniversityID = 0;
@@ -363,6 +385,17 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             />
           </Col>
           <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              title={Words.childs_count}
+              fieldName="Childs"
+              min={0}
+              max={9}
+              formConfig={formConfig}
+            />
+          </Col>
+          {!isEdit && <Col xs={24} md={12}></Col>}
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.edu_level}
               dataSource={eduLevels}
@@ -455,6 +488,54 @@ const EmployeeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               valueColumn="WorkGroupTitle"
               formConfig={formConfig}
               required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={utils.farsiNum(Words.relative_tel_role_1)}
+              fieldName="RelativeTelRole1"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={utils.farsiNum(Words.relative_tel_1)}
+              fieldName="RelativeTel1"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={utils.farsiNum(Words.relative_tel_role_2)}
+              fieldName="RelativeTelRole2"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={utils.farsiNum(Words.relative_tel_2)}
+              fieldName="RelativeTel2"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={utils.farsiNum(Words.safteh_no_1)}
+              fieldName="SaftehNo1"
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={utils.farsiNum(Words.safteh_no_2)}
+              fieldName="SaftehNo2"
+              maxLength={50}
+              formConfig={formConfig}
             />
           </Col>
         </Row>

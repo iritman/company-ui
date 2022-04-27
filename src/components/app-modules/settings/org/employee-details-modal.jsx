@@ -129,6 +129,11 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
                     {utils.farsiNum(employee.PersonalID)}
                   </Text>
                 </Descriptions.Item>
+                <Descriptions.Item label={Words.childs_count}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(employee.Childs)}
+                  </Text>
+                </Descriptions.Item>
                 <Descriptions.Item label={Words.university}>
                   <Text style={{ color: valueColor }}>
                     {employee.UniversityTitle}
@@ -182,7 +187,7 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
                       : "-"}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.work_group} span={2}>
+                <Descriptions.Item label={Words.work_group}>
                   <Text
                     style={{
                       color:
@@ -193,6 +198,53 @@ const EmployeeDetailsModal = ({ employee, isOpen, onOk }) => {
                   >
                     {employee.WorkGroupTitle.length > 0
                       ? employee.WorkGroupTitle
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+
+                <Descriptions.Item
+                  label={utils.farsiNum(Words.relative_tel_role_1)}
+                >
+                  <Text style={{ color: valueColor }}>
+                    {employee.RelativeTelRole1.length > 0
+                      ? employee.RelativeTelRole1
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={utils.farsiNum(Words.relative_tel_1)}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.RelativeTel1.length > 0
+                      ? utils.farsiNum(employee.RelativeTel1)
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={utils.farsiNum(Words.relative_tel_role_2)}
+                >
+                  <Text style={{ color: valueColor }}>
+                    {employee.RelativeTelRole2.length > 0
+                      ? employee.RelativeTelRole2
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={utils.farsiNum(Words.relative_tel_2)}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.RelativeTel2.length > 0
+                      ? utils.farsiNum(employee.RelativeTel2)
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={utils.farsiNum(Words.safteh_no_1)}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.SaftehNo1.length > 0
+                      ? utils.farsiNum(employee.SaftehNo1)
+                      : "-"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={utils.farsiNum(Words.safteh_no_2)}>
+                  <Text style={{ color: valueColor }}>
+                    {employee.SaftehNo2.length > 0
+                      ? utils.farsiNum(employee.SaftehNo2)
                       : "-"}
                   </Text>
                 </Descriptions.Item>

@@ -282,6 +282,14 @@ class Words extends Component {
   static out_reg_time = "زمان خروج";
   static duration = "مدت";
 
+  static childs_count = "تعداد فرزندان";
+  static relative_tel_role_1 = "عنوان وابسته 1";
+  static relative_tel_1 = "شماره تماس وابسته 1";
+  static relative_tel_role_2 = "عنوان وابسته 2";
+  static relative_tel_2 = "شماره تماس وابسته 2";
+  static safteh_no_1 = "شماره سفته 1";
+  static safteh_no_2 = "شماره سفته 2";
+
   static employees_tasks = "پیگیری از دیگران";
   static my_tasks = "وظایف من";
   static task_supervisions = "نظارت ها";
