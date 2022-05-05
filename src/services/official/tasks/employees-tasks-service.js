@@ -9,6 +9,12 @@ async function getParams() {
   return data;
 }
 
+async function getTaskFiles(taskID) {
+  const { data } = await http.get(`${apiEndpoint}/files/${taskID}`);
+
+  return data;
+}
+
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
@@ -35,6 +41,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getParams,
+  getTaskFiles,
   getAllData,
   //   searchData,
   saveData,

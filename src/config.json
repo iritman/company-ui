@@ -1,6 +1,7 @@
 {
   "apiUrl": "http://localhost:3030/api",
   "fileBasicUrl": "http://localhost:3030/static",
+  "taskFilesUrl": "http://localhost:3030/static/task-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",

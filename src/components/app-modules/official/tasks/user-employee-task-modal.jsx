@@ -15,6 +15,7 @@ import {
   EyeOutlined as EyeIcon,
   QuestionCircleOutlined as QuestionIcon,
   DeleteOutlined as DeleteIcon,
+  PaperClipOutlined as AttachedFileIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
@@ -41,6 +42,7 @@ import utils from "../../../../tools/utils";
 import { onUpload } from "../../../../tools/upload-tools";
 import FileUploader from "../../../common/file-uploader";
 import { taskFileConfig as fileConfig } from "./../../../../config.json";
+import { taskFilesUrl } from "./../../../../config.json";
 
 const schema = {
   TaskID: Joi.number().required(),
@@ -137,7 +139,7 @@ const UserEmployeeTaskModal = ({
           {
             uid: f.FileID,
             name: Words.attached_file, //f.filename,
-            url: `http://localhost:3030/static/task-files/${f.FileName}`,
+            url: `${taskFilesUrl}/${f.FileName}`,
             FileID: f.FileID,
             FileName: f.FileName,
             FileSize: f.FileSize,
@@ -189,9 +191,12 @@ const UserEmployeeTaskModal = ({
     if (data.error) {
       message.error(Words.messages.upload_failed);
     } else {
-      let files = [];
+      let files = fileList.filter((f) => f.FileID && f.FileID > 0);
       data.files.forEach((f) => {
-        files = [...files, { FileName: f.filename, FileSize: f.size }];
+        files = [
+          ...files,
+          { FileID: 0, FileName: f.filename, FileSize: f.size },
+        ];
       });
 
       const rec = { ...record };
@@ -212,29 +217,21 @@ const UserEmployeeTaskModal = ({
         clearRecord
       );
 
-      setFileList([...record.Files]);
-      // let counter = 1;
-      // let files = fileList.filter((f) => f.FileID);
+      // After updating task we need to get files list separately
+      // and then update fileList & record.Files
+      if (selectedObject) {
+        const saved_files = await service.getTaskFiles(selectedObject.TaskID);
 
-      // data.files.forEach((f) => {
-      //   files = [
-      //     ...files,
-      //     {
-      //       uid: counter,
-      //       name: Words.attached_file, //f.filename,
-      //       url: `http://localhost:3030/static/task-files/${f.filename}`,
-      //       FileID: counter++,
-      //       FileName: f.filename,
-      //       FileSize: f.size,
-      //     },
-      //   ];
-      // });
+        saved_files.forEach((f) => {
+          f.uid = f.FileID;
+          f.name = Words.attached_file;
+          f.url = `${taskFilesUrl}/${f.FileName}`;
+        });
 
-      // let rec = { ...record };
-      // rec.Files = files;
-
-      // setRecord(rec);
-      // setFileList(files);
+        rec.Files = [...saved_files];
+        setRecord(rec);
+        setFileList([...saved_files]);
+      }
     }
   };
 
@@ -268,18 +265,14 @@ const UserEmployeeTaskModal = ({
     setRecord(rec);
   };
 
-  //-----------------------------------------------------------
-
-  const isEdit = selectedObject !== null;
-
-  //-----------------------------------------------------------
-
   const handleDelete = async () => {
     await onDelete(selectedObject);
     onCancel();
   };
 
   //-----------------------------------------------------------
+
+  const isEdit = selectedObject !== null;
 
   return (
     <ModalWindow
@@ -453,23 +446,31 @@ const UserEmployeeTaskModal = ({
           </Col>
           <Col xs={24}>
             <Form.Item>
-              <FileUploader
-                fileList={fileList}
-                setFileList={setFileList}
-                maxCount={5}
-                fileConfig={fileConfig}
-                uploading={uploading}
-                uploadProgress={uploadProgress}
-              />
+              {!isEdit || (isEdit && selectedObject.SeenDate.length === 0) ? (
+                <FileUploader
+                  fileList={fileList}
+                  setFileList={setFileList}
+                  maxCount={5}
+                  fileConfig={fileConfig}
+                  uploading={uploading}
+                  uploadProgress={uploadProgress}
+                />
+              ) : (
+                selectedObject.Files.map((f) => (
+                  <a
+                    key={f.FileID}
+                    href={`${taskFilesUrl}/${f.FileName}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Tag color="magenta" icon={<AttachedFileIcon />}>
+                      {Words.attached_file}
+                    </Tag>
+                  </a>
+                ))
+              )}
             </Form.Item>
           </Col>
-          {/* <Col xs={24}>
-            <Form.Item>
-              <Button type="primary" onClick={handleUpload} loading={uploading}>
-                UPLOAD
-              </Button>
-            </Form.Item>
-          </Col> */}
         </Row>
       </Form>
     </ModalWindow>

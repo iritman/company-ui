@@ -32,13 +32,13 @@ const FileUploader = ({
   };
 
   const props = {
-    onRemove: (file) => {
-      console.log("Delete", file);
-      // const index = fileList.indexOf(file);
-      // const newFileList = fileList.slice();
-      // newFileList.splice(index, 1);
-      // setFileList(newFileList);
-    },
+    // onRemove: (file) => {
+    // console.log("Delete", file);
+    // const index = fileList.indexOf(file);
+    // const newFileList = fileList.slice();
+    // newFileList.splice(index, 1);
+    // setFileList(newFileList);
+    // },
     onChange: (info) => {
       const filtered_list = info.fileList.filter(
         (f) =>
