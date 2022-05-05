@@ -501,6 +501,7 @@ class Words extends Component {
     work_shift_repeated: "تکرار شیفت با موفقیت انجام شد",
     work_shifts_deleted: "شیفت های کاری حذف شدند",
     upload_failed: "امکان آپلود فایل وجود ندارد",
+    no_any_tasks: "وظیفه ای ثبت نشده است",
   };
 
   static questions = {

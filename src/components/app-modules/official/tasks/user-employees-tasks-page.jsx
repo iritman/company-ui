@@ -10,6 +10,7 @@ import {
   Card,
   Tag,
   Badge,
+  Alert,
 } from "antd";
 import {
   SearchOutlined as SearchIcon,
@@ -182,74 +183,89 @@ const UserEmployeesTasksPage = ({ pageName }) => {
             </Space>
           </Col>
 
-          {filtered_task_categories.map((category) => (
-            <React.Fragment key={category.key}>
-              <Col xs={24}>
-                <Badge.Ribbon
-                  placement="start"
-                  color={getRibonColor(category.key)}
-                  text={
-                    <Text style={{ color: Colors.white, fontSize: 14 }}>
-                      {category.title}
-                    </Text>
-                  }
-                >
-                  <div style={{ height: 30 }} />
-                </Badge.Ribbon>
-              </Col>
-              <Col xs={24}>
-                {category.tasks.map((task) => (
-                  <Card
-                    key={task.TaskID}
-                    size="small"
-                    hoverable
-                    onClick={() => handleSelectTask(task)}
-                  >
-                    <Row gutter={[10]}>
-                      <Col xs={24} md={12}>
-                        <Space>
-                          {task.Files.length > 0 && (
-                            <AttachedFileIcon
-                              style={{ color: Colors.orange[6], fontSize: 18 }}
-                            />
-                          )}
+          {records.length > 0 ? (
+            <>
+              {filtered_task_categories.map((category) => (
+                <React.Fragment key={category.key}>
+                  <Col xs={24}>
+                    <Badge.Ribbon
+                      placement="start"
+                      color={getRibonColor(category.key)}
+                      text={
+                        <Text style={{ color: Colors.white, fontSize: 14 }}>
+                          {category.title}
+                        </Text>
+                      }
+                    >
+                      <div style={{ height: 30 }} />
+                    </Badge.Ribbon>
+                  </Col>
+                  <Col xs={24}>
+                    {category.tasks.map((task) => (
+                      <Card
+                        key={task.TaskID}
+                        size="small"
+                        hoverable
+                        onClick={() => handleSelectTask(task)}
+                      >
+                        <Row gutter={[10]}>
+                          <Col xs={24} md={12}>
+                            <Space>
+                              {task.Files.length > 0 && (
+                                <AttachedFileIcon
+                                  style={{
+                                    color: Colors.orange[6],
+                                    fontSize: 18,
+                                  }}
+                                />
+                              )}
 
-                          <Text>{task.Title}</Text>
-                        </Space>
-                      </Col>
-                      <Col xs={24} md={12} style={{ direction: "ltr" }}>
-                        <Space>
-                          <Col xs={24}>
-                            {task.Tags.map((tag) => (
-                              <Tag
-                                color={tag.Color}
-                                style={{ margin: 3 }}
-                                icon={<PinIcon />}
-                                key={tag.TagID}
-                              >
-                                {tag.Title}
-                              </Tag>
-                            ))}
+                              <Text>{task.Title}</Text>
+                            </Space>
                           </Col>
+                          <Col xs={24} md={12} style={{ direction: "ltr" }}>
+                            <Space>
+                              <Col xs={24}>
+                                {task.Tags.map((tag) => (
+                                  <Tag
+                                    color={tag.Color}
+                                    style={{ margin: 3 }}
+                                    icon={<PinIcon />}
+                                    key={tag.TagID}
+                                  >
+                                    {tag.Title}
+                                  </Tag>
+                                ))}
+                              </Col>
 
-                          <MemberProfileImage
-                            fileName={task.ResponsePicFileName}
-                            size="small"
-                          />
+                              <MemberProfileImage
+                                fileName={task.ResponsePicFileName}
+                                size="small"
+                              />
 
-                          {task.ReminderInfo.HasDelay && (
-                            <Text style={{ color: Colors.red[6] }}>
-                              {getDelayText(task.ReminderInfo)}
-                            </Text>
-                          )}
-                        </Space>
-                      </Col>
-                    </Row>
-                  </Card>
-                ))}
-              </Col>
-            </React.Fragment>
-          ))}
+                              {task.ReminderInfo.HasDelay && (
+                                <Text style={{ color: Colors.red[6] }}>
+                                  {getDelayText(task.ReminderInfo)}
+                                </Text>
+                              )}
+                            </Space>
+                          </Col>
+                        </Row>
+                      </Card>
+                    ))}
+                  </Col>
+                </React.Fragment>
+              ))}
+            </>
+          ) : (
+            <Col xs={24}>
+              <Alert
+                type="warning"
+                showIcon
+                message={Words.messages.no_any_tasks}
+              />
+            </Col>
+          )}
         </Row>
       </Spin>
 
