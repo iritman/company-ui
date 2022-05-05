@@ -9,11 +9,11 @@ async function getParams() {
   return data;
 }
 
-// async function getAllData() {
-//   const { data } = await http.get(`${apiEndpoint}`);
+async function getAllData() {
+  const { data } = await http.get(`${apiEndpoint}`);
 
-//   return data;
-// }
+  return data;
+}
 
 // async function searchData(searchText) {
 //   const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
@@ -35,7 +35,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getParams,
-  //   getAllData,
+  getAllData,
   //   searchData,
   saveData,
   deleteData,

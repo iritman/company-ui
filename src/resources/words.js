@@ -281,6 +281,9 @@ class Words extends Component {
   static in_reg_time = "زمان ورود";
   static out_reg_time = "زمان خروج";
   static duration = "مدت";
+  static day = "روز";
+  static delay = "تاخیر";
+  static minute = "دقیقه";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
@@ -297,6 +300,11 @@ class Words extends Component {
   static reminder_date = "تاریخ سررسید";
   static reminder_time = "زمان سررسید";
   static task_responsible = "مسئول انجام";
+  static today_tasks = "کارهای امروز";
+  static tomorrow_tasks = "کارهای فردا";
+  static this_month_tasks = "کارهای این ماه";
+  static has_delay_tasks = "کارهای دارای تاخیر";
+  static future_tasks = "کارهای آتی";
 
   static report_my_in_out_cards = "گزارش ورود و خروج من";
 
@@ -510,6 +518,7 @@ class Words extends Component {
     sure_to_delete_note: "برای حذف یادداشت ماموریت اطمینان دارید؟",
     sure_to_delete_work_shift: "برای حذف شیفت کاری اطمینان دارید؟",
     sure_to_reg_jome_holidays: "برای ثبت تعطیلات روزهای جمعه اطمینان دارید؟",
+    sure_to_delete_task: "برای حذف وظیفه اطمینان دارید؟",
   };
 
   static monthes = {

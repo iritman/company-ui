@@ -19,6 +19,7 @@ const ModalWindow = (props) => {
     onCancel,
     searchModal,
     title,
+    buttons,
     ...rest
   } = props;
 
@@ -52,6 +53,7 @@ const ModalWindow = (props) => {
         )
       }
       footer={[
+        buttons || <React.Fragment key="empty" />,
         <Button key="clear-button" onClick={onClear}>
           {Words.clear}
         </Button>,

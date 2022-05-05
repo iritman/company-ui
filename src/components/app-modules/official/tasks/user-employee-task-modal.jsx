@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tag, Popover, Button, message } from "antd";
+import {
+  Form,
+  Row,
+  Col,
+  Tag,
+  Popover,
+  Button,
+  message,
+  Popconfirm,
+} from "antd";
 import {
   TagsOutlined as TagIcon,
   EyeOutlined as EyeIcon,
+  QuestionCircleOutlined as QuestionIcon,
+  DeleteOutlined as DeleteIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
@@ -62,7 +73,13 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const UserEmployeeTaskModal = ({
+  isOpen,
+  selectedObject,
+  onOk,
+  onCancel,
+  onDelete,
+}) => {
   const {
     progress,
     setProgress,
@@ -109,6 +126,28 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   useMount(async () => {
     resetContext();
     setRecord(initRecord);
+
+    if (selectedObject) {
+      selectedObject.MemberID = selectedObject.ResponseMemberID;
+
+      let files = [];
+      selectedObject.Files.forEach((f) => {
+        files = [
+          ...files,
+          {
+            uid: f.FileID,
+            name: Words.attached_file, //f.filename,
+            url: `http://localhost:3030/static/task-files/${f.FileName}`,
+            FileID: f.FileID,
+            FileName: f.FileName,
+            FileSize: f.FileSize,
+          },
+        ];
+      });
+
+      setFileList(files);
+    }
+
     initModal(formRef, selectedObject, setRecord);
 
     setProgress(true);
@@ -146,8 +185,6 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       setUploading,
       setUploadProgress,
     });
-
-    console.log("DDD", data);
 
     if (data.error) {
       message.error(Words.messages.upload_failed);
@@ -201,8 +238,6 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     }
   };
 
-  const isEdit = selectedObject !== null;
-
   const handleSelectTag = (tag) => {
     const rec = { ...record };
     rec.Tags = [...rec.Tags, tag];
@@ -235,6 +270,17 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   //-----------------------------------------------------------
 
+  const isEdit = selectedObject !== null;
+
+  //-----------------------------------------------------------
+
+  const handleDelete = async () => {
+    await onDelete(selectedObject);
+    onCancel();
+  };
+
+  //-----------------------------------------------------------
+
   return (
     <ModalWindow
       isOpen={isOpen}
@@ -245,9 +291,36 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onSubmit={handleSubmit}
       onCancel={onCancel}
       width={750}
+      buttons={
+        selectedObject?.IsDeletable && [
+          <Popconfirm
+            title={Words.questions.sure_to_delete_task}
+            onConfirm={handleDelete}
+            okText={Words.yes}
+            cancelText={Words.no}
+            icon={<QuestionIcon style={{ color: "red" }} />}
+            key="submit-confirm"
+            disabled={progress}
+          >
+            <Button type="primary" icon={<DeleteIcon />} danger>
+              {Words.delete}
+            </Button>
+          </Popconfirm>,
+        ]
+      }
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+          {isEdit && (
+            <Col xs={24}>
+              <Form.Item label={Words.id}>
+                <Tag color="magenta">
+                  {utils.farsiNum(`#${selectedObject.TaskID}`)}
+                </Tag>
+              </Form.Item>
+            </Col>
+          )}
+
           <Col xs={24}>
             <InputItem
               title={Words.title}
