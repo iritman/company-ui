@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tag, Popover, Button } from "antd";
+import { Form, Row, Col, Tag, Popover, Button, message } from "antd";
 import {
   TagsOutlined as TagIcon,
   EyeOutlined as EyeIcon,
@@ -27,6 +27,9 @@ import { handleError } from "./../../../../tools/form-manager";
 import SupervisorsPopupContent from "./supervisors-popup-content";
 import TagsPopupContent from "./tags-popup-content";
 import utils from "../../../../tools/utils";
+import { onUpload } from "../../../../tools/upload-tools";
+import FileUploader from "../../../common/file-uploader";
+import { taskFileConfig as fileConfig } from "./../../../../config.json";
 
 const schema = {
   TaskID: Joi.number().required(),
@@ -73,6 +76,10 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setErrors,
   } = useModalContext();
 
+  const [fileList, setFileList] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
+
   const resetContext = useResetContext();
 
   const formConfig = {
@@ -118,14 +125,80 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setProgress(false);
   });
 
+  const getRemovedFiles = () => {
+    let files = [];
+
+    record.Files.filter(
+      (f) => fileList.filter((fl) => fl.FileID === f.FileID).length === 0
+    ).forEach((f) => {
+      files = [...files, { FileName: f.FileName }];
+    });
+
+    return files;
+  };
+
   const handleSubmit = async () => {
-    saveModalChanges(
-      formConfig,
-      selectedObject,
-      setProgress,
-      onOk,
-      clearRecord
-    );
+    const data = await onUpload({
+      fileList,
+      setFileList,
+      removedFiles: getRemovedFiles(),
+      fileConfig,
+      setUploading,
+      setUploadProgress,
+    });
+
+    console.log("DDD", data);
+
+    if (data.error) {
+      message.error(Words.messages.upload_failed);
+    } else {
+      let files = [];
+      data.files.forEach((f) => {
+        files = [...files, { FileName: f.filename, FileSize: f.size }];
+      });
+
+      const rec = { ...record };
+      rec.Files = files;
+      setRecord(rec);
+
+      // When record change, formConfig not change!
+      // so we are going to create new instance of formConfig
+      // with updated "record" prop
+      const form_config = { ...formConfig };
+      form_config.record = rec;
+
+      await saveModalChanges(
+        form_config,
+        selectedObject,
+        setProgress,
+        onOk,
+        clearRecord
+      );
+
+      setFileList([...record.Files]);
+      // let counter = 1;
+      // let files = fileList.filter((f) => f.FileID);
+
+      // data.files.forEach((f) => {
+      //   files = [
+      //     ...files,
+      //     {
+      //       uid: counter,
+      //       name: Words.attached_file, //f.filename,
+      //       url: `http://localhost:3030/static/task-files/${f.filename}`,
+      //       FileID: counter++,
+      //       FileName: f.filename,
+      //       FileSize: f.size,
+      //     },
+      //   ];
+      // });
+
+      // let rec = { ...record };
+      // rec.Files = files;
+
+      // setRecord(rec);
+      // setFileList(files);
+    }
   };
 
   const isEdit = selectedObject !== null;
@@ -159,6 +232,8 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
     setRecord(rec);
   };
+
+  //-----------------------------------------------------------
 
   return (
     <ModalWindow
@@ -303,6 +378,25 @@ const UserEmployeeTaskModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               ))}
             </Form.Item>
           </Col>
+          <Col xs={24}>
+            <Form.Item>
+              <FileUploader
+                fileList={fileList}
+                setFileList={setFileList}
+                maxCount={5}
+                fileConfig={fileConfig}
+                uploading={uploading}
+                uploadProgress={uploadProgress}
+              />
+            </Form.Item>
+          </Col>
+          {/* <Col xs={24}>
+            <Form.Item>
+              <Button type="primary" onClick={handleUpload} loading={uploading}>
+                UPLOAD
+              </Button>
+            </Form.Item>
+          </Col> */}
         </Row>
       </Form>
     </ModalWindow>

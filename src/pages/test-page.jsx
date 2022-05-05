@@ -1,39 +1,101 @@
-import React from "react";
-import { Select, Row, Col } from "antd";
+import { useState } from "react";
+import { Upload, Button } from "antd";
+import { UploadOutlined as UploadIcon } from "@ant-design/icons";
+import Words from "./../resources/words";
+import { taskFileConfig as fileConfig } from "./../config.json";
 
-const options = [];
+const TestPage = () => {
+  const [fileList, setFileList] = useState([]);
+  // const [uploading, setUploading] = useState(false);
 
-for (let i = 10; i < 36; i++) {
-  const value = i.toString(36) + i;
-  options.push({
-    label: `Long Label: ${value}`,
-    value,
-  });
-}
+  const { maxFileSize, sizeType, extensions } = fileConfig;
 
-const TestPage = (props) => {
-  const [value, setValue] = React.useState(["a10", "c12", "h17", "j19", "k20"]);
+  const hasValidExtension = (fileName) => {
+    const extension_list = extensions.split("|");
+    const file_extension = fileName.toLowerCase().split(".").pop();
 
-  const selectProps = {
-    mode: "multiple",
-    style: {
-      width: "100%",
-    },
-    value,
-    options,
-    onChange: (newValue) => {
-      setValue(newValue);
-    },
-    placeholder: "Select Item...",
-    maxTagCount: "responsive",
+    const extensionIndex = extension_list.findIndex(
+      (ext) => ext === file_extension
+    );
+
+    return extensionIndex !== -1;
   };
 
+  const hasValidSize = (fileSize) => {
+    const max_valid_file_size =
+      maxFileSize * 1024 * (sizeType === "mb" ? 1024 : 1);
+
+    return fileSize <= max_valid_file_size;
+  };
+
+  // const handleUpload = () => {
+  //   // const { fileList } = this.state;
+  //   const formData = new FormData();
+
+  //   fileList.forEach((file) => {
+  //     formData.append("files[]", file);
+  //   });
+
+  //   setUploading(true);
+
+  //   // You can use any AJAX library you like
+  //   fetch("https://www.mocky.io/v2/5cc8019d300000980a055e76", {
+  //     method: "POST",
+  //     body: formData,
+  //   })
+  //     .then((res) => res.json())
+  //     .then(() => {
+  //       setFileList([]);
+  //       message.success("upload successfully.");
+  //     })
+  //     .catch(() => {
+  //       message.error("upload failed.");
+  //     })
+  //     .finally(() => {
+  //       setUploading(false);
+  //     });
+  // };
+
+  const props = {
+    // onRemove: (file) => {
+    //   const index = fileList.indexOf(file);
+    //   const newFileList = fileList.slice();
+    //   newFileList.splice(index, 1);
+    //   setFileList(newFileList);
+    // },
+    onChange: (info) => {
+      const filtered_list = info.fileList.filter(
+        (f) => hasValidExtension(f.name) && hasValidSize(f.size)
+      );
+
+      setFileList(filtered_list);
+    },
+    beforeUpload: (file) => {
+      return false;
+    },
+    fileList,
+  };
+
+  console.log("FILE LIST", fileList);
+
   return (
-    <Row>
-      <Col xs={5}>
-        <Select {...selectProps} />
-      </Col>
-    </Row>
+    <div style={{ width: 300 }}>
+      <Upload {...props} maxCount={5} multiple>
+        {fileList.length < 5 && (
+          <Button icon={<UploadIcon />}>{Words.select_file}</Button>
+        )}
+      </Upload>
+
+      {/* <Button
+        type="primary"
+        onClick={handleUpload}
+        disabled={fileList.length === 0}
+        loading={uploading}
+        style={{ marginTop: 16 }}
+      >
+        {uploading ? "Uploading" : "Start Upload"}
+      </Button> */}
+    </div>
   );
 };
 

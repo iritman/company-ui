@@ -3,7 +3,7 @@
   "fileBasicUrl": "http://localhost:3030/static",
   "fileSize": {
     "maxFileSize": 10,
-    "extensions": "jpg|jpeg|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|mp4",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "destinationFolder": "data",
     "sizeType": "mb"
   },
@@ -12,5 +12,11 @@
     "extensions": "jpg|jpeg|png",
     "destinationFolder": "member-profiles",
     "sizeType": "kb"
+  },
+  "taskFileConfig": {
+    "maxFileSize": 100,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "task-files"
   }
 }

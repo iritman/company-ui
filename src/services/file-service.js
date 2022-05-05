@@ -8,7 +8,7 @@ export async function uploadFile(formData, uploadConditions, eventHandler) {
   let headers = {};
 
   if (uploadConditions) {
-    const { category, extensions, maxFileSize, deleteFileName } =
+    const { category, extensions, maxFileSize, sizeType, deleteFileName } =
       uploadConditions;
 
     if (category) {
@@ -20,12 +20,47 @@ export async function uploadFile(formData, uploadConditions, eventHandler) {
     if (maxFileSize) {
       headers.maxFileSize = maxFileSize;
     }
+    if (maxFileSize) {
+      headers.sizeType = sizeType;
+    }
     if (deleteFileName) {
       headers.deleteFileName = deleteFileName;
     }
   }
 
   const { data } = await http.post(apiEndpoint + "/upload", formData, {
+    headers,
+    onUploadProgress: eventHandler,
+  });
+
+  return data;
+}
+
+export async function uploadFiles(formData, uploadConditions, eventHandler) {
+  let headers = {};
+
+  if (uploadConditions) {
+    const { category, extensions, maxFileSize, sizeType, removedFiles } =
+      uploadConditions;
+
+    if (category) {
+      headers.category = category;
+    }
+    if (extensions) {
+      headers.extensions = extensions;
+    }
+    if (maxFileSize) {
+      headers.maxFileSize = maxFileSize;
+    }
+    if (maxFileSize) {
+      headers.sizeType = sizeType;
+    }
+    if (removedFiles) {
+      headers.removedFiles = removedFiles;
+    }
+  }
+
+  const { data } = await http.post(apiEndpoint + "/uploads", formData, {
     headers,
     onUploadProgress: eventHandler,
   });
@@ -54,6 +89,7 @@ export async function deleteFile(fileName, category) {
 
 const service = {
   uploadFile,
+  uploadFiles,
   //   downloadFile,
   deleteFile,
 };

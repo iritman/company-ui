@@ -492,6 +492,7 @@ class Words extends Component {
       "این دوره از بعد از خودش بطور متوالی تکرار خواهد شد",
     work_shift_repeated: "تکرار شیفت با موفقیت انجام شد",
     work_shifts_deleted: "شیفت های کاری حذف شدند",
+    upload_failed: "امکان آپلود فایل وجود ندارد",
   };
 
   static questions = {
