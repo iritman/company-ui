@@ -284,6 +284,8 @@ class Words extends Component {
   static day = "روز";
   static delay = "تاخیر";
   static minute = "دقیقه";
+  static task_details = "جزئیات وظیفه";
+  static reports = "گزارش ها";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
@@ -305,6 +307,7 @@ class Words extends Component {
   static this_month_tasks = "کارهای این ماه";
   static has_delay_tasks = "کارهای دارای تاخیر";
   static future_tasks = "کارهای آتی";
+  static new_report = "گزارش جدید";
 
   static report_my_in_out_cards = "گزارش ورود و خروج من";
 
@@ -502,6 +505,7 @@ class Words extends Component {
     work_shifts_deleted: "شیفت های کاری حذف شدند",
     upload_failed: "امکان آپلود فایل وجود ندارد",
     no_any_tasks: "وظیفه ای ثبت نشده است",
+    no_any_report: "گزارشی ثبت نشده است",
   };
 
   static questions = {

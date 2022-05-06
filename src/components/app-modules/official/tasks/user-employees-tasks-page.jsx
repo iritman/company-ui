@@ -10,6 +10,7 @@ import {
   Card,
   Tag,
   Badge,
+  message,
   Alert,
 } from "antd";
 import {
@@ -17,6 +18,7 @@ import {
   PlusOutlined as PlusIcon,
   PaperClipOutlined as AttachedFileIcon,
   PushpinOutlined as PinIcon,
+  FileTextOutlined as FileIcon,
   //   ReloadOutlined as ReloadIcon,
   //   DownloadOutlined as DownloadIcon,
   //   SnippetsOutlined as ViewAllIcon,
@@ -33,6 +35,7 @@ import { usePageContext } from "../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 import MemberProfileImage from "./../../../common/member-profile-image";
 import utils from "./../../../../tools/utils";
+import { handleError } from "./../../../../tools/form-manager";
 
 const { Text } = Typography;
 
@@ -45,7 +48,7 @@ const UserEmployeesTasksPage = ({ pageName }) => {
     //   searchText,
     //   setSearchText,
     records,
-    //   setRecords,
+    setRecords,
     // access,
     setAccess,
     selectedObject,
@@ -146,6 +149,50 @@ const UserEmployeesTasksPage = ({ pageName }) => {
     setShowModal(true);
   };
 
+  const handleSaveReport = async (report) => {
+    const result = await service.saveReport(report);
+
+    const index = records.findIndex((task) => task.TaskID === report.TaskID);
+    records[index].Reports = result;
+
+    setSelectedObject({ ...records[index] });
+    setRecords([...records]);
+  };
+
+  const handleDeleteReport = async (report) => {
+    try {
+      const result = await service.deleteReport(report.ReportID);
+
+      const index = records.findIndex((task) => task.TaskID === report.TaskID);
+      records[index].Reports = records[index].Reports.filter(
+        (r) => r.ReportID !== report.ReportID
+      );
+
+      setSelectedObject({ ...records[index] });
+      setRecords([...records]);
+
+      message.success(result.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+  };
+
+  const handleSeenReports = async () => {
+    try {
+      const result = await service.makeReportsSeen(selectedObject.TaskID);
+
+      const index = records.findIndex(
+        (task) => task.TaskID === selectedObject.TaskID
+      );
+      records[index].NewReportsCount = 0;
+
+      setSelectedObject({ ...records[index] });
+      setRecords([...records]);
+    } catch (ex) {
+      handleError(ex);
+    }
+  };
+
   return (
     <>
       <Spin spinning={progress}>
@@ -220,6 +267,18 @@ const UserEmployeesTasksPage = ({ pageName }) => {
                                 />
                               )}
 
+                              {task.Reports.length > 0 && (
+                                <FileIcon
+                                  style={{
+                                    color:
+                                      task.NewReportsCount > 0
+                                        ? Colors.red[6]
+                                        : Colors.blue[5],
+                                    fontSize: 18,
+                                  }}
+                                />
+                              )}
+
                               <Text>{task.Title}</Text>
                             </Space>
                           </Col>
@@ -274,6 +333,9 @@ const UserEmployeesTasksPage = ({ pageName }) => {
           onOk={handleSave}
           onCancel={handleCloseModal}
           onDelete={handleDelete}
+          onSubmitReport={handleSaveReport}
+          onDeleteReport={handleDeleteReport}
+          onSeenReports={handleSeenReports}
           isOpen={showModal}
           selectedObject={selectedObject}
         />

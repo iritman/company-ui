@@ -39,6 +39,24 @@ export async function deleteData(recordID) {
   return data;
 }
 
+export async function saveReport(record) {
+  const { data } = await http.post(`${apiEndpoint}/report`, record);
+
+  return data;
+}
+
+export async function deleteReport(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
+
+  return data;
+}
+
+export async function makeReportsSeen(taskID) {
+  const { data } = await http.post(`${apiEndpoint}/report/seen/${taskID}`, {});
+
+  return data;
+}
+
 const service = {
   getParams,
   getTaskFiles,
@@ -46,6 +64,9 @@ const service = {
   //   searchData,
   saveData,
   deleteData,
+  saveReport,
+  deleteReport,
+  makeReportsSeen,
 };
 
 export default service;

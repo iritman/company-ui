@@ -2,6 +2,7 @@
   "apiUrl": "http://localhost:3030/api",
   "fileBasicUrl": "http://localhost:3030/static",
   "taskFilesUrl": "http://localhost:3030/static/task-files",
+  "taskReportFilesUrl": "http://localhost:3030/static/task-report-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -15,9 +16,15 @@
     "sizeType": "kb"
   },
   "taskFileConfig": {
-    "maxFileSize": 100,
+    "maxFileSize": 10,
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "task-files"
+  },
+  "taskReportFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "task-report-files"
   }
 }

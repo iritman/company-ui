@@ -9,6 +9,11 @@ import {
   Button,
   message,
   Popconfirm,
+  Tabs,
+  Alert,
+  Typography,
+  Space,
+  Badge,
 } from "antd";
 import {
   TagsOutlined as TagIcon,
@@ -16,10 +21,14 @@ import {
   QuestionCircleOutlined as QuestionIcon,
   DeleteOutlined as DeleteIcon,
   PaperClipOutlined as AttachedFileIcon,
+  PlusOutlined as PlusIcon,
+  CalendarOutlined as CalendarIcon,
+  ClockCircleOutlined as ClockIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
+import Colors from "../../../../resources/colors";
 import {
   validateForm,
   loadFieldsValue,
@@ -42,7 +51,11 @@ import utils from "../../../../tools/utils";
 import { onUpload } from "../../../../tools/upload-tools";
 import FileUploader from "../../../common/file-uploader";
 import { taskFileConfig as fileConfig } from "./../../../../config.json";
-import { taskFilesUrl } from "./../../../../config.json";
+import { taskFilesUrl, taskReportFilesUrl } from "./../../../../config.json";
+import NewReportModal from "./new-report-modal";
+import MemberProfileImage from "./../../../common/member-profile-image";
+
+const { Text } = Typography;
 
 const schema = {
   TaskID: Joi.number().required(),
@@ -75,12 +88,17 @@ const initRecord = {
 
 const formRef = React.createRef();
 
+const { TabPane } = Tabs;
+
 const UserEmployeeTaskModal = ({
   isOpen,
   selectedObject,
   onOk,
   onCancel,
   onDelete,
+  onSubmitReport,
+  onDeleteReport,
+  onSeenReports,
 }) => {
   const {
     progress,
@@ -98,6 +116,7 @@ const UserEmployeeTaskModal = ({
   const [fileList, setFileList] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const [showNewReportModal, setShowNewReportModal] = useState(false);
 
   const resetContext = useResetContext();
 
@@ -270,210 +289,380 @@ const UserEmployeeTaskModal = ({
     onCancel();
   };
 
-  //-----------------------------------------------------------
+  const handleTabChange = async (key) => {
+    if (key === "task-reports" && selectedObject?.NewReportsCount > 0) {
+      await onSeenReports();
+    }
+  };
 
+  //-----------------------------------------------------------
   const isEdit = selectedObject !== null;
 
   return (
-    <ModalWindow
-      isOpen={isOpen}
-      isEdit={isEdit}
-      inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
-      onCancel={onCancel}
-      width={750}
-      buttons={
-        selectedObject?.IsDeletable && [
-          <Popconfirm
-            title={Words.questions.sure_to_delete_task}
-            onConfirm={handleDelete}
-            okText={Words.yes}
-            cancelText={Words.no}
-            icon={<QuestionIcon style={{ color: "red" }} />}
-            key="submit-confirm"
-            disabled={progress}
-          >
-            <Button type="primary" icon={<DeleteIcon />} danger>
-              {Words.delete}
-            </Button>
-          </Popconfirm>,
-        ]
-      }
-    >
-      <Form ref={formRef} name="dataForm">
-        <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          {isEdit && (
-            <Col xs={24}>
-              <Form.Item label={Words.id}>
-                <Tag color="magenta">
-                  {utils.farsiNum(`#${selectedObject.TaskID}`)}
-                </Tag>
-              </Form.Item>
-            </Col>
-          )}
+    <>
+      <ModalWindow
+        isOpen={isOpen}
+        isEdit={isEdit}
+        inProgress={progress}
+        disabled={validateForm({ record, schema }) && true}
+        onClear={clearRecord}
+        onSubmit={handleSubmit}
+        onCancel={onCancel}
+        width={750}
+        title={Words.employees_tasks}
+        buttons={
+          selectedObject?.IsDeletable && [
+            <Popconfirm
+              title={Words.questions.sure_to_delete_task}
+              onConfirm={handleDelete}
+              okText={Words.yes}
+              cancelText={Words.no}
+              icon={<QuestionIcon style={{ color: "red" }} />}
+              key="submit-confirm"
+              disabled={progress}
+            >
+              <Button type="primary" icon={<DeleteIcon />} danger>
+                {Words.delete}
+              </Button>
+            </Popconfirm>,
+          ]
+        }
+      >
+        <Tabs defaultActiveKey="1" onChange={handleTabChange}>
+          <TabPane tab={Words.task_details} key="task-info">
+            <Form ref={formRef} name="dataForm">
+              <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+                {isEdit && (
+                  <Col xs={24}>
+                    <Form.Item label={Words.id}>
+                      <Tag color="magenta">
+                        {utils.farsiNum(`#${selectedObject.TaskID}`)}
+                      </Tag>
+                    </Form.Item>
+                  </Col>
+                )}
 
-          <Col xs={24}>
-            <InputItem
-              title={Words.title}
-              fieldName="Title"
-              required
-              autoFocus
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.descriptions}
-              fieldName="DetailsText"
-              multiline
-              rows={7}
-              showCount
-              maxLength={512}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.reminder_date}
-              fieldName="ReminderDate"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <TimeItem
-              horizontal
-              title={Words.reminder_time}
-              fieldName="ReminderTime"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24}>
-            <DropdownItem
-              title={Words.task_responsible}
-              dataSource={employees}
-              keyColumn="MemberID"
-              valueColumn="FullName"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={5}>
-            <Form.Item>
-              {record.Supervisors && (
-                <Popover
-                  content={
-                    <SupervisorsPopupContent
-                      supervisors={employees.filter(
-                        (e) => e.MemberID !== record.MemberID
-                      )}
-                      selectedSupervisors={record.Supervisors}
-                      onClick={handleSelectSupervisor}
-                    />
-                  }
-                  title={Words.supervisors}
-                  trigger="click"
-                >
-                  <Button
-                    icon={<EyeIcon style={{ fontSize: 16 }} />}
-                    type={record.Supervisors.length > 0 ? "primary" : "default"}
-                  >
-                    {`${Words.supervisors}${
-                      record.Supervisors.length > 0
-                        ? utils.farsiNum(
-                            ` (${record.Supervisors.length} ${Words.person})`
-                          )
-                        : ""
-                    }`}
-                  </Button>
-                </Popover>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={19}>
-            <Form.Item>
-              {record.Supervisors?.map((supervisor) => (
-                <Tag
-                  key={supervisor.MemberID}
-                  color="magenta"
-                  closable
-                  onClose={() => handleRemoveSupervisor(supervisor)}
-                  style={{ margin: 5 }}
-                >
-                  {supervisor.FullName}
-                </Tag>
-              ))}
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={5}>
-            <Form.Item>
-              <Popover
-                content={
-                  <TagsPopupContent
-                    tags={tags}
-                    selectedTags={record.Tags}
-                    onClick={handleSelectTag}
+                <Col xs={24}>
+                  <InputItem
+                    title={Words.title}
+                    fieldName="Title"
+                    required
+                    autoFocus
+                    maxLength={50}
+                    formConfig={formConfig}
                   />
-                }
-                title={Words.tags}
-                trigger="click"
-              >
-                <Button icon={<TagIcon style={{ fontSize: 16 }} />}>
-                  {Words.tags}
-                </Button>
-              </Popover>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={19}>
-            <Form.Item>
-              {record.Tags?.map((tag) => (
-                <Tag
-                  key={tag.TagID}
-                  color={tag.Color}
-                  closable
-                  onClose={() => handleRemoveTag(tag)}
-                  style={{ margin: 5 }}
-                >
-                  {tag.Title}
-                </Tag>
-              ))}
-            </Form.Item>
-          </Col>
-          <Col xs={24}>
-            <Form.Item>
-              {!isEdit || (isEdit && selectedObject.SeenDate.length === 0) ? (
-                <FileUploader
-                  fileList={fileList}
-                  setFileList={setFileList}
-                  maxCount={5}
-                  fileConfig={fileConfig}
-                  uploading={uploading}
-                  uploadProgress={uploadProgress}
-                />
-              ) : (
-                selectedObject.Files.map((f) => (
-                  <a
-                    key={f.FileID}
-                    href={`${taskFilesUrl}/${f.FileName}`}
-                    target="_blank"
-                    rel="noreferrer"
+                </Col>
+                <Col xs={24}>
+                  <InputItem
+                    title={Words.descriptions}
+                    fieldName="DetailsText"
+                    multiline
+                    rows={7}
+                    showCount
+                    maxLength={512}
+                    formConfig={formConfig}
+                  />
+                </Col>
+                <Col xs={24} md={12}>
+                  <DateItem
+                    horizontal
+                    title={Words.reminder_date}
+                    fieldName="ReminderDate"
+                    formConfig={formConfig}
+                    required
+                  />
+                </Col>
+                <Col xs={24} md={12}>
+                  <TimeItem
+                    horizontal
+                    title={Words.reminder_time}
+                    fieldName="ReminderTime"
+                    formConfig={formConfig}
+                    required
+                  />
+                </Col>
+                <Col xs={24}>
+                  <DropdownItem
+                    title={Words.task_responsible}
+                    dataSource={employees}
+                    keyColumn="MemberID"
+                    valueColumn="FullName"
+                    formConfig={formConfig}
+                    required
+                  />
+                </Col>
+                <Col xs={24} md={5}>
+                  <Form.Item>
+                    {record.Supervisors && (
+                      <Popover
+                        content={
+                          <SupervisorsPopupContent
+                            supervisors={employees.filter(
+                              (e) => e.MemberID !== record.MemberID
+                            )}
+                            selectedSupervisors={record.Supervisors}
+                            onClick={handleSelectSupervisor}
+                          />
+                        }
+                        title={Words.supervisors}
+                        trigger="click"
+                      >
+                        <Button
+                          icon={<EyeIcon style={{ fontSize: 16 }} />}
+                          type={
+                            record.Supervisors.length > 0
+                              ? "primary"
+                              : "default"
+                          }
+                        >
+                          {`${Words.supervisors}${
+                            record.Supervisors.length > 0
+                              ? utils.farsiNum(
+                                  ` (${record.Supervisors.length} ${Words.person})`
+                                )
+                              : ""
+                          }`}
+                        </Button>
+                      </Popover>
+                    )}
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={19}>
+                  <Form.Item>
+                    {record.Supervisors?.map((supervisor) => (
+                      <Tag
+                        key={supervisor.MemberID}
+                        color="magenta"
+                        closable
+                        onClose={() => handleRemoveSupervisor(supervisor)}
+                        style={{ margin: 5 }}
+                      >
+                        {supervisor.FullName}
+                      </Tag>
+                    ))}
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={5}>
+                  <Form.Item>
+                    <Popover
+                      content={
+                        <TagsPopupContent
+                          tags={tags}
+                          selectedTags={record.Tags}
+                          onClick={handleSelectTag}
+                        />
+                      }
+                      title={Words.tags}
+                      trigger="click"
+                    >
+                      <Button icon={<TagIcon style={{ fontSize: 16 }} />}>
+                        {Words.tags}
+                      </Button>
+                    </Popover>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={19}>
+                  <Form.Item>
+                    {record.Tags?.map((tag) => (
+                      <Tag
+                        key={tag.TagID}
+                        color={tag.Color}
+                        closable
+                        onClose={() => handleRemoveTag(tag)}
+                        style={{ margin: 5 }}
+                      >
+                        {tag.Title}
+                      </Tag>
+                    ))}
+                  </Form.Item>
+                </Col>
+                <Col xs={24}>
+                  <Form.Item>
+                    {!isEdit ||
+                    (isEdit && selectedObject.SeenDate.length === 0) ? (
+                      <FileUploader
+                        fileList={fileList}
+                        setFileList={setFileList}
+                        maxCount={5}
+                        fileConfig={fileConfig}
+                        uploading={uploading}
+                        uploadProgress={uploadProgress}
+                      />
+                    ) : (
+                      selectedObject.Files.map((f) => (
+                        <a
+                          key={f.FileID}
+                          href={`${taskFilesUrl}/${f.FileName}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Tag color="magenta" icon={<AttachedFileIcon />}>
+                            {Words.attached_file}
+                          </Tag>
+                        </a>
+                      ))
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </TabPane>
+          {selectedObject && (
+            <TabPane
+              tab={
+                <Space>
+                  <Text>{`${Words.reports}${
+                    selectedObject.Reports.length > 0
+                      ? utils.farsiNum(` (${selectedObject.Reports.length})`)
+                      : ""
+                  }`}</Text>
+
+                  {selectedObject.NewReportsCount > 0 && (
+                    <Badge
+                      style={{ backgroundColor: "#52c41a" }}
+                      count={utils.farsiNum(selectedObject.NewReportsCount)}
+                    />
+                  )}
+                </Space>
+              }
+              key="task-reports"
+            >
+              <Row gutter={[10, 5]}>
+                {selectedObject.Reports.length === 0 && (
+                  <Col xs={24}>
+                    <Alert
+                      type="warning"
+                      showIcon
+                      message={Words.messages.no_any_report}
+                    />
+                  </Col>
+                )}
+
+                <Col xs={24}>
+                  <Button
+                    type="primary"
+                    icon={<PlusIcon />}
+                    onClick={() => setShowNewReportModal(true)}
                   >
-                    <Tag color="magenta" icon={<AttachedFileIcon />}>
-                      {Words.attached_file}
-                    </Tag>
-                  </a>
-                ))
-              )}
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-    </ModalWindow>
+                    {Words.new_report}
+                  </Button>
+                </Col>
+
+                {selectedObject.Reports.map((report) => (
+                  <Col xs={24} key={report.ReportID}>
+                    <Alert
+                      type="success"
+                      message={
+                        <Row gutter={[10, 5]}>
+                          <Col xs={24}>
+                            <Space>
+                              <Tag color="blue">
+                                {utils.farsiNum(`#${report.ReportID}`)}
+                              </Tag>
+
+                              <MemberProfileImage
+                                fileName={report.PicFileName}
+                                size="small"
+                              />
+
+                              <Text
+                                style={{ fontSize: 12 }}
+                              >{`${report.FirstName} ${report.LastName}`}</Text>
+                            </Space>
+                          </Col>
+                          <Col xs={24}>
+                            <Text
+                              style={{
+                                color: Colors.purple[7],
+                                whiteSpace: "pre-line",
+                              }}
+                            >
+                              {utils.farsiNum(report.DetailsText)}
+                            </Text>
+                          </Col>
+
+                          {report.Files.length > 0 && (
+                            <Col xs={24}>
+                              {report.Files.map((file) => (
+                                <a
+                                  key={file.FileID}
+                                  href={`${taskReportFilesUrl}/${file.FileName}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <Tag
+                                    color="magenta"
+                                    icon={<AttachedFileIcon />}
+                                  >
+                                    {Words.attached_file}
+                                  </Tag>
+                                </a>
+                              ))}
+                            </Col>
+                          )}
+
+                          <Col xs={24}>
+                            <div
+                              style={{
+                                width: "100%",
+                                height: "1px",
+                                borderBottom: "1px dashed grey",
+                                marginTop: 5,
+                                marginBottom: 5,
+                              }}
+                            />
+
+                            <Space>
+                              <CalendarIcon style={{ fontSize: 10 }} />
+
+                              <Text style={{ fontSize: 12 }}>
+                                {utils.farsiNum(
+                                  utils.colonTime(report.RegTime)
+                                )}
+                              </Text>
+
+                              <ClockIcon style={{ fontSize: 10 }} />
+
+                              <Text style={{ fontSize: 12 }}>
+                                {utils.farsiNum(
+                                  utils.slashDate(report.RegDate)
+                                )}
+                              </Text>
+                            </Space>
+                          </Col>
+                        </Row>
+                      }
+                      action={
+                        report.IsDeletable && (
+                          <Popconfirm
+                            title={Words.questions.sure_to_delete_item}
+                            onConfirm={async () => await onDeleteReport(report)}
+                            okText={Words.yes}
+                            cancelText={Words.no}
+                            icon={<QuestionIcon style={{ color: "red" }} />}
+                          >
+                            <Button size="small" icon={<DeleteIcon />} />
+                          </Popconfirm>
+                        )
+                      }
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </TabPane>
+          )}
+        </Tabs>
+      </ModalWindow>
+
+      {showNewReportModal && (
+        <NewReportModal
+          onOk={onSubmitReport}
+          onCancel={() => setShowNewReportModal(false)}
+          isOpen={showNewReportModal}
+          taskID={selectedObject.TaskID}
+        />
+      )}
+    </>
   );
 };
 

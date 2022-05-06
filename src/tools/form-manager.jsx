@@ -124,7 +124,7 @@ export const getSorter = (fieldName) => (a, b) => {
 };
 
 export const loadFieldsValue = (formRef, data) => {
-  formRef.current.setFieldsValue(data);
+  formRef.current?.setFieldsValue(data);
 };
 
 export const initModal = (formRef, selectedObject, setRecord) => {

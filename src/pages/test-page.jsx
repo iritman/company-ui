@@ -76,8 +76,6 @@ const TestPage = () => {
     fileList,
   };
 
-  console.log("FILE LIST", fileList);
-
   return (
     <div style={{ width: 300 }}>
       <Upload {...props} maxCount={5} multiple>
