@@ -286,6 +286,8 @@ class Words extends Component {
   static minute = "دقیقه";
   static task_details = "جزئیات وظیفه";
   static reports = "گزارش ها";
+  static unseen = "مشاهده نشده";
+  static seen_in = "مشاهده شده در";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";

@@ -17,13 +17,15 @@ import {
 } from "antd";
 import {
   TagsOutlined as TagIcon,
-  EyeOutlined as EyeIcon,
+  TeamOutlined as UsersIcon,
   QuestionCircleOutlined as QuestionIcon,
   DeleteOutlined as DeleteIcon,
   PaperClipOutlined as AttachedFileIcon,
   PlusOutlined as PlusIcon,
   CalendarOutlined as CalendarIcon,
   ClockCircleOutlined as ClockIcon,
+  EyeInvisibleOutlined as UnseenIcon,
+  EyeOutlined as SeenIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
@@ -391,6 +393,44 @@ const UserEmployeeTaskModal = ({
                     required
                   />
                 </Col>
+                {selectedObject && (
+                  <Col xs={24}>
+                    <Form.Item>
+                      <Alert
+                        type={
+                          selectedObject.SeenDate.length === 0
+                            ? "error"
+                            : "info"
+                        }
+                        message={
+                          selectedObject.SeenDate.length === 0 ? (
+                            <Space>
+                              <UnseenIcon style={{ color: Colors.red[6] }} />
+                              <Text style={{ color: Colors.orange[5] }}>
+                                {Words.unseen}
+                              </Text>
+                            </Space>
+                          ) : (
+                            <Space>
+                              <SeenIcon style={{ color: Colors.green[6] }} />
+                              <Text
+                                style={{ color: Colors.grey[5], fontSize: 12 }}
+                              >
+                                {utils.farsiNum(
+                                  `${Words.seen_in} ${utils.dayNameFromText(
+                                    selectedObject.SeenDate
+                                  )} - ${utils.colonTime(
+                                    selectedObject.SeenTime
+                                  )}`
+                                )}
+                              </Text>
+                            </Space>
+                          )
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
                 <Col xs={24} md={5}>
                   <Form.Item>
                     {record.Supervisors && (
@@ -408,7 +448,7 @@ const UserEmployeeTaskModal = ({
                         trigger="click"
                       >
                         <Button
-                          icon={<EyeIcon style={{ fontSize: 16 }} />}
+                          icon={<UsersIcon style={{ fontSize: 16 }} />}
                           type={
                             record.Supervisors.length > 0
                               ? "primary"
