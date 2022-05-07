@@ -7,8 +7,6 @@ import {
   Button,
   Typography,
   Space,
-  Card,
-  Tag,
   Badge,
   message,
   Alert,
@@ -16,17 +14,8 @@ import {
 import {
   SearchOutlined as SearchIcon,
   PlusOutlined as PlusIcon,
-  PaperClipOutlined as AttachedFileIcon,
-  PushpinOutlined as PinIcon,
-  FileTextOutlined as FileIcon,
-  EyeInvisibleOutlined as UnseenIcon,
-  // EyeOutlined as SeenIcon,
-  //   ReloadOutlined as ReloadIcon,
-  //   DownloadOutlined as DownloadIcon,
-  //   SnippetsOutlined as ViewAllIcon,
 } from "@ant-design/icons";
 import Words from "../../../../resources/words";
-// import utils from "../../../../tools/utils";
 import service from "../../../../services/official/tasks/employees-tasks-service";
 import {
   checkAccess,
@@ -35,9 +24,8 @@ import {
 import EmployeeTaskModal from "./user-employee-task-modal";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
-import MemberProfileImage from "./../../../common/member-profile-image";
-import utils from "./../../../../tools/utils";
 import { handleError } from "./../../../../tools/form-manager";
+import TaskRowItem from "./task-row-item";
 
 const { Text } = Typography;
 
@@ -103,21 +91,6 @@ const UserEmployeesTasksPage = ({ pageName }) => {
   const filtered_task_categories = task_categories.filter(
     (category) => category.tasks.length > 0
   );
-
-  const getDelayText = (delayInfo) => {
-    let result = "";
-
-    const { Days, Hours, Minutes } = delayInfo;
-
-    if (Days > 0)
-      result = utils.farsiNum(`${Days} ${Words.day} ${Words.delay}`);
-    else if (Hours > 0)
-      result = utils.farsiNum(`${Hours} ${Words.hour} ${Words.delay}`);
-    else if (Minutes > 0)
-      result = utils.farsiNum(`${Minutes} ${Words.minute} ${Words.delay}`);
-
-    return result;
-  };
 
   const getRibonColor = (key) => {
     let result = "blue";
@@ -251,77 +224,11 @@ const UserEmployeesTasksPage = ({ pageName }) => {
                   </Col>
                   <Col xs={24}>
                     {category.tasks.map((task) => (
-                      <Card
+                      <TaskRowItem
                         key={task.TaskID}
-                        size="small"
-                        hoverable
+                        task={task}
                         onClick={() => handleSelectTask(task)}
-                      >
-                        <Row gutter={[10]}>
-                          <Col xs={24} md={12}>
-                            <Space>
-                              {task.Files.length > 0 && (
-                                <AttachedFileIcon
-                                  style={{
-                                    color: Colors.orange[6],
-                                    fontSize: 18,
-                                  }}
-                                />
-                              )}
-
-                              {task.Reports.length > 0 && (
-                                <FileIcon
-                                  style={{
-                                    color:
-                                      task.NewReportsCount > 0
-                                        ? Colors.red[6]
-                                        : Colors.blue[5],
-                                    fontSize: 18,
-                                  }}
-                                />
-                              )}
-
-                              <Text>{task.Title}</Text>
-                            </Space>
-                          </Col>
-                          <Col xs={24} md={12} style={{ direction: "ltr" }}>
-                            <Space>
-                              <Col xs={24}>
-                                {task.Tags.map((tag) => (
-                                  <Tag
-                                    color={tag.Color}
-                                    style={{ margin: 3 }}
-                                    icon={<PinIcon />}
-                                    key={tag.TagID}
-                                  >
-                                    {tag.Title}
-                                  </Tag>
-                                ))}
-                              </Col>
-
-                              {task.SeenDate.length === 0 && (
-                                <UnseenIcon
-                                  style={{
-                                    color: Colors.blue[6],
-                                    fontSize: 16,
-                                  }}
-                                />
-                              )}
-
-                              <MemberProfileImage
-                                fileName={task.ResponsePicFileName}
-                                size="small"
-                              />
-
-                              {task.ReminderInfo.HasDelay && (
-                                <Text style={{ color: Colors.red[6] }}>
-                                  {getDelayText(task.ReminderInfo)}
-                                </Text>
-                              )}
-                            </Space>
-                          </Col>
-                        </Row>
-                      </Card>
+                      />
                     ))}
                   </Col>
                 </React.Fragment>
