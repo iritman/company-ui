@@ -328,9 +328,9 @@ const UserEmployeeTaskModal = ({
           ]
         }
       >
-        <Tabs defaultActiveKey="1" onChange={handleTabChange}>
-          <TabPane tab={Words.task_details} key="task-info">
-            <Form ref={formRef} name="dataForm">
+        <Form ref={formRef} name="dataForm">
+          <Tabs defaultActiveKey="1" onChange={handleTabChange}>
+            <TabPane tab={Words.task_details} key="task-info">
               <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
                 {isEdit && (
                   <Col xs={24}>
@@ -505,153 +505,155 @@ const UserEmployeeTaskModal = ({
                   </Form.Item>
                 </Col>
               </Row>
-            </Form>
-          </TabPane>
-          {selectedObject && (
-            <TabPane
-              tab={
-                <Space>
-                  <Text>{`${Words.reports}${
-                    selectedObject.Reports.length > 0
-                      ? utils.farsiNum(` (${selectedObject.Reports.length})`)
-                      : ""
-                  }`}</Text>
+            </TabPane>
+            {selectedObject && (
+              <TabPane
+                tab={
+                  <Space>
+                    <Text>{`${Words.reports}${
+                      selectedObject.Reports.length > 0
+                        ? utils.farsiNum(` (${selectedObject.Reports.length})`)
+                        : ""
+                    }`}</Text>
 
-                  {selectedObject.NewReportsCount > 0 && (
-                    <Badge
-                      style={{ backgroundColor: "#52c41a" }}
-                      count={utils.farsiNum(selectedObject.NewReportsCount)}
-                    />
+                    {selectedObject.NewReportsCount > 0 && (
+                      <Badge
+                        style={{ backgroundColor: "#52c41a" }}
+                        count={utils.farsiNum(selectedObject.NewReportsCount)}
+                      />
+                    )}
+                  </Space>
+                }
+                key="task-reports"
+              >
+                <Row gutter={[10, 5]}>
+                  {selectedObject.Reports.length === 0 && (
+                    <Col xs={24}>
+                      <Alert
+                        type="warning"
+                        showIcon
+                        message={Words.messages.no_any_report}
+                      />
+                    </Col>
                   )}
-                </Space>
-              }
-              key="task-reports"
-            >
-              <Row gutter={[10, 5]}>
-                {selectedObject.Reports.length === 0 && (
+
                   <Col xs={24}>
-                    <Alert
-                      type="warning"
-                      showIcon
-                      message={Words.messages.no_any_report}
-                    />
+                    <Button
+                      type="primary"
+                      icon={<PlusIcon />}
+                      onClick={() => setShowNewReportModal(true)}
+                    >
+                      {Words.new_report}
+                    </Button>
                   </Col>
-                )}
 
-                <Col xs={24}>
-                  <Button
-                    type="primary"
-                    icon={<PlusIcon />}
-                    onClick={() => setShowNewReportModal(true)}
-                  >
-                    {Words.new_report}
-                  </Button>
-                </Col>
+                  {selectedObject.Reports.map((report) => (
+                    <Col xs={24} key={report.ReportID}>
+                      <Alert
+                        type="success"
+                        message={
+                          <Row gutter={[10, 5]}>
+                            <Col xs={24}>
+                              <Space>
+                                <Tag color="blue">
+                                  {utils.farsiNum(`#${report.ReportID}`)}
+                                </Tag>
 
-                {selectedObject.Reports.map((report) => (
-                  <Col xs={24} key={report.ReportID}>
-                    <Alert
-                      type="success"
-                      message={
-                        <Row gutter={[10, 5]}>
-                          <Col xs={24}>
-                            <Space>
-                              <Tag color="blue">
-                                {utils.farsiNum(`#${report.ReportID}`)}
-                              </Tag>
+                                <MemberProfileImage
+                                  fileName={report.PicFileName}
+                                  size="small"
+                                />
 
-                              <MemberProfileImage
-                                fileName={report.PicFileName}
-                                size="small"
+                                <Text
+                                  style={{ fontSize: 12 }}
+                                >{`${report.FirstName} ${report.LastName}`}</Text>
+                              </Space>
+                            </Col>
+                            <Col xs={24}>
+                              <Text
+                                style={{
+                                  color: Colors.purple[7],
+                                  whiteSpace: "pre-line",
+                                }}
+                              >
+                                {utils.farsiNum(report.DetailsText)}
+                              </Text>
+                            </Col>
+
+                            {report.Files.length > 0 && (
+                              <Col xs={24}>
+                                {report.Files.map((file) => (
+                                  <a
+                                    key={file.FileID}
+                                    href={`${taskReportFilesUrl}/${file.FileName}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    <Tag
+                                      color="magenta"
+                                      icon={<AttachedFileIcon />}
+                                    >
+                                      {Words.attached_file}
+                                    </Tag>
+                                  </a>
+                                ))}
+                              </Col>
+                            )}
+
+                            <Col xs={24}>
+                              <div
+                                style={{
+                                  width: "100%",
+                                  height: "1px",
+                                  borderBottom: "1px dashed grey",
+                                  marginTop: 5,
+                                  marginBottom: 5,
+                                }}
                               />
 
-                              <Text
-                                style={{ fontSize: 12 }}
-                              >{`${report.FirstName} ${report.LastName}`}</Text>
-                            </Space>
-                          </Col>
-                          <Col xs={24}>
-                            <Text
-                              style={{
-                                color: Colors.purple[7],
-                                whiteSpace: "pre-line",
-                              }}
-                            >
-                              {utils.farsiNum(report.DetailsText)}
-                            </Text>
-                          </Col>
+                              <Space>
+                                <CalendarIcon style={{ fontSize: 10 }} />
 
-                          {report.Files.length > 0 && (
-                            <Col xs={24}>
-                              {report.Files.map((file) => (
-                                <a
-                                  key={file.FileID}
-                                  href={`${taskReportFilesUrl}/${file.FileName}`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  <Tag
-                                    color="magenta"
-                                    icon={<AttachedFileIcon />}
-                                  >
-                                    {Words.attached_file}
-                                  </Tag>
-                                </a>
-                              ))}
+                                <Text style={{ fontSize: 12 }}>
+                                  {utils.farsiNum(
+                                    utils.colonTime(report.RegTime)
+                                  )}
+                                </Text>
+
+                                <ClockIcon style={{ fontSize: 10 }} />
+
+                                <Text style={{ fontSize: 12 }}>
+                                  {utils.farsiNum(
+                                    utils.slashDate(report.RegDate)
+                                  )}
+                                </Text>
+                              </Space>
                             </Col>
-                          )}
-
-                          <Col xs={24}>
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "1px",
-                                borderBottom: "1px dashed grey",
-                                marginTop: 5,
-                                marginBottom: 5,
-                              }}
-                            />
-
-                            <Space>
-                              <CalendarIcon style={{ fontSize: 10 }} />
-
-                              <Text style={{ fontSize: 12 }}>
-                                {utils.farsiNum(
-                                  utils.colonTime(report.RegTime)
-                                )}
-                              </Text>
-
-                              <ClockIcon style={{ fontSize: 10 }} />
-
-                              <Text style={{ fontSize: 12 }}>
-                                {utils.farsiNum(
-                                  utils.slashDate(report.RegDate)
-                                )}
-                              </Text>
-                            </Space>
-                          </Col>
-                        </Row>
-                      }
-                      action={
-                        report.IsDeletable && (
-                          <Popconfirm
-                            title={Words.questions.sure_to_delete_item}
-                            onConfirm={async () => await onDeleteReport(report)}
-                            okText={Words.yes}
-                            cancelText={Words.no}
-                            icon={<QuestionIcon style={{ color: "red" }} />}
-                          >
-                            <Button size="small" icon={<DeleteIcon />} />
-                          </Popconfirm>
-                        )
-                      }
-                    />
-                  </Col>
-                ))}
-              </Row>
-            </TabPane>
-          )}
-        </Tabs>
+                          </Row>
+                        }
+                        action={
+                          report.IsDeletable && (
+                            <Popconfirm
+                              title={Words.questions.sure_to_delete_item}
+                              onConfirm={async () =>
+                                await onDeleteReport(report)
+                              }
+                              okText={Words.yes}
+                              cancelText={Words.no}
+                              icon={<QuestionIcon style={{ color: "red" }} />}
+                            >
+                              <Button size="small" icon={<DeleteIcon />} />
+                            </Popconfirm>
+                          )
+                        }
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              </TabPane>
+            )}
+          </Tabs>
+        </Form>
       </ModalWindow>
 
       {showNewReportModal && (

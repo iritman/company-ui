@@ -19,6 +19,8 @@ import {
   PaperClipOutlined as AttachedFileIcon,
   PushpinOutlined as PinIcon,
   FileTextOutlined as FileIcon,
+  EyeInvisibleOutlined as UnseenIcon,
+  // EyeOutlined as SeenIcon,
   //   ReloadOutlined as ReloadIcon,
   //   DownloadOutlined as DownloadIcon,
   //   SnippetsOutlined as ViewAllIcon,
@@ -179,7 +181,7 @@ const UserEmployeesTasksPage = ({ pageName }) => {
 
   const handleSeenReports = async () => {
     try {
-      const result = await service.makeReportsSeen(selectedObject.TaskID);
+      await service.makeReportsSeen(selectedObject.TaskID);
 
       const index = records.findIndex(
         (task) => task.TaskID === selectedObject.TaskID
@@ -296,6 +298,15 @@ const UserEmployeesTasksPage = ({ pageName }) => {
                                   </Tag>
                                 ))}
                               </Col>
+
+                              {task.SeenDate.length === 0 && (
+                                <UnseenIcon
+                                  style={{
+                                    color: Colors.blue[6],
+                                    fontSize: 16,
+                                  }}
+                                />
+                              )}
 
                               <MemberProfileImage
                                 fileName={task.ResponsePicFileName}
