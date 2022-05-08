@@ -31,7 +31,7 @@ const initRecord = (taskID) => {
 
 const formRef = React.createRef();
 
-const NewReportModal = ({ isOpen, onOk, onCancel, taskID }) => {
+const NewReportModal = ({ isOpen, onOk, onCancel, task }) => {
   const [record, setRecord] = useState({
     TaskID: 0,
     DetailsText: "",
@@ -61,7 +61,7 @@ const NewReportModal = ({ isOpen, onOk, onCancel, taskID }) => {
   };
 
   useMount(async () => {
-    setRecord(initRecord(taskID));
+    setRecord(initRecord(task.TaskID));
     initModal(formRef, null, setRecord);
   });
 
@@ -78,60 +78,64 @@ const NewReportModal = ({ isOpen, onOk, onCancel, taskID }) => {
   };
 
   const handleSubmit = async () => {
-    const data = await onUpload({
-      fileList,
-      setFileList,
-      removedFiles: getRemovedFiles(),
-      fileConfig,
-      setUploading,
-      setUploadProgress,
-    });
-
-    if (data.error) {
-      message.error(Words.messages.upload_failed);
-    } else {
-      let files = fileList.filter((f) => f.FileID && f.FileID > 0);
-      data.files.forEach((f) => {
-        files = [
-          ...files,
-          { FileID: 0, FileName: f.filename, FileSize: f.size },
-        ];
+    if (task.DoneDate.length > 0)
+      message.error(Words.messages.submit_report_in_done_task_failed);
+    else {
+      const data = await onUpload({
+        fileList,
+        setFileList,
+        removedFiles: getRemovedFiles(),
+        fileConfig,
+        setUploading,
+        setUploadProgress,
       });
 
-      const rec = { ...record };
-      rec.Files = files;
-      setRecord(rec);
+      if (data.error) {
+        message.error(Words.messages.upload_failed);
+      } else {
+        let files = fileList.filter((f) => f.FileID && f.FileID > 0);
+        data.files.forEach((f) => {
+          files = [
+            ...files,
+            { FileID: 0, FileName: f.filename, FileSize: f.size },
+          ];
+        });
 
-      // When record change, formConfig not change!
-      // so we are going to create new instance of formConfig
-      // with updated "record" prop
-      const form_config = { ...formConfig };
-      form_config.record = rec;
-      await saveModalChanges(
-        form_config,
-        null, // selectedObject,
-        setProgress,
-        onOk,
-        clearRecord
-      );
+        const rec = { ...record };
+        rec.Files = files;
+        setRecord(rec);
 
-      onCancel();
+        // When record change, formConfig not change!
+        // so we are going to create new instance of formConfig
+        // with updated "record" prop
+        const form_config = { ...formConfig };
+        form_config.record = rec;
+        await saveModalChanges(
+          form_config,
+          null, // selectedObject,
+          setProgress,
+          onOk,
+          clearRecord
+        );
 
-      // //   After updating task we need to get files list separately
-      // //   and then update fileList & record.Files
-      //     if (selectedObject) {
-      //       const saved_files = await service.getTaskFiles(selectedObject.TaskID);
+        onCancel();
 
-      //       saved_files.forEach((f) => {
-      //         f.uid = f.FileID;
-      //         f.name = Words.attached_file;
-      //         f.url = `${taskFilesUrl}/${f.FileName}`;
-      //       });
+        // //   After updating task we need to get files list separately
+        // //   and then update fileList & record.Files
+        //     if (selectedObject) {
+        //       const saved_files = await service.getTaskFiles(selectedObject.TaskID);
 
-      //       rec.Files = [...saved_files];
-      //       setRecord(rec);
-      //       setFileList([...saved_files]);
-      //     }
+        //       saved_files.forEach((f) => {
+        //         f.uid = f.FileID;
+        //         f.name = Words.attached_file;
+        //         f.url = `${taskFilesUrl}/${f.FileName}`;
+        //       });
+
+        //       rec.Files = [...saved_files];
+        //       setRecord(rec);
+        //       setFileList([...saved_files]);
+        //     }
+      }
     }
   };
 

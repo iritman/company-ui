@@ -674,7 +674,7 @@ const UserEmployeeTaskModal = ({
                         action={
                           report.IsDeletable && (
                             <Popconfirm
-                              title={Words.questions.sure_to_delete_item}
+                              title={Words.questions.sure_to_delete_record}
                               onConfirm={async () =>
                                 await onDeleteReport(report)
                               }
@@ -701,7 +701,7 @@ const UserEmployeeTaskModal = ({
           onOk={onSubmitReport}
           onCancel={() => setShowNewReportModal(false)}
           isOpen={showNewReportModal}
-          taskID={selectedObject.TaskID}
+          task={selectedObject}
         />
       )}
     </>

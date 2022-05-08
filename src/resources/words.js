@@ -288,6 +288,13 @@ class Words extends Component {
   static reports = "گزارش ها";
   static unseen = "مشاهده نشده";
   static seen_in = "مشاهده شده در";
+  static attached_files = "فایل های پیوست";
+  static delay_status = "وضعیت تاخیر";
+  static make_task_finish = "ثبت خاتمه";
+  static reminder_date_time = "زمان سررسید";
+  static done_status = "وضعیت انجام";
+  static in_done_progress = "درحال انجام";
+  static without_delay = "بدون تاخیر";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
@@ -299,6 +306,7 @@ class Words extends Component {
 
   static employees_tasks = "پیگیری از دیگران";
   static my_tasks = "وظایف من";
+  static my_task = "وظیفه من";
   static task_supervisions = "نظارت ها";
   static new_task = "وظیفه جدید";
   static reminder_date = "تاریخ سررسید";
@@ -508,6 +516,8 @@ class Words extends Component {
     upload_failed: "امکان آپلود فایل وجود ندارد",
     no_any_tasks: "وظیفه ای ثبت نشده است",
     no_any_report: "گزارشی ثبت نشده است",
+    submit_report_in_done_task_failed:
+      "ثبت گزارش در وظیفه خاتمه یافته امکان پذیر نمی باشد",
   };
 
   static questions = {
@@ -526,6 +536,7 @@ class Words extends Component {
     sure_to_delete_work_shift: "برای حذف شیفت کاری اطمینان دارید؟",
     sure_to_reg_jome_holidays: "برای ثبت تعطیلات روزهای جمعه اطمینان دارید؟",
     sure_to_delete_task: "برای حذف وظیفه اطمینان دارید؟",
+    sure_to_make_task_done: "برای اعلام خاتمه انجام وظیفه اطمینان دارید؟",
   };
 
   static monthes = {
