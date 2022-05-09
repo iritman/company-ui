@@ -1,45 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMount } from "react-use";
 import {
   Spin,
   Row,
   Col,
+  Button,
   Typography,
   Badge,
-  message,
+  // message,
+  Space,
+  Tooltip,
   Alert,
-  //   Button,
-  //   Space,
 } from "antd";
-// import {
-//   SearchOutlined as SearchIcon,
-//   PlusOutlined as PlusIcon,
-// } from "@ant-design/icons";
+import {
+  SearchOutlined as SearchIcon,
+  ReloadOutlined as ReloadIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import service from "../../../../services/official/tasks/my-tasks-service";
 import {
   checkAccess,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
-import MyTaskModal from "./user-my-task-modal";
+import SearchModal from "./user-my-done-tasks-search-modal";
+import DetailsModal from "./task-details-modal";
 import { usePageContext } from "../../../contexts/page-context";
-import Colors from "./../../../../resources/colors";
-import { handleError } from "./../../../../tools/form-manager";
+import Colors from "../../../../resources/colors";
+import { handleError } from "../../../../tools/form-manager";
 import TaskRowItem from "./task-row-item";
 
 const { Text } = Typography;
 
 const recordID = "TaskID";
 
-const UserMyTasksPage = ({ pageName }) => {
-  const [inModalProgress, setInModalProgress] = useState(false);
-
+const UserMyDoneTasksPage = ({ pageName }) => {
   const {
     progress,
-    //   searched,
-    //   searchText,
-    //   setSearchText,
-    // access,
+    setProgress,
+    searched,
+    setSearched,
     records,
     setRecords,
     setAccess,
@@ -47,16 +46,15 @@ const UserMyTasksPage = ({ pageName }) => {
     setSelectedObject,
     showModal,
     setShowModal,
+    showSearchModal,
+    setShowSearchModal,
+    filter,
+    setFilter,
   } = usePageContext();
 
   const {
     handleCloseModal,
-    handleGetAll,
-    // handleSearch,
-    // handleAdd,
-    // handleEdit,
-    // handleDelete,
-    // handleSave,
+
     handleResetContext,
   } = GetSimplaDataPageMethods({
     service,
@@ -66,13 +64,7 @@ const UserMyTasksPage = ({ pageName }) => {
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
-
-    await handleGetAll();
   });
-
-  //   const handleShowModal = () => {
-  //     setShowModal(true);
-  //   };
 
   //------
 
@@ -80,8 +72,7 @@ const UserMyTasksPage = ({ pageName }) => {
     { categoryID: 1, title: Words.today_tasks, key: "today" },
     { categoryID: 2, title: Words.tomorrow_tasks, key: "tomorrow" },
     { categoryID: 3, title: Words.this_month_tasks, key: "this_month" },
-    { categoryID: 4, title: Words.has_delay_tasks, key: "has_delay" },
-    { categoryID: 5, title: Words.future_tasks, key: "future" },
+    { categoryID: 5, title: Words.other_than_this_month, key: "other" },
   ];
 
   task_categories.forEach((category) => {
@@ -107,11 +98,8 @@ const UserMyTasksPage = ({ pageName }) => {
       case "this_month":
         result = "purple";
         break;
-      case "has_delay":
-        result = "red";
-        break;
-      case "future":
-        result = "magenta";
+      case "other":
+        result = "blue";
         break;
       default:
         result = "blue";
@@ -143,75 +131,28 @@ const UserMyTasksPage = ({ pageName }) => {
     }
   };
 
-  const handleDoneTask = async (taskID) => {
-    setInModalProgress(true);
+  const handleSearch = async (filter) => {
+    setFilter(filter);
+    setShowSearchModal(false);
+
+    setProgress(true);
 
     try {
-      const data = await service.makeTaskDone(taskID);
-      const { DoneDate, DoneTime } = data;
+      const data = await service.searchMyDoneTasks(filter);
 
-      const index = records.findIndex((task) => task.TaskID === taskID);
-      records[index].DoneDate = DoneDate;
-      records[index].DoneTime = DoneTime;
-      records[index].Reports.forEach((report) => {
-        report.IsDeletable = false;
-      });
-
-      setSelectedObject({ ...records[index] });
-      setRecords([...records.filter((r) => r.TaskID !== taskID)]);
-    } catch (ex) {
-      handleError(ex);
+      setRecords(data);
+      setSearched(true);
+    } catch (err) {
+      handleError(err);
     }
 
-    setInModalProgress(false);
+    setProgress(false);
   };
 
-  const handleSaveReport = async (report) => {
-    try {
-      const result = await service.saveReport(report);
-
-      const index = records.findIndex((task) => task.TaskID === report.TaskID);
-      records[index].Reports = result;
-
-      setSelectedObject({ ...records[index] });
-      setRecords([...records]);
-    } catch (ex) {
-      handleError(ex);
-    }
-  };
-
-  const handleDeleteReport = async (report) => {
-    try {
-      const result = await service.deleteReport(report.ReportID);
-
-      const index = records.findIndex((task) => task.TaskID === report.TaskID);
-      records[index].Reports = records[index].Reports.filter(
-        (r) => r.ReportID !== report.ReportID
-      );
-
-      setSelectedObject({ ...records[index] });
-      setRecords([...records]);
-
-      message.success(result.Message);
-    } catch (ex) {
-      handleError(ex);
-    }
-  };
-
-  const handleSeenReports = async () => {
-    try {
-      await service.makeReportsSeen(selectedObject.TaskID);
-
-      const index = records.findIndex(
-        (task) => task.TaskID === selectedObject.TaskID
-      );
-      records[index].NewReportsCount = 0;
-
-      setSelectedObject({ ...records[index] });
-      setRecords([...records]);
-    } catch (ex) {
-      handleError(ex);
-    }
+  const handleClear = () => {
+    setRecords([]);
+    setFilter(null);
+    setSearched(false);
   };
 
   return (
@@ -228,28 +169,29 @@ const UserMyTasksPage = ({ pageName }) => {
               strong
               type="success"
             >
-              {Words.my_tasks}
+              {Words.my_done_tasks}
             </Text>
           </Col>
 
-          {/* <Col xs={24}>
+          <Col xs={24}>
             <Space>
               <Button
                 type="primary"
                 icon={<SearchIcon />}
-                onClick={() => console.log("search")}
+                onClick={() => setShowSearchModal(true)}
               >
                 {Words.search}
               </Button>
-              <Button
-                type="primary"
-                icon={<PlusIcon />}
-                onClick={handleShowModal}
-              >
-                {Words.new_task}
-              </Button>
+
+              <Tooltip title={Words.clear}>
+                <Button
+                  type="primary"
+                  icon={<ReloadIcon />}
+                  onClick={handleClear}
+                />
+              </Tooltip>
             </Space>
-          </Col> */}
+          </Col>
 
           {records.length > 0 ? (
             <>
@@ -281,31 +223,39 @@ const UserMyTasksPage = ({ pageName }) => {
               ))}
             </>
           ) : (
-            <Col xs={24}>
-              <Alert
-                type="warning"
-                showIcon
-                message={Words.messages.no_any_tasks}
-              />
-            </Col>
+            <>
+              {searched && (
+                <Col xs={24}>
+                  <Alert
+                    type="warning"
+                    showIcon
+                    message={Words.messages.no_any_tasks}
+                  />
+                </Col>
+              )}
+            </>
           )}
         </Row>
       </Spin>
 
       {showModal && (
-        <MyTaskModal
+        <DetailsModal
           onCancel={handleCloseModal}
-          onDone={handleDoneTask}
-          onSubmitReport={handleSaveReport}
-          onDeleteReport={handleDeleteReport}
-          onSeenReports={handleSeenReports}
           isOpen={showModal}
           selectedObject={selectedObject}
-          inProgress={inModalProgress}
+        />
+      )}
+
+      {showSearchModal && (
+        <SearchModal
+          onOk={handleSearch}
+          onCancel={() => setShowSearchModal(false)}
+          isOpen={showSearchModal}
+          filter={filter}
         />
       )}
     </>
   );
 };
 
-export default UserMyTasksPage;
+export default UserMyDoneTasksPage;

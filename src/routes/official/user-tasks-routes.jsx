@@ -6,6 +6,7 @@ import UserTasksDashboard from "../../components/app-modules/official/tasks/user
 import UserTaskTags from "../../components/app-modules/official/tasks/user-tags-page";
 import UserEmployeesTasksPage from "./../../components/app-modules/official/tasks/user-employees-tasks-page";
 import UserMyTasksPage from "./../../components/app-modules/official/tasks/user-my-tasks-page";
+import UserMyDoneTasksPage from "./../../components/app-modules/official/tasks/user-my-done-tasks-page";
 import UserIntervalTasks from "../../components/app-modules/official/tasks/user-interval-tasks-page";
 //---
 
@@ -33,6 +34,11 @@ const UserTasksRoutes = ({ path }) => {
         path={`${path}/${modulePath}/my-tasks`}
         exact
         render={() => <UserMyTasksPage pageName="user-MyTasks" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/my-done-tasks`}
+        exact
+        render={() => <UserMyDoneTasksPage pageName="user-MyDoneTasks" />}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/interval-tasks`}

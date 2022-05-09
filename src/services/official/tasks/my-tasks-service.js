@@ -3,11 +3,11 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/official/tasks/user-my-tasks";
 
-// async function getParams() {
-//   const { data } = await http.get(`${apiEndpoint}/params`);
+async function getSearchMyDoneTasksParams() {
+  const { data } = await http.get(`${apiEndpoint}/my/done/params`);
 
-//   return data;
-// }
+  return data;
+}
 
 // async function getTaskFiles(taskID) {
 //   const { data } = await http.get(`${apiEndpoint}/files/${taskID}`);
@@ -69,8 +69,14 @@ export async function makeTaskDone(taskID) {
   return data;
 }
 
+async function searchMyDoneTasks(filter) {
+  const { data } = await http.post(`${apiEndpoint}/search`, filter);
+
+  return data;
+}
+
 const service = {
-  //   getParams,
+  getSearchMyDoneTasksParams,
   //   getTaskFiles,
   getAllData,
   makeTaskSeen,
@@ -81,6 +87,7 @@ const service = {
   deleteReport,
   makeReportsSeen,
   makeTaskDone,
+  searchMyDoneTasks,
 };
 
 export default service;

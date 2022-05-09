@@ -295,6 +295,13 @@ class Words extends Component {
   static done_status = "وضعیت انجام";
   static in_done_progress = "درحال انجام";
   static without_delay = "بدون تاخیر";
+  static definer = "تعریف کننده";
+  static from_done_date = "اجرا از تاریخ";
+  static to_done_date = "اجرا تا تاریخ";
+  static from_reminder_date = "سررسید از تاریخ";
+  static to_reminder_date = "سررسید تا تاریخ";
+  static my_done_tasks = "انجام شده ها";
+  static other_than_this_month = "بیش از یک ماه اخیر";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";

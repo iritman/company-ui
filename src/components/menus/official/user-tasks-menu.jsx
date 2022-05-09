@@ -47,7 +47,7 @@ const mapper = (pageID) => {
       break;
 
     case 80:
-      link = "done-tasks";
+      link = "my-done-tasks";
       icon = <DoneListIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
