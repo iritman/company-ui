@@ -54,11 +54,7 @@ const UserUnderSupervisionsTasksPage = ({ pageName }) => {
     setFilter,
   } = usePageContext();
 
-  const {
-    handleCloseModal,
-
-    handleResetContext,
-  } = GetSimplaDataPageMethods({
+  const { handleCloseModal, handleResetContext } = GetSimplaDataPageMethods({
     service,
     recordID,
   });
@@ -66,6 +62,28 @@ const UserUnderSupervisionsTasksPage = ({ pageName }) => {
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
+
+    const init_filter = {
+      MemberID: 0,
+      HasNewReport: true,
+      FromDoneDate: "",
+      ToDoneDate: "",
+      FromReminderDate: "",
+      ToReminderDate: "",
+      SearchText: "",
+    };
+
+    setFilter(init_filter);
+
+    setProgress(true);
+
+    try {
+      await handleSearch(init_filter);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
   });
 
   //------
@@ -286,7 +304,6 @@ const UserUnderSupervisionsTasksPage = ({ pageName }) => {
       {showModal && (
         <DetailsModal
           onCancel={handleCloseModal}
-          //   onDone={handleDoneTask}
           onSubmitReport={handleSaveReport}
           onDeleteReport={handleDeleteReport}
           onSeenReports={handleSeenReports}
