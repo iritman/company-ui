@@ -145,7 +145,7 @@ const UserUnderSupervisionTaskDetailsModal = ({
                         >{`${RegFirstName} ${RegLastName}`}</Text>
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label={Words.employee}>
+                    <Descriptions.Item label={Words.response_member}>
                       <Space>
                         <MemberProfileImage
                           fileName={ResponsePicFileName}
