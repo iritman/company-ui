@@ -304,6 +304,7 @@ class Words extends Component {
   static other_than_this_month = "بیش از یک ماه اخیر";
   static has_new_report = "حاوی گزارش جدید";
   static response_member = "مسئول اجرا";
+  static is_done = "خاتمه یافته";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";

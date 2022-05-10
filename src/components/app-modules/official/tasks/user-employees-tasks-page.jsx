@@ -10,9 +10,11 @@ import {
   Badge,
   message,
   Alert,
+  Tooltip,
 } from "antd";
 import {
   SearchOutlined as SearchIcon,
+  ReloadOutlined as ReloadIcon,
   PlusOutlined as PlusIcon,
 } from "@ant-design/icons";
 import Words from "../../../../resources/words";
@@ -22,6 +24,7 @@ import {
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import EmployeeTaskModal from "./user-employee-task-modal";
+import SearchModal from "./user-employees-tasks-search-modal";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 import { handleError } from "./../../../../tools/form-manager";
@@ -34,9 +37,9 @@ const recordID = "TaskID";
 const UserEmployeesTasksPage = ({ pageName }) => {
   const {
     progress,
-    //   searched,
-    //   searchText,
-    //   setSearchText,
+    setProgress,
+    searched,
+    setSearched,
     records,
     setRecords,
     // access,
@@ -45,52 +48,72 @@ const UserEmployeesTasksPage = ({ pageName }) => {
     setSelectedObject,
     showModal,
     setShowModal,
+    showSearchModal,
+    setShowSearchModal,
+    filter,
+    setFilter,
   } = usePageContext();
 
-  const {
-    handleCloseModal,
-    handleGetAll,
-    // handleSearch,
-    // handleAdd,
-    // handleEdit,
-    handleDelete,
-    handleSave,
-    handleResetContext,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleCloseModal, handleDelete, handleSave, handleResetContext } =
+    GetSimplaDataPageMethods({
+      service,
+      recordID,
+    });
 
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
 
-    await handleGetAll();
+    const init_filter = {
+      MemberID: 0,
+      IsDone: false,
+      FromDoneDate: "",
+      ToDoneDate: "",
+      FromReminderDate: "",
+      ToReminderDate: "",
+      SearchText: "",
+    };
+
+    setFilter(init_filter);
+
+    setProgress(true);
+
+    try {
+      await handleSearch(init_filter);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
   });
+
+  const handleSearch = async (filter) => {
+    setFilter(filter);
+    setShowSearchModal(false);
+
+    setProgress(true);
+
+    try {
+      const data = await service.searchData(filter);
+
+      setRecords(data);
+      setSearched(true);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
 
   const handleShowModal = () => {
     setShowModal(true);
   };
 
-  //------
-
-  const task_categories = [
-    { categoryID: 1, title: Words.today_tasks, key: "today" },
-    { categoryID: 2, title: Words.tomorrow_tasks, key: "tomorrow" },
-    { categoryID: 3, title: Words.this_month_tasks, key: "this_month" },
-    { categoryID: 4, title: Words.has_delay_tasks, key: "has_delay" },
-    { categoryID: 5, title: Words.future_tasks, key: "future" },
-  ];
-
-  task_categories.forEach((category) => {
-    category.tasks = records.filter(
-      (task) => task.TaskCategory === category.key
-    );
-  });
-
-  const filtered_task_categories = task_categories.filter(
-    (category) => category.tasks.length > 0
-  );
+  const handleClear = () => {
+    setRecords([]);
+    setFilter(null);
+    setSearched(false);
+  };
 
   const getRibonColor = (key) => {
     let result = "blue";
@@ -168,6 +191,28 @@ const UserEmployeesTasksPage = ({ pageName }) => {
     }
   };
 
+  //------
+
+  const task_categories = [
+    { categoryID: 1, title: Words.today_tasks, key: "today" },
+    { categoryID: 2, title: Words.tomorrow_tasks, key: "tomorrow" },
+    { categoryID: 3, title: Words.this_month_tasks, key: "this_month" },
+    { categoryID: 4, title: Words.has_delay_tasks, key: "has_delay" },
+    { categoryID: 5, title: Words.future_tasks, key: "future" },
+  ];
+
+  task_categories.forEach((category) => {
+    category.tasks = records.filter(
+      (task) => task.TaskCategory === category.key
+    );
+  });
+
+  const filtered_task_categories = task_categories.filter(
+    (category) => category.tasks.length > 0
+  );
+
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -191,10 +236,19 @@ const UserEmployeesTasksPage = ({ pageName }) => {
               <Button
                 type="primary"
                 icon={<SearchIcon />}
-                onClick={() => console.log("search")}
+                onClick={() => setShowSearchModal(true)}
               >
                 {Words.search}
               </Button>
+
+              <Tooltip title={Words.clear}>
+                <Button
+                  type="primary"
+                  icon={<ReloadIcon />}
+                  onClick={handleClear}
+                />
+              </Tooltip>
+
               <Button
                 type="primary"
                 icon={<PlusIcon />}
@@ -235,13 +289,17 @@ const UserEmployeesTasksPage = ({ pageName }) => {
               ))}
             </>
           ) : (
-            <Col xs={24}>
-              <Alert
-                type="warning"
-                showIcon
-                message={Words.messages.no_any_tasks}
-              />
-            </Col>
+            <>
+              {searched && (
+                <Col xs={24}>
+                  <Alert
+                    type="warning"
+                    showIcon
+                    message={Words.messages.not_any_tasks_founded}
+                  />
+                </Col>
+              )}
+            </>
           )}
         </Row>
       </Spin>
@@ -256,6 +314,15 @@ const UserEmployeesTasksPage = ({ pageName }) => {
           onSeenReports={handleSeenReports}
           isOpen={showModal}
           selectedObject={selectedObject}
+        />
+      )}
+
+      {showSearchModal && (
+        <SearchModal
+          onOk={handleSearch}
+          onCancel={() => setShowSearchModal(false)}
+          isOpen={showSearchModal}
+          filter={filter}
         />
       )}
     </>

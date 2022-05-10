@@ -149,8 +149,8 @@ const UserUnderSupervisionsTasksPage = ({ pageName }) => {
 
       setRecords(data);
       setSearched(true);
-    } catch (err) {
-      handleError(err);
+    } catch (ex) {
+      handleError(ex);
     }
 
     setProgress(false);

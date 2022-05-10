@@ -15,17 +15,17 @@ async function getTaskFiles(taskID) {
   return data;
 }
 
-async function getAllData() {
-  const { data } = await http.get(`${apiEndpoint}`);
-
-  return data;
-}
-
-// async function searchData(searchText) {
-//   const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
+// async function getAllData() {
+//   const { data } = await http.get(`${apiEndpoint}`);
 
 //   return data;
 // }
+
+async function searchData(filter) {
+  const { data } = await http.post(`${apiEndpoint}/search`, filter);
+
+  return data;
+}
 
 export async function saveData(record) {
   const { data } = await http.post(`${apiEndpoint}`, record);
@@ -60,8 +60,8 @@ export async function makeReportsSeen(taskID) {
 const service = {
   getParams,
   getTaskFiles,
-  getAllData,
-  //   searchData,
+  // getAllData,
+  searchData,
   saveData,
   deleteData,
   saveReport,
