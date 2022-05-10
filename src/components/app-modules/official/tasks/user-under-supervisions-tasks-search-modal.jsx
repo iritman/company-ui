@@ -18,9 +18,11 @@ import service from "../../../../services/official/tasks/my-tasks-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 import InputItem from "./../../../form-controls/input-item";
+import SwitchItem from "./../../../form-controls/switch-item";
 
 const schema = {
   MemberID: Joi.number(),
+  HasNewReport: Joi.boolean(),
   FromDoneDate: Joi.string().allow(""),
   ToDoneDate: Joi.string().allow(""),
   FromReminderDate: Joi.string().allow(""),
@@ -35,6 +37,7 @@ const schema = {
 
 const initRecord = {
   MemberID: 0,
+  HasNewReport: false,
   FromDoneDate: "",
   ToDoneDate: "",
   FromReminderDate: "",
@@ -44,7 +47,12 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+const UserUnderSupervisionTasksSearchModal = ({
+  isOpen,
+  filter,
+  onOk,
+  onCancel,
+}) => {
   const {
     progress,
     setProgress,
@@ -68,6 +76,7 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.MemberID = 0;
+    record.HasNewReport = false;
     record.FromDoneDate = "";
     record.ToDoneDate = "";
     record.FromReminderDate = "";
@@ -126,7 +135,7 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.definer}
               dataSource={employees}
@@ -134,6 +143,16 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
               valueColumn="FullName"
               formConfig={formConfig}
               autoFocus
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <SwitchItem
+              title={Words.has_new_report}
+              fieldName="HasNewReport"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
+              formConfig={formConfig}
             />
           </Col>
           <Col xs={24} md={12}>
@@ -182,4 +201,4 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   );
 };
 
-export default UserMyDoneTasksSearchModal;
+export default UserUnderSupervisionTasksSearchModal;

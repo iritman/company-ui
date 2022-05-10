@@ -17,7 +17,11 @@ import { onUpload } from "../../../../tools/upload-tools";
 
 const schema = {
   TaskID: Joi.number(),
-  DetailsText: Joi.string().min(5).max(512).label(Words.descriptions),
+  DetailsText: Joi.string()
+    .min(5)
+    .max(512)
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.descriptions),
   Files: Joi.array(),
 };
 

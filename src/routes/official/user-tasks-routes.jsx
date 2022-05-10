@@ -4,9 +4,10 @@ import ProtectedRoute from "../../components/common/protected-route";
 //---
 import UserTasksDashboard from "../../components/app-modules/official/tasks/user-tasks-dashboard";
 import UserTaskTags from "../../components/app-modules/official/tasks/user-tags-page";
-import UserEmployeesTasksPage from "./../../components/app-modules/official/tasks/user-employees-tasks-page";
 import UserMyTasksPage from "./../../components/app-modules/official/tasks/user-my-tasks-page";
 import UserMyDoneTasksPage from "./../../components/app-modules/official/tasks/user-my-done-tasks-page";
+import UserEmployeesTasksPage from "./../../components/app-modules/official/tasks/user-employees-tasks-page";
+import UserUnderSupervisionTasksPage from "./../../components/app-modules/official/tasks/user-under-supervisions-tasks-page";
 import UserIntervalTasks from "../../components/app-modules/official/tasks/user-interval-tasks-page";
 //---
 
@@ -26,11 +27,6 @@ const UserTasksRoutes = ({ path }) => {
         render={() => <UserTaskTags pageName="user-TaskTags" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/employees-tasks`}
-        exact
-        render={() => <UserEmployeesTasksPage pageName="user-EmployeesTasks" />}
-      />
-      <ProtectedRoute
         path={`${path}/${modulePath}/my-tasks`}
         exact
         render={() => <UserMyTasksPage pageName="user-MyTasks" />}
@@ -39,6 +35,18 @@ const UserTasksRoutes = ({ path }) => {
         path={`${path}/${modulePath}/my-done-tasks`}
         exact
         render={() => <UserMyDoneTasksPage pageName="user-MyDoneTasks" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/employees-tasks`}
+        exact
+        render={() => <UserEmployeesTasksPage pageName="user-EmployeesTasks" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/task-supervisions`}
+        exact
+        render={() => (
+          <UserUnderSupervisionTasksPage pageName="user-TaskSupervisions" />
+        )}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/interval-tasks`}

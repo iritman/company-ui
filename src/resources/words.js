@@ -302,6 +302,7 @@ class Words extends Component {
   static to_reminder_date = "سررسید تا تاریخ";
   static my_done_tasks = "انجام شده ها";
   static other_than_this_month = "بیش از یک ماه اخیر";
+  static has_new_report = "حاوی گزارش جدید";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
@@ -525,6 +526,7 @@ class Words extends Component {
     no_any_report: "گزارشی ثبت نشده است",
     submit_report_in_done_task_failed:
       "ثبت گزارش در وظیفه خاتمه یافته امکان پذیر نمی باشد",
+    not_any_tasks_founded: "وظیفه ای یافت نشد",
   };
 
   static questions = {

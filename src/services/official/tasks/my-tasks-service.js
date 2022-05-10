@@ -70,7 +70,16 @@ export async function makeTaskDone(taskID) {
 }
 
 async function searchMyDoneTasks(filter) {
-  const { data } = await http.post(`${apiEndpoint}/search`, filter);
+  const { data } = await http.post(`${apiEndpoint}/search/done`, filter);
+
+  return data;
+}
+
+async function searchUnderSupervisionTasks(filter) {
+  const { data } = await http.post(
+    `${apiEndpoint}/search/supervisions`,
+    filter
+  );
 
   return data;
 }
@@ -88,6 +97,7 @@ const service = {
   makeReportsSeen,
   makeTaskDone,
   searchMyDoneTasks,
+  searchUnderSupervisionTasks,
 };
 
 export default service;

@@ -111,20 +111,7 @@ const UserMyDoneTasksPage = ({ pageName }) => {
 
   const handleSelectTask = async (task) => {
     try {
-      if (task.SeenDate.length === 0) {
-        const data = await service.makeTaskSeen(task.TaskID);
-        const { SeenDate, SeenTime } = data;
-
-        const index = records.findIndex((t) => t.TaskID === task.TaskID);
-        records[index].SeenDate = SeenDate;
-        records[index].SeenTime = SeenTime;
-
-        setSelectedObject({ ...records[index] });
-        setRecords([...records]);
-      } else {
-        setSelectedObject(task);
-      }
-
+      setSelectedObject(task);
       setShowModal(true);
     } catch (ex) {
       handleError(ex);
@@ -229,7 +216,7 @@ const UserMyDoneTasksPage = ({ pageName }) => {
                   <Alert
                     type="warning"
                     showIcon
-                    message={Words.messages.no_any_tasks}
+                    message={Words.messages.not_any_tasks_founded}
                   />
                 </Col>
               )}

@@ -65,9 +65,13 @@ const schema = {
     .min(2)
     .max(50)
     .required()
-    .label(Words.title)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
-  DetailsText: Joi.string().allow("").max(512),
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.title),
+  DetailsText: Joi.string()
+    .allow("")
+    .max(512)
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.descriptions),
   MemberID: Joi.number(),
   ReminderDate: Joi.string(),
   ReminderTime: Joi.string(),

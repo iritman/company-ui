@@ -4,42 +4,43 @@ import {
   Spin,
   Row,
   Col,
+  Button,
   Typography,
   Badge,
   message,
+  Space,
+  Tooltip,
   Alert,
-  //   Button,
-  //   Space,
 } from "antd";
-// import {
-//   SearchOutlined as SearchIcon,
-//   PlusOutlined as PlusIcon,
-// } from "@ant-design/icons";
+import {
+  SearchOutlined as SearchIcon,
+  ReloadOutlined as ReloadIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import service from "../../../../services/official/tasks/my-tasks-service";
 import {
   checkAccess,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
-import MyTaskModal from "./user-my-task-modal";
+import SearchModal from "./user-under-supervisions-tasks-search-modal";
+import DetailsModal from "./user-under-supervision-task-details-modal";
 import { usePageContext } from "../../../contexts/page-context";
-import Colors from "./../../../../resources/colors";
-import { handleError } from "./../../../../tools/form-manager";
+import Colors from "../../../../resources/colors";
+import { handleError } from "../../../../tools/form-manager";
 import TaskRowItem from "./task-row-item";
 
 const { Text } = Typography;
 
 const recordID = "TaskID";
 
-const UserMyTasksPage = ({ pageName }) => {
+const UserUnderSupervisionsTasksPage = ({ pageName }) => {
   const [inModalProgress, setInModalProgress] = useState(false);
 
   const {
     progress,
-    //   searched,
-    //   searchText,
-    //   setSearchText,
-    // access,
+    setProgress,
+    searched,
+    setSearched,
     records,
     setRecords,
     setAccess,
@@ -47,16 +48,15 @@ const UserMyTasksPage = ({ pageName }) => {
     setSelectedObject,
     showModal,
     setShowModal,
+    showSearchModal,
+    setShowSearchModal,
+    filter,
+    setFilter,
   } = usePageContext();
 
   const {
     handleCloseModal,
-    handleGetAll,
-    // handleSearch,
-    // handleAdd,
-    // handleEdit,
-    // handleDelete,
-    // handleSave,
+
     handleResetContext,
   } = GetSimplaDataPageMethods({
     service,
@@ -66,13 +66,7 @@ const UserMyTasksPage = ({ pageName }) => {
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
-
-    await handleGetAll();
   });
-
-  //   const handleShowModal = () => {
-  //     setShowModal(true);
-  //   };
 
   //------
 
@@ -80,8 +74,7 @@ const UserMyTasksPage = ({ pageName }) => {
     { categoryID: 1, title: Words.today_tasks, key: "today" },
     { categoryID: 2, title: Words.tomorrow_tasks, key: "tomorrow" },
     { categoryID: 3, title: Words.this_month_tasks, key: "this_month" },
-    { categoryID: 4, title: Words.has_delay_tasks, key: "has_delay" },
-    { categoryID: 5, title: Words.future_tasks, key: "future" },
+    { categoryID: 5, title: Words.other_than_this_month, key: "other" },
   ];
 
   task_categories.forEach((category) => {
@@ -107,11 +100,8 @@ const UserMyTasksPage = ({ pageName }) => {
       case "this_month":
         result = "purple";
         break;
-      case "has_delay":
-        result = "red";
-        break;
-      case "future":
-        result = "magenta";
+      case "other":
+        result = "blue";
         break;
       default:
         result = "blue";
@@ -123,47 +113,35 @@ const UserMyTasksPage = ({ pageName }) => {
 
   const handleSelectTask = async (task) => {
     try {
-      if (task.SeenDate.length === 0) {
-        const data = await service.makeTaskSeen(task.TaskID);
-        const { SeenDate, SeenTime } = data;
-
-        const index = records.findIndex((t) => t.TaskID === task.TaskID);
-        records[index].SeenDate = SeenDate;
-        records[index].SeenTime = SeenTime;
-
-        setSelectedObject({ ...records[index] });
-        setRecords([...records]);
-      } else {
-        setSelectedObject(task);
-      }
-
+      setSelectedObject(task);
       setShowModal(true);
     } catch (ex) {
       handleError(ex);
     }
   };
 
-  const handleDoneTask = async (taskID) => {
-    setInModalProgress(true);
+  const handleSearch = async (filter) => {
+    setFilter(filter);
+    setShowSearchModal(false);
+
+    setProgress(true);
 
     try {
-      const data = await service.makeTaskDone(taskID);
-      const { DoneDate, DoneTime } = data;
+      const data = await service.searchUnderSupervisionTasks(filter);
 
-      const index = records.findIndex((task) => task.TaskID === taskID);
-      records[index].DoneDate = DoneDate;
-      records[index].DoneTime = DoneTime;
-      records[index].Reports.forEach((report) => {
-        report.IsDeletable = false;
-      });
-
-      setSelectedObject({ ...records[index] });
-      setRecords([...records.filter((r) => r.TaskID !== taskID)]);
-    } catch (ex) {
-      handleError(ex);
+      setRecords(data);
+      setSearched(true);
+    } catch (err) {
+      handleError(err);
     }
 
-    setInModalProgress(false);
+    setProgress(false);
+  };
+
+  const handleClear = () => {
+    setRecords([]);
+    setFilter(null);
+    setSearched(false);
   };
 
   const handleSaveReport = async (report) => {
@@ -236,28 +214,29 @@ const UserMyTasksPage = ({ pageName }) => {
               strong
               type="success"
             >
-              {Words.my_tasks}
+              {Words.task_supervisions}
             </Text>
           </Col>
 
-          {/* <Col xs={24}>
+          <Col xs={24}>
             <Space>
               <Button
                 type="primary"
                 icon={<SearchIcon />}
-                onClick={() => console.log("search")}
+                onClick={() => setShowSearchModal(true)}
               >
                 {Words.search}
               </Button>
-              <Button
-                type="primary"
-                icon={<PlusIcon />}
-                onClick={handleShowModal}
-              >
-                {Words.new_task}
-              </Button>
+
+              <Tooltip title={Words.clear}>
+                <Button
+                  type="primary"
+                  icon={<ReloadIcon />}
+                  onClick={handleClear}
+                />
+              </Tooltip>
             </Space>
-          </Col> */}
+          </Col>
 
           {records.length > 0 ? (
             <>
@@ -289,21 +268,25 @@ const UserMyTasksPage = ({ pageName }) => {
               ))}
             </>
           ) : (
-            <Col xs={24}>
-              <Alert
-                type="warning"
-                showIcon
-                message={Words.messages.no_any_tasks}
-              />
-            </Col>
+            <>
+              {searched && (
+                <Col xs={24}>
+                  <Alert
+                    type="warning"
+                    showIcon
+                    message={Words.messages.not_any_tasks_founded}
+                  />
+                </Col>
+              )}
+            </>
           )}
         </Row>
       </Spin>
 
       {showModal && (
-        <MyTaskModal
+        <DetailsModal
           onCancel={handleCloseModal}
-          onDone={handleDoneTask}
+          //   onDone={handleDoneTask}
           onSubmitReport={handleSaveReport}
           onDeleteReport={handleDeleteReport}
           onSeenReports={handleSeenReports}
@@ -312,8 +295,17 @@ const UserMyTasksPage = ({ pageName }) => {
           inProgress={inModalProgress}
         />
       )}
+
+      {showSearchModal && (
+        <SearchModal
+          onOk={handleSearch}
+          onCancel={() => setShowSearchModal(false)}
+          isOpen={showSearchModal}
+          filter={filter}
+        />
+      )}
     </>
   );
 };
 
-export default UserMyTasksPage;
+export default UserUnderSupervisionsTasksPage;

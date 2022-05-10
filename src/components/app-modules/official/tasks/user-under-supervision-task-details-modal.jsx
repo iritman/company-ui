@@ -36,11 +36,11 @@ const { Text } = Typography;
 
 const { TabPane } = Tabs;
 
-const UserMyTaskModal = ({
+const UserUnderSupervisionTaskDetailsModal = ({
   isOpen,
   selectedObject,
   onCancel,
-  onDone,
+  //   onDone,
   onSubmitReport,
   onDeleteReport,
   onSeenReports,
@@ -53,6 +53,9 @@ const UserMyTaskModal = ({
     RegFirstName,
     RegLastName,
     RegPicFileName,
+    ResponseFirstName,
+    ResponseLastName,
+    ResponsePicFileName,
     ReminderDate,
     ReminderTime,
     SeenDate,
@@ -96,29 +99,6 @@ const UserMyTaskModal = ({
     return result;
   };
 
-  const getFooterButtons = () => {
-    let footerButtons = [<Button onClick={onCancel}>{Words.close}</Button>];
-
-    if (DoneDate.length === 0) {
-      footerButtons = [
-        ...footerButtons,
-        <Popconfirm
-          title={Words.questions.sure_to_make_task_done}
-          onConfirm={async () => await onDone(TaskID)}
-          okText={Words.yes}
-          cancelText={Words.no}
-          icon={<QuestionIcon style={{ color: "red" }} />}
-        >
-          <Button key="submit-done-button" type="primary" loading={inProgress}>
-            {Words.make_task_finish}
-          </Button>
-        </Popconfirm>,
-      ];
-    }
-
-    return footerButtons;
-  };
-
   return (
     <>
       <Modal
@@ -126,7 +106,7 @@ const UserMyTaskModal = ({
         maskClosable={false}
         centered={true}
         title={Words.my_task}
-        footer={getFooterButtons()}
+        footer={[<Button onClick={onCancel}>{Words.close}</Button>]}
         onCancel={onCancel}
         width={750}
       >
@@ -149,7 +129,7 @@ const UserMyTaskModal = ({
                     }}
                     size="middle"
                   >
-                    <Descriptions.Item label={Words.id}>
+                    <Descriptions.Item label={Words.id} span={2}>
                       <Text style={{ color: valueColor }}>
                         {utils.farsiNum(TaskID)}
                       </Text>
@@ -163,6 +143,17 @@ const UserMyTaskModal = ({
                         <Text
                           style={{ color: valueColor }}
                         >{`${RegFirstName} ${RegLastName}`}</Text>
+                      </Space>
+                    </Descriptions.Item>
+                    <Descriptions.Item label={Words.employee}>
+                      <Space>
+                        <MemberProfileImage
+                          fileName={ResponsePicFileName}
+                          size="small"
+                        />
+                        <Text style={{ color: Colors.orange[7] }}>
+                          {`${ResponseFirstName} ${ResponseLastName}`}
+                        </Text>
                       </Space>
                     </Descriptions.Item>
                     <Descriptions.Item label={Words.title} span={2}>
@@ -190,13 +181,17 @@ const UserMyTaskModal = ({
                       </Text>
                     </Descriptions.Item>
                     <Descriptions.Item label={Words.seen_in}>
-                      <Text style={{ color: valueColor, fontSize: 13 }}>
-                        {utils.farsiNum(
-                          `${utils.dayNameFromText(
-                            SeenDate
-                          )} - ${utils.colonTime(SeenTime)}`
-                        )}
-                      </Text>
+                      {SeenDate.length > 0 ? (
+                        <Text style={{ color: valueColor, fontSize: 13 }}>
+                          {utils.farsiNum(
+                            `${utils.dayNameFromText(
+                              SeenDate
+                            )} - ${utils.colonTime(SeenTime)}`
+                          )}
+                        </Text>
+                      ) : (
+                        "-"
+                      )}
                     </Descriptions.Item>
                     <Descriptions.Item label={Words.delay_status}>
                       <Text
@@ -462,4 +457,4 @@ const UserMyTaskModal = ({
   );
 };
 
-export default UserMyTaskModal;
+export default UserUnderSupervisionTaskDetailsModal;
