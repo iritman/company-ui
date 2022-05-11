@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import {
   Spin,
@@ -25,6 +25,7 @@ import {
 } from "../../../../tools/form-manager";
 import EmployeeTaskModal from "./user-employee-task-modal";
 import SearchModal from "./user-employees-tasks-search-modal";
+import DetailsModal from "./task-details-modal";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 import { handleError } from "./../../../../tools/form-manager";
@@ -35,6 +36,8 @@ const { Text } = Typography;
 const recordID = "TaskID";
 
 const UserEmployeesTasksPage = ({ pageName }) => {
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+
   const {
     progress,
     setProgress,
@@ -144,7 +147,9 @@ const UserEmployeesTasksPage = ({ pageName }) => {
 
   const handleSelectTask = (task) => {
     setSelectedObject(task);
-    setShowModal(true);
+
+    if (task.DoneDate.length > 0) setShowDetailsModal(true);
+    else setShowModal(true);
   };
 
   const handleSaveReport = async (report) => {
@@ -313,6 +318,14 @@ const UserEmployeesTasksPage = ({ pageName }) => {
           onDeleteReport={handleDeleteReport}
           onSeenReports={handleSeenReports}
           isOpen={showModal}
+          selectedObject={selectedObject}
+        />
+      )}
+
+      {showDetailsModal && (
+        <DetailsModal
+          onCancel={() => setShowDetailsModal(false)}
+          isOpen={showDetailsModal}
           selectedObject={selectedObject}
         />
       )}
