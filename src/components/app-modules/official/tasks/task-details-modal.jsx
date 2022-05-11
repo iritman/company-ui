@@ -10,6 +10,7 @@ import {
   Space,
   Descriptions,
   Modal,
+  Popconfirm,
 } from "antd";
 import {
   PaperClipOutlined as AttachedFileIcon,
@@ -17,6 +18,8 @@ import {
   ClockCircleOutlined as ClockIcon,
   CheckCircleOutlined as DoneIcon,
   FieldTimeOutlined as InProgressIcon,
+  QuestionCircleOutlined as QuestionIcon,
+  ThunderboltOutlined as EventIcon,
 } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
@@ -28,7 +31,13 @@ const { Text } = Typography;
 
 const { TabPane } = Tabs;
 
-const TaskDetailsModal = ({ isOpen, selectedObject, onCancel }) => {
+const TaskDetailsModal = ({
+  isOpen,
+  selectedObject,
+  onCancel,
+  onCancelDoneTask,
+  inProgress,
+}) => {
   const {
     TaskID,
     Title,
@@ -68,13 +77,42 @@ const TaskDetailsModal = ({ isOpen, selectedObject, onCancel }) => {
     return result;
   };
 
+  const getFooterButtons = () => {
+    let buttons = [<Button onClick={onCancel}>{Words.close}</Button>];
+
+    if (onCancelDoneTask) {
+      buttons = [
+        ...buttons,
+        <Popconfirm
+          title={Words.questions.sure_to_cancel_done_task}
+          onConfirm={onCancelDoneTask}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+          key="submit-confirm"
+          disabled={inProgress}
+        >
+          <Button
+            type="primary"
+            icon={<EventIcon style={{ fontSize: 16 }} />}
+            danger
+          >
+            {Words.cancel_done_task}
+          </Button>
+        </Popconfirm>,
+      ];
+    }
+
+    return buttons;
+  };
+
   return (
     <Modal
       visible={isOpen}
       maskClosable={false}
       centered={true}
       title={Words.my_task}
-      footer={[<Button onClick={onCancel}>{Words.close}</Button>]}
+      footer={getFooterButtons()}
       onCancel={onCancel}
       width={750}
     >

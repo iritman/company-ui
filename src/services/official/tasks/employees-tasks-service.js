@@ -57,6 +57,12 @@ export async function makeReportsSeen(taskID) {
   return data;
 }
 
+export async function cancelDoneTask(taskID) {
+  const { data } = await http.post(`${apiEndpoint}/cancel/done/${taskID}`, {});
+
+  return data;
+}
+
 const service = {
   getParams,
   getTaskFiles,
@@ -67,6 +73,7 @@ const service = {
   saveReport,
   deleteReport,
   makeReportsSeen,
+  cancelDoneTask,
 };
 
 export default service;

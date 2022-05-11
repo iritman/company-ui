@@ -37,6 +37,7 @@ const recordID = "TaskID";
 
 const UserEmployeesTasksPage = ({ pageName }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [inModalProgress, setInModalProgress] = useState(false);
 
   const {
     progress,
@@ -196,6 +197,36 @@ const UserEmployeesTasksPage = ({ pageName }) => {
     }
   };
 
+  const handleCancelDoneTask = async () => {
+    setInModalProgress(true);
+
+    try {
+      await service.cancelDoneTask(selectedObject.TaskID);
+
+      selectedObject.DoneDate = "";
+      selectedObject.DoneTime = "";
+      setSelectedObject({ ...selectedObject });
+
+      //------
+
+      const index = records.findIndex(
+        (task) => task.TaskID === selectedObject.TaskID
+      );
+      records[index].DoneDate = "";
+      records[index].DoneTime = "";
+      setRecords([...records]);
+
+      //------
+
+      setShowDetailsModal(false);
+      setShowModal(true);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setInModalProgress(false);
+  };
+
   //------
 
   const task_categories = [
@@ -325,8 +356,10 @@ const UserEmployeesTasksPage = ({ pageName }) => {
       {showDetailsModal && (
         <DetailsModal
           onCancel={() => setShowDetailsModal(false)}
+          onCancelDoneTask={handleCancelDoneTask}
           isOpen={showDetailsModal}
           selectedObject={selectedObject}
+          inProgress={inModalProgress}
         />
       )}
 

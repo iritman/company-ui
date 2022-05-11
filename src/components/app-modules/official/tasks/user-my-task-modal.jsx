@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useMount } from "react-use";
 import {
   Row,
   Col,
@@ -68,8 +67,6 @@ const UserMyTaskModal = ({
   } = selectedObject;
 
   const [showNewReportModal, setShowNewReportModal] = useState(false);
-
-  useMount(async () => {});
 
   const handleTabChange = async (key) => {
     if (key === "task-reports" && NewReportsCount > 0) {

@@ -305,6 +305,7 @@ class Words extends Component {
   static has_new_report = "حاوی گزارش جدید";
   static response_member = "مسئول اجرا";
   static is_done = "خاتمه یافته";
+  static cancel_done_task = "عدم تایید اجرا و فعالسازی مجدد";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
@@ -548,6 +549,7 @@ class Words extends Component {
     sure_to_reg_jome_holidays: "برای ثبت تعطیلات روزهای جمعه اطمینان دارید؟",
     sure_to_delete_task: "برای حذف وظیفه اطمینان دارید؟",
     sure_to_make_task_done: "برای اعلام خاتمه انجام وظیفه اطمینان دارید؟",
+    sure_to_cancel_done_task: "برای لغو خاتمه اجرای وظیفه اطمینان دارید؟",
   };
 
   static monthes = {
