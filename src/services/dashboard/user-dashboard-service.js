@@ -9,8 +9,15 @@ async function getTimexStatistics() {
   return data;
 }
 
+async function getTaskStatistics() {
+  const { data } = await http.get(`${apiEndpoint}/task`);
+
+  return data;
+}
+
 const service = {
   getTimexStatistics,
+  getTaskStatistics,
 };
 
 export default service;

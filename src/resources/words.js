@@ -306,6 +306,15 @@ class Words extends Component {
   static response_member = "مسئول اجرا";
   static is_done = "خاتمه یافته";
   static cancel_done_task = "عدم تایید اجرا و فعالسازی مجدد";
+  static delayed_tasks = "کارهای دارای تاخیر";
+  static done_tasks = "کارهای انجام شده";
+  static following = "پیگیری";
+  static colleagues = "همکاران";
+  static reged_reports = "گزارش های ثبت شده";
+  static unread_reports = "گزارش های خوانده نشده";
+  static new_reports = "گزارش های جدید";
+  static under_supervision_tasks = "تحت نظارت";
+  static finished_supervision_tasks = "نظارت شده";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
