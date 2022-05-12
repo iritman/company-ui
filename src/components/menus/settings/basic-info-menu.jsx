@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import {
+  AiOutlineDashboard as DashboardIcon,
+  AiFillBank as BankIcon,
+} from "react-icons/ai";
 import {
   FaMapMarkerAlt as MapIcon,
   FaUniversity as UniversityIcon,
@@ -83,6 +86,11 @@ const mapper = (pageID) => {
       icon = (
         <WorkPlaceIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
       );
+      break;
+
+    case 71:
+      link = "banks";
+      icon = <BankIcon style={{ color: Colors.red[4] }} size={iconSize} />;
       break;
 
     default:

@@ -11,6 +11,7 @@ import UniversitiesPage from "../../components/app-modules/settings/basic-info/u
 import EmploymentTypesPage from "../../components/app-modules/settings/basic-info/employment-types-page";
 import EmploymentStatusesPage from "../../components/app-modules/settings/basic-info/employment-statuses-page";
 import WorkPlacesPage from "../../components/app-modules/settings/basic-info/work-places-page";
+import BanksPage from "../../components/app-modules/settings/basic-info/banks-page";
 //---
 
 const modulePath = "settings/basic-info";
@@ -62,6 +63,11 @@ const BasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/work-places`}
         exact
         render={() => <WorkPlacesPage pageName="WorkPlaces" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/banks`}
+        exact
+        render={() => <BanksPage pageName="Banks" />}
       />
       <Redirect to="/not-found" />
     </Switch>
