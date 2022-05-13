@@ -18,6 +18,7 @@ import service from "../../../../services/settings/org/bank-accounts-service";
 import accessesService from "../../../../services/app/accesses-service";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import InputItem from "./../../../form-controls/input-item";
+import SwitchItem from "./../../../form-controls/switch-item";
 
 const schema = {
   MemberID: Joi.number(),
@@ -26,12 +27,14 @@ const schema = {
     .allow("")
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.search_text),
+  JustEmployees: Joi.boolean(),
 };
 
 const initRecord = {
   MemberID: 0,
   BankID: 0,
   SearchText: "",
+  JustEmployees: false,
 };
 
 const formRef = React.createRef();
@@ -66,6 +69,7 @@ const BankAccountsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     record.MemberID = 0;
     record.BankID = 0;
     record.SearchText = "";
+    record.JustEmployees = false;
 
     setRecord(record);
     setErrors({});
@@ -160,6 +164,16 @@ const BankAccountsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
               title={Words.search_text}
               fieldName="SearchText"
               maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <SwitchItem
+              title={Words.search_in_employees}
+              fieldName="JustEmployees"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
               formConfig={formConfig}
             />
           </Col>

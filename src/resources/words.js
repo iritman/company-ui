@@ -320,6 +320,7 @@ class Words extends Component {
   static account_no = "شماره حساب";
   static sheba_no = "شماره شبا";
   static bank_accounts = "حساب های بانکی";
+  static search_in_employees = "جستجو در کارکنان";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
