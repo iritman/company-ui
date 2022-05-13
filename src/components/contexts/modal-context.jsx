@@ -46,6 +46,7 @@ const ModalContextProvider = ({ children }) => {
   const [showModal, setShowModal] = useState([]);
   const [commandSources, setCommandSources] = useState([]);
   const [tags, setTags] = useState([]);
+  const [banks, setBanks] = useState([]);
   const [fileList, setFileList] = useState({});
 
   const contextValue = {
@@ -131,6 +132,8 @@ const ModalContextProvider = ({ children }) => {
     setCommandSources,
     tags,
     setTags,
+    banks,
+    setBanks,
     fileList,
     setFileList,
   };

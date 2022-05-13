@@ -13,6 +13,7 @@ import OrgChartPage from "../../components/app-modules/settings/org/org-chart-pa
 import DutyLevelsPage from "../../components/app-modules/settings/org/duty-levels-page";
 import PersonalDutiesPage from "../../components/app-modules/settings/org/personal-duties-page";
 import RoleDutiesPage from "../../components/app-modules/settings/org/role-duties-page";
+import BankAccountsPage from "../../components/app-modules/settings/org/bank-accounts-page";
 //---
 
 const modulePath = "settings/org";
@@ -74,6 +75,11 @@ const OrgRoutes = ({ path }) => {
         path={`${path}/${modulePath}/role-duties`}
         exact
         render={() => <RoleDutiesPage pageName="RoleDuties" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/bank-accounts`}
+        exact
+        render={() => <BankAccountsPage pageName="BankAccounts" />}
       />
       <Redirect to="/not-found" />
     </Switch>

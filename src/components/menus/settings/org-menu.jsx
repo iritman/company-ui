@@ -9,6 +9,7 @@ import {
   FaIdCard as EmployeeIcon,
   FaUsersCog as AgentIcon,
   FaTasks as RoleDutyIcon,
+  FaWallet as WalletIcon,
 } from "react-icons/fa";
 import { BiUnite as DepartmentIcon } from "react-icons/bi";
 import {
@@ -93,6 +94,11 @@ const mapper = (pageID) => {
     case 29:
       link = "role-duties";
       icon = <RoleDutyIcon style={{ color: Colors.red[6] }} size={iconSize} />;
+      break;
+
+    case 72:
+      link = "bank-accounts";
+      icon = <WalletIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
     default:

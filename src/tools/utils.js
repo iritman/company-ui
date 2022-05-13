@@ -539,6 +539,20 @@ export function getMonthList() {
   ];
 }
 
+export function textSeparator(text, len, separator) {
+  let result = "";
+
+  for (let index = 0; index < text.length; index++) {
+    result = `${result}${text[index]}`;
+
+    if ((index + 1) % len === 0 && index < text.length - 1) {
+      result = result + separator;
+    }
+  }
+
+  return result;
+}
+
 const methods = {
   addFirstZero,
   farsiNum,
@@ -580,6 +594,7 @@ const methods = {
   checkNationalCode,
   minToTime,
   getMonthList,
+  textSeparator,
 };
 
 export default methods;

@@ -316,6 +316,10 @@ class Words extends Component {
   static under_supervision_tasks = "تحت نظارت";
   static finished_supervision_tasks = "نظارت شده";
   static banks = "بانک ها";
+  static bank = "بانک";
+  static account_no = "شماره حساب";
+  static sheba_no = "شماره شبا";
+  static bank_accounts = "حساب های بانکی";
 
   static childs_count = "تعداد فرزندان";
   static relative_tel_role_1 = "عنوان وابسته 1";
