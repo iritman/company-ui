@@ -15,6 +15,7 @@ import UserOrgMenu from "../components/menus/official/user-org-menu";
 import UserTimexMenu from "../components/menus/official/user-timex-menu";
 import UserTransmissionMenu from "../components/menus/official/user-transmission-menu";
 import UserTasksMenu from "../components/menus/official/user-tasks-menu";
+import UserProcessesMenu from "../components/menus/official/user-processes-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -57,6 +58,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/tasks`}
         component={UserTasksMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/official/processes`}
+        component={UserProcessesMenu}
       />
       {/* ----------- */}
 

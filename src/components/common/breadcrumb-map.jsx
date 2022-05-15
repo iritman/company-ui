@@ -19,6 +19,7 @@ const BreadcrumbMap = ({ location }) => {
     "/home/official/timex": Words.timex,
     "/home/official/transmission": Words.transmission,
     "/home/official/tasks": Words.tasks,
+    "/home/official/processes": Words.processes,
   };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);

@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 import { FaCar as CarIcon, FaTasks as TasksIcon } from "react-icons/fa";
+import { RiFlowChart as ProcessIcon } from "react-icons/ri";
 import {
   AiOutlineFieldTime as TimexSettingsIcon,
   AiFillBank as OrgIcon,
@@ -49,6 +50,12 @@ const mapper = (moduleID) => {
       link = "tasks";
       icon = <TasksIcon {...iconProps} />;
       backColor = Colors.purple[3];
+      break;
+
+    case 10:
+      link = "processes";
+      icon = <ProcessIcon {...iconProps} />;
+      backColor = Colors.red[3];
       break;
 
     default:

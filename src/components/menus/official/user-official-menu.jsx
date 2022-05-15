@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
 import { FaCar as CarIcon, FaTasks as TasksIcon } from "react-icons/fa";
+import { RiFlowChart as ProcessIcon } from "react-icons/ri";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiFillBank as OrgIcon,
@@ -45,6 +46,11 @@ const mapper = (moduleID) => {
     case 9:
       link = "tasks";
       icon = <TasksIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
+      break;
+
+    case 10:
+      link = "processes";
+      icon = <ProcessIcon style={{ color: Colors.red[6] }} size={iconSize} />;
       break;
 
     default:

@@ -6,6 +6,7 @@ import UserOrgRoutes from "./user-org-routes";
 import UserTimexRoutes from "./user-timex-routes";
 import UserTransmissionRoutes from "./user-transmission-routes";
 import UserTasksRoutes from "./user-tasks-routes";
+import UserProcessesRoutes from "./user-processes-routes";
 //---
 
 const UserOfficialRoutes = ({ path }) => {
@@ -31,6 +32,10 @@ const UserOfficialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/tasks`}
         render={() => <UserTasksRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/processes`}
+        render={() => <UserProcessesRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>
