@@ -24,7 +24,7 @@ const { Text } = Typography;
 
 const schema = {
   CardexID: Joi.number().required(),
-  MemberID: Joi.number().required(),
+  MemberID: Joi.number().min(1).required(),
   CardexYear: Joi.number().min(1400).required().label(Words.year),
   CapacityInMin: Joi.number()
     .min(1)
@@ -91,9 +91,10 @@ const VacationCardexModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       setMembers(Members);
 
       if (selectedObject === null) {
-        record.CapacityInMin = MaxCapacityInMin;
-        setRecord(record);
-        loadFieldsValue(formRef, record);
+        const rec = { ...initRecord };
+        rec.CapacityInMin = MaxCapacityInMin;
+        setRecord(rec);
+        loadFieldsValue(formRef, rec);
       }
     } catch (err) {
       handleError(err);
