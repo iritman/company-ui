@@ -4,6 +4,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 //---
 import UserProcessesDashboard from "../../components/app-modules/official/processes/user-processes-dashboard";
 import UserDismissalsPage from "../../components/app-modules/official/processes/dismissals/user-dismissals-page";
+import UserOfficialCheckDismissalsPage from "../../components/app-modules/official/processes/dismissals/user-official-check-dismissals-page";
 // import UserDutiesPage from "../../components/app-modules/official/org/user-duties-page";
 // import UserMembersDutiesPage from "../../components/app-modules/official/org/user-members-duties-page";
 //---
@@ -23,16 +24,14 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => <UserDismissalsPage pageName="user-Dismissals" />}
       />
-      {/* <ProtectedRoute
-        path={`${path}/${modulePath}/my-duties`}
-        exact
-        render={() => <UserDutiesPage pageName="user-Duties" />}
-      />
       <ProtectedRoute
-        path={`${path}/${modulePath}/members-duties`}
+        path={`${path}/${modulePath}/dismissals-check-official`}
         exact
-        render={() => <UserMembersDutiesPage pageName="user-MembersDuties" />}
-      /> */}
+        render={() => (
+          <UserOfficialCheckDismissalsPage pageName="user-DismissalsCheckOfficial" />
+        )}
+      />
+
       <Redirect to="/not-found" />
     </Switch>
   );

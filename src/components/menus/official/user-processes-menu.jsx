@@ -55,6 +55,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 98:
+      link = "dismissals-check-official";
+      icon = (
+        <RemoveUserIcon style={{ color: Colors.red[6] }} size={iconSize} />
+      );
+      break;
+
     case 92:
       link = "edu-funds";
       icon = <FundIcon style={{ color: Colors.green[6] }} size={iconSize} />;
@@ -153,9 +160,7 @@ const tabs = [
         icon={OfficialIcon}
       />
     ),
-    pages: [
-      // { pageName: "user-OfficialCheckExtraWorkRequests" },
-    ],
+    pages: [{ pageName: "user-DismissalsCheckOfficial" }],
   },
 ];
 
