@@ -131,6 +131,15 @@ const UserDismissalsPage = ({ pageName }) => {
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
+
+    const inprogress_dismissals_filter = {
+      MemberID: 0,
+      FinalStatusID: 1,
+      FromDate: "",
+      ToDate: "",
+    };
+
+    await handleAdvancedSearch(inprogress_dismissals_filter);
   });
 
   const {

@@ -100,7 +100,7 @@ const UserDismissalsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
       disabled={validateForm({ record, schema }) && true}
       searchModal
       onClear={clearRecord}
-      onSubmit={() => onOk(record)}
+      onSubmit={async () => await onOk(record)}
       onCancel={onCancel}
       width={750}
     >
