@@ -119,8 +119,6 @@ const UserOfficialCheckVacationCardexModal = ({
 
   const isEdit = selectedObject !== null;
 
-  console.log(record);
-
   return (
     <ModalWindow
       isOpen={isOpen}
