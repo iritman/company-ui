@@ -29,7 +29,11 @@ const schema = {
   FinishDate: Joi.string().required(),
   StartTime: Joi.string().required().allow(""),
   FinishTime: Joi.string().required().allow(""),
-  DetailsText: Joi.string().allow("").max(512),
+  DetailsText: Joi.string()
+    .allow("")
+    .max(512)
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.descriptions),
 };
 
 const initRecord = {

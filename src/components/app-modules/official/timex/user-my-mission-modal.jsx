@@ -27,14 +27,23 @@ const schema = {
   MissionTypeID: Joi.number().min(1).required(),
   TargetID: Joi.number().min(1).required(),
   SwapMemberID: Joi.number().min(1).required(),
-  Subject: Joi.string().min(5).max(100).required().label(Words.mission_subject),
+  Subject: Joi.string()
+    .min(5)
+    .max(100)
+    .required()
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.mission_subject),
   NeedVehicle: Joi.boolean(),
   NeedHoteling: Joi.boolean(),
   StartDate: Joi.string().required(),
   FinishDate: Joi.string().required(),
   StartTime: Joi.string().required().allow(""),
   FinishTime: Joi.string().required().allow(""),
-  DetailsText: Joi.string().allow("").max(512),
+  DetailsText: Joi.string()
+    .allow("")
+    .max(512)
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.descriptions),
 };
 
 const initRecord = {
