@@ -226,7 +226,7 @@ const UserOfficialCheckEduFundsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.edu_fund}
+            title={Words.edu_fund_official}
             sheets={getSheets(records)}
             fileName="EduFunds"
             onSearch={() => setShowSearchModal(true)}

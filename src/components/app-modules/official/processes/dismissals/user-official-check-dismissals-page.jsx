@@ -234,7 +234,7 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.dismissal}
+            title={Words.dismissal_official}
             sheets={getSheets(records)}
             fileName="Dismissals"
             onSearch={() => setShowSearchModal(true)}

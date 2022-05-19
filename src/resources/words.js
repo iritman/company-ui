@@ -324,7 +324,9 @@ class Words extends Component {
 
   static processes = "فرآیندها";
   static dismissal = "اخراج";
+  static dismissal_official = "اخراج (اداری)";
   static edu_fund = "کمک هزینه تحصیلی";
+  static edu_fund_official = "کمک هزینه تحصیلی (اداری)";
   static learning = "آموزش";
   static checkout = "تسویه حساب";
   static employment = "استخدام";
