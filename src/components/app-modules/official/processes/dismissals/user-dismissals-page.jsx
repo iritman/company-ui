@@ -157,15 +157,11 @@ const UserDismissalsPage = ({ pageName }) => {
 
   const getOperationalButtons = (record) => {
     return (
-      <>
-        {record.RegTypeID !== 1 && (
-          <DetailsButton
-            record={record}
-            setSelectedObject={setSelectedObject}
-            setShowDetails={setShowDetails}
-          />
-        )}
-      </>
+      <DetailsButton
+        record={record}
+        setSelectedObject={setSelectedObject}
+        setShowDetails={setShowDetails}
+      />
     );
   };
 

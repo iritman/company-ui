@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/official/processes/user-dismissals";
+const apiEndpoint = apiUrl + "/official/processes/user-edu-funds";
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);

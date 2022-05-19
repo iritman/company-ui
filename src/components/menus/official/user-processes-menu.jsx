@@ -67,6 +67,11 @@ const mapper = (pageID) => {
       icon = <FundIcon style={{ color: Colors.green[6] }} size={iconSize} />;
       break;
 
+    case 99:
+      link = "edu-funds-check-official";
+      icon = <FundIcon style={{ color: Colors.green[6] }} size={iconSize} />;
+      break;
+
     case 93:
       link = "learnings";
       icon = <BoardIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
@@ -123,9 +128,7 @@ const tabs = [
         icon={UserIcon}
       />
     ),
-    pages: [
-      // { pageName: "user-MyRegedCards" },
-    ],
+    pages: [{ pageName: "user-EduFunds" }],
   },
   {
     name: "security-cartable",
@@ -160,7 +163,10 @@ const tabs = [
         icon={OfficialIcon}
       />
     ),
-    pages: [{ pageName: "user-DismissalsCheckOfficial" }],
+    pages: [
+      { pageName: "user-DismissalsCheckOfficial" },
+      { pageName: "user-EduFundsCheckOfficial" },
+    ],
   },
 ];
 

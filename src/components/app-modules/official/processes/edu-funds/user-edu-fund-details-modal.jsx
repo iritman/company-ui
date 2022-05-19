@@ -5,9 +5,7 @@ import {
   Row,
   Col,
   Typography,
-  Alert,
   Descriptions,
-  Space,
   Divider,
   Tag,
 } from "antd";
@@ -18,9 +16,11 @@ import {
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import MemberProfileImage from "./../../../../common/member-profile-image";
-import { dismissalResponseFilesUrl } from "./../../../../../config.json";
-import ReportsModal from "./user-dismissal-reports-modal";
+import {
+  eduFundResponseFilesUrl,
+  eduFundFilesUrl,
+} from "./../../../../../config.json";
+import ReportsModal from "./user-edu-fund-reports-modal";
 
 const { Text } = Typography;
 
@@ -48,26 +48,23 @@ const getFinalStatusTitle = (record) => {
   return title;
 };
 
-const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
+const UserEduFundDetailsModal = ({ eduFund, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
   const [showReportsModal, setShowReportsModal] = useState(false);
 
   const {
-    DismissalID,
-    DismissalFirstName,
-    DismissalLastName,
-    DismissalPicFileName,
-    RegFirstName,
-    RegLastName,
+    FundID,
+    EduLevelTitle,
     DetailsText,
     FinalStatusID,
     RegDate,
     RegTime,
     Files,
+    ResponseFiles,
     Actions,
     Reports,
-  } = dismissal;
+  } = eduFund;
 
   return (
     <>
@@ -103,23 +100,6 @@ const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
           >
             <Row gutter={[10, 10]}>
               <Col xs={24}>
-                <Alert
-                  message={
-                    <Space>
-                      <MemberProfileImage
-                        fileName={DismissalPicFileName}
-                        size="small"
-                      />
-
-                      <Text
-                        style={{ fontSize: 14 }}
-                      >{`${DismissalFirstName} ${DismissalLastName}`}</Text>
-                    </Space>
-                  }
-                  type="info"
-                />
-              </Col>
-              <Col xs={24}>
                 <Descriptions
                   bordered
                   column={{
@@ -132,14 +112,30 @@ const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
                 >
                   <Descriptions.Item label={Words.id}>
                     <Text style={{ color: valueColor }}>
-                      {utils.farsiNum(`#${DismissalID}`)}
+                      {utils.farsiNum(`#${FundID}`)}
                     </Text>
                   </Descriptions.Item>
                   <Descriptions.Item label={Words.status}>
-                    <Text style={{ color: getFinalStatusColor(dismissal) }}>
-                      {getFinalStatusTitle(dismissal)}
+                    <Text style={{ color: getFinalStatusColor(eduFund) }}>
+                      {getFinalStatusTitle(eduFund)}
                     </Text>
                   </Descriptions.Item>
+
+                  <Descriptions.Item label={Words.edu_level}>
+                    <Text style={{ color: Colors.green[7] }}>
+                      {EduLevelTitle}
+                    </Text>
+                  </Descriptions.Item>
+                  <Descriptions.Item label={Words.reg_date_time}>
+                    <Text style={{ color: valueColor }}>
+                      {utils.farsiNum(
+                        `${utils.slashDate(RegDate)} - ${utils.colonTime(
+                          RegTime
+                        )}`
+                      )}
+                    </Text>
+                  </Descriptions.Item>
+
                   {DetailsText.length > 0 && (
                     <Descriptions.Item label={Words.descriptions} span={2}>
                       <Text
@@ -152,21 +148,31 @@ const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
                       </Text>
                     </Descriptions.Item>
                   )}
-                  <Descriptions.Item label={Words.reg_member}>
-                    <Text style={{ color: valueColor }}>
-                      {`${RegFirstName} ${RegLastName}`}
-                    </Text>
-                  </Descriptions.Item>
-                  <Descriptions.Item label={Words.reg_date_time}>
-                    <Text style={{ color: valueColor }}>
-                      {utils.farsiNum(
-                        `${utils.slashDate(RegDate)} - ${utils.colonTime(
-                          RegTime
-                        )}`
-                      )}
-                    </Text>
-                  </Descriptions.Item>
+
+                  {Files.length > 0 && (
+                    <Descriptions.Item label={Words.attached_files} span={2}>
+                      <Col xs={24}>
+                        {Files.map((f) => (
+                          <a
+                            key={f.FileID}
+                            href={`${eduFundFilesUrl}/${f.FileName}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Tag
+                              color="cyan"
+                              icon={<AttachedFileIcon />}
+                              style={{ margin: 5 }}
+                            >
+                              {Words.attached_file}
+                            </Tag>
+                          </a>
+                        ))}
+                      </Col>
+                    </Descriptions.Item>
+                  )}
                 </Descriptions>
+
                 {FinalStatusID > 1 && (
                   <>
                     <Divider orientation="right" plain>
@@ -215,16 +221,16 @@ const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
                           </Descriptions.Item>
                         </>
                       )}
-                      {Files.length > 0 && (
+                      {ResponseFiles.length > 0 && (
                         <Descriptions.Item
                           label={Words.attached_files}
                           span={2}
                         >
                           <Col xs={24}>
-                            {Files.map((f) => (
+                            {ResponseFiles.map((f) => (
                               <a
                                 key={f.FileID}
-                                href={`${dismissalResponseFilesUrl}/${f.FileName}`}
+                                href={`${eduFundResponseFilesUrl}/${f.FileName}`}
                                 target="_blank"
                                 rel="noreferrer"
                               >
@@ -253,11 +259,11 @@ const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
         <ReportsModal
           isOpen={showReportsModal}
           onCancel={() => setShowReportsModal(false)}
-          dismissal={dismissal}
+          eduFund={eduFund}
         />
       )}
     </>
   );
 };
 
-export default UserDismissalDetailsModal;
+export default UserEduFundDetailsModal;

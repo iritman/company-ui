@@ -5,8 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import UserProcessesDashboard from "../../components/app-modules/official/processes/user-processes-dashboard";
 import UserDismissalsPage from "../../components/app-modules/official/processes/dismissals/user-dismissals-page";
 import UserOfficialCheckDismissalsPage from "../../components/app-modules/official/processes/dismissals/user-official-check-dismissals-page";
-// import UserDutiesPage from "../../components/app-modules/official/org/user-duties-page";
-// import UserMembersDutiesPage from "../../components/app-modules/official/org/user-members-duties-page";
+import UserEduFundsPage from "../../components/app-modules/official/processes/edu-funds/user-edu-funds-page";
 //---
 
 const modulePath = "official/processes";
@@ -31,7 +30,11 @@ const UserOrgRoutes = ({ path }) => {
           <UserOfficialCheckDismissalsPage pageName="user-DismissalsCheckOfficial" />
         )}
       />
-
+      <ProtectedRoute
+        path={`${path}/${modulePath}/edu-funds`}
+        exact
+        render={() => <UserEduFundsPage pageName="user-EduFunds" />}
+      />
       <Redirect to="/not-found" />
     </Switch>
   );

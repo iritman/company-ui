@@ -1,9 +1,9 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, message } from "antd";
+import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-official-check-dismissals-service";
+import service from "../../../../../services/official/processes/user-edu-funds-service";
 import {
   getSorter,
   checkAccess,
@@ -13,9 +13,9 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import DismissalModal from "./user-dismissal-modal";
-import SearchModal from "./user-official-check-dismissals-search-modal";
-import DetailsModal from "./user-official-check-dismissal-details-modal";
+import EduFundModal from "./user-edu-fund-modal";
+import SearchModal from "./user-edu-funds-search-modal";
+import DetailsModal from "./user-edu-fund-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -47,17 +47,15 @@ const getFinalStatusTitle = (record) => {
 
 const getSheets = (records) => [
   {
-    title: "Dismissals",
+    title: "EduFunds",
     data: records,
     columns: [
-      { label: Words.id, value: "DismissalID" },
-      { label: Words.first_name, value: "DismissalFirstName" },
-      { label: Words.last_name, value: "DismissalLastName" },
-      { label: Words.status, value: (record) => getFinalStatusTitle(record) },
+      { label: Words.id, value: "FundID" },
       {
-        label: Words.reg_member,
-        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
+        label: Words.edu_level,
+        value: "EduLevelTitle",
       },
+      { label: Words.status, value: (record) => getFinalStatusTitle(record) },
       {
         label: Words.reg_date,
         value: (record) => utils.slashDate(record.RegDate),
@@ -76,30 +74,18 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "DismissalID",
-    sorter: getSorter("DismissalID"),
-    render: (DismissalID) => <Text>{utils.farsiNum(`${DismissalID}`)}</Text>,
+    dataIndex: "FundID",
+    sorter: getSorter("FundID"),
+    render: (FundID) => <Text>{utils.farsiNum(`${FundID}`)}</Text>,
   },
   {
-    title: Words.employee,
+    title: Words.edu_level,
     width: 200,
     align: "center",
-    sorter: getSorter("DismissalLastName"),
-    render: (record) => (
-      <Text
-        style={{ color: Colors.blue[7] }}
-      >{`${record.DismissalFirstName} ${record.DismissalLastName}`}</Text>
-    ),
-  },
-  {
-    title: Words.reg_member,
-    width: 200,
-    align: "center",
-    sorter: getSorter("RegLastName"),
-    render: (record) => (
-      <Text
-        style={{ color: Colors.cyan[6] }}
-      >{`${record.RegFirstName} ${record.RegLastName}`}</Text>
+    dataIndex: "EduLevelTitle",
+    sorter: getSorter("EduLevelTitle"),
+    render: (EduLevelTitle) => (
+      <Text style={{ color: Colors.blue[7] }}>{EduLevelTitle}</Text>
     ),
   },
   {
@@ -114,12 +100,12 @@ const baseColumns = [
   },
 ];
 
-const handleCheckEditable = (row) => false;
-const handleCheckDeletable = (row) => false;
+const handleCheckEditable = (row) => row.Editable;
+const handleCheckDeletable = (row) => row.Deletable;
 
-const recordID = "DismissalID";
+const recordID = "FundID";
 
-const UserOfficialCheckDismissalsPage = ({ pageName }) => {
+const UseEduFundsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -143,19 +129,19 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
 
-    const inprogress_dismissals_filter = {
-      DismissalMemberID: 0,
-      RegMemberID: 0,
+    const inprogress_edu_funds_filter = {
+      EduLevelID: 0,
       FinalStatusID: 1,
       FromDate: "",
       ToDate: "",
     };
 
-    await handleAdvancedSearch(inprogress_dismissals_filter);
+    await handleAdvancedSearch(inprogress_edu_funds_filter);
   });
 
   const {
     handleCloseModal,
+    handleAdd,
     handleEdit,
     handleDelete,
     handleSave,
@@ -194,47 +180,6 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
     setSearched(false);
   };
 
-  const handleSubmitResponse = (response) => {
-    const index = records.findIndex(
-      (r) => r.DismissalID === response.DismissalID
-    );
-    records[index] = response;
-    setRecords({ ...records });
-    setSelectedObject(response);
-  };
-
-  const handleRegReport = async (report) => {
-    const newReport = await service.saveReport(report);
-
-    const index = records.findIndex(
-      (r) => r.DismissalID === report.DismissalID
-    );
-
-    records[index].Reports = [...records[index].Reports, newReport];
-    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
-
-    setRecords([...records]);
-    setSelectedObject(records[index]);
-  };
-
-  const handleDeleteReport = async (report) => {
-    const data = await service.deleteReport(report.ReportID);
-
-    const index = records.findIndex(
-      (r) => r.DismissalID === report.DismissalID
-    );
-
-    records[index].Reports = records[index].Reports.filter(
-      (r) => r.ReportID !== report.ReportID
-    );
-    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
-
-    setRecords([...records]);
-    setSelectedObject(records[index]);
-
-    message.success(data.Message);
-  };
-
   //------
 
   return (
@@ -242,13 +187,13 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.dismissal}
+            title={Words.edu_fund}
             sheets={getSheets(records)}
-            fileName="Dismissals"
+            fileName="EduFunds"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={null}
+            onAdd={access?.CanAdd && handleAdd}
           />
 
           <Col xs={24}>
@@ -260,7 +205,7 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <DismissalModal
+        <EduFundModal
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
@@ -283,15 +228,12 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
-          onRegReport={handleRegReport}
-          onDeleteReport={handleDeleteReport}
-          onResponse={handleSubmitResponse}
           isOpen={showDetails}
-          dismissal={selectedObject}
+          eduFund={selectedObject}
         />
       )}
     </>
   );
 };
 
-export default UserOfficialCheckDismissalsPage;
+export default UseEduFundsPage;

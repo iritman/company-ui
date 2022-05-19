@@ -5,6 +5,9 @@
   "taskReportFilesUrl": "http://localhost:3030/static/task-report-files",
   "dismissalResponseFilesUrl": "http://localhost:3030/static/dismissal-response-files",
   "dismissalReportFilesUrl": "http://localhost:3030/static/dismissal-report-files",
+  "eduFundFilesUrl": "http://localhost:3030/static/edu-fund-files",
+  "eduFundResponseFilesUrl": "http://localhost:3030/static/edu-fund-response-files",
+  "eduFundReportFilesUrl": "http://localhost:3030/static/edu-fund-report-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -40,5 +43,23 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "dismissal-report-files"
+  },
+  "eduFundFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "edu-fund-files"
+  },
+  "eduFundResponseFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "edu-fund-response-files"
+  },
+  "eduFundReportFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "edu-fund-report-files"
   }
 }

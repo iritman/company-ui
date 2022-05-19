@@ -1,7 +1,8 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/official/processes/user-dismissals";
+const apiEndpoint =
+  apiUrl + "/official/processes/user-official-check-edu-funds";
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
@@ -16,13 +17,19 @@ async function searchData(filter) {
 }
 
 export async function saveData(record) {
-  const { data } = await http.post(`${apiEndpoint}`, record);
+  const { data } = await http.post(`${apiEndpoint}/response`, record);
 
   return data;
 }
 
-export async function deleteData(recordID) {
-  const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
+export async function saveReport(record) {
+  const { data } = await http.post(`${apiEndpoint}/report`, record);
+
+  return data;
+}
+
+export async function deleteReport(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
 
   return data;
 }
@@ -31,7 +38,8 @@ const service = {
   getParams,
   searchData,
   saveData,
-  deleteData,
+  saveReport,
+  deleteReport,
 };
 
 export default service;
