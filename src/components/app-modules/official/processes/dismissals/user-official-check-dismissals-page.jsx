@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import service from "../../../../../services/official/processes/user-official-check-dismissals-service";
@@ -221,13 +221,22 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
     setSelectedObject(records[index]);
   };
 
-  const handleDeleteReport = (reportID) => {
-    // const index = records.findIndex(
-    //   (r) => r.DismissalID === response.DismissalID
-    // );
-    // records[index] = response;
-    // setRecords({ ...records });
-    // setSelectedObject(response);
+  const handleDeleteReport = async (report) => {
+    const data = await service.deleteReport(report.ReportID);
+
+    const index = records.findIndex(
+      (r) => r.DismissalID === report.DismissalID
+    );
+
+    records[index].Reports = records[index].Reports.filter(
+      (r) => r.ReportID !== report.ReportID
+    );
+    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+
+    message.success(data.Message);
   };
 
   //------

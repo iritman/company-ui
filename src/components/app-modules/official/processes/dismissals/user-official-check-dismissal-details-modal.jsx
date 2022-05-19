@@ -56,6 +56,7 @@ const UserOfficialCheckDismissalDetailsModal = ({
   onOk,
   onResponse,
   onRegReport,
+  onDeleteReport,
 }) => {
   const valueColor = Colors.blue[7];
 
@@ -122,8 +123,6 @@ const UserOfficialCheckDismissalDetailsModal = ({
 
     return buttons;
   };
-
-  console.log(dismissal);
 
   return (
     <>
@@ -307,6 +306,7 @@ const UserOfficialCheckDismissalDetailsModal = ({
         <ReportsModal
           isOpen={showReportsModal}
           onRegReport={onRegReport}
+          onDeleteReport={onDeleteReport}
           onCancel={() => setShowReportsModal(false)}
           dismissal={dismissal}
         />

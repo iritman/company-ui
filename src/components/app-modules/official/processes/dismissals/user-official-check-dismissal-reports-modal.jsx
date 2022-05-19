@@ -164,17 +164,20 @@ const UserOfficialCheckDismissalReportsModal = ({
                         </Row>
                       }
                       action={
-                        report.IsDeletable && (
-                          <Popconfirm
-                            title={Words.questions.sure_to_delete_report}
-                            onConfirm={async () => await onDeleteReport(report)}
-                            okText={Words.yes}
-                            cancelText={Words.no}
-                            icon={<QuestionIcon style={{ color: "red" }} />}
-                          >
-                            <Button size="small" icon={<DeleteIcon />} />
-                          </Popconfirm>
-                        )
+                        <Popconfirm
+                          title={Words.questions.sure_to_delete_report}
+                          onConfirm={async () =>
+                            await onDeleteReport({
+                              ...report,
+                              DismissalID: dismissal.DismissalID,
+                            })
+                          }
+                          okText={Words.yes}
+                          cancelText={Words.no}
+                          icon={<QuestionIcon style={{ color: "red" }} />}
+                        >
+                          <Button size="small" icon={<DeleteIcon />} />
+                        </Popconfirm>
                       }
                     />
                   </Col>

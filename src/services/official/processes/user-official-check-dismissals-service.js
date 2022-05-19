@@ -28,18 +28,18 @@ export async function saveReport(record) {
   return data;
 }
 
-// export async function deleteReport(recordID) {
-//   const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
+export async function deleteReport(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
 
-//   return data;
-// }
+  return data;
+}
 
 const service = {
   getParams,
   searchData,
   saveData,
   saveReport,
-  //   deleteReport,
+  deleteReport,
 };
 
 export default service;
