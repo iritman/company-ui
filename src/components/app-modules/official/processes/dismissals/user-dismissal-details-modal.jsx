@@ -22,7 +22,7 @@ const getFinalStatusColor = (record) => {
   const { FinalStatusID } = record;
 
   if (FinalStatusID > 1) {
-    color = FinalStatusID === 1 ? Colors.green[6] : Colors.red[6];
+    color = FinalStatusID === 2 ? Colors.green[6] : Colors.red[6];
   }
 
   return color;
@@ -34,7 +34,7 @@ const getFinalStatusTitle = (record) => {
   const { FinalStatusID } = record;
 
   if (FinalStatusID > 1) {
-    title = FinalStatusID === 1 ? Words.accepted : Words.rejected;
+    title = FinalStatusID === 2 ? Words.accepted : Words.rejected;
   }
 
   return title;
@@ -62,8 +62,8 @@ const UserDismissalDetailsModal = ({ dismissal, isOpen, onOk }) => {
       centered={true}
       title={Words.more_details}
       footer={[
-        <Button key="submit-button" type="primary" onClick={onOk}>
-          {Words.confirm}
+        <Button key="close-button" onClick={onOk}>
+          {Words.close}
         </Button>,
       ]}
       onCancel={onOk}

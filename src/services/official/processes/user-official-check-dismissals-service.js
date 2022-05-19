@@ -16,11 +16,11 @@ async function searchData(filter) {
   return data;
 }
 
-// export async function saveData(record) {
-//   const { data } = await http.post(`${apiEndpoint}`, record);
+export async function saveData(record) {
+  const { data } = await http.post(`${apiEndpoint}/response`, record);
 
-//   return data;
-// }
+  return data;
+}
 
 // export async function deleteData(recordID) {
 //   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
@@ -52,7 +52,7 @@ async function searchData(filter) {
 const service = {
   getParams,
   searchData,
-  //   saveData,
+  saveData,
   //   deleteData,
   //   saveReport,
   //   deleteReport,

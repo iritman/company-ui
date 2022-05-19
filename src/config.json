@@ -3,6 +3,8 @@
   "fileBasicUrl": "http://localhost:3030/static",
   "taskFilesUrl": "http://localhost:3030/static/task-files",
   "taskReportFilesUrl": "https://api.seentra.ir/static/task-report-files",
+  "dismissalResponseFilesUrl": "http://localhost:3030/static/dismissal-response-files",
+  "dismissalReportFilesUrl": "https://api.seentra.ir/staticdismissal-report-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -26,5 +28,11 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "task-report-files"
+  },
+  "dismissalResponseFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "dismissal-response-files"
   }
 }

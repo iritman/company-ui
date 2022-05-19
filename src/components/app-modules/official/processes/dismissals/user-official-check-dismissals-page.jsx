@@ -15,7 +15,7 @@ import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
 import DismissalModal from "./user-dismissal-modal";
 import SearchModal from "./user-official-check-dismissals-search-modal";
-import DetailsModal from "./user-dismissal-details-modal";
+import DetailsModal from "./user-official-check-dismissal-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -27,7 +27,7 @@ const getFinalStatusColor = (record) => {
   const { FinalStatusID } = record;
 
   if (FinalStatusID > 1) {
-    color = FinalStatusID === 1 ? Colors.green[6] : Colors.red[6];
+    color = FinalStatusID === 2 ? Colors.green[6] : Colors.red[6];
   }
 
   return color;
@@ -39,7 +39,7 @@ const getFinalStatusTitle = (record) => {
   const { FinalStatusID } = record;
 
   if (FinalStatusID > 1) {
-    title = FinalStatusID === 1 ? Words.accepted : Words.rejected;
+    title = FinalStatusID === 2 ? Words.accepted : Words.rejected;
   }
 
   return title;
@@ -198,6 +198,15 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleSubmitResponse = (response) => {
+    const index = records.findIndex(
+      (r) => r.DismissalID === response.DismissalID
+    );
+    records[index] = response;
+    setRecords({ ...records });
+    setSelectedObject(response);
+  };
+
   //------
 
   return (
@@ -246,6 +255,7 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onResponse={handleSubmitResponse}
           isOpen={showDetails}
           dismissal={selectedObject}
         />

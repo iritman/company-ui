@@ -554,6 +554,8 @@ class Words extends Component {
     submit_report_in_done_task_failed:
       "ثبت گزارش در وظیفه خاتمه یافته امکان پذیر نمی باشد",
     not_any_tasks_founded: "وظیفه ای یافت نشد",
+    submit_response_in_finished_dismissal_request_failed:
+      "قبلا به این درخواست پاسخ داده شده است",
   };
 
   static questions = {
