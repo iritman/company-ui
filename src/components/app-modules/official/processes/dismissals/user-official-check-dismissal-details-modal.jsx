@@ -20,11 +20,9 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import MemberProfileImage from "./../../../../common/member-profile-image";
 import ResponseModal from "./user-official-check-reg-response-modal";
+import ReportsModal from "./user-official-check-dismissal-reports-modal";
 import service from "../../../../../services/official/processes/user-official-check-dismissals-service";
-import {
-  dismissalResponseFilesUrl,
-  dismissalReportFilesUrl,
-} from "./../../../../../config.json";
+import { dismissalResponseFilesUrl } from "./../../../../../config.json";
 
 const { Text } = Typography;
 
@@ -57,10 +55,12 @@ const UserOfficialCheckDismissalDetailsModal = ({
   isOpen,
   onOk,
   onResponse,
+  onRegReport,
 }) => {
   const valueColor = Colors.blue[7];
 
   const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showReportsModal, setShowReportsModal] = useState(false);
 
   const {
     DismissalID,
@@ -110,7 +110,7 @@ const UserOfficialCheckDismissalDetailsModal = ({
         key="reports-button"
         type="primary"
         danger
-        onClick={onOk}
+        onClick={() => setShowReportsModal(true)}
         icon={<ReportIcon />}
       >
         {`${Words.reports}${
@@ -299,6 +299,15 @@ const UserOfficialCheckDismissalDetailsModal = ({
           isOpen={showResponseModal}
           onOk={handleSubmitResponse}
           onCancel={() => setShowResponseModal(false)}
+          dismissal={dismissal}
+        />
+      )}
+
+      {showReportsModal && (
+        <ReportsModal
+          isOpen={showReportsModal}
+          onRegReport={onRegReport}
+          onCancel={() => setShowReportsModal(false)}
           dismissal={dismissal}
         />
       )}

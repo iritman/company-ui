@@ -207,6 +207,29 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
     setSelectedObject(response);
   };
 
+  const handleRegReport = async (report) => {
+    const newReport = await service.saveReport(report);
+
+    const index = records.findIndex(
+      (r) => r.DismissalID === report.DismissalID
+    );
+
+    records[index].Reports = [...records[index].Reports, newReport];
+    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+  };
+
+  const handleDeleteReport = (reportID) => {
+    // const index = records.findIndex(
+    //   (r) => r.DismissalID === response.DismissalID
+    // );
+    // records[index] = response;
+    // setRecords({ ...records });
+    // setSelectedObject(response);
+  };
+
   //------
 
   return (
@@ -255,6 +278,8 @@ const UserOfficialCheckDismissalsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onRegReport={handleRegReport}
+          onDeleteReport={handleDeleteReport}
           onResponse={handleSubmitResponse}
           isOpen={showDetails}
           dismissal={selectedObject}
