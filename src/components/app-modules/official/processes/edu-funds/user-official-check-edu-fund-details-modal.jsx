@@ -20,9 +20,12 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import MemberProfileImage from "./../../../../common/member-profile-image";
 import ResponseModal from "./user-official-check-reg-response-modal";
-import ReportsModal from "./user-official-check-dismissal-reports-modal";
-import service from "../../../../../services/official/processes/user-official-check-dismissals-service";
-import { dismissalResponseFilesUrl } from "./../../../../../config.json";
+import ReportsModal from "./user-official-check-edu-fund-reports-modal";
+import service from "../../../../../services/official/processes/user-official-check-edu-funds-service";
+import {
+  eduFundFilesUrl,
+  eduFundResponseFilesUrl,
+} from "./../../../../../config.json";
 
 const { Text } = Typography;
 
@@ -50,8 +53,8 @@ const getFinalStatusTitle = (record) => {
   return title;
 };
 
-const UserOfficialCheckDismissalDetailsModal = ({
-  dismissal,
+const UserOfficialCheckEduFundDetailsModal = ({
+  eduFund,
   isOpen,
   onOk,
   onResponse,
@@ -64,20 +67,20 @@ const UserOfficialCheckDismissalDetailsModal = ({
   const [showReportsModal, setShowReportsModal] = useState(false);
 
   const {
-    DismissalID,
-    DismissalFirstName,
-    DismissalLastName,
-    DismissalPicFileName,
+    FundID,
     RegFirstName,
     RegLastName,
+    RegPicFileName,
+    EduLevelTitle,
     DetailsText,
     FinalStatusID,
     RegDate,
     RegTime,
     Actions,
     Files,
+    ResponseFiles,
     Reports,
-  } = dismissal;
+  } = eduFund;
 
   const handleSubmitResponse = async (response) => {
     const data = await service.saveData(response);
@@ -93,7 +96,7 @@ const UserOfficialCheckDismissalDetailsModal = ({
     ];
 
     // if in progress
-    if (dismissal?.FinalStatusID === 1) {
+    if (eduFund?.FinalStatusID === 1) {
       buttons = [
         <Button
           key="submit-button"
@@ -147,13 +150,13 @@ const UserOfficialCheckDismissalDetailsModal = ({
                   message={
                     <Space>
                       <MemberProfileImage
-                        fileName={DismissalPicFileName}
+                        fileName={RegPicFileName}
                         size="small"
                       />
 
                       <Text
                         style={{ fontSize: 14 }}
-                      >{`${DismissalFirstName} ${DismissalLastName}`}</Text>
+                      >{`${RegFirstName} ${RegLastName}`}</Text>
                     </Space>
                   }
                   type="info"
@@ -172,14 +175,27 @@ const UserOfficialCheckDismissalDetailsModal = ({
                 >
                   <Descriptions.Item label={Words.id}>
                     <Text style={{ color: valueColor }}>
-                      {utils.farsiNum(`#${DismissalID}`)}
+                      {utils.farsiNum(`#${FundID}`)}
                     </Text>
                   </Descriptions.Item>
                   <Descriptions.Item label={Words.status}>
-                    <Text style={{ color: getFinalStatusColor(dismissal) }}>
-                      {getFinalStatusTitle(dismissal)}
+                    <Text style={{ color: getFinalStatusColor(eduFund) }}>
+                      {getFinalStatusTitle(eduFund)}
                     </Text>
                   </Descriptions.Item>
+                  <Descriptions.Item label={Words.edu_level}>
+                    <Text style={{ color: valueColor }}>{EduLevelTitle}</Text>
+                  </Descriptions.Item>
+                  <Descriptions.Item label={Words.reg_date_time}>
+                    <Text style={{ color: valueColor }}>
+                      {utils.farsiNum(
+                        `${utils.slashDate(RegDate)} - ${utils.colonTime(
+                          RegTime
+                        )}`
+                      )}
+                    </Text>
+                  </Descriptions.Item>
+
                   {DetailsText.length > 0 && (
                     <Descriptions.Item label={Words.descriptions} span={2}>
                       <Text
@@ -192,20 +208,29 @@ const UserOfficialCheckDismissalDetailsModal = ({
                       </Text>
                     </Descriptions.Item>
                   )}
-                  <Descriptions.Item label={Words.reg_member}>
-                    <Text style={{ color: valueColor }}>
-                      {`${RegFirstName} ${RegLastName}`}
-                    </Text>
-                  </Descriptions.Item>
-                  <Descriptions.Item label={Words.reg_date_time}>
-                    <Text style={{ color: valueColor }}>
-                      {utils.farsiNum(
-                        `${utils.slashDate(RegDate)} - ${utils.colonTime(
-                          RegTime
-                        )}`
-                      )}
-                    </Text>
-                  </Descriptions.Item>
+
+                  {Files.length > 0 && (
+                    <Descriptions.Item label={Words.attached_files} span={2}>
+                      <Col xs={24}>
+                        {Files.map((f) => (
+                          <a
+                            key={f.FileID}
+                            href={`${eduFundFilesUrl}/${f.FileName}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Tag
+                              color="cyan"
+                              icon={<AttachedFileIcon />}
+                              style={{ margin: 5 }}
+                            >
+                              {Words.attached_file}
+                            </Tag>
+                          </a>
+                        ))}
+                      </Col>
+                    </Descriptions.Item>
+                  )}
                 </Descriptions>
                 {FinalStatusID > 1 && (
                   <>
@@ -255,16 +280,16 @@ const UserOfficialCheckDismissalDetailsModal = ({
                           </Descriptions.Item>
                         </>
                       )}
-                      {Files.length > 0 && (
+                      {ResponseFiles.length > 0 && (
                         <Descriptions.Item
                           label={Words.attached_files}
                           span={2}
                         >
                           <Col xs={24}>
-                            {Files.map((f) => (
+                            {ResponseFiles.map((f) => (
                               <a
                                 key={f.FileID}
-                                href={`${dismissalResponseFilesUrl}/${f.FileName}`}
+                                href={`${eduFundResponseFilesUrl}/${f.FileName}`}
                                 target="_blank"
                                 rel="noreferrer"
                               >
@@ -294,7 +319,7 @@ const UserOfficialCheckDismissalDetailsModal = ({
           isOpen={showResponseModal}
           onOk={handleSubmitResponse}
           onCancel={() => setShowResponseModal(false)}
-          dismissal={dismissal}
+          eduFund={eduFund}
         />
       )}
 
@@ -304,11 +329,11 @@ const UserOfficialCheckDismissalDetailsModal = ({
           onRegReport={onRegReport}
           onDeleteReport={onDeleteReport}
           onCancel={() => setShowReportsModal(false)}
-          dismissal={dismissal}
+          eduFund={eduFund}
         />
       )}
     </>
   );
 };
 
-export default UserOfficialCheckDismissalDetailsModal;
+export default UserOfficialCheckEduFundDetailsModal;

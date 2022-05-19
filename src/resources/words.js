@@ -556,6 +556,8 @@ class Words extends Component {
     not_any_tasks_founded: "وظیفه ای یافت نشد",
     submit_response_in_finished_dismissal_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
+    submit_response_in_finished_edu_fund_request_failed:
+      "قبلا به این درخواست پاسخ داده شده است",
   };
 
   static questions = {
