@@ -19,7 +19,10 @@ import service from "../../../../../services/official/processes/user-edu-funds-s
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import InputItem from "../../../../form-controls/input-item";
 import FileUploader from "../../../../common/file-uploader";
-import { eduFundFileConfig as fileConfig } from "./../../../../../config.json";
+import {
+  eduFundFilesUrl,
+  eduFundFileConfig as fileConfig,
+} from "./../../../../../config.json";
 import { onUpload } from "../../../../../tools/upload-tools";
 
 const schema = {
@@ -44,14 +47,6 @@ const initRecord = {
 const formRef = React.createRef();
 
 const UserEduFundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
-  // const [record, setRecord] = useState({
-  //   DismissalID: 0,
-  //   IsAccepted: true,
-  //   DetailsText: "",
-  //   Files: [],
-  // });
-  // const [errors, setErrors] = useState({});
-  // const [progress, setProgress] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
@@ -93,6 +88,31 @@ const UserEduFundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
 
+    //------
+
+    if (selectedObject) {
+      let files = [];
+      selectedObject.Files.forEach((f) => {
+        files = [
+          ...files,
+          {
+            uid: f.FileID,
+            name: Words.attached_file, //f.filename,
+            url: `${eduFundFilesUrl}/${f.FileName}`,
+            FileID: f.FileID,
+            FileName: f.FileName,
+            FileSize: f.FileSize,
+          },
+        ];
+      });
+
+      setFileList(files);
+    }
+
+    initModal(formRef, selectedObject, setRecord);
+
+    //------
+
     setProgress(true);
     try {
       const data = await service.getParams();
@@ -119,11 +139,6 @@ const UserEduFundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const handleSubmit = async () => {
-    // if (selectedObject.FinalStatusID > 1)
-    //   message.error(
-    //     Words.messages.submit_response_in_finished_dismissal_request_failed
-    //   );
-    // else {
     const data = await onUpload({
       fileList,
       setFileList,
@@ -132,6 +147,7 @@ const UserEduFundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       setUploading,
       setUploadProgress,
     });
+
     if (data.error) {
       message.error(Words.messages.upload_failed);
     } else {
@@ -160,20 +176,27 @@ const UserEduFundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
         clearRecord
       );
 
-      onCancel();
-    }
-    // }
-  };
+      // After updating task we need to get files list separately
+      // and then update fileList & record.Files
+      if (selectedObject) {
+        const saved_files = await service.getEduFundFiles(
+          selectedObject.FundID
+        );
 
-  //   const handleSubmit = async () => {
-  //     saveModalChanges(
-  //       formConfig,
-  //       selectedObject,
-  //       setProgress,
-  //       onOk,
-  //       clearRecord
-  //     );
-  //   };
+        saved_files.forEach((f) => {
+          f.uid = f.FileID;
+          f.name = Words.attached_file;
+          f.url = `${eduFundFilesUrl}/${f.FileName}`;
+        });
+
+        rec.Files = [...saved_files];
+        setRecord(rec);
+        setFileList([...saved_files]);
+      }
+
+      // onCancel();
+    }
+  };
 
   const isEdit = selectedObject !== null;
 

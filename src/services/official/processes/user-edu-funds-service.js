@@ -9,6 +9,12 @@ async function getParams() {
   return data;
 }
 
+async function getEduFundFiles(fundID) {
+  const { data } = await http.get(`${apiEndpoint}/files/${fundID}`);
+
+  return data;
+}
+
 async function searchData(filter) {
   const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
@@ -29,6 +35,7 @@ export async function deleteData(recordID) {
 
 const service = {
   getParams,
+  getEduFundFiles,
   searchData,
   saveData,
   deleteData,
