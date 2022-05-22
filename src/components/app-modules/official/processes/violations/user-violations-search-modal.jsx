@@ -14,19 +14,19 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
-import service from "../../../../../services/official/processes/user-edu-funds-service";
+import service from "../../../../../services/official/processes/user-violations-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import DateItem from "../../../../form-controls/date-item";
 
 const schema = {
-  EduLevelID: Joi.number(),
+  ViolationMemberID: Joi.number(),
   FinalStatusID: Joi.number(),
   FromDate: Joi.string().allow(""),
   ToDate: Joi.string().allow(""),
 };
 
 const initRecord = {
-  EduLevelID: 0,
+  ViolationMemberID: 0,
   FinalStatusID: 0,
   FromDate: "",
   ToDate: "",
@@ -34,7 +34,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserEduFundsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+const UserViolationsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const [finalStatuses, setFinalStatuses] = useState([]);
 
   const {
@@ -44,8 +44,8 @@ const UserEduFundsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     setRecord,
     errors,
     setErrors,
-    eduLevels,
-    setEduLevels,
+    employees,
+    setEmployees,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -59,7 +59,7 @@ const UserEduFundsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.EduLevelID = 0;
+    record.ViolationMemberID = 0;
     record.FinalStatusID = 0;
     record.FromDate = "";
     record.ToDate = "";
@@ -79,8 +79,13 @@ const UserEduFundsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { EduLevels } = data;
-      setEduLevels(EduLevels);
+      const { Employees } = data;
+
+      Employees.forEach((employee) => {
+        employee.ViolationMemberID = employee.MemberID;
+      });
+
+      setEmployees(Employees);
 
       setFinalStatuses([
         { FinalStatusID: 1, Title: Words.in_progress },
@@ -108,10 +113,10 @@ const UserEduFundsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.edu_level}
-              dataSource={eduLevels}
-              keyColumn="EduLevelID"
-              valueColumn="EduLevelTitle"
+              title={Words.violation_person}
+              dataSource={employees}
+              keyColumn="ViolationMemberID"
+              valueColumn="FullName"
               formConfig={formConfig}
               autoFocus
             />
@@ -148,4 +153,4 @@ const UserEduFundsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   );
 };
 
-export default UserEduFundsSearchModal;
+export default UserViolationsSearchModal;

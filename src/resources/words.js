@@ -322,6 +322,9 @@ class Words extends Component {
   static bank_accounts = "حساب های بانکی";
   static search_in_employees = "جستجو در کارکنان";
 
+  static violation_person = "کارمند خاطی";
+  static violations = "اخطار - تعهد";
+
   static processes = "فرآیندها";
   static dismissal = "اخراج";
   static dismissal_official = "اخراج (اداری)";

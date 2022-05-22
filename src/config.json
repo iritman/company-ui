@@ -8,6 +8,10 @@
   "eduFundFilesUrl": "http://localhost:3030/static/edu-fund-files",
   "eduFundResponseFilesUrl": "http://localhost:3030/static/edu-fund-response-files",
   "eduFundReportFilesUrl": "http://localhost:3030/static/edu-fund-report-files",
+  "violationFilesUrl": "http://localhost:3030/static/violation-files",
+  "violationResponseFilesUrl": "http://localhost:3030/static/violation-response-files",
+  "violationReportFilesUrl": "http://localhost:3030/static/violation-report-files",
+  "violationAnnounceFilesUrl": "http://localhost:3030/static/violation-announce-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -61,5 +65,29 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "edu-fund-report-files"
+  },
+  "violationFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "violation-files"
+  },
+  "violationResponseFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "violation-response-files"
+  },
+  "violationReportFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "violation-report-files"
+  },
+  "violationAnnounceFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "violation-announce-files"
   }
 }

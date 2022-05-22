@@ -8,6 +8,7 @@ import {
   RiExchangeFundsLine as PersonalReplacementIcon,
   RiExchangeLine as ManagerReplacementIcon,
 } from "react-icons/ri";
+import { GiPoliceOfficerHead as PoliceIcon } from "react-icons/gi";
 import { MdPersonRemoveAlt1 as RemoveUserIcon } from "react-icons/md";
 import {
   AiOutlineDashboard as DashboardIcon,
@@ -72,6 +73,16 @@ const mapper = (pageID) => {
       icon = <FundIcon style={{ color: Colors.green[6] }} size={iconSize} />;
       break;
 
+    case 100:
+      link = "violations";
+      icon = <PoliceIcon style={{ color: Colors.red[7] }} size={iconSize} />;
+      break;
+
+    case 101:
+      link = "violations-check-official";
+      icon = <PoliceIcon style={{ color: Colors.red[7] }} size={iconSize} />;
+      break;
+
     case 93:
       link = "learnings";
       icon = <BoardIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
@@ -128,7 +139,7 @@ const tabs = [
         icon={UserIcon}
       />
     ),
-    pages: [{ pageName: "user-EduFunds" }],
+    pages: [{ pageName: "user-EduFunds" }, { pageName: "user-Violations" }],
   },
   {
     name: "security-cartable",
