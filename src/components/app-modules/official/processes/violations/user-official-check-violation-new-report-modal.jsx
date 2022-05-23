@@ -11,27 +11,23 @@ import {
 import Words from "../../../../../resources/words";
 import ModalWindow from "../../../../common/modal-window";
 import InputItem from "../../../../form-controls/input-item";
-import SwitchItem from "../../../../form-controls/switch-item";
 import FileUploader from "../../../../common/file-uploader";
-import { eduFundResponseFileConfig as fileConfig } from "./../../../../../config.json";
+import { violationReportFileConfig as fileConfig } from "./../../../../../config.json";
 import { onUpload } from "../../../../../tools/upload-tools";
 
 const schema = {
-  FundID: Joi.number(),
-  IsAccepted: Joi.boolean(),
+  ViolationID: Joi.number(),
   DetailsText: Joi.string()
     .min(5)
     .max(512)
-    .required()
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.descriptions),
   Files: Joi.array(),
 };
 
-const initRecord = (fundID) => {
+const initRecord = (violationID) => {
   return {
-    FundID: fundID,
-    IsAccepted: true,
+    ViolationID: violationID,
     DetailsText: "",
     Files: [],
   };
@@ -39,15 +35,14 @@ const initRecord = (fundID) => {
 
 const formRef = React.createRef();
 
-const UserOfficialCheckRegResponseModal = ({
+const UserOfficialCheckViolationNewReportModal = ({
   isOpen,
   onOk,
   onCancel,
-  eduFund,
+  violation,
 }) => {
   const [record, setRecord] = useState({
-    FundID: 0,
-    IsAccepted: true,
+    ViolationID: 0,
     DetailsText: "",
     Files: [],
   });
@@ -66,7 +61,6 @@ const UserOfficialCheckRegResponseModal = ({
   };
 
   const clearRecord = () => {
-    record.IsAccepted = true;
     record.DetailsText = "";
     record.Files = [];
 
@@ -76,7 +70,7 @@ const UserOfficialCheckRegResponseModal = ({
   };
 
   useMount(async () => {
-    setRecord(initRecord(eduFund.FundID));
+    setRecord(initRecord(violation.ViolationID));
     initModal(formRef, null, setRecord);
   });
 
@@ -93,49 +87,46 @@ const UserOfficialCheckRegResponseModal = ({
   };
 
   const handleSubmit = async () => {
-    if (eduFund.FinalStatusID > 1)
-      message.error(
-        Words.messages.submit_response_in_finished_edu_fund_request_failed
-      );
-    else {
-      const data = await onUpload({
-        fileList,
-        setFileList,
-        removedFiles: getRemovedFiles(),
-        fileConfig,
-        setUploading,
-        setUploadProgress,
+    const data = await onUpload({
+      fileList,
+      setFileList,
+      removedFiles: getRemovedFiles(),
+      fileConfig,
+      setUploading,
+      setUploadProgress,
+    });
+
+    if (data.error) {
+      message.error(Words.messages.upload_failed);
+    } else {
+      let files = fileList.filter((f) => f.FileID && f.FileID > 0);
+      data.files.forEach((f) => {
+        files = [
+          ...files,
+          { FileID: 0, FileName: f.filename, FileSize: f.size },
+        ];
       });
-      if (data.error) {
-        message.error(Words.messages.upload_failed);
-      } else {
-        let files = fileList.filter((f) => f.FileID && f.FileID > 0);
-        data.files.forEach((f) => {
-          files = [
-            ...files,
-            { FileID: 0, FileName: f.filename, FileSize: f.size },
-          ];
-        });
-        const rec = { ...record };
-        rec.Files = files;
-        setRecord(rec);
 
-        // When record change, formConfig not change!
-        // so we are going to create new instance of formConfig
-        // with updated "record" prop
-        const form_config = { ...formConfig };
-        form_config.record = rec;
+      const rec = { ...record };
+      rec.ViolationID = violation.ViolationID;
+      rec.Files = files;
+      setRecord(rec);
 
-        await saveModalChanges(
-          form_config,
-          null, // selectedObject,
-          setProgress,
-          onOk,
-          clearRecord
-        );
+      // When record change, formConfig not change!
+      // so we are going to create new instance of formConfig
+      // with updated "record" prop
+      const form_config = { ...formConfig };
+      form_config.record = rec;
 
-        onCancel();
-      }
+      await saveModalChanges(
+        form_config,
+        null, // selectedObject,
+        setProgress,
+        onOk,
+        clearRecord
+      );
+
+      onCancel();
     }
   };
 
@@ -149,20 +140,10 @@ const UserOfficialCheckRegResponseModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       width={750}
-      title={Words.submit_response}
+      title={Words.new_report}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
-            <SwitchItem
-              title={Words.your_response}
-              fieldName="IsAccepted"
-              initialValue={false}
-              checkedTitle={Words.accept_request}
-              unCheckedTitle={Words.reject_request}
-              formConfig={formConfig}
-            />
-          </Col>
           <Col xs={24}>
             <InputItem
               title={Words.descriptions}
@@ -173,7 +154,6 @@ const UserOfficialCheckRegResponseModal = ({
               maxLength={512}
               formConfig={formConfig}
               autoFocus
-              required
             />
           </Col>
           <Col xs={24}>
@@ -194,4 +174,4 @@ const UserOfficialCheckRegResponseModal = ({
   );
 };
 
-export default UserOfficialCheckRegResponseModal;
+export default UserOfficialCheckViolationNewReportModal;

@@ -13,11 +13,11 @@ import ModalWindow from "../../../../common/modal-window";
 import InputItem from "../../../../form-controls/input-item";
 import SwitchItem from "../../../../form-controls/switch-item";
 import FileUploader from "../../../../common/file-uploader";
-import { eduFundResponseFileConfig as fileConfig } from "./../../../../../config.json";
+import { violationResponseFileConfig as fileConfig } from "./../../../../../config.json";
 import { onUpload } from "../../../../../tools/upload-tools";
 
 const schema = {
-  FundID: Joi.number(),
+  ViolationID: Joi.number(),
   IsAccepted: Joi.boolean(),
   DetailsText: Joi.string()
     .min(5)
@@ -28,9 +28,9 @@ const schema = {
   Files: Joi.array(),
 };
 
-const initRecord = (fundID) => {
+const initRecord = (violationID) => {
   return {
-    FundID: fundID,
+    ViolationID: violationID,
     IsAccepted: true,
     DetailsText: "",
     Files: [],
@@ -43,10 +43,10 @@ const UserOfficialCheckRegResponseModal = ({
   isOpen,
   onOk,
   onCancel,
-  eduFund,
+  violation,
 }) => {
   const [record, setRecord] = useState({
-    FundID: 0,
+    ViolationID: 0,
     IsAccepted: true,
     DetailsText: "",
     Files: [],
@@ -76,7 +76,7 @@ const UserOfficialCheckRegResponseModal = ({
   };
 
   useMount(async () => {
-    setRecord(initRecord(eduFund.FundID));
+    setRecord(initRecord(violation.ViolationID));
     initModal(formRef, null, setRecord);
   });
 
@@ -93,9 +93,9 @@ const UserOfficialCheckRegResponseModal = ({
   };
 
   const handleSubmit = async () => {
-    if (eduFund.FinalStatusID > 1)
+    if (violation.FinalStatusID > 1)
       message.error(
-        Words.messages.submit_response_in_finished_edu_fund_request_failed
+        Words.messages.submit_response_in_finished_violation_request_failed
       );
     else {
       const data = await onUpload({
@@ -149,13 +149,13 @@ const UserOfficialCheckRegResponseModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       width={750}
-      title={Words.submit_response}
+      title={Words.submit_vote}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <SwitchItem
-              title={Words.your_response}
+              title={Words.vote_status}
               fieldName="IsAccepted"
               initialValue={false}
               checkedTitle={Words.accept_request}

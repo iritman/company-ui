@@ -324,6 +324,9 @@ class Words extends Component {
 
   static violation_person = "کارمند خاطی";
   static violations = "اخطار - تعهد";
+  static violations_official = "اخطار - تعهد (اداری)";
+  static submit_vote = "ثبت رای";
+  static vote_status = "وضعیت رای";
 
   static processes = "فرآیندها";
   static dismissal = "اخراج";
@@ -563,6 +566,8 @@ class Words extends Component {
       "قبلا به این درخواست پاسخ داده شده است",
     submit_response_in_finished_edu_fund_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
+    submit_response_in_finished_violation_request_failed:
+      "قبلا برای این درخواست رای صادر شده است",
   };
 
   static questions = {

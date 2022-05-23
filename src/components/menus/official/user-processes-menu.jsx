@@ -177,6 +177,7 @@ const tabs = [
     pages: [
       { pageName: "user-DismissalsCheckOfficial" },
       { pageName: "user-EduFundsCheckOfficial" },
+      { pageName: "user-ViolationsCheckOfficial" },
     ],
   },
 ];
