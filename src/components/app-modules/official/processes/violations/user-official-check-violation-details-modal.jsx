@@ -24,6 +24,7 @@ import MemberProfileImage from "./../../../../common/member-profile-image";
 import ResponseModal from "./user-official-check-reg-response-modal";
 import ReportsModal from "./user-official-check-violation-reports-modal";
 import RegAnnouncementModal from "./user-official-check-violation-reg-announcement-modal";
+import AnnouncementModal from "./user-official-check-violation-announcement-modal";
 import service from "../../../../../services/official/processes/user-official-check-violations-service";
 import {
   violationFilesUrl,
@@ -371,6 +372,15 @@ const UserOfficialCheckViolationDetailsModal = ({
           isOpen={showRegAnnouncementModal}
           onOk={onRegAnnouncement}
           onCancel={() => setShowRegAnnouncementModal(false)}
+          violation={violation}
+        />
+      )}
+
+      {showAnnouncementModal && (
+        <AnnouncementModal
+          isOpen={showAnnouncementModal}
+          onDelete={onDeleteAnnouncement}
+          onCancel={() => setShowAnnouncementModal(false)}
           violation={violation}
         />
       )}

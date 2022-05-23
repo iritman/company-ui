@@ -573,6 +573,7 @@ class Words extends Component {
     submit_response_in_finished_violation_request_failed:
       "قبلا برای این درخواست رای صادر شده است",
     announcement_already_submitted: "ابلاغیه قبلا صادر شده است",
+    no_any_announcement: "ابلاغیه ای ثبت نشده است",
   };
 
   static questions = {
@@ -594,6 +595,7 @@ class Words extends Component {
     sure_to_make_task_done: "برای اعلام خاتمه انجام وظیفه اطمینان دارید؟",
     sure_to_cancel_done_task: "برای لغو خاتمه اجرای وظیفه اطمینان دارید؟",
     sure_to_submit_announcement: "برای ثبت ابلاغیه اطمینان دارید؟",
+    sure_to_delete_announcement: "برای حذف ابلاغیه اطمینان دارید؟",
   };
 
   static monthes = {
