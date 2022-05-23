@@ -20,6 +20,7 @@ const ModalWindow = (props) => {
     searchModal,
     title,
     buttons,
+    confirm,
     ...rest
   } = props;
 
@@ -57,15 +58,17 @@ const ModalWindow = (props) => {
         <Button key="clear-button" onClick={onClear}>
           {Words.clear}
         </Button>,
-        <Button
-          key="submit-button"
-          type="primary"
-          onClick={onSubmit}
-          loading={inProgress}
-          disabled={disabled}
-        >
-          {searchModal ? Words.search : Words.submit}
-        </Button>,
+        confirm || (
+          <Button
+            key="submit-button"
+            type="primary"
+            onClick={onSubmit}
+            loading={inProgress}
+            disabled={disabled}
+          >
+            {searchModal ? Words.search : Words.submit}
+          </Button>
+        ),
       ]}
       onCancel={onCancel}
       {...rest}
