@@ -230,6 +230,34 @@ const UserOfficialCheckViolationsPage = ({ pageName }) => {
     message.success(data.Message);
   };
 
+  const handleRegAnnouncement = async (announce) => {
+    const newAnnounce = await service.saveAnnounce(announce);
+
+    const index = records.findIndex(
+      (r) => r.ViolationID === announce.ViolationID
+    );
+
+    records[index].AnnounceInfo = newAnnounce;
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+  };
+
+  const handleDeleteAnnouncement = async (announce) => {
+    const data = await service.deleteAnnounce(announce.AnnounceID);
+
+    const index = records.findIndex(
+      (r) => r.ViolationID === announce.ViolationID
+    );
+
+    records[index].AnnounceInfo = null;
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+
+    message.success(data.Message);
+  };
+
   //------
 
   return (
@@ -271,6 +299,8 @@ const UserOfficialCheckViolationsPage = ({ pageName }) => {
           }}
           onRegReport={handleRegReport}
           onDeleteReport={handleDeleteReport}
+          onRegAnnouncement={handleRegAnnouncement}
+          onDeleteAnnouncement={handleDeleteAnnouncement}
           onResponse={handleSubmitResponse}
           isOpen={showDetails}
           violation={selectedObject}

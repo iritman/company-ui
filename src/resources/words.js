@@ -327,6 +327,10 @@ class Words extends Component {
   static violations_official = "اخطار - تعهد (اداری)";
   static submit_vote = "ثبت رای";
   static vote_status = "وضعیت رای";
+  static announcement = "ابلاغیه";
+  static submit_announcement = "صدور ابلاغیه";
+  static show_violer_name = "نمایش نام شاکی";
+  static show_violer_request_details = "نمایش توضیحات شاکی";
 
   static processes = "فرآیندها";
   static dismissal = "اخراج";
@@ -568,6 +572,7 @@ class Words extends Component {
       "قبلا به این درخواست پاسخ داده شده است",
     submit_response_in_finished_violation_request_failed:
       "قبلا برای این درخواست رای صادر شده است",
+    announcement_already_submitted: "ابلاغیه قبلا صادر شده است",
   };
 
   static questions = {
@@ -588,6 +593,7 @@ class Words extends Component {
     sure_to_delete_task: "برای حذف وظیفه اطمینان دارید؟",
     sure_to_make_task_done: "برای اعلام خاتمه انجام وظیفه اطمینان دارید؟",
     sure_to_cancel_done_task: "برای لغو خاتمه اجرای وظیفه اطمینان دارید؟",
+    sure_to_submit_announcement: "برای ثبت ابلاغیه اطمینان دارید؟",
   };
 
   static monthes = {

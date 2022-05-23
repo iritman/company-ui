@@ -34,12 +34,26 @@ export async function deleteReport(recordID) {
   return data;
 }
 
+export async function saveAnnounce(record) {
+  const { data } = await http.post(`${apiEndpoint}/announce`, record);
+
+  return data;
+}
+
+export async function deleteAnnounce(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/announce/${recordID}`);
+
+  return data;
+}
+
 const service = {
   getParams,
   searchData,
   saveData,
   saveReport,
   deleteReport,
+  saveAnnounce,
+  deleteAnnounce,
 };
 
 export default service;

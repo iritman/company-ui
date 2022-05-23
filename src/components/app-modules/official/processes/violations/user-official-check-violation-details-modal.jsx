@@ -14,6 +14,8 @@ import {
 import {
   SnippetsOutlined as ReportIcon,
   PaperClipOutlined as AttachedFileIcon,
+  AuditOutlined as HokmIcon,
+  NotificationOutlined as AnnounceIcon,
 } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
@@ -21,6 +23,7 @@ import utils from "../../../../../tools/utils";
 import MemberProfileImage from "./../../../../common/member-profile-image";
 import ResponseModal from "./user-official-check-reg-response-modal";
 import ReportsModal from "./user-official-check-violation-reports-modal";
+import RegAnnouncementModal from "./user-official-check-violation-reg-announcement-modal";
 import service from "../../../../../services/official/processes/user-official-check-violations-service";
 import {
   violationFilesUrl,
@@ -60,10 +63,15 @@ const UserOfficialCheckViolationDetailsModal = ({
   onResponse,
   onRegReport,
   onDeleteReport,
+  onRegAnnouncement,
+  onDeleteAnnouncement,
 }) => {
   const valueColor = Colors.blue[7];
 
   const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [showRegAnnouncementModal, setShowRegAnnouncementModal] =
+    useState(false);
   const [showReportsModal, setShowReportsModal] = useState(false);
 
   const {
@@ -81,6 +89,7 @@ const UserOfficialCheckViolationDetailsModal = ({
     Files,
     ResponseFiles,
     Reports,
+    AnnounceInfo,
   } = violation;
 
   const handleSubmitResponse = async (response) => {
@@ -88,6 +97,8 @@ const UserOfficialCheckViolationDetailsModal = ({
 
     await onResponse(data);
   };
+
+  console.log(violation);
 
   const getFooterButtons = () => {
     let buttons = [
@@ -102,6 +113,7 @@ const UserOfficialCheckViolationDetailsModal = ({
         <Button
           key="submit-button"
           type="primary"
+          icon={<HokmIcon />}
           onClick={() => setShowResponseModal(true)}
         >
           {Words.submit_vote}
@@ -109,6 +121,24 @@ const UserOfficialCheckViolationDetailsModal = ({
         ...buttons,
       ];
     }
+
+    buttons = [
+      <Button
+        key={
+          AnnounceInfo ? "announcement-button" : "submit-announcement-button"
+        }
+        type="primary"
+        icon={<AnnounceIcon />}
+        onClick={() =>
+          AnnounceInfo
+            ? setShowAnnouncementModal(true)
+            : setShowRegAnnouncementModal(true)
+        }
+      >
+        {AnnounceInfo ? Words.announcement : Words.submit_announcement}
+      </Button>,
+      ...buttons,
+    ];
 
     buttons = [
       <Button
@@ -332,6 +362,15 @@ const UserOfficialCheckViolationDetailsModal = ({
           onRegReport={onRegReport}
           onDeleteReport={onDeleteReport}
           onCancel={() => setShowReportsModal(false)}
+          violation={violation}
+        />
+      )}
+
+      {showRegAnnouncementModal && (
+        <RegAnnouncementModal
+          isOpen={showRegAnnouncementModal}
+          onOk={onRegAnnouncement}
+          onCancel={() => setShowRegAnnouncementModal(false)}
           violation={violation}
         />
       )}
