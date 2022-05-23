@@ -15,7 +15,7 @@ import {
   SnippetsOutlined as ReportIcon,
   PaperClipOutlined as AttachedFileIcon,
   AuditOutlined as HokmIcon,
-  NotificationOutlined as AnnounceIcon,
+  SendOutlined as AnnounceIcon,
 } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
@@ -98,8 +98,6 @@ const UserOfficialCheckViolationDetailsModal = ({
 
     await onResponse(data);
   };
-
-  console.log(violation);
 
   const getFooterButtons = () => {
     let buttons = [

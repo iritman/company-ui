@@ -15,6 +15,21 @@ async function getViolationFiles(violationID) {
   return data;
 }
 
+async function getAnnounces() {
+  const { data } = await http.get(`${apiEndpoint}/announces`);
+
+  return data;
+}
+
+async function makeSeenViolationAnnounce(announceID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/announce/seen/${announceID}`,
+    {}
+  );
+
+  return data;
+}
+
 async function searchData(filter) {
   const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
@@ -36,6 +51,8 @@ export async function deleteData(recordID) {
 const service = {
   getParams,
   getViolationFiles,
+  getAnnounces,
+  makeSeenViolationAnnounce,
   searchData,
   saveData,
   deleteData,

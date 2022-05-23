@@ -321,10 +321,22 @@ class Words extends Component {
   static sheba_no = "شماره شبا";
   static bank_accounts = "حساب های بانکی";
   static search_in_employees = "جستجو در کارکنان";
+  static not_have = "ندارد";
+  static issued = "صادر شده";
+  static new_announcement = "ابلاغیه جدید";
+  static seen_date = "تاریخ مشاهده";
+  static seen_time = "زمان مشاهده";
+  static complainant = "شاکی";
+  static violation_report = "گزارش تخلف";
+  static announcement_sender = "ارسال کننده ابلاغ";
+  static issue_date = "تاریخ صدور";
+  static seen = "مشاهده شده";
+  static private = "محرمانه";
 
+  static my_violation_announcement = "ابلاغیه های تخلف";
   static violation_person = "کارمند خاطی";
-  static violations = "اخطار - تعهد";
-  static violations_official = "اخطار - تعهد (اداری)";
+  static violations = "گزارش تخلف";
+  static violations_official = "گزارش تخلف (اداری)";
   static submit_vote = "ثبت رای";
   static vote_status = "وضعیت رای";
   static announcement = "ابلاغیه";

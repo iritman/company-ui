@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
+import { SendOutlined as AnnounceIcon } from "@ant-design/icons";
 import {
   RiRefund2Fill as FundIcon,
   RiArtboardFill as BoardIcon,
@@ -83,6 +84,11 @@ const mapper = (pageID) => {
       icon = <PoliceIcon style={{ color: Colors.red[7] }} size={iconSize} />;
       break;
 
+    case 102:
+      link = "my-violation-announces";
+      icon = <AnnounceIcon style={{ color: Colors.red[7] }} size={iconSize} />;
+      break;
+
     case 93:
       link = "learnings";
       icon = <BoardIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
@@ -139,7 +145,11 @@ const tabs = [
         icon={UserIcon}
       />
     ),
-    pages: [{ pageName: "user-EduFunds" }, { pageName: "user-Violations" }],
+    pages: [
+      { pageName: "user-EduFunds" },
+      { pageName: "user-Violations" },
+      { pageName: "user-MyViolationAnnounces" },
+    ],
   },
   {
     name: "security-cartable",

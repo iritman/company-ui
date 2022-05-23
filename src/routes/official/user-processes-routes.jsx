@@ -9,6 +9,7 @@ import UserEduFundsPage from "../../components/app-modules/official/processes/ed
 import UserOfficialCheckEduFundsPage from "../../components/app-modules/official/processes/edu-funds/user-official-check-edu-funds-page";
 import UserViolationsPage from "../../components/app-modules/official/processes/violations/user-violations-page";
 import UserOfficialCheckViolationsPage from "../../components/app-modules/official/processes/violations/user-official-check-violations-page";
+import UserViolationAnnouncesPage from "../../components/app-modules/official/processes/violations/user-violation-announces-page";
 //---
 
 const modulePath = "official/processes";
@@ -55,6 +56,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserOfficialCheckViolationsPage pageName="user-ViolationsCheckOfficial" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/my-violation-announces`}
+        exact
+        render={() => (
+          <UserViolationAnnouncesPage pageName="user-MyViolationAnnounces" />
         )}
       />
       <Redirect to="/not-found" />
