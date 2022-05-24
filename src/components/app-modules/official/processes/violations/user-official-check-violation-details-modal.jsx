@@ -281,7 +281,7 @@ const UserOfficialCheckViolationDetailsModal = ({
                     >
                       {Actions.length > 0 && (
                         <>
-                          {DetailsText.length > 0 && (
+                          {Actions[0].DetailsText.length > 0 && (
                             <Descriptions.Item
                               label={Words.descriptions}
                               span={2}

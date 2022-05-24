@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { SendOutlined as AnnounceIcon } from "@ant-design/icons";
+import {
+  SendOutlined as AnnounceIcon,
+  // AuditOutlined as HokmIcon,
+} from "@ant-design/icons";
 import {
   RiRefund2Fill as FundIcon,
   RiArtboardFill as BoardIcon,
@@ -8,7 +11,9 @@ import {
   RiUserAddFill as AddUserIcon,
   RiExchangeFundsLine as PersonalReplacementIcon,
   RiExchangeLine as ManagerReplacementIcon,
+  RiFileUserFill as HokmIcon,
 } from "react-icons/ri";
+
 import { GiPoliceOfficerHead as PoliceIcon } from "react-icons/gi";
 import { MdPersonRemoveAlt1 as RemoveUserIcon } from "react-icons/md";
 import {
@@ -87,6 +92,11 @@ const mapper = (pageID) => {
     case 102:
       link = "my-violation-announces";
       icon = <AnnounceIcon style={{ color: Colors.red[7] }} size={iconSize} />;
+      break;
+
+    case 103:
+      link = "department-violation-responses";
+      icon = <HokmIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
       break;
 
     case 93:
@@ -173,7 +183,10 @@ const tabs = [
         icon={UsersIcon}
       />
     ),
-    pages: [{ pageName: "user-Dismissals" }],
+    pages: [
+      { pageName: "user-Dismissals" },
+      { pageName: "user-DepartmentViolationResponses" },
+    ],
   },
   {
     name: "official-cartable",

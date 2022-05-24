@@ -345,6 +345,8 @@ class Words extends Component {
   static show_violer_request_details = "نمایش توضیحات شاکی";
   static accept_violation = "تایید تخلف";
   static reject_violation = "رد تخلف";
+  static department_violation_reports = "آرای تخلف کارکنان";
+  static just_new_violation_response = "فقط آرای جدید";
 
   static processes = "فرآیندها";
   static dismissal = "اخراج";
