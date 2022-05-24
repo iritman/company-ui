@@ -4,7 +4,7 @@ import { Spin, Row, Col, Typography, Space } from "antd";
 import { MdOutlineNotificationsActive as AlarmIcon } from "react-icons/md";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-department-violations-service";
+import service from "../../../../../services/official/processes/user-my-violations-service";
 import {
   getSorter,
   checkAccess,
@@ -14,8 +14,8 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import SearchModal from "./user-department-violation-responses-search-modal";
-import DetailsModal from "./user-department-violation-response-details-modal";
+import SearchModal from "./user-my-violation-responses-search-modal";
+import DetailsModal from "./user-my-violation-response-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -137,7 +137,7 @@ const handleCheckDeletable = (row) => false;
 
 const recordID = "ViolationID";
 
-const UserDepartmentViolationResponsesPage = ({ pageName }) => {
+const UserMyViolationResponsesPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -224,7 +224,7 @@ const UserDepartmentViolationResponsesPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.department_violation_responses}
+            title={Words.violation_responses}
             sheets={getSheets(records)}
             fileName="Violations"
             onSearch={() => setShowSearchModal(true)}
@@ -265,4 +265,4 @@ const UserDepartmentViolationResponsesPage = ({ pageName }) => {
   );
 };
 
-export default UserDepartmentViolationResponsesPage;
+export default UserMyViolationResponsesPage;

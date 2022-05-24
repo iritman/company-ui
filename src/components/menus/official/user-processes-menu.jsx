@@ -99,6 +99,11 @@ const mapper = (pageID) => {
       icon = <HokmIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
       break;
 
+    case 104:
+      link = "my-violation-responses";
+      icon = <HokmIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
+      break;
+
     case 93:
       link = "learnings";
       icon = <BoardIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
@@ -159,6 +164,7 @@ const tabs = [
       { pageName: "user-EduFunds" },
       { pageName: "user-Violations" },
       { pageName: "user-MyViolationAnnounces" },
+      { pageName: "user-MyViolationResponses" },
     ],
   },
   {

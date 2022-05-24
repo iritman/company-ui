@@ -42,7 +42,7 @@ const getFinalStatusTitle = (record) => {
   return title;
 };
 
-const UserDepartmentViolationResponseDetailsModal = ({
+const UserMyViolationResponseDetailsModal = ({
   violation,
   isOpen,
   onOk,
@@ -260,4 +260,4 @@ const UserDepartmentViolationResponseDetailsModal = ({
   );
 };
 
-export default UserDepartmentViolationResponseDetailsModal;
+export default UserMyViolationResponseDetailsModal;

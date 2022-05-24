@@ -11,6 +11,7 @@ import UserViolationsPage from "../../components/app-modules/official/processes/
 import UserOfficialCheckViolationsPage from "../../components/app-modules/official/processes/violations/user-official-check-violations-page";
 import UserViolationAnnouncesPage from "../../components/app-modules/official/processes/violations/user-violation-announces-page";
 import UserDepartmentViolationResponsesPage from "../../components/app-modules/official/processes/violations/user-department-violation-responses-page";
+import UserMyViolationResponsesPage from "../../components/app-modules/official/processes/violations/user-my-violation-responses-page";
 //---
 
 const modulePath = "official/processes";
@@ -71,6 +72,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserDepartmentViolationResponsesPage pageName="user-DepartmentViolationResponses" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/my-violation-responses`}
+        exact
+        render={() => (
+          <UserMyViolationResponsesPage pageName="user-MyViolationResponses" />
         )}
       />
       <Redirect to="/not-found" />
