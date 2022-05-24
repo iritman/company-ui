@@ -13,8 +13,6 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-// import ViolationModal from "./user-violation-modal";
-// import SearchModal from "./user-violations-search-modal";
 import DetailsModal from "./user-violation-announcement-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
@@ -140,11 +138,6 @@ const UseViolationAnnouncesPage = ({ pageName }) => {
     setSelectedObject,
     showDetails,
     setShowDetails,
-    // showModal,
-    // showSearchModal,
-    // setShowSearchModal,
-    // filter,
-    // setFilter,
   } = usePageContext();
 
   const handleGetAll = async () => {
@@ -167,15 +160,7 @@ const UseViolationAnnouncesPage = ({ pageName }) => {
     await handleGetAll();
   });
 
-  const {
-    // handleCloseModal,
-    // handleAdd,
-    // handleEdit,
-    // handleDelete,
-    // handleSave,
-    handleResetContext,
-    // handleAdvancedSearch,
-  } = GetSimplaDataPageMethods({
+  const { handleResetContext } = GetSimplaDataPageMethods({
     service,
     recordID,
   });
@@ -249,24 +234,6 @@ const UseViolationAnnouncesPage = ({ pageName }) => {
           </Col>
         </Row>
       </Spin>
-
-      {/* {showModal && (
-        <ViolationModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
-        />
-      )}
-
-      {showSearchModal && (
-        <SearchModal
-          onOk={handleAdvancedSearch}
-          onCancel={() => setShowSearchModal(false)}
-          isOpen={showSearchModal}
-          filter={filter}
-        />
-      )} */}
 
       {showDetails && (
         <DetailsModal

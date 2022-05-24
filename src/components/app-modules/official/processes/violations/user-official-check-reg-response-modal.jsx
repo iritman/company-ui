@@ -158,8 +158,8 @@ const UserOfficialCheckRegResponseModal = ({
               title={Words.vote_status}
               fieldName="IsAccepted"
               initialValue={false}
-              checkedTitle={Words.accept_request}
-              unCheckedTitle={Words.reject_request}
+              checkedTitle={Words.accept_violation}
+              unCheckedTitle={Words.reject_violation}
               formConfig={formConfig}
             />
           </Col>

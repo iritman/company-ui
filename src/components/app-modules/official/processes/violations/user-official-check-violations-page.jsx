@@ -94,7 +94,7 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.reg_member,
+    title: Words.violation_person,
     width: 200,
     align: "center",
     sorter: getSorter("ViolationLastName"),
