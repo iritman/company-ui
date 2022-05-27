@@ -33,7 +33,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserDepartmentCheckoutRegResponse = ({
+const UserInformaticCheckoutRegResponse = ({
   isOpen,
   onOk,
   onCancel,
@@ -186,4 +186,4 @@ const UserDepartmentCheckoutRegResponse = ({
   );
 };
 
-export default UserDepartmentCheckoutRegResponse;
+export default UserInformaticCheckoutRegResponse;

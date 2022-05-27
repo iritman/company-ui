@@ -28,6 +28,7 @@ import {
   // MdOutlineWork as MissionIcon,
   // MdSpeakerNotes as ReportIcon,
   MdSecurity as SecurityIcon,
+  MdDevices as InformaticIcon,
   // MdOutlineSwapCalls as AlternativeIcon,
 } from "react-icons/md";
 import {
@@ -118,6 +119,13 @@ const mapper = (pageID) => {
 
     case 105:
       link = "department-checkouts";
+      icon = (
+        <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
+    case 106:
+      link = "informatic-checkouts";
       icon = (
         <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
@@ -217,6 +225,17 @@ const tabs = [
       { pageName: "user-ViolationsCheckOfficial" },
       { pageName: "user-CheckoutsCheckOfficial" },
     ],
+  },
+  {
+    name: "informatic-cartable",
+    title: (
+      <TabTitle
+        title={Words.informatic_cartable}
+        color={Colors.magenta[6]}
+        icon={InformaticIcon}
+      />
+    ),
+    pages: [{ pageName: "user-InformaticCheckouts" }],
   },
 ];
 

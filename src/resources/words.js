@@ -185,6 +185,9 @@ class Words extends Component {
   static security_cartable = "کارتابل نگهبانی";
   static department_cartable = "کارتابل دپارتمان";
   static official_cartable = "کارتابل اداری";
+  static informatic_cartable = "کارتابل انفورماتیک";
+  static store_cartable = "کارتابل انبار";
+  static financial_cartable = "کارتابل مالی";
   static is_transfered_to_member_reged_cards = "انتقال یافته به تردد اصلی";
   static transfered_to_member_reged_cards = "انتقال به تردد اصلی";
   static is_transfered = "انتقال یافته";
@@ -335,6 +338,9 @@ class Words extends Component {
 
   static checkout_departmnent = "تسویه حساب (دپارتمان)";
   static checkout_official = "تسویه حساب (اداری)";
+  static checkout_informatic = "تسویه حساب (انفورماتیک)";
+  static checkout_store = "تسویه حساب (انبار)";
+  static checkout_financial = "تسویه حساب (مالی)";
 
   static my_violation_announcement = "ابلاغیه های تخلف";
   static violation_person = "کارمند خاطی";

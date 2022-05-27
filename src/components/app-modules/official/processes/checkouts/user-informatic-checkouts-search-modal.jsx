@@ -14,7 +14,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
-import service from "../../../../../services/official/processes/user-department-checkouts-service";
+import service from "../../../../../services/official/processes/user-informatic-checkouts-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import DateItem from "../../../../form-controls/date-item";
 
@@ -34,7 +34,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserDepartmentCheckoutsSearchModal = ({
+const UserInformaticCheckoutsSearchModal = ({
   isOpen,
   filter,
   onOk,
@@ -158,4 +158,4 @@ const UserDepartmentCheckoutsSearchModal = ({
   );
 };
 
-export default UserDepartmentCheckoutsSearchModal;
+export default UserInformaticCheckoutsSearchModal;
