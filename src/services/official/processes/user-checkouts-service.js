@@ -45,6 +45,12 @@ export async function deleteReport(recordID) {
   return data;
 }
 
+export async function saveResponse(record) {
+  const { data } = await http.post(`${apiEndpoint}/response`, record);
+
+  return data;
+}
+
 const service = {
   getParams,
   getCheckoutFiles,
@@ -53,6 +59,7 @@ const service = {
   deleteData,
   saveReport,
   deleteReport,
+  saveResponse,
 };
 
 export default service;

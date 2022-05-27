@@ -198,13 +198,17 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
     setSearched(false);
   };
 
-  const handleSubmitResponse = (response) => {
-    const index = records.findIndex(
-      (r) => r.CheckoutID === response.CheckoutID
-    );
-    records[index] = response;
+  const handleSubmitResponse = async (response) => {
+    const { CheckoutID } = selectedObject;
+    const action_data = await service.saveResponse({ CheckoutID, ...response });
+
+    console.log("DATA", action_data);
+
+    const index = records.findIndex((r) => r.CheckoutID === CheckoutID);
+
+    records[index] = action_data;
     setRecords([...records]);
-    setSelectedObject(response);
+    setSelectedObject(action_data);
   };
 
   const handleRegReport = async (report) => {

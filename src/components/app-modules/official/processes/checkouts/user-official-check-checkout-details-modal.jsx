@@ -1,52 +1,14 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  Row,
-  Col,
-  Typography,
-  Alert,
-  Descriptions,
-  Space,
-  Tag,
-  Divider,
-} from "antd";
+import { Button, Modal } from "antd";
 import {
   SnippetsOutlined as ReportIcon,
-  PaperClipOutlined as AttachedFileIcon,
+  MessageOutlined as MessageIcon,
 } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import MemberProfileImage from "./../../../../common/member-profile-image";
 import ReportsModal from "./user-official-check-checkout-reports-modal";
-import { checkoutFilesUrl } from "./../../../../../config.json";
-
-const { Text } = Typography;
-
-const getFinalStatusColor = (record) => {
-  let color = Colors.grey[6];
-
-  const { FinalStatusID } = record;
-
-  if (FinalStatusID > 1) {
-    color = FinalStatusID === 2 ? Colors.green[6] : Colors.red[6];
-  }
-
-  return color;
-};
-
-const getFinalStatusTitle = (record) => {
-  let title = Words.in_progress;
-
-  const { FinalStatusID } = record;
-
-  if (FinalStatusID > 1) {
-    title = FinalStatusID === 2 ? Words.accepted : Words.rejected;
-  }
-
-  return title;
-};
+import CheckoutDetails from "./checkout-details";
+import ResponseModal from "./user-official-check-checkout-reg-response-modal";
 
 const UserOfficialCheckCheckoutDetailsModal = ({
   checkout,
@@ -54,26 +16,12 @@ const UserOfficialCheckCheckoutDetailsModal = ({
   onOk,
   onRegReport,
   onDeleteReport,
+  onResponse,
 }) => {
-  const valueColor = Colors.blue[7];
-
   const [showReportsModal, setShowReportsModal] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
 
-  const {
-    CheckoutID,
-    CheckoutFirstName,
-    CheckoutLastName,
-    CheckoutPicFileName,
-    RegFirstName,
-    RegLastName,
-    DetailsText,
-    FinalStatusID,
-    RegDate,
-    RegTime,
-    Actions,
-    Files,
-    Reports,
-  } = checkout;
+  const { Actions, Reports } = checkout;
 
   const getFooterButtons = () => {
     let buttons = [
@@ -81,6 +29,20 @@ const UserOfficialCheckCheckoutDetailsModal = ({
         {Words.close}
       </Button>,
     ];
+
+    if (Actions[3].MemberID === 0) {
+      buttons = [
+        <Button
+          key="response-button"
+          type="primary"
+          onClick={() => setShowResponseModal(true)}
+          icon={<MessageIcon />}
+        >
+          {`${Words.submit_response}`}
+        </Button>,
+        ...buttons,
+      ];
+    }
 
     buttons = [
       <Button
@@ -117,174 +79,7 @@ const UserOfficialCheckCheckoutDetailsModal = ({
             className="scrollbar-normal"
             style={{ maxHeight: "calc(100vh - 180px)" }}
           >
-            <Row gutter={[10, 10]}>
-              <Col xs={24}>
-                <Alert
-                  message={
-                    <Space>
-                      <MemberProfileImage
-                        fileName={CheckoutPicFileName}
-                        size="small"
-                      />
-
-                      <Text
-                        style={{ fontSize: 14, color: Colors.red[7] }}
-                      >{`${CheckoutFirstName} ${CheckoutLastName}`}</Text>
-                    </Space>
-                  }
-                  type="info"
-                />
-              </Col>
-              <Col xs={24}>
-                <Descriptions
-                  bordered
-                  column={{
-                    //   md: 2, sm: 2,
-                    lg: 2,
-                    md: 2,
-                    xs: 1,
-                  }}
-                  size="middle"
-                >
-                  <Descriptions.Item label={Words.id}>
-                    <Text style={{ color: valueColor }}>
-                      {utils.farsiNum(`#${CheckoutID}`)}
-                    </Text>
-                  </Descriptions.Item>
-                  <Descriptions.Item label={Words.status}>
-                    <Text style={{ color: getFinalStatusColor(checkout) }}>
-                      {getFinalStatusTitle(checkout)}
-                    </Text>
-                  </Descriptions.Item>
-                  <Descriptions.Item label={Words.reg_member}>
-                    <Text
-                      style={{ color: valueColor }}
-                    >{`${RegFirstName} ${RegLastName}`}</Text>
-                  </Descriptions.Item>
-                  <Descriptions.Item label={Words.reg_date_time}>
-                    <Text style={{ color: valueColor }}>
-                      {utils.farsiNum(
-                        `${utils.slashDate(RegDate)} - ${utils.colonTime(
-                          RegTime
-                        )}`
-                      )}
-                    </Text>
-                  </Descriptions.Item>
-
-                  {DetailsText.length > 0 && (
-                    <Descriptions.Item label={Words.descriptions} span={2}>
-                      <Text
-                        style={{
-                          color: Colors.purple[7],
-                          whiteSpace: "pre-line",
-                        }}
-                      >
-                        {utils.farsiNum(DetailsText)}
-                      </Text>
-                    </Descriptions.Item>
-                  )}
-
-                  {Files.length > 0 && (
-                    <Descriptions.Item label={Words.attached_files} span={2}>
-                      <Col xs={24}>
-                        {Files.map((f) => (
-                          <a
-                            key={f.FileID}
-                            href={`${checkoutFilesUrl}/${f.FileName}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Tag
-                              color="cyan"
-                              icon={<AttachedFileIcon />}
-                              style={{ margin: 5 }}
-                            >
-                              {Words.attached_file}
-                            </Tag>
-                          </a>
-                        ))}
-                      </Col>
-                    </Descriptions.Item>
-                  )}
-                </Descriptions>
-                {FinalStatusID > 1 && (
-                  <>
-                    <Divider orientation="right" plain>
-                      {Words.official_response}
-                    </Divider>
-                    <Descriptions
-                      bordered
-                      column={{
-                        //   md: 2, sm: 2,
-                        lg: 2,
-                        md: 2,
-                        xs: 1,
-                      }}
-                      size="middle"
-                    >
-                      {Actions.length > 0 && (
-                        <>
-                          {Actions[0].DetailsText.length > 0 && (
-                            <Descriptions.Item
-                              label={Words.descriptions}
-                              span={2}
-                            >
-                              <Text
-                                style={{
-                                  color: Colors.purple[7],
-                                  whiteSpace: "pre-line",
-                                }}
-                              >
-                                {utils.farsiNum(Actions[0].DetailsText)}
-                              </Text>
-                            </Descriptions.Item>
-                          )}
-                          <Descriptions.Item label={Words.reg_member}>
-                            <Text style={{ color: Colors.magenta[6] }}>
-                              {`${Actions[0].FirstName} ${Actions[0].LastName}`}
-                            </Text>
-                          </Descriptions.Item>
-                          <Descriptions.Item label={Words.reg_date_time}>
-                            <Text style={{ color: Colors.magenta[6] }}>
-                              {utils.farsiNum(
-                                `${utils.slashDate(
-                                  Actions[0].ActionDate
-                                )} - ${utils.colonTime(Actions[0].ActionTime)}`
-                              )}
-                            </Text>
-                          </Descriptions.Item>
-                        </>
-                      )}
-                      {/* {ResponseFiles.length > 0 && (
-                        <Descriptions.Item
-                          label={Words.attached_files}
-                          span={2}
-                        >
-                          <Col xs={24}>
-                            {ResponseFiles.map((f) => (
-                              <a
-                                key={f.FileID}
-                                href={`${checkoutResponseFilesUrl}/${f.FileName}`}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <Tag
-                                  color="pink"
-                                  icon={<AttachedFileIcon />}
-                                  style={{ margin: 5 }}
-                                >
-                                  {Words.attached_file}
-                                </Tag>
-                              </a>
-                            ))}
-                          </Col>
-                        </Descriptions.Item>
-                      )} */}
-                    </Descriptions>
-                  </>
-                )}
-              </Col>
-            </Row>
+            <CheckoutDetails checkout={checkout} />
           </article>
         </section>
       </Modal>
@@ -295,6 +90,15 @@ const UserOfficialCheckCheckoutDetailsModal = ({
           onRegReport={onRegReport}
           onDeleteReport={onDeleteReport}
           onCancel={() => setShowReportsModal(false)}
+          checkout={checkout}
+        />
+      )}
+
+      {showResponseModal && (
+        <ResponseModal
+          isOpen={showResponseModal}
+          onOk={onResponse}
+          onCancel={() => setShowResponseModal(false)}
           checkout={checkout}
         />
       )}
