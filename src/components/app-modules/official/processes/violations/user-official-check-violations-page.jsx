@@ -194,7 +194,7 @@ const UserOfficialCheckViolationsPage = ({ pageName }) => {
       (r) => r.ViolationID === response.ViolationID
     );
     records[index] = response;
-    setRecords({ ...records });
+    setRecords([...records]);
     setSelectedObject(response);
   };
 

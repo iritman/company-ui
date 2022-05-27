@@ -333,6 +333,7 @@ class Words extends Component {
   static seen = "مشاهده شده";
   static private = "محرمانه";
 
+  static checkout_departmnent = "تسویه حساب (دپارتمان)";
   static checkout_official = "تسویه حساب (اداری)";
 
   static my_violation_announcement = "ابلاغیه های تخلف";
@@ -594,6 +595,8 @@ class Words extends Component {
       "قبلا برای این درخواست رای صادر شده است",
     announcement_already_submitted: "ابلاغیه قبلا صادر شده است",
     no_any_announcement: "ابلاغیه ای ثبت نشده است",
+    submit_response_in_finished_checkout_request_failed:
+      "قبلا به این درخواست پاسخ داده شده است",
   };
 
   static questions = {

@@ -203,7 +203,7 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
       (r) => r.CheckoutID === response.CheckoutID
     );
     records[index] = response;
-    setRecords({ ...records });
+    setRecords([...records]);
     setSelectedObject(response);
   };
 

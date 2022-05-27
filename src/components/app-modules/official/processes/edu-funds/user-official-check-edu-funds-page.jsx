@@ -187,7 +187,7 @@ const UserOfficialCheckEduFundsPage = ({ pageName }) => {
   const handleSubmitResponse = (response) => {
     const index = records.findIndex((r) => r.FundID === response.FundID);
     records[index] = response;
-    setRecords({ ...records });
+    setRecords([...records]);
     setSelectedObject(response);
   };
 

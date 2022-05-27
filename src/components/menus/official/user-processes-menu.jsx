@@ -116,6 +116,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 105:
+      link = "department-checkouts";
+      icon = (
+        <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
     case 95:
       link = "employments";
       icon = (
@@ -192,6 +199,7 @@ const tabs = [
     pages: [
       { pageName: "user-Dismissals" },
       { pageName: "user-DepartmentViolationResponses" },
+      { pageName: "user-DepartmentCheckouts" },
     ],
   },
   {

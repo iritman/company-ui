@@ -212,7 +212,7 @@ const UserDepartmentViolationResponsesPage = ({ pageName }) => {
       const index = records.findIndex((r) => r.ViolationID === violationID);
 
       records[index].SeenInfo = data.SeenInfo;
-      setRecords({ ...records });
+      setRecords([...records]);
       setSelectedObject({ ...records[index] });
     } catch {}
   };
