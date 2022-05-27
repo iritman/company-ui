@@ -333,6 +333,8 @@ class Words extends Component {
   static seen = "مشاهده شده";
   static private = "محرمانه";
 
+  static checkout_official = "تسویه حساب (اداری)";
+
   static my_violation_announcement = "ابلاغیه های تخلف";
   static violation_person = "کارمند خاطی";
   static violations = "گزارش تخلف";

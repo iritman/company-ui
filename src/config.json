@@ -12,6 +12,8 @@
   "violationResponseFilesUrl": "http://localhost:3030/static/violation-response-files",
   "violationReportFilesUrl": "http://localhost:3030/static/violation-report-files",
   "violationAnnounceFilesUrl": "http://localhost:3030/static/violation-announce-files",
+  "checkoutFilesUrl": "http://localhost:3030/static/checkout-files",
+  "checkoutReportFilesUrl": "http://localhost:3030/static/checkout-report-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -89,5 +91,18 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "violation-announce-files"
+  },
+  "checkoutFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "checkout-files"
+  },
+  
+  "checkoutReportFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "checkout-report-files"
   }
 }

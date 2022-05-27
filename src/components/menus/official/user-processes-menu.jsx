@@ -110,7 +110,7 @@ const mapper = (pageID) => {
       break;
 
     case 94:
-      link = "checkouts";
+      link = "checkouts-check-official";
       icon = (
         <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
@@ -207,6 +207,7 @@ const tabs = [
       { pageName: "user-DismissalsCheckOfficial" },
       { pageName: "user-EduFundsCheckOfficial" },
       { pageName: "user-ViolationsCheckOfficial" },
+      { pageName: "user-CheckoutsCheckOfficial" },
     ],
   },
 ];
