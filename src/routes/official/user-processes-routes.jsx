@@ -15,6 +15,7 @@ import UserMyViolationResponsesPage from "../../components/app-modules/official/
 import UserOfficialCheckCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-official-check-checkouts-page";
 import UserDepartmentCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-department-checkouts-page";
 import UserInformaticCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-informatic-checkouts-page";
+import UserStoreCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-store-checkouts-page";
 //---
 
 const modulePath = "official/processes";
@@ -104,6 +105,11 @@ const UserOrgRoutes = ({ path }) => {
         render={() => (
           <UserInformaticCheckoutsPage pageName="user-InformaticCheckouts" />
         )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/store-checkouts`}
+        exact
+        render={() => <UserStoreCheckoutsPage pageName="user-StoreCheckouts" />}
       />
       <Redirect to="/not-found" />
     </Switch>

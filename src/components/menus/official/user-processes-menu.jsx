@@ -34,6 +34,7 @@ import {
 import {
   // FaChartPie as WorkReportIcon,
   FaLandmark as OfficialIcon,
+  FaStore as StoreIcon,
 } from "react-icons/fa";
 // import { GiSwipeCard as RegedCardIcon } from "react-icons/gi";
 // import { BiAlarmAdd as ExtraWorkIcon } from "react-icons/bi";
@@ -126,6 +127,13 @@ const mapper = (pageID) => {
 
     case 106:
       link = "informatic-checkouts";
+      icon = (
+        <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
+    case 107:
+      link = "store-checkouts";
       icon = (
         <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
@@ -236,6 +244,17 @@ const tabs = [
       />
     ),
     pages: [{ pageName: "user-InformaticCheckouts" }],
+  },
+  {
+    name: "store-cartable",
+    title: (
+      <TabTitle
+        title={Words.store_cartable}
+        color={Colors.lime[7]}
+        icon={StoreIcon}
+      />
+    ),
+    pages: [{ pageName: "user-StoreCheckouts" }],
   },
 ];
 
