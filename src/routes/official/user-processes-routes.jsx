@@ -16,6 +16,7 @@ import UserOfficialCheckCheckoutsPage from "../../components/app-modules/officia
 import UserDepartmentCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-department-checkouts-page";
 import UserInformaticCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-informatic-checkouts-page";
 import UserStoreCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-store-checkouts-page";
+import UserFinancialCheckoutsPage from "../../components/app-modules/official/processes/checkouts/user-financial-checkouts-page";
 //---
 
 const modulePath = "official/processes";
@@ -110,6 +111,13 @@ const UserOrgRoutes = ({ path }) => {
         path={`${path}/${modulePath}/store-checkouts`}
         exact
         render={() => <UserStoreCheckoutsPage pageName="user-StoreCheckouts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/financial-checkouts`}
+        exact
+        render={() => (
+          <UserFinancialCheckoutsPage pageName="user-FinancialCheckouts" />
+        )}
       />
       <Redirect to="/not-found" />
     </Switch>

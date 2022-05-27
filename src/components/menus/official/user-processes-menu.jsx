@@ -36,7 +36,7 @@ import {
   FaLandmark as OfficialIcon,
   FaStore as StoreIcon,
 } from "react-icons/fa";
-// import { GiSwipeCard as RegedCardIcon } from "react-icons/gi";
+import { BsCashCoin as MoneyIcon } from "react-icons/bs";
 // import { BiAlarmAdd as ExtraWorkIcon } from "react-icons/bi";
 // import { CgArrowsExchange as ExchangeIcon } from "react-icons/cg";
 import { FiUser as UserIcon, FiUsers as UsersIcon } from "react-icons/fi";
@@ -134,6 +134,13 @@ const mapper = (pageID) => {
 
     case 107:
       link = "store-checkouts";
+      icon = (
+        <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+      );
+      break;
+
+    case 108:
+      link = "financial-checkouts";
       icon = (
         <CheckoutIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
@@ -255,6 +262,17 @@ const tabs = [
       />
     ),
     pages: [{ pageName: "user-StoreCheckouts" }],
+  },
+  {
+    name: "financial-cartable",
+    title: (
+      <TabTitle
+        title={Words.financial_cartable}
+        color={Colors.blue[7]}
+        icon={MoneyIcon}
+      />
+    ),
+    pages: [{ pageName: "user-FinancialCheckouts" }],
   },
 ];
 
