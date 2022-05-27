@@ -90,6 +90,8 @@ const UserDepartmentCheckoutsSearchModal = ({
 
       const { Employees } = data;
 
+      console.log(Employees);
+
       setMembers(Employees, "CheckoutMemberID", setCheckoutMembers);
 
       setFinalStatuses([

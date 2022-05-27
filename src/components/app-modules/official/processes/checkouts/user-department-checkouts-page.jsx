@@ -13,8 +13,7 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import SearchModal from "./user-official-check-checkouts-search-modal";
-import CheckoutModal from "./user-official-check-checkout-modal";
+import SearchModal from "./user-department-checkouts-search-modal";
 import DetailsModal from "./user-department-checkout-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
@@ -133,7 +132,6 @@ const UserDepartmentCheckoutsPage = ({ pageName }) => {
     setAccess,
     selectedObject,
     setSelectedObject,
-    showModal,
     showDetails,
     setShowDetails,
     showSearchModal,
@@ -157,18 +155,11 @@ const UserDepartmentCheckoutsPage = ({ pageName }) => {
     await handleAdvancedSearch(inprogress_checkouts_filter);
   });
 
-  const {
-    handleCloseModal,
-    handleAdd,
-    // handleEdit,
-    // handleDelete,
-    handleSave,
-    handleResetContext,
-    handleAdvancedSearch,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleAdd, handleResetContext, handleAdvancedSearch } =
+    GetSimplaDataPageMethods({
+      service,
+      recordID,
+    });
 
   const getOperationalButtons = (record) => {
     return (
@@ -232,15 +223,6 @@ const UserDepartmentCheckoutsPage = ({ pageName }) => {
           </Col>
         </Row>
       </Spin>
-
-      {showModal && (
-        <CheckoutModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
-        />
-      )}
 
       {showSearchModal && (
         <SearchModal
