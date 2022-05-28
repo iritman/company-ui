@@ -6,12 +6,12 @@ import {
 } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import utils from "../../../../../tools/utils";
-import ReportsModal from "./user-official-check-checkout-reports-modal";
-import CheckoutDetails from "./checkout-details";
-import ResponseModal from "./user-official-check-checkout-reg-response-modal";
+import ReportsModal from "./user-official-check-management-transfer-reports-modal";
+import ManagementTransferDetails from "./management-transfer-details";
+import ResponseModal from "./user-official-check-management-transfer-reg-response-modal";
 
-const UserOfficialCheckCheckoutDetailsModal = ({
-  checkout,
+const UserOfficialCheckManagementTransferDetailsModal = ({
+  transfer,
   isOpen,
   onOk,
   onRegReport,
@@ -21,7 +21,7 @@ const UserOfficialCheckCheckoutDetailsModal = ({
   const [showReportsModal, setShowReportsModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
 
-  const { Actions, Reports } = checkout;
+  const { Actions, Reports } = transfer;
 
   const getFooterButtons = () => {
     let buttons = [
@@ -30,11 +30,7 @@ const UserOfficialCheckCheckoutDetailsModal = ({
       </Button>,
     ];
 
-    if (
-      Actions[1].MemberID > 0 &&
-      Actions[2].MemberID > 0 &&
-      Actions[3].MemberID === 0
-    ) {
+    if (Actions[0].MemberID > 0 && Actions[1].MemberID === 0) {
       buttons = [
         <Button
           key="response-button"
@@ -83,7 +79,7 @@ const UserOfficialCheckCheckoutDetailsModal = ({
             className="scrollbar-normal"
             style={{ maxHeight: "calc(100vh - 180px)" }}
           >
-            <CheckoutDetails checkout={checkout} />
+            <ManagementTransferDetails transfer={transfer} />
           </article>
         </section>
       </Modal>
@@ -94,7 +90,7 @@ const UserOfficialCheckCheckoutDetailsModal = ({
           onRegReport={onRegReport}
           onDeleteReport={onDeleteReport}
           onCancel={() => setShowReportsModal(false)}
-          checkout={checkout}
+          transfer={transfer}
         />
       )}
 
@@ -103,11 +99,11 @@ const UserOfficialCheckCheckoutDetailsModal = ({
           isOpen={showResponseModal}
           onOk={onResponse}
           onCancel={() => setShowResponseModal(false)}
-          checkout={checkout}
+          transfer={transfer}
         />
       )}
     </>
   );
 };
 
-export default UserOfficialCheckCheckoutDetailsModal;
+export default UserOfficialCheckManagementTransferDetailsModal;

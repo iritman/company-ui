@@ -9,8 +9,8 @@ import {
   RiArtboardFill as BoardIcon,
   RiWalkFill as CheckoutIcon,
   RiUserAddFill as AddUserIcon,
-  RiExchangeFundsLine as PersonalReplacementIcon,
-  RiExchangeLine as ManagerReplacementIcon,
+  RiExchangeFundsLine as PersonalTransferIcon,
+  RiExchangeLine as ManagerTransferIcon,
   RiFileUserFill as HokmIcon,
 } from "react-icons/ri";
 
@@ -156,7 +156,7 @@ const mapper = (pageID) => {
     case 96:
       link = "personal-replacements";
       icon = (
-        <PersonalReplacementIcon
+        <PersonalTransferIcon
           style={{ color: Colors.magenta[6] }}
           size={iconSize}
         />
@@ -164,9 +164,9 @@ const mapper = (pageID) => {
       break;
 
     case 97:
-      link = "manager-replacements";
+      link = "management-transfers";
       icon = (
-        <ManagerReplacementIcon
+        <ManagerTransferIcon
           style={{ color: Colors.cyan[6] }}
           size={iconSize}
         />
@@ -239,6 +239,7 @@ const tabs = [
       { pageName: "user-EduFundsCheckOfficial" },
       { pageName: "user-ViolationsCheckOfficial" },
       { pageName: "user-CheckoutsCheckOfficial" },
+      { pageName: "user-ManagementTransfers" },
     ],
   },
   {

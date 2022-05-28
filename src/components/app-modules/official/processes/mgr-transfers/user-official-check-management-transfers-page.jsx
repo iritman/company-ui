@@ -3,7 +3,7 @@ import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, message } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-checkouts-service";
+import service from "../../../../../services/official/processes/user-management-transfers-service";
 import {
   getSorter,
   checkAccess,
@@ -13,9 +13,9 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import SearchModal from "./user-official-check-checkouts-search-modal";
-import CheckoutModal from "./user-official-check-checkout-modal";
-import DetailsModal from "./user-official-check-checkout-details-modal";
+import SearchModal from "./user-official-check-management-transfers-search-modal";
+import CheckoutModal from "./user-official-check-management-transfer-modal";
+import DetailsModal from "./user-official-check-management-transfer-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -47,15 +47,17 @@ const getFinalStatusTitle = (record) => {
 
 const getSheets = (records) => [
   {
-    title: "Checkouts",
+    title: "ManagementTransfers",
     data: records,
     columns: [
-      { label: Words.id, value: "CheckoutID" },
+      { label: Words.id, value: "TransferID" },
       {
         label: Words.employee,
         value: (record) =>
-          `${record.CheckoutFirstName} ${record.CheckoutLastName}`,
+          `${record.TransferFirstName} ${record.TransferLastName}`,
       },
+      { label: Words.from_department, value: "FromDepartmentTitle" },
+      { label: Words.to_department, value: "ToDepartmentTitle" },
       { label: Words.status, value: (record) => getFinalStatusTitle(record) },
       {
         label: Words.reg_member,
@@ -70,6 +72,8 @@ const getSheets = (records) => [
         value: (record) => utils.colonTime(record.RegTime),
       },
       { label: Words.descriptions, value: "DetailsText" },
+      { label: Words.delivery_properties, value: "DeliveryProperties" },
+      { label: Words.receiving_properties, value: "ReceivingProperties" },
     ],
   },
 ];
@@ -79,20 +83,9 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "CheckoutID",
-    sorter: getSorter("CheckoutID"),
-    render: (CheckoutID) => <Text>{utils.farsiNum(`${CheckoutID}`)}</Text>,
-  },
-  {
-    title: Words.reg_member,
-    width: 200,
-    align: "center",
-    sorter: getSorter("RegLastName"),
-    render: (record) => (
-      <Text
-        style={{ color: Colors.cyan[6] }}
-      >{`${record.RegFirstName} ${record.RegLastName}`}</Text>
-    ),
+    dataIndex: "TransferID",
+    sorter: getSorter("TransferID"),
+    render: (TransferID) => <Text>{utils.farsiNum(`${TransferID}`)}</Text>,
   },
   {
     title: Words.employee,
@@ -102,7 +95,27 @@ const baseColumns = [
     render: (record) => (
       <Text
         style={{ color: Colors.red[6] }}
-      >{`${record.CheckoutFirstName} ${record.CheckoutLastName}`}</Text>
+      >{`${record.TransferFirstName} ${record.TransferLastName}`}</Text>
+    ),
+  },
+  {
+    title: Words.from_department,
+    width: 200,
+    align: "center",
+    dataIndex: "FromDepartmentTitle",
+    sorter: getSorter("FromDepartmentTitle"),
+    render: (FromDepartmentTitle) => (
+      <Text style={{ color: Colors.blue[6] }}>{FromDepartmentTitle}</Text>
+    ),
+  },
+  {
+    title: Words.to_department,
+    width: 200,
+    align: "center",
+    dataIndex: "ToDepartmentTitle",
+    sorter: getSorter("ToDepartmentTitle"),
+    render: (ToDepartmentTitle) => (
+      <Text style={{ color: Colors.green[6] }}>{ToDepartmentTitle}</Text>
     ),
   },
   {
@@ -120,9 +133,9 @@ const baseColumns = [
 const handleCheckEditable = (row) => row.Editable;
 const handleCheckDeletable = (row) => row.Deletable;
 
-const recordID = "CheckoutID";
+const recordID = "TransferID";
 
-const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
+const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -146,15 +159,17 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
 
-    const inprogress_checkouts_filter = {
+    const inprogress_management_transfers_filter = {
       RegMemberID: 0,
-      CheckoutMemberID: 0,
+      TransferMemberID: 0,
+      FromDepartmentID: 0,
+      ToDepartmentID: 0,
       FinalStatusID: 1,
       FromDate: "",
       ToDate: "",
     };
 
-    await handleAdvancedSearch(inprogress_checkouts_filter);
+    await handleAdvancedSearch(inprogress_management_transfers_filter);
   });
 
   const {
@@ -199,10 +214,10 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
   };
 
   const handleSubmitResponse = async (response) => {
-    const { CheckoutID } = selectedObject;
-    const action_data = await service.saveResponse({ CheckoutID, ...response });
+    const { TransferID } = selectedObject;
+    const action_data = await service.saveResponse({ TransferID, ...response });
 
-    const index = records.findIndex((r) => r.CheckoutID === CheckoutID);
+    const index = records.findIndex((r) => r.TransferID === TransferID);
 
     records[index] = action_data;
     setRecords([...records]);
@@ -212,7 +227,7 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
   const handleRegReport = async (report) => {
     const newReport = await service.saveReport(report);
 
-    const index = records.findIndex((r) => r.CheckoutID === report.CheckoutID);
+    const index = records.findIndex((r) => r.TransferID === report.TransferID);
 
     records[index].Reports = [...records[index].Reports, newReport];
     records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
@@ -226,7 +241,7 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
   const handleDeleteReport = async (report) => {
     const data = await service.deleteReport(report.ReportID);
 
-    const index = records.findIndex((r) => r.CheckoutID === report.CheckoutID);
+    const index = records.findIndex((r) => r.TransferID === report.TransferID);
 
     records[index].Reports = records[index].Reports.filter(
       (r) => r.ReportID !== report.ReportID
@@ -250,9 +265,9 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.checkout_official}
+            title={Words.management_transfer_official}
             sheets={getSheets(records)}
-            fileName="Checkouts"
+            fileName="ManagementTransfers"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
@@ -295,11 +310,11 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
           onDeleteReport={handleDeleteReport}
           onResponse={handleSubmitResponse}
           isOpen={showDetails}
-          checkout={selectedObject}
+          transfer={selectedObject}
         />
       )}
     </>
   );
 };
 
-export default UserOfficialCheckCheckoutsPage;
+export default UserOfficialCheckManagementTransfersPage;

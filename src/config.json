@@ -15,6 +15,9 @@
   "checkoutFilesUrl": "http://localhost:3030/static/checkout-files",
   "checkoutReportFilesUrl": "http://localhost:3030/static/checkout-report-files",
   "checkoutActionFilesUrl": "http://localhost:3030/static/checkout-action-files",
+  "managementTransferFilesUrl": "http://localhost:3030/static/mgr-transfer-files",
+  "managementTransferReportFilesUrl": "http://localhost:3030/static/mgr-transfer-report-files",
+  "managementTransferActionFilesUrl": "http://localhost:3030/static/mgr-transfer-action-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -110,5 +113,23 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "checkout-action-files"
+  },
+  "managementTransferFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "mgr-transfer-files"
+  },  
+  "managementTransferReportFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "mgr-transfer-report-files"
+  },
+  "managementTransferActionFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "mgr-transfer-action-files"
   }
 }
