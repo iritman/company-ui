@@ -19,7 +19,6 @@ import DropdownItem from "./../../../../form-controls/dropdown-item";
 import DateItem from "../../../../form-controls/date-item";
 
 const schema = {
-  TransferMemberID: Joi.number(),
   FromDepartmentID: Joi.number(),
   ToDepartmentID: Joi.number(),
   FinalStatusID: Joi.number(),
@@ -28,7 +27,6 @@ const schema = {
 };
 
 const initRecord = {
-  TransferMemberID: 0,
   FromDepartmentID: 0,
   ToDepartmentID: 0,
   FinalStatusID: 0,
@@ -38,14 +36,13 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserStoreManagementTransfersSearchModal = ({
+const UserEmployeeManagementTransfersSearchModal = ({
   isOpen,
   filter,
   onOk,
   onCancel,
 }) => {
   const [finalStatuses, setFinalStatuses] = useState([]);
-  const [transferMembers, setTransferMembers] = useState([]);
   const [fromDepartments, setFromDepartments] = useState([]);
   const [toDepartments, setToDepartments] = useState([]);
 
@@ -63,7 +60,6 @@ const UserStoreManagementTransfersSearchModal = ({
   };
 
   const clearRecord = () => {
-    record.TransferMemberID = 0;
     record.FromDepartmentID = 0;
     record.ToDepartmentID = 0;
     record.FinalStatusID = 0;
@@ -73,17 +69,6 @@ const UserStoreManagementTransfersSearchModal = ({
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
-  };
-
-  const setMembers = (employees, column_id, set_func) => {
-    let members = [];
-    employees.forEach((member) => {
-      members.push({
-        [column_id]: member.MemberID,
-        FullName: member.FullName,
-      });
-    });
-    set_func(members);
   };
 
   const setDepartments = (departments, column_id, set_func) => {
@@ -104,9 +89,7 @@ const UserStoreManagementTransfersSearchModal = ({
     try {
       const data = await service.getParams();
 
-      const { Employees, Departments } = data;
-
-      setMembers(Employees, "TransferMemberID", setTransferMembers);
+      const { Departments } = data;
 
       setDepartments(Departments, "FromDepartmentID", setFromDepartments);
       setDepartments(Departments, "ToDepartmentID", setToDepartments);
@@ -135,17 +118,7 @@ const UserStoreManagementTransfersSearchModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.employee}
-              dataSource={transferMembers}
-              keyColumn="TransferMemberID"
-              valueColumn="FullName"
-              formConfig={formConfig}
-              autoFocus
-            />
-          </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24}>
             <DropdownItem
               title={Words.status}
               dataSource={finalStatuses}
@@ -198,4 +171,4 @@ const UserStoreManagementTransfersSearchModal = ({
   );
 };
 
-export default UserStoreManagementTransfersSearchModal;
+export default UserEmployeeManagementTransfersSearchModal;

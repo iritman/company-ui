@@ -3,9 +3,9 @@ import { Button, Modal } from "antd";
 import { MessageOutlined as MessageIcon } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import ManagementTransferDetails from "./management-transfer-details";
-import ResponseModal from "./user-store-management-transfer-reg-response-modal";
+import ResponseModal from "./user-employee-management-transfer-reg-response-modal";
 
-const UserStoreManagementTransferDetailsModal = ({
+const UserEmployeeManagementTransferDetailsModal = ({
   transfer,
   isOpen,
   onOk,
@@ -20,7 +20,7 @@ const UserStoreManagementTransferDetailsModal = ({
       </Button>,
     ];
 
-    if (transfer.Actions[0].MemberID === 0) {
+    if (transfer.Actions[1].MemberID === 0) {
       buttons = [
         <Button
           key="response-button"
@@ -54,10 +54,7 @@ const UserStoreManagementTransferDetailsModal = ({
             className="scrollbar-normal"
             style={{ maxHeight: "calc(100vh - 180px)" }}
           >
-            <ManagementTransferDetails
-              transfer={transfer}
-              bannedSteps={[{ StepID: 3 }]}
-            />
+            <ManagementTransferDetails transfer={transfer} />
           </article>
         </section>
       </Modal>
@@ -74,4 +71,4 @@ const UserStoreManagementTransferDetailsModal = ({
   );
 };
 
-export default UserStoreManagementTransferDetailsModal;
+export default UserEmployeeManagementTransferDetailsModal;

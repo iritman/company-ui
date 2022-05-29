@@ -183,6 +183,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 110:
+      link = "my-management-transfers";
+      icon = (
+        <ManagerTransferIcon
+          style={{ color: Colors.cyan[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     default:
       break;
   }
@@ -205,6 +215,7 @@ const tabs = [
       { pageName: "user-Violations" },
       { pageName: "user-MyViolationAnnounces" },
       { pageName: "user-MyViolationResponses" },
+      { pageName: "user-EmployeeManagementTransfers" },
     ],
   },
   {

@@ -342,6 +342,9 @@ class Words extends Component {
   static receiving_properties = "دریافت اموال";
   static management_transfer_official = "جابجایی مدیریتی (اداری)";
   static management_transfer_store = "جابجایی مدیریتی (انبار)";
+  static management_transfer_employee = "جابجایی مدیریتی (کارمند)";
+  static approved_store_report =
+    "گزارش انبار مبنی بر تحویل و دریافت کالا مورد تایید اینجانب می باشد";
 
   static checkout_departmnent = "تسویه حساب (دپارتمان)";
   static checkout_official = "تسویه حساب (اداری)";
@@ -612,6 +615,8 @@ class Words extends Component {
       "قبلا به این درخواست پاسخ داده شده است",
     submit_response_in_finished_management_transfer_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
+    not_submit_response_when_not_approved_store_report:
+      "در صورت عدم تایید گزارش انبار مبنی بر تحویل و دریافت کالا، از ثبت پاسخ خودداری فرموده و موارد را از طریق واحد اداری پیگیری بفرمایید",
   };
 
   static questions = {
