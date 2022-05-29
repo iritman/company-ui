@@ -14,7 +14,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
-import service from "../../../../../services/official/processes/user-management-transfers-service";
+import service from "../../../../../services/official/processes/user-store-management-transfers-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import DateItem from "../../../../form-controls/date-item";
 

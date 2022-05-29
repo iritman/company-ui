@@ -173,6 +173,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 109:
+      link = "store-management-transfers";
+      icon = (
+        <ManagerTransferIcon
+          style={{ color: Colors.cyan[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     default:
       break;
   }
@@ -262,7 +272,10 @@ const tabs = [
         icon={StoreIcon}
       />
     ),
-    pages: [{ pageName: "user-StoreCheckouts" }],
+    pages: [
+      { pageName: "user-StoreCheckouts" },
+      { pageName: "user-StoreManagementTransfers" },
+    ],
   },
   {
     name: "financial-cartable",

@@ -341,6 +341,7 @@ class Words extends Component {
   static delivery_properties = "تحویل اموال";
   static receiving_properties = "دریافت اموال";
   static management_transfer_official = "جابجایی مدیریتی (اداری)";
+  static management_transfer_store = "جابجایی مدیریتی (انبار)";
 
   static checkout_departmnent = "تسویه حساب (دپارتمان)";
   static checkout_official = "تسویه حساب (اداری)";
@@ -608,6 +609,8 @@ class Words extends Component {
     announcement_already_submitted: "ابلاغیه قبلا صادر شده است",
     no_any_announcement: "ابلاغیه ای ثبت نشده است",
     submit_response_in_finished_checkout_request_failed:
+      "قبلا به این درخواست پاسخ داده شده است",
+    submit_response_in_finished_management_transfer_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
   };
 

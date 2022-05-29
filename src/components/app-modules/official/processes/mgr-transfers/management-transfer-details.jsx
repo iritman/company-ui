@@ -26,7 +26,7 @@ import MemberProfileImage from "./../../../../common/member-profile-image";
 const { Text } = Typography;
 const { Step } = Steps;
 
-const ManagementTransferDetails = ({ transfer }) => {
+const ManagementTransferDetails = ({ transfer, bannedSteps }) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleStepChange = (current) => {
@@ -191,7 +191,13 @@ const ManagementTransferDetails = ({ transfer }) => {
     },
   ];
 
-  Actions.forEach((action) => {
+  (bannedSteps
+    ? Actions.filter(
+        (action) =>
+          bannedSteps.findIndex((s) => s.StepID === action.StepID) === -1
+      )
+    : Actions
+  ).forEach((action) => {
     steps.push({
       stepID: action.StepID,
       title: action.SysRoleTitle,

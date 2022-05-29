@@ -1,9 +1,9 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, message } from "antd";
+import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-management-transfers-service";
+import service from "../../../../../services/official/processes/user-store-management-transfers-service";
 import {
   getSorter,
   checkAccess,
@@ -13,9 +13,8 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import SearchModal from "./user-official-check-management-transfers-search-modal";
-import TransferModal from "./user-official-check-management-transfer-modal";
-import DetailsModal from "./user-official-check-management-transfer-details-modal";
+import SearchModal from "./user-store-management-transfers-search-modal";
+import DetailsModal from "./user-store-management-transfer-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -130,12 +129,12 @@ const baseColumns = [
   },
 ];
 
-const handleCheckEditable = (row) => row.Editable;
-const handleCheckDeletable = (row) => row.Deletable;
+const handleCheckEditable = (row) => false;
+const handleCheckDeletable = (row) => false;
 
 const recordID = "TransferID";
 
-const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
+const UserStoreManagementTransfersPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -146,7 +145,6 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
     setAccess,
     selectedObject,
     setSelectedObject,
-    showModal,
     showDetails,
     setShowDetails,
     showSearchModal,
@@ -171,18 +169,12 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
     await handleAdvancedSearch(inprogress_management_transfers_filter);
   });
 
-  const {
-    handleCloseModal,
-    handleAdd,
-    handleEdit,
-    handleDelete,
-    handleSave,
-    handleResetContext,
-    handleAdvancedSearch,
-  } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
+    {
+      service,
+      recordID,
+    }
+  );
 
   const getOperationalButtons = (record) => {
     return (
@@ -199,8 +191,8 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
         baseColumns,
         getOperationalButtons,
         access,
-        handleEdit,
-        handleDelete,
+        null, //handleEdit,
+        null, //handleDelete,
         handleCheckEditable,
         handleCheckDeletable
       )
@@ -223,40 +215,6 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
     setSelectedObject(action_data);
   };
 
-  const handleRegReport = async (report) => {
-    const newReport = await service.saveReport(report);
-
-    const index = records.findIndex((r) => r.TransferID === report.TransferID);
-
-    records[index].Reports = [...records[index].Reports, newReport];
-    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
-    records[index].Editable = false;
-    records[index].Deletable = false;
-
-    setRecords([...records]);
-    setSelectedObject(records[index]);
-  };
-
-  const handleDeleteReport = async (report) => {
-    const data = await service.deleteReport(report.ReportID);
-
-    const index = records.findIndex((r) => r.TransferID === report.TransferID);
-
-    records[index].Reports = records[index].Reports.filter(
-      (r) => r.ReportID !== report.ReportID
-    );
-    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
-    if (records[index].Reports.length === 0) {
-      records[index].Editable = true;
-      records[index].Deletable = true;
-    }
-
-    setRecords([...records]);
-    setSelectedObject(records[index]);
-
-    message.success(data.Message);
-  };
-
   //------
 
   return (
@@ -264,13 +222,13 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.management_transfer_official}
+            title={Words.management_transfer_store}
             sheets={getSheets(records)}
             fileName="ManagementTransfers"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={access?.CanAdd && handleAdd}
+            onAdd={null}
           />
 
           <Col xs={24}>
@@ -280,15 +238,6 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
           </Col>
         </Row>
       </Spin>
-
-      {showModal && (
-        <TransferModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
-        />
-      )}
 
       {showSearchModal && (
         <SearchModal
@@ -305,8 +254,6 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
-          onRegReport={handleRegReport}
-          onDeleteReport={handleDeleteReport}
           onResponse={handleSubmitResponse}
           isOpen={showDetails}
           transfer={selectedObject}
@@ -316,4 +263,4 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
   );
 };
 
-export default UserOfficialCheckManagementTransfersPage;
+export default UserStoreManagementTransfersPage;
