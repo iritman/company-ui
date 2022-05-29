@@ -142,6 +142,8 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
     setFilter,
   } = usePageContext();
 
+  console.log(JSON.stringify(filter));
+
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);

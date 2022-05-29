@@ -345,6 +345,8 @@ class Words extends Component {
   static management_transfer_employee = "جابجایی مدیریتی (کارمند)";
   static approved_store_report =
     "گزارش انبار مبنی بر تحویل و دریافت کالا مورد تایید اینجانب می باشد";
+  static approve_transfer = "تایید جابجایی";
+  static cancel_transfer = "لفو جابجایی";
 
   static checkout_departmnent = "تسویه حساب (دپارتمان)";
   static checkout_official = "تسویه حساب (اداری)";
