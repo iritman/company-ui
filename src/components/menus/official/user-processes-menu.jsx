@@ -193,6 +193,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 111:
+      link = "department-management-transfers";
+      icon = (
+        <ManagerTransferIcon
+          style={{ color: Colors.cyan[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     default:
       break;
   }
@@ -244,6 +254,7 @@ const tabs = [
       { pageName: "user-Dismissals" },
       { pageName: "user-DepartmentViolationResponses" },
       { pageName: "user-DepartmentCheckouts" },
+      { pageName: "user-DepartmentManagementTransfers" },
     ],
   },
   {

@@ -343,10 +343,12 @@ class Words extends Component {
   static management_transfer_official = "جابجایی مدیریتی (اداری)";
   static management_transfer_store = "جابجایی مدیریتی (انبار)";
   static management_transfer_employee = "جابجایی مدیریتی (کارمند)";
+  static management_transfer_department = "جابجایی مدیریتی (دپارتمان)";
   static approved_store_report =
     "گزارش انبار مبنی بر تحویل و دریافت کالا مورد تایید اینجانب می باشد";
   static approve_transfer = "تایید جابجایی";
   static cancel_transfer = "لفو جابجایی";
+  static just_unseen_transfers = "فقط جابجایی های جدید";
 
   static checkout_departmnent = "تسویه حساب (دپارتمان)";
   static checkout_official = "تسویه حساب (اداری)";
