@@ -154,7 +154,7 @@ const mapper = (pageID) => {
       break;
 
     case 96:
-      link = "personal-replacements";
+      link = "personal-transfers";
       icon = (
         <PersonalTransferIcon
           style={{ color: Colors.magenta[6] }}
@@ -226,6 +226,7 @@ const tabs = [
       { pageName: "user-MyViolationAnnounces" },
       { pageName: "user-MyViolationResponses" },
       { pageName: "user-EmployeeManagementTransfers" },
+      { pageName: "user-PersonalTransfers" },
     ],
   },
   {

@@ -15,54 +15,40 @@ import {
   useModalContext,
   useResetContext,
 } from "./../../../../contexts/modal-context";
-import service from "../../../../../services/official/processes/user-management-transfers-service";
+import service from "../../../../../services/official/processes/user-personal-transfers-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import InputItem from "../../../../form-controls/input-item";
 import FileUploader from "../../../../common/file-uploader";
 import {
-  managementTransferFilesUrl,
-  managementTransferFileConfig as fileConfig,
+  personalTransferFilesUrl,
+  personalTransferFileConfig as fileConfig,
 } from "./../../../../../config.json";
 import { onUpload } from "../../../../../tools/upload-tools";
 
 const schema = {
   TransferID: Joi.number().required(),
-  TransferMemberID: Joi.number().min(1).required(),
   ToDepartmentID: Joi.number().min(1).required(),
+  ToRoleID: Joi.number().min(1).required(),
   DetailsText: Joi.string()
     .required()
     .min(10)
     .max(512)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.descriptions),
-  DeliveryProperties: Joi.string()
-    .allow("")
-    .min(10)
-    .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
-    .label(Words.delivery_properties),
-  ReceivingProperties: Joi.string()
-    .allow("")
-    .min(10)
-    .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
-    .label(Words.receiving_properties),
   Files: Joi.array(),
 };
 
 const initRecord = {
   TransferID: 0,
-  TransferMemberID: 0,
   ToDepartmentID: 0,
+  ToRoleID: 0,
   DetailsText: "",
-  DeliveryProperties: "",
-  ReceivingProperties: "",
   Files: [],
 };
 
 const formRef = React.createRef();
 
-const UserOfficialCheckManagementTransferModal = ({
+const UserPersonalTransferModal = ({
   isOpen,
   selectedObject,
   onOk,
@@ -72,26 +58,17 @@ const UserOfficialCheckManagementTransferModal = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [toDepartments, setToDepartments] = useState([]);
+  const [toRoles, setToRoles] = useState([]);
 
-  const {
-    progress,
-    setProgress,
-    record,
-    setRecord,
-    errors,
-    setErrors,
-    employees,
-    setEmployees,
-  } = useModalContext();
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
 
   const resetContext = useResetContext();
 
   const clearRecord = () => {
-    record.TransferMemberID = 0;
     record.ToDepartmentID = 0;
+    record.ToRoleID = 0;
     record.DetailsText = "";
-    record.DeliveryProperties = "";
-    record.ReceivingProperties = "";
     record.Files = [];
 
     setRecord(record);
@@ -107,14 +84,14 @@ const UserOfficialCheckManagementTransferModal = ({
     setErrors,
   };
 
-  const initEmployees = (employees) => {
-    const emp_list = [...employees];
+  const initRoles = (roles) => {
+    const role_list = [...roles];
 
-    emp_list.forEach((employee) => {
-      employee.TransferMemberID = employee.MemberID;
+    role_list.forEach((role) => {
+      role.ToRoleID = role.RoleID;
     });
 
-    setEmployees(emp_list);
+    setToRoles(role_list);
   };
 
   const initDepartments = (departments) => {
@@ -143,7 +120,7 @@ const UserOfficialCheckManagementTransferModal = ({
           {
             uid: f.FileID,
             name: Words.attached_file, //f.filename,
-            url: `${managementTransferFilesUrl}/${f.FileName}`,
+            url: `${personalTransferFilesUrl}/${f.FileName}`,
             FileID: f.FileID,
             FileName: f.FileName,
             FileSize: f.FileSize,
@@ -162,9 +139,9 @@ const UserOfficialCheckManagementTransferModal = ({
     try {
       const data = await service.getParams();
 
-      const { Employees, Departments } = data;
+      const { Roles, Departments } = data;
 
-      initEmployees(Employees);
+      initRoles(Roles);
       initDepartments(Departments);
     } catch (err) {
       handleError(err);
@@ -232,7 +209,7 @@ const UserOfficialCheckManagementTransferModal = ({
         saved_files.forEach((f) => {
           f.uid = f.FileID;
           f.name = Words.attached_file;
-          f.url = `${managementTransferFilesUrl}/${f.FileName}`;
+          f.url = `${personalTransferFilesUrl}/${f.FileName}`;
         });
 
         rec.Files = [...saved_files];
@@ -261,10 +238,10 @@ const UserOfficialCheckManagementTransferModal = ({
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.employee}
-              dataSource={employees}
-              keyColumn="TransferMemberID"
-              valueColumn="FullName"
+              title={Words.to_department}
+              dataSource={toDepartments}
+              keyColumn="ToDepartmentID"
+              valueColumn="DepartmentTitle"
               formConfig={formConfig}
               required
               autoFocus
@@ -272,10 +249,10 @@ const UserOfficialCheckManagementTransferModal = ({
           </Col>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.to_department}
-              dataSource={toDepartments}
-              keyColumn="ToDepartmentID"
-              valueColumn="DepartmentTitle"
+              title={Words.to_role}
+              dataSource={toRoles}
+              keyColumn="ToRoleID"
+              valueColumn="RoleTitle"
               formConfig={formConfig}
               required
               autoFocus
@@ -294,30 +271,7 @@ const UserOfficialCheckManagementTransferModal = ({
               required
             />
           </Col>
-          <Col xs={24}>
-            <InputItem
-              horizontal
-              title={Words.delivery_properties}
-              fieldName="DeliveryProperties"
-              formConfig={formConfig}
-              multiline
-              rows={7}
-              maxLength={512}
-              showCount
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              horizontal
-              title={Words.receiving_properties}
-              fieldName="ReceivingProperties"
-              formConfig={formConfig}
-              multiline
-              rows={7}
-              maxLength={512}
-              showCount
-            />
-          </Col>
+
           <Col xs={24}>
             <Form.Item>
               <FileUploader
@@ -336,4 +290,4 @@ const UserOfficialCheckManagementTransferModal = ({
   );
 };
 
-export default UserOfficialCheckManagementTransferModal;
+export default UserPersonalTransferModal;

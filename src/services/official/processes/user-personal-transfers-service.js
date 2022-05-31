@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/official/processes/user-mgr-transfers";
+const apiEndpoint = apiUrl + "/official/processes/user-personal-transfers";
 
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);

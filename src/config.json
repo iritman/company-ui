@@ -18,6 +18,9 @@
   "managementTransferFilesUrl": "http://localhost:3030/static/mgr-transfer-files",
   "managementTransferReportFilesUrl": "http://localhost:3030/static/mgr-transfer-report-files",
   "managementTransferActionFilesUrl": "http://localhost:3030/static/mgr-transfer-action-files",
+  "personalTransferFilesUrl": "http://localhost:3030/static/personal-transfer-files",
+  "personalTransferReportFilesUrl": "http://localhost:3030/static/personal-transfer-report-files",
+  "personalTransferActionFilesUrl": "http://localhost:3030/static/personal-transfer-action-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -131,5 +134,23 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "mgr-transfer-action-files"
+  },
+  "personalTransferFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "personal-transfer-files"
+  },  
+  "personalTransferReportFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "personal-transfer-report-files"
+  },
+  "personalTransferActionFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "personal-transfer-action-files"
   }
 }

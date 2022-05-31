@@ -1,9 +1,9 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, message } from "antd";
+import { Spin, Row, Col, Typography, Space } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-checkouts-service";
+import service from "../../../../../services/official/processes/user-personal-transfers-service";
 import {
   getSorter,
   checkAccess,
@@ -13,9 +13,9 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import SearchModal from "./user-official-check-checkouts-search-modal";
-import CheckoutModal from "./user-official-check-checkout-modal";
-import DetailsModal from "./user-official-check-checkout-details-modal";
+import SearchModal from "./user-personal-transfers-search-modal";
+import TransferModal from "./user-personal-transfer-modal";
+import DetailsModal from "./user-personal-transfer-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -47,15 +47,19 @@ const getFinalStatusTitle = (record) => {
 
 const getSheets = (records) => [
   {
-    title: "Checkouts",
+    title: "PersonalTransfers",
     data: records,
     columns: [
-      { label: Words.id, value: "CheckoutID" },
+      { label: Words.id, value: "TransferID" },
       {
         label: Words.employee,
         value: (record) =>
-          `${record.CheckoutFirstName} ${record.CheckoutLastName}`,
+          `${record.TransferFirstName} ${record.TransferLastName}`,
       },
+      { label: Words.from_department, value: "FromDepartmentTitle" },
+      { label: Words.from_role, value: "FromRoleTitle" },
+      { label: Words.to_department, value: "ToDepartmentTitle" },
+      { label: Words.to_role, value: "ToRoleTitle" },
       { label: Words.status, value: (record) => getFinalStatusTitle(record) },
       {
         label: Words.reg_member,
@@ -70,6 +74,8 @@ const getSheets = (records) => [
         value: (record) => utils.colonTime(record.RegTime),
       },
       { label: Words.descriptions, value: "DetailsText" },
+      { label: Words.delivery_properties, value: "DeliveryProperties" },
+      { label: Words.receiving_properties, value: "ReceivingProperties" },
     ],
   },
 ];
@@ -79,30 +85,53 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "CheckoutID",
-    sorter: getSorter("CheckoutID"),
-    render: (CheckoutID) => <Text>{utils.farsiNum(`${CheckoutID}`)}</Text>,
-  },
-  {
-    title: Words.reg_member,
-    width: 200,
-    align: "center",
-    sorter: getSorter("RegLastName"),
-    render: (record) => (
-      <Text
-        style={{ color: Colors.cyan[6] }}
-      >{`${record.RegFirstName} ${record.RegLastName}`}</Text>
-    ),
+    dataIndex: "TransferID",
+    sorter: getSorter("TransferID"),
+    render: (TransferID) => <Text>{utils.farsiNum(`${TransferID}`)}</Text>,
   },
   {
     title: Words.employee,
     width: 200,
     align: "center",
-    sorter: getSorter("CheckoutLastName"),
+    sorter: getSorter("TransferLastName"),
     render: (record) => (
       <Text
         style={{ color: Colors.red[6] }}
-      >{`${record.CheckoutFirstName} ${record.CheckoutLastName}`}</Text>
+      >{`${record.TransferFirstName} ${record.TransferLastName}`}</Text>
+    ),
+  },
+  {
+    title: Words.from_department,
+    width: 200,
+    align: "center",
+    // dataIndex: "FromDepartmentTitle",
+    sorter: getSorter("FromDepartmentTitle"),
+    render: (record) => (
+      <Space direction="vertical">
+        <Text style={{ color: Colors.blue[6] }}>
+          {record.FromDepartmentTitle}
+        </Text>
+        <Text style={{ color: Colors.grey[6], fontSize: 12 }}>
+          {record.FromRoleTitle}
+        </Text>
+      </Space>
+    ),
+  },
+  {
+    title: Words.to_department,
+    width: 200,
+    align: "center",
+    // dataIndex: "ToDepartmentTitle",
+    sorter: getSorter("ToDepartmentTitle"),
+    render: (record) => (
+      <Space direction="vertical">
+        <Text style={{ color: Colors.green[6] }}>
+          {record.ToDepartmentTitle}
+        </Text>
+        <Text style={{ color: Colors.grey[6], fontSize: 12 }}>
+          {record.ToRoleTitle}
+        </Text>
+      </Space>
     ),
   },
   {
@@ -120,9 +149,9 @@ const baseColumns = [
 const handleCheckEditable = (row) => row.Editable;
 const handleCheckDeletable = (row) => row.Deletable;
 
-const recordID = "CheckoutID";
+const recordID = "TransferID";
 
-const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
+const UserPersonalTransfersPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -146,15 +175,17 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
 
-    const inprogress_checkouts_filter = {
-      RegMemberID: 0,
-      CheckoutMemberID: 0,
+    const inprogress_personal_transfers_filter = {
+      FromDepartmentID: 0,
+      FromRoleID: 0,
+      ToDepartmentID: 0,
+      ToRoleID: 0,
       FinalStatusID: 1,
       FromDate: "",
       ToDate: "",
     };
 
-    await handleAdvancedSearch(inprogress_checkouts_filter);
+    await handleAdvancedSearch(inprogress_personal_transfers_filter);
   });
 
   const {
@@ -198,51 +229,6 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
     setSearched(false);
   };
 
-  const handleSubmitResponse = async (response) => {
-    const { CheckoutID } = selectedObject;
-    const action_data = await service.saveResponse({ CheckoutID, ...response });
-
-    const index = records.findIndex((r) => r.CheckoutID === CheckoutID);
-
-    records[index] = action_data;
-    setRecords([...records]);
-    setSelectedObject(action_data);
-  };
-
-  const handleRegReport = async (report) => {
-    const newReport = await service.saveReport(report);
-
-    const index = records.findIndex((r) => r.CheckoutID === report.CheckoutID);
-
-    records[index].Reports = [...records[index].Reports, newReport];
-    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
-    records[index].Editable = false;
-    records[index].Deletable = false;
-
-    setRecords([...records]);
-    setSelectedObject(records[index]);
-  };
-
-  const handleDeleteReport = async (report) => {
-    const data = await service.deleteReport(report.ReportID);
-
-    const index = records.findIndex((r) => r.CheckoutID === report.CheckoutID);
-
-    records[index].Reports = records[index].Reports.filter(
-      (r) => r.ReportID !== report.ReportID
-    );
-    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
-    if (records[index].Reports.length === 0) {
-      records[index].Editable = true;
-      records[index].Deletable = true;
-    }
-
-    setRecords([...records]);
-    setSelectedObject(records[index]);
-
-    message.success(data.Message);
-  };
-
   //------
 
   return (
@@ -250,9 +236,9 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.checkout_official}
+            title={Words.personal_transfer}
             sheets={getSheets(records)}
-            fileName="Checkouts"
+            fileName="PersonalTransfers"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
@@ -268,7 +254,7 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <CheckoutModal
+        <TransferModal
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
@@ -291,15 +277,12 @@ const UserOfficialCheckCheckoutsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
-          onRegReport={handleRegReport}
-          onDeleteReport={handleDeleteReport}
-          onResponse={handleSubmitResponse}
           isOpen={showDetails}
-          checkout={selectedObject}
+          transfer={selectedObject}
         />
       )}
     </>
   );
 };
 
-export default UserOfficialCheckCheckoutsPage;
+export default UserPersonalTransfersPage;
