@@ -337,6 +337,7 @@ class Words extends Component {
   static private = "محرمانه";
 
   static personal_transfer = "جابجایی شخصی";
+  static personal_transfer_department = "جابجایی شخصی (دپارتمان)";
   static from_role = "سمت در مبدا";
   static to_role = "سمت در مقصد";
 
@@ -622,6 +623,8 @@ class Words extends Component {
     submit_response_in_finished_checkout_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
     submit_response_in_finished_management_transfer_request_failed:
+      "قبلا به این درخواست پاسخ داده شده است",
+    submit_response_in_finished_personal_transfer_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
     not_submit_response_when_not_approved_store_report:
       "در صورت عدم تایید گزارش انبار مبنی بر تحویل و دریافت کالا، از ثبت پاسخ خودداری فرموده و موارد را از طریق واحد اداری پیگیری بفرمایید",
