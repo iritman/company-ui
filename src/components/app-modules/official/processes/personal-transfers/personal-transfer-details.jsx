@@ -48,8 +48,8 @@ const PersonalTransferDetails = ({ transfer, bannedSteps }) => {
     RegDate,
     RegTime,
     DetailsText,
-    // DeliveryProperties,
-    // ReceivingProperties,
+    DeliveryProperties,
+    ReceivingProperties,
     Files,
     FinalStatusID,
     Actions,
@@ -288,6 +288,34 @@ const PersonalTransferDetails = ({ transfer, bannedSteps }) => {
                     {utils.farsiNum(action.DetailsText)}
                   </Text>
                 </Descriptions.Item>
+              )}
+
+              {action.StepID === 3 && (
+                <>
+                  <Descriptions.Item label={Words.delivery_properties} span={2}>
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(DeliveryProperties)}
+                    </Text>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={Words.receiving_properties}
+                    span={2}
+                  >
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(ReceivingProperties)}
+                    </Text>
+                  </Descriptions.Item>
+                </>
               )}
 
               {action.Files.length > 0 && (

@@ -25,12 +25,26 @@ const schema = {
     .required()
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
     .label(Words.descriptions),
+  DeliveryProperties: Joi.string()
+    .min(5)
+    .max(512)
+    .required()
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.delivery_properties),
+  ReceivingProperties: Joi.string()
+    .min(5)
+    .max(512)
+    .required()
+    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .label(Words.receiving_properties),
   Files: Joi.array(),
 };
 
 const initRecord = {
   IsAccepted: true,
   DetailsText: "",
+  DeliveryProperties: "",
+  ReceivingProperties: "",
   Files: [],
 };
 
@@ -44,6 +58,8 @@ const UserOfficialCheckPersonalTransferRegResponse = ({
 }) => {
   const [record, setRecord] = useState({
     DetailsText: "",
+    DeliveryProperties: "",
+    ReceivingProperties: "",
     Files: [],
   });
   const [errors, setErrors] = useState({});
@@ -63,6 +79,8 @@ const UserOfficialCheckPersonalTransferRegResponse = ({
   const clearRecord = () => {
     record.IsAccepted = true;
     record.DetailsText = "";
+    record.DeliveryProperties = "";
+    record.ReceivingProperties = "";
     record.Files = [];
 
     setRecord(record);
@@ -91,7 +109,7 @@ const UserOfficialCheckPersonalTransferRegResponse = ({
     if (transfer.FinalStatusID > 1)
       message.error(
         Words.messages
-          .submit_response_in_finished_management_transfer_request_failed
+          .submit_response_in_finished_personal_transfer_request_failed
       );
     else {
       const data = await onUpload({
@@ -133,6 +151,17 @@ const UserOfficialCheckPersonalTransferRegResponse = ({
         onCancel();
       }
     }
+  };
+
+  const getStepNo = () => {
+    let step = 0;
+
+    const { Actions } = transfer;
+
+    if (Actions[2].MemberID === 0) step = 3;
+    else if (Actions[2].MemberID > 0 && Actions[5].MemberID === 0) step = 6;
+
+    return step;
   };
 
   return (
@@ -184,6 +213,36 @@ const UserOfficialCheckPersonalTransferRegResponse = ({
               required
             />
           </Col>
+
+          {getStepNo() === 3 && (
+            <>
+              <Col xs={24}>
+                <InputItem
+                  title={Words.delivery_properties}
+                  fieldName="DeliveryProperties"
+                  multiline
+                  rows={7}
+                  showCount
+                  maxLength={512}
+                  formConfig={formConfig}
+                  required
+                />
+              </Col>
+              <Col xs={24}>
+                <InputItem
+                  title={Words.receiving_properties}
+                  fieldName="ReceivingProperties"
+                  multiline
+                  rows={7}
+                  showCount
+                  maxLength={512}
+                  formConfig={formConfig}
+                  required
+                />
+              </Col>
+            </>
+          )}
+
           <Col xs={24}>
             <Form.Item>
               <FileUploader
