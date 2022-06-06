@@ -173,6 +173,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 113:
+      link = "personal-transfers-check-official";
+      icon = (
+        <PersonalTransferIcon
+          style={{ color: Colors.magenta[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     case 97:
       link = "management-transfers";
       icon = (
@@ -284,6 +294,7 @@ const tabs = [
       { pageName: "user-ViolationsCheckOfficial" },
       { pageName: "user-CheckoutsCheckOfficial" },
       { pageName: "user-ManagementTransfers" },
+      { pageName: "user-PersonalTransfersCheckOfficial" },
     ],
   },
   {

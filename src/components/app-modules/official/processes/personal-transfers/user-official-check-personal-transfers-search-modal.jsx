@@ -14,7 +14,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
-import service from "../../../../../services/official/processes/user-department-personal-transfers-service";
+import service from "../../../../../services/official/processes/user-official-check-personal-transfers-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import DateItem from "../../../../form-controls/date-item";
 
@@ -42,7 +42,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const UserDepartmentPersonalTransfersSearchModal = ({
+const UserOfficialCheckPersonalTransfersSearchModal = ({
   isOpen,
   filter,
   onOk,
@@ -236,4 +236,4 @@ const UserDepartmentPersonalTransfersSearchModal = ({
   );
 };
 
-export default UserDepartmentPersonalTransfersSearchModal;
+export default UserOfficialCheckPersonalTransfersSearchModal;

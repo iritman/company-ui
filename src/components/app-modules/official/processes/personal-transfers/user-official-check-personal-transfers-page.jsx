@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Space } from "antd";
+import { Spin, Row, Col, Typography, Space, message } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-department-personal-transfers-service";
+import service from "../../../../../services/official/processes/user-official-check-personal-transfers-service";
 import {
   getSorter,
   checkAccess,
@@ -13,11 +13,10 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import SearchModal from "./user-department-personal-transfers-search-modal";
-import DetailsModal from "./user-department-personal-transfer-details-modal";
+import SearchModal from "./user-official-check-personal-transfers-search-modal";
+import DetailsModal from "./user-official-check-personal-transfer-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
-import { handleError } from "./../../../../../tools/form-manager";
 
 const { Text } = Typography;
 
@@ -151,10 +150,9 @@ const handleCheckDeletable = (row) => false;
 
 const recordID = "TransferID";
 
-const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
+const UserOfficialCheckPersonalTransfersPage = ({ pageName }) => {
   const {
     progress,
-    setProgress,
     searched,
     setSearched,
     records,
@@ -163,6 +161,7 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
     setAccess,
     selectedObject,
     setSelectedObject,
+    // showModal,
     showDetails,
     setShowDetails,
     showSearchModal,
@@ -171,14 +170,11 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
     setFilter,
   } = usePageContext();
 
-  const [isSupervisor, setIsSupervisor] = useState(false);
-  const [isManager, setIsManager] = useState(false);
-
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
 
-    const inprogress_department_personal_transfers_filter = {
+    const inprogress_personal_transfers_filter = {
       TransferMemberID: 0,
       FromDepartmentID: 0,
       FromRoleID: 0,
@@ -189,35 +185,15 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
       ToDate: "",
     };
 
-    await handleAdvancedSearch(inprogress_department_personal_transfers_filter);
+    await handleAdvancedSearch(inprogress_personal_transfers_filter);
   });
 
-  const handleAdvancedSearch = async (filter) => {
-    setFilter(filter);
-    setShowSearchModal(false);
-
-    setProgress(true);
-
-    try {
-      const data = await service.searchData(filter);
-
-      const { SearchResult, IsSupervisor, IsManager } = data;
-
-      setRecords(SearchResult);
-      setIsSupervisor(IsSupervisor);
-      setIsManager(IsManager);
-      setSearched(true);
-    } catch (err) {
-      handleError(err);
+  const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
+    {
+      service,
+      recordID,
     }
-
-    setProgress(false);
-  };
-
-  const { handleResetContext } = GetSimplaDataPageMethods({
-    service,
-    recordID,
-  });
+  );
 
   const getOperationalButtons = (record) => {
     return (
@@ -234,8 +210,8 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
         baseColumns,
         getOperationalButtons,
         access,
-        null, //handleEdit,
-        null, //handleDelete,
+        null, // handleEdit,
+        null, // handleDelete,
         handleCheckEditable,
         handleCheckDeletable
       )
@@ -249,7 +225,6 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
 
   const handleSubmitResponse = async (response) => {
     const { TransferID } = selectedObject;
-
     const action_data = await service.saveResponse({ TransferID, ...response });
 
     const index = records.findIndex((r) => r.TransferID === TransferID);
@@ -259,6 +234,40 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
     setSelectedObject(action_data);
   };
 
+  const handleRegReport = async (report) => {
+    const newReport = await service.saveReport(report);
+
+    const index = records.findIndex((r) => r.TransferID === report.TransferID);
+
+    records[index].Reports = [...records[index].Reports, newReport];
+    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
+    records[index].Editable = false;
+    records[index].Deletable = false;
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+  };
+
+  const handleDeleteReport = async (report) => {
+    const data = await service.deleteReport(report.ReportID);
+
+    const index = records.findIndex((r) => r.TransferID === report.TransferID);
+
+    records[index].Reports = records[index].Reports.filter(
+      (r) => r.ReportID !== report.ReportID
+    );
+    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
+    if (records[index].Reports.length === 0) {
+      records[index].Editable = true;
+      records[index].Deletable = true;
+    }
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+
+    message.success(data.Message);
+  };
+
   //------
 
   return (
@@ -266,13 +275,12 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.personal_transfer_department}
+            title={Words.personal_transfer_official}
             sheets={getSheets(records)}
             fileName="PersonalTransfers"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onGetAll={null}
-            onAdd={null}
           />
 
           <Col xs={24}>
@@ -295,15 +303,13 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
       {showDetails && (
         <DetailsModal
           isOpen={showDetails}
-          transfer={{
-            ...selectedObject,
-            IsSupervisor: isSupervisor,
-            IsManager: isManager,
-          }}
+          transfer={selectedObject}
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onRegReport={handleRegReport}
+          onDeleteReport={handleDeleteReport}
           onResponse={handleSubmitResponse}
         />
       )}
@@ -311,4 +317,4 @@ const UserDepartmentPersoanlTransfersPage = ({ pageName }) => {
   );
 };
 
-export default UserDepartmentPersoanlTransfersPage;
+export default UserOfficialCheckPersonalTransfersPage;

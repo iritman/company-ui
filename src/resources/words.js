@@ -338,6 +338,7 @@ class Words extends Component {
 
   static personal_transfer = "جابجایی شخصی";
   static personal_transfer_department = "جابجایی شخصی (دپارتمان)";
+  static personal_transfer_official = "جابجایی شخصی (اداری)";
   static from_role = "سمت در مبدا";
   static to_role = "سمت در مقصد";
 
