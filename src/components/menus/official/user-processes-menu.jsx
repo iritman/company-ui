@@ -183,6 +183,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 114:
+      link = "store-personal-transfers";
+      icon = (
+        <PersonalTransferIcon
+          style={{ color: Colors.magenta[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     case 97:
       link = "management-transfers";
       icon = (
@@ -320,6 +330,7 @@ const tabs = [
     pages: [
       { pageName: "user-StoreCheckouts" },
       { pageName: "user-StoreManagementTransfers" },
+      { pageName: "user-StorePersonalTransfers" },
     ],
   },
   {
