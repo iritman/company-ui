@@ -30,7 +30,7 @@ const UserOfficialCheckPersonalTransferDetailsModal = ({
       </Button>,
     ];
 
-    if (Actions[2].MemberID === 0) {
+    if (Actions[2].MemberID === 0 || Actions[5].MemberID === 0) {
       buttons = [
         <Button
           key="response-button"
