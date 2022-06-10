@@ -33,17 +33,17 @@ export async function deleteData(recordID) {
   return data;
 }
 
-export async function saveReport(record) {
-  const { data } = await http.post(`${apiEndpoint}/report`, record);
+// export async function saveReport(record) {
+//   const { data } = await http.post(`${apiEndpoint}/report`, record);
 
-  return data;
-}
+//   return data;
+// }
 
-export async function deleteReport(recordID) {
-  const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
+// export async function deleteReport(recordID) {
+//   const { data } = await http.delete(`${apiEndpoint}/report/${recordID}`);
 
-  return data;
-}
+//   return data;
+// }
 
 export async function saveResponse(record) {
   const { data } = await http.post(`${apiEndpoint}/response`, record);
@@ -57,8 +57,8 @@ const service = {
   searchData,
   saveData,
   deleteData,
-  saveReport,
-  deleteReport,
+  // saveReport,
+  // deleteReport,
   saveResponse,
 };
 

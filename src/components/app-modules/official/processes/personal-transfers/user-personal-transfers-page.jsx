@@ -229,6 +229,19 @@ const UserPersonalTransfersPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleSubmitResponse = async (response) => {
+    const { TransferID } = selectedObject;
+    const action_data = await service.saveResponse({ TransferID, ...response });
+
+    console.log(action_data);
+
+    const index = records.findIndex((r) => r.TransferID === TransferID);
+
+    records[index] = action_data;
+    setRecords([...records]);
+    setSelectedObject(action_data);
+  };
+
   //------
 
   return (
@@ -273,12 +286,13 @@ const UserPersonalTransfersPage = ({ pageName }) => {
 
       {showDetails && (
         <DetailsModal
+          isOpen={showDetails}
+          transfer={selectedObject}
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
-          isOpen={showDetails}
-          transfer={selectedObject}
+          onResponse={handleSubmitResponse}
         />
       )}
     </>
