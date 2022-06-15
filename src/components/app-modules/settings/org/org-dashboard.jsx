@@ -97,6 +97,18 @@ const mapper = (pageID) => {
       backColor = Colors.cyan[5];
       break;
 
+    case 115:
+      link = "store-experts";
+      icon = <MemberIcon {...iconProps} />;
+      backColor = Colors.purple[3];
+      break;
+
+    case 116:
+      link = "informatic-experts";
+      icon = <MemberIcon {...iconProps} />;
+      backColor = Colors.orange[4];
+      break;
+
     default:
       break;
   }

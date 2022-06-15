@@ -343,6 +343,9 @@ class Words extends Component {
   static from_role = "سمت در مبدا";
   static to_role = "سمت در مقصد";
 
+  static store_experts = "مسئولین انبار";
+  static informatic_experts = "کارشناسان انفورماتیک";
+
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
   static delivery_properties = "تحویل اموال";

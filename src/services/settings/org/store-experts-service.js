@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/settings/timex/official-experts";
+const apiEndpoint = apiUrl + "/settings/org/store-experts";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
@@ -15,8 +15,8 @@ async function getParams() {
   return data;
 }
 
-async function searchData(searchText) {
-  const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
+async function searchData(filter) {
+  const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
   return data;
 }

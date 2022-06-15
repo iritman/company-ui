@@ -1,7 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/settings/timex/official-experts";
+const apiEndpoint = apiUrl + "/settings/org/informatic-experts";
 
 async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);

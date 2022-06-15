@@ -101,6 +101,16 @@ const mapper = (pageID) => {
       icon = <WalletIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
+    case 115:
+      link = "store-experts";
+      icon = <MemberIcon style={{ color: Colors.purple[3] }} size={iconSize} />;
+      break;
+
+    case 116:
+      link = "informatic-experts";
+      icon = <MemberIcon style={{ color: Colors.orange[4] }} size={iconSize} />;
+      break;
+
     default:
       break;
   }

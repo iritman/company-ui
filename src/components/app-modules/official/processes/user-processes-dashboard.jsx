@@ -88,7 +88,7 @@ const UserProcessesDashboard = () => {
 
   return (
     <Row gutter={[10, 16]}>
-      {accessiblePages.map((page) => (
+      {/* {accessiblePages.map((page) => (
         <Col xs={24} md={8} lg={6} key={page.PageID}>
           <DashboardTile
             to={`processes/${mapper(page.PageID).link}`}
@@ -97,7 +97,7 @@ const UserProcessesDashboard = () => {
             title={page.PageTitle}
           />
         </Col>
-      ))}
+      ))} */}
     </Row>
   );
 };
