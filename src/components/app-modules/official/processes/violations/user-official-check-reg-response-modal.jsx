@@ -31,7 +31,7 @@ const schema = {
 const initRecord = (violationID) => {
   return {
     ViolationID: violationID,
-    IsAccepted: true,
+    IsAccepted: false,
     DetailsText: "",
     Files: [],
   };
@@ -66,7 +66,7 @@ const UserOfficialCheckRegResponseModal = ({
   };
 
   const clearRecord = () => {
-    record.IsAccepted = true;
+    record.IsAccepted = false;
     record.DetailsText = "";
     record.Files = [];
 
@@ -106,6 +106,7 @@ const UserOfficialCheckRegResponseModal = ({
         setUploading,
         setUploadProgress,
       });
+
       if (data.error) {
         message.error(Words.messages.upload_failed);
       } else {

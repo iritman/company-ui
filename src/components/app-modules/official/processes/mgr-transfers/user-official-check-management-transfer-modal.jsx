@@ -161,7 +161,6 @@ const UserOfficialCheckManagementTransferModal = ({
     setProgress(true);
     try {
       const data = await service.getParams();
-
       const { Employees, Departments } = data;
 
       initEmployees(Employees);

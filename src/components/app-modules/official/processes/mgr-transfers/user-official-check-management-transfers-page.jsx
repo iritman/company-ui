@@ -214,6 +214,7 @@ const UserOfficialCheckManagementTransfersPage = ({ pageName }) => {
 
   const handleSubmitResponse = async (response) => {
     const { TransferID } = selectedObject;
+
     const action_data = await service.saveResponse({ TransferID, ...response });
 
     const index = records.findIndex((r) => r.TransferID === TransferID);

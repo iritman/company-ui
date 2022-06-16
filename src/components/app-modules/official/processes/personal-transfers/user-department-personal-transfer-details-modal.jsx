@@ -49,7 +49,7 @@ const UserDepartmentPersonalTransferDetailsModal = ({
         title={Words.more_details}
         footer={getFooterButtons()}
         onCancel={onOk}
-        width={750}
+        width={850}
       >
         <section>
           <article
@@ -57,10 +57,7 @@ const UserDepartmentPersonalTransferDetailsModal = ({
             className="scrollbar-normal"
             style={{ maxHeight: "calc(100vh - 180px)" }}
           >
-            <PersonalTransferDetails
-              transfer={transfer}
-              bannedSteps={[{ StepID: 3 }]}
-            />
+            <PersonalTransferDetails transfer={transfer} />
           </article>
         </section>
       </Modal>

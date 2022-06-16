@@ -102,6 +102,7 @@ const UserOfficialCheckManagementTransferRegResponse = ({
         setUploading,
         setUploadProgress,
       });
+
       if (data.error) {
         message.error(Words.messages.upload_failed);
       } else {

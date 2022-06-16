@@ -233,8 +233,6 @@ const UserPersonalTransfersPage = ({ pageName }) => {
     const { TransferID } = selectedObject;
     const action_data = await service.saveResponse({ TransferID, ...response });
 
-    console.log(action_data);
-
     const index = records.findIndex((r) => r.TransferID === TransferID);
 
     records[index] = action_data;
