@@ -23,7 +23,7 @@ const { Text } = Typography;
 const getAnnouncementColor = (record) => {
   let color = Colors.grey[6];
 
-  color = record.SeenDate.length === 0 ? Colors.red[6] : Colors.grey[6];
+  color = record?.SeenDate?.length === 0 ? Colors.red[6] : Colors.grey[6];
 
   return color;
 };
@@ -31,7 +31,7 @@ const getAnnouncementColor = (record) => {
 const getAnnouncementTitle = (record) => {
   let title = "";
 
-  title = record.SeenDate.length === 0 ? Words.new_announcement : Words.seen;
+  title = record?.SeenDate?.length === 0 ? Words.new_announcement : Words.seen;
 
   return title;
 };
