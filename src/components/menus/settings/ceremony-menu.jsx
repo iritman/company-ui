@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
-// import { FaCar as CarIcon } from "react-icons/fa";
 import { BsPersonLinesFill as ClientTypeIcon } from "react-icons/bs";
-import {
-  MdLocationOn as LocationIcon,
-  MdRoomService as ClientServiceIcon,
-} from "react-icons/md";
+import { MdLocationOn as LocationIcon } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -34,18 +30,6 @@ const mapper = (pageID) => {
         <LocationIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
-
-    case 123:
-      link = "client-type-services";
-      icon = (
-        <ClientServiceIcon style={{ color: Colors.blue[6] }} size={iconSize} />
-      );
-      break;
-
-    // case 58:
-    //   link = "vehicles";
-    //   icon = <CarIcon style={{ color: Colors.volcano[6] }} size={iconSize} />;
-    //   break;
 
     default:
       break;

@@ -3,10 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import { BsPersonLinesFill as ClientTypeIcon } from "react-icons/bs";
-import {
-  MdLocationOn as LocationIcon,
-  MdRoomService as ClientServiceIcon,
-} from "react-icons/md";
+import { MdLocationOn as LocationIcon } from "react-icons/md";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -31,12 +28,6 @@ const mapper = (pageID) => {
       link = "session-locations";
       icon = <LocationIcon {...iconProps} />;
       backColor = Colors.orange[3];
-      break;
-
-    case 123:
-      link = "client-type-services";
-      icon = <ClientServiceIcon {...iconProps} />;
-      backColor = Colors.blue[3];
       break;
 
     default:
