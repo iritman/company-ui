@@ -7,7 +7,10 @@ import {
   AiFillCar as CarIcon,
 } from "react-icons/ai";
 import { GoSettings as BasicSettingsIcon } from "react-icons/go";
-import { SiKeycdn as KeyIcon } from "react-icons/si";
+import {
+  SiKeycdn as KeyIcon,
+  SiGotomeeting as CeremonyIcon,
+} from "react-icons/si";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -51,6 +54,13 @@ const mapper = (moduleID) => {
     case 7:
       link = "transmission";
       icon = <CarIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
+      break;
+
+    case 11:
+      link = "ceremony";
+      icon = (
+        <CeremonyIcon style={{ color: Colors.magenta[4] }} size={iconSize} />
+      );
       break;
 
     default:

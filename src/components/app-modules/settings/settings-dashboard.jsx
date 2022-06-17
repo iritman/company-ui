@@ -8,7 +8,10 @@ import {
   AiFillBank as OrgIcon,
   AiFillCar as CarIcon,
 } from "react-icons/ai";
-import { SiKeycdn as KeyIcon } from "react-icons/si";
+import {
+  SiKeycdn as KeyIcon,
+  SiGotomeeting as CeremonyIcon,
+} from "react-icons/si";
 import Colors from "./../../../resources/colors";
 import modulesService from "./../../../services/app/modules-service";
 
@@ -51,6 +54,12 @@ const mapper = (moduleID) => {
       link = "transmission";
       icon = <CarIcon {...iconProps} />;
       backColor = Colors.cyan[3];
+      break;
+
+    case 11:
+      link = "ceremony";
+      icon = <CeremonyIcon {...iconProps} />;
+      backColor = Colors.magenta[4];
       break;
 
     default:

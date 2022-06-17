@@ -9,6 +9,7 @@ import BasicInfoMenu from "../components/menus/settings/basic-info-menu";
 import OrgMenu from "../components/menus/settings/org-menu";
 import TimexMenu from "../components/menus/settings/timex-menu";
 import TransmissionMenu from "../components/menus/settings/transmission-menu";
+import CeremonyMenu from "../components/menus/settings/ceremony-menu";
 //---
 import UserOfficialMenu from "../components/menus/official/user-official-menu";
 import UserOrgMenu from "../components/menus/official/user-org-menu";
@@ -39,6 +40,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/settings/transmission`}
         component={TransmissionMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/settings/ceremony`}
+        component={CeremonyMenu}
       />
       {/* ----------- */}
       <ProtectedRoute

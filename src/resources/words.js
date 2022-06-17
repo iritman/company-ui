@@ -336,6 +336,12 @@ class Words extends Component {
   static seen = "مشاهده شده";
   static private = "محرمانه";
 
+  static client_types = "انواع میهمان";
+  static session_locations = "محل برگزاری جلسات";
+  static client_type_services = "سرویس های پذیرایی";
+  static dishes = "ظروف";
+  static foods = "مواد عذایی";
+
   static personal_transfer = "جابجایی شخصی";
   static personal_transfer_department = "جابجایی شخصی (دپارتمان)";
   static personal_transfer_official = "جابجایی شخصی (اداری)";
