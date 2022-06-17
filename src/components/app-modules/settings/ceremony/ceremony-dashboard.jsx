@@ -28,7 +28,7 @@ const mapper = (pageID) => {
       break;
 
     case 122:
-      link = "service-locations";
+      link = "session-locations";
       icon = <LocationIcon {...iconProps} />;
       backColor = Colors.orange[3];
       break;

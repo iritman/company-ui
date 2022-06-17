@@ -17,39 +17,18 @@ import {
 } from "./../../../contexts/modal-context";
 
 const schema = {
-  ClientTypeID: Joi.number().required(),
-  ClientTypeTitle: Joi.string()
+  LocationID: Joi.number().required(),
+  LocationTitle: Joi.string()
     .min(2)
     .max(50)
     .required()
     .label(Words.title)
     .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
-  Dishes: Joi.string()
-    .min(5)
-    .max(512)
-    .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
-    .label(Words.dishes),
-  Foods: Joi.string()
-    .min(5)
-    .max(512)
-    .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
-    .label(Words.foods),
-  DetailsText: Joi.string()
-    .min(5)
-    .max(512)
-    .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
-    .label(Words.descriptions),
 };
 
 const initRecord = {
-  ClientTypeID: 0,
-  ClientTypeTitle: "",
-  Dishes: "",
-  Foods: "",
-  DetailsText: "",
+  LocationID: 0,
+  LocationTitle: "",
 };
 
 const formRef = React.createRef();
@@ -69,10 +48,7 @@ const ClientTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.ClientTypeTitle = "";
-    record.Dishes = "";
-    record.Foods = "";
-    record.DetailsText = "";
+    record.LocationTitle = "";
 
     setRecord(record);
     setErrors({});
@@ -106,54 +82,17 @@ const ClientTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={850}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <InputItem
               title={Words.title}
-              fieldName="ClientTypeTitle"
+              fieldName="LocationTitle"
               required
               autoFocus
               maxLength={50}
               formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.dishes}
-              fieldName="Dishes"
-              multiline
-              rows={7}
-              showCount
-              maxLength={512}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.foods}
-              fieldName="Foods"
-              multiline
-              rows={7}
-              showCount
-              maxLength={512}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.descriptions}
-              fieldName="DetailsText"
-              multiline
-              rows={7}
-              showCount
-              maxLength={512}
-              formConfig={formConfig}
-              required
             />
           </Col>
         </Row>
