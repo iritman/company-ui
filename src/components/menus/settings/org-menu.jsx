@@ -111,6 +111,13 @@ const mapper = (pageID) => {
       icon = <MemberIcon style={{ color: Colors.orange[4] }} size={iconSize} />;
       break;
 
+    case 117:
+      link = "financial-experts";
+      icon = (
+        <MemberIcon style={{ color: Colors.magenta[3] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }

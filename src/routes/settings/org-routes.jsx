@@ -16,6 +16,7 @@ import RoleDutiesPage from "../../components/app-modules/settings/org/role-dutie
 import BankAccountsPage from "../../components/app-modules/settings/org/bank-accounts-page";
 import StoreExpertsPage from "../../components/app-modules/settings/org/store-experts-page";
 import InformaticExpertsPage from "../../components/app-modules/settings/org/informatic-experts-page";
+import FinancialExpertsPage from "../../components/app-modules/settings/org/financial-experts-page";
 //---
 
 const modulePath = "settings/org";
@@ -92,6 +93,11 @@ const OrgRoutes = ({ path }) => {
         path={`${path}/${modulePath}/informatic-experts`}
         exact
         render={() => <InformaticExpertsPage pageName="InformaticExperts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/financial-experts`}
+        exact
+        render={() => <FinancialExpertsPage pageName="FinancialExperts" />}
       />
       <Redirect to="/not-found" />
     </Switch>

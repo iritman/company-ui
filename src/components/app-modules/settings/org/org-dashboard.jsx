@@ -109,6 +109,12 @@ const mapper = (pageID) => {
       backColor = Colors.orange[4];
       break;
 
+    case 117:
+      link = "financial-experts";
+      icon = <MemberIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
+      break;
+
     default:
       break;
   }
