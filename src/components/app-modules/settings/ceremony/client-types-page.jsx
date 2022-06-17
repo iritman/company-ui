@@ -27,6 +27,9 @@ const getSheets = (records) => [
     columns: [
       { label: Words.id, value: "ClientTypeID" },
       { label: Words.title, value: "ClientTypeTitle" },
+      { label: Words.dishes, value: "Dishes" },
+      { label: Words.foods, value: "Foods" },
+      { label: Words.descriptions, value: "DetailsText" },
     ],
   },
 ];

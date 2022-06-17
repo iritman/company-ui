@@ -7,8 +7,6 @@ import utils from "../../../../tools/utils";
 const { Text } = Typography;
 
 const ClientTypeDetailsModal = ({ clientType, isOpen, onOk }) => {
-  const valueColor = Colors.blue[7];
-
   const { ClientTypeID, ClientTypeTitle, Dishes, Foods, DetailsText } =
     clientType;
 
@@ -53,17 +51,6 @@ const ClientTypeDetailsModal = ({ clientType, isOpen, onOk }) => {
                 }}
                 size="middle"
               >
-                {/* <Descriptions.Item label={Words.id}>
-                  <Text style={{ color: Colors.blue[7] }}>
-                    {`#${utils.farsiNum(ClientTypeID)}`}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.title}>
-                  <Text style={{ color: Colors.green[7] }}>
-                    {utils.farsiNum(ClientTypeTitle)}
-                  </Text>
-                </Descriptions.Item> */}
-
                 <Descriptions.Item label={Words.dishes} span={2}>
                   <Text
                     style={{
