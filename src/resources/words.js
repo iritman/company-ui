@@ -337,10 +337,25 @@ class Words extends Component {
   static private = "محرمانه";
 
   static client_types = "انواع میهمان";
+  static client_type = "سطح میهمان";
+  static client_counts = "تعداد میهمانان";
+  static clients = "میهمانان";
+  static fruit = "میوه";
+  static sweet = "شیرینی";
+  static breakfast = "صبحانه";
+  static lunch = "نهار";
+  static dinner = "شام";
+  static estimated_entry_time = "زمان تقریبی ورود";
   static session_locations = "محل برگزاری جلسات";
+  static session_location = "محل برگزاری جلسه";
   static client_type_services = "سرویس های پذیرایی";
   static dishes = "ظروف";
   static foods = "مواد عذایی";
+  static needed_facilities = "امکانات مورد نیاز";
+  static client_type_details_text = "توضیحات تشریفات";
+  static subject = "موضوع";
+  static ceremony_requests = "تشریفات";
+  static ceremony_options = "درخواست ها";
 
   static personal_transfer = "جابجایی شخصی";
   static personal_transfer_department = "جابجایی شخصی (دپارتمان)";

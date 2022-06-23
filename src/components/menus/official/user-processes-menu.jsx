@@ -15,7 +15,10 @@ import {
 } from "react-icons/ri";
 
 import { GiPoliceOfficerHead as PoliceIcon } from "react-icons/gi";
-import { MdPersonRemoveAlt1 as RemoveUserIcon } from "react-icons/md";
+import {
+  MdPersonRemoveAlt1 as RemoveUserIcon,
+  MdRoomService as CeremonyIcon,
+} from "react-icons/md";
 import {
   AiOutlineDashboard as DashboardIcon,
   // AiFillIdcard as MembersRegedCardIcon,
@@ -233,6 +236,11 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 123:
+      link = "user-ceremony-requests";
+      icon = <CeremonyIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
     default:
       break;
   }
@@ -257,6 +265,7 @@ const tabs = [
       { pageName: "user-MyViolationResponses" },
       { pageName: "user-EmployeeManagementTransfers" },
       { pageName: "user-PersonalTransfers" },
+      { pageName: "user-CeremonyRequests" },
     ],
   },
   {

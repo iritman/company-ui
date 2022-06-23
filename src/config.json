@@ -21,6 +21,7 @@
   "personalTransferFilesUrl": "http://localhost:3030/static/personal-transfer-files",
   "personalTransferReportFilesUrl": "http://localhost:3030/static/personal-transfer-report-files",
   "personalTransferActionFilesUrl": "http://localhost:3030/static/personal-transfer-action-files",
+  "ceremonyRequestActionFilesUrl": "http://localhost:3030/static/ceremony-request-action-files",
   "fileSize": {
     "maxFileSize": 10,
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
@@ -152,5 +153,11 @@
     "sizeType": "mb",
     "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
     "category": "personal-transfer-action-files"
+  },
+  "ceremonyRequestActionFileConfig": {
+    "maxFileSize": 10,
+    "sizeType": "mb",
+    "extensions": "jpg|jpeg|jfif|png|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp3|avi|mp4",
+    "category": "ceremony-request-action-files"
   }
 }
