@@ -17,6 +17,7 @@ import BankAccountsPage from "../../components/app-modules/settings/org/bank-acc
 import StoreExpertsPage from "../../components/app-modules/settings/org/store-experts-page";
 import InformaticExpertsPage from "../../components/app-modules/settings/org/informatic-experts-page";
 import FinancialExpertsPage from "../../components/app-modules/settings/org/financial-experts-page";
+import CeremonyExpertsPage from "../../components/app-modules/settings/org/ceremony-experts-page";
 //---
 
 const modulePath = "settings/org";
@@ -98,6 +99,11 @@ const OrgRoutes = ({ path }) => {
         path={`${path}/${modulePath}/financial-experts`}
         exact
         render={() => <FinancialExpertsPage pageName="FinancialExperts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/ceremony-experts`}
+        exact
+        render={() => <CeremonyExpertsPage pageName="CeremonyExperts" />}
       />
       <Redirect to="/not-found" />
     </Switch>

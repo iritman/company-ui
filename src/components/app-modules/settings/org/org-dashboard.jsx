@@ -115,6 +115,12 @@ const mapper = (pageID) => {
       backColor = Colors.magenta[3];
       break;
 
+    case 118:
+      link = "ceremony-experts";
+      icon = <MemberIcon {...iconProps} />;
+      backColor = Colors.geekblue[4];
+      break;
+
     default:
       break;
   }

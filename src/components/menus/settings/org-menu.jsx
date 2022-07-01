@@ -118,6 +118,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 118:
+      link = "ceremony-experts";
+      icon = (
+        <MemberIcon style={{ color: Colors.geekblue[4] }} size={iconSize} />
+      );
+      break;
+
     default:
       break;
   }
