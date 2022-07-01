@@ -1,9 +1,9 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
-import service from "../../../../../services/official/processes/user-ceremony-requests-service";
+import service from "../../../../../services/official/processes/user-official-check-ceremony-requests-service";
 import {
   getSorter,
   checkAccess,
@@ -13,9 +13,8 @@ import {
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import { usePageContext } from "../../../../contexts/page-context";
-import CeremonyRequestModal from "./user-ceremony-request-modal";
-import SearchModal from "./user-ceremony-requests-search-modal";
-import DetailsModal from "./user-ceremony-request-details-modal";
+import SearchModal from "./user-official-check-ceremony-requests-search-modal";
+import DetailsModal from "./user-official-check-ceremony-request-details-modal";
 import DetailsButton from "../../../../common/details-button";
 import utils from "../../../../../tools/utils";
 
@@ -168,7 +167,7 @@ const baseColumns = [
     dataIndex: "ClientTypeTitle",
     sorter: getSorter("ClientTypeTitle"),
     render: (ClientTypeTitle) => (
-      <Text style={{ color: Colors.orange[6] }}>{ClientTypeTitle}</Text>
+      <Text style={{ color: Colors.orange[7] }}>{ClientTypeTitle}</Text>
     ),
   },
   {
@@ -188,7 +187,7 @@ const handleCheckDeletable = (row) => row.Deletable;
 
 const recordID = "RequestID";
 
-const UserCeremonyRequestsPage = ({ pageName }) => {
+const UserOfficialCheckCeremonyRequestsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -201,7 +200,6 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
     setSelectedObject,
     showDetails,
     setShowDetails,
-    showModal,
     showSearchModal,
     setShowSearchModal,
     filter,
@@ -213,6 +211,7 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
     await checkAccess(setAccess, pageName);
 
     const inprogress_edu_funds_filter = {
+      RegMemberID: 0,
       Title: "",
       ClientTypeID: 0,
       LocationID: 0,
@@ -225,11 +224,11 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
   });
 
   const {
-    handleCloseModal,
+    // handleCloseModal,
     handleAdd,
     handleEdit,
     handleDelete,
-    handleSave,
+    // handleSave,
     handleResetContext,
     handleAdvancedSearch,
   } = GetSimplaDataPageMethods({
@@ -265,6 +264,44 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleSubmitResponse = async (response) => {
+    const { RequestID } = selectedObject;
+    const action_data = await service.saveResponse({ RequestID, ...response });
+
+    const index = records.findIndex((r) => r.RequestID === RequestID);
+
+    records[index] = action_data;
+    setRecords([...records]);
+    setSelectedObject(action_data);
+  };
+
+  const handleRegReport = async (report) => {
+    const newReport = await service.saveReport(report);
+
+    const index = records.findIndex((r) => r.RequestID === report.RequestID);
+
+    records[index].Reports = [...records[index].Reports, newReport];
+    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+  };
+
+  const handleDeleteReport = async (report) => {
+    const data = await service.deleteReport(report.ReportID);
+
+    const index = records.findIndex((r) => r.RequestID === report.RequestID);
+
+    records[index].Reports = records[index].Reports.filter(
+      (r) => r.ReportID !== report.ReportID
+    );
+    records[index].Reports.sort((a, b) => (a.ReportID > b.ReportID ? -1 : 1));
+
+    setRecords([...records]);
+    setSelectedObject(records[index]);
+
+    message.success(data.Message);
+  };
   //------
 
   return (
@@ -272,7 +309,7 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.ceremony_requests}
+            title={Words.ceremony_requests_official}
             sheets={getSheets(records)}
             fileName="CeremonyRequests"
             onSearch={() => setShowSearchModal(true)}
@@ -289,15 +326,6 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
         </Row>
       </Spin>
 
-      {showModal && (
-        <CeremonyRequestModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
-          selectedObject={selectedObject}
-        />
-      )}
-
       {showSearchModal && (
         <SearchModal
           onOk={handleAdvancedSearch}
@@ -309,16 +337,19 @@ const UserCeremonyRequestsPage = ({ pageName }) => {
 
       {showDetails && (
         <DetailsModal
+          isOpen={showDetails}
+          request={selectedObject}
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
-          isOpen={showDetails}
-          request={selectedObject}
+          onRegReport={handleRegReport}
+          onDeleteReport={handleDeleteReport}
+          onResponse={handleSubmitResponse}
         />
       )}
     </>
   );
 };
 
-export default UserCeremonyRequestsPage;
+export default UserOfficialCheckCeremonyRequestsPage;

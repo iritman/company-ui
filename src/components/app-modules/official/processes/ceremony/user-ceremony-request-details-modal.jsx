@@ -22,7 +22,7 @@ const UserCeremonyRequestDetailsModal = ({ request, isOpen, onOk }) => {
       title={Words.more_details}
       footer={getFooterButtons()}
       onCancel={onOk}
-      width={750}
+      width={900}
     >
       <section>
         <article

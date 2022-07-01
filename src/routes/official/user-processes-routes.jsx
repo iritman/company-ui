@@ -26,6 +26,7 @@ import UserDepartmentPersonalTransfersPage from "../../components/app-modules/of
 import UserOfficialCheckPersonalTransfersPage from "../../components/app-modules/official/processes/personal-transfers/user-official-check-personal-transfers-page";
 import UserStorePersonalTransfersPage from "../../components/app-modules/official/processes/personal-transfers/user-store-personal-transfers-page";
 import UserCeremonyRequestsPage from "../../components/app-modules/official/processes/ceremony/user-ceremony-requests-page";
+import UserOfficialCheckCeremonyRequestsPage from "../../components/app-modules/official/processes/ceremony/user-official-check-ceremony-requests-page";
 //---
 
 const modulePath = "official/processes";
@@ -189,6 +190,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserCeremonyRequestsPage pageName="user-CeremonyRequests" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-ceremony-requests-check-official`}
+        exact
+        render={() => (
+          <UserOfficialCheckCeremonyRequestsPage pageName="user-CeremonyRequestsCheckOfficial" />
         )}
       />
       <Redirect to="/not-found" />

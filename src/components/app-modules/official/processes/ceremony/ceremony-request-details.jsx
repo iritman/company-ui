@@ -66,13 +66,17 @@ const CeremonyRequestDetails = ({ request, bannedSteps }) => {
     NeedHoteling,
     NeedVehicle,
     NeededFacilities,
-    OfficialClientTypeID,
+    // OfficialClientTypeID,
     ClientTypeTitle,
     ClientTypeDetailsText,
     Dishes,
     Foods,
-    OfficialSelectedSessionLocationID,
+    // OfficialSelectedSessionLocationID,
     LocationTitle,
+    OfficialIsVehicleApproved,
+    OfficialVehicleDetailsText,
+    OfficialIsHotelingApproved,
+    OfficialHotelingDetailsText,
     DetailsText,
     FinalStatusID,
     // RegMemberID,
@@ -324,6 +328,124 @@ const CeremonyRequestDetails = ({ request, bannedSteps }) => {
                   {utils.farsiNum(`${utils.colonTime(action.ActionTime)}`)}
                 </Text>
               </Descriptions.Item>
+
+              {action.StepID === 1 && (
+                <>
+                  <Descriptions.Item label={Words.client_type}>
+                    <Text style={{ color: Colors.magenta[4] }}>
+                      {ClientTypeTitle}
+                    </Text>
+                  </Descriptions.Item>
+
+                  <Descriptions.Item label={Words.session_location}>
+                    <Text style={{ color: Colors.cyan[6] }}>
+                      {LocationTitle}
+                    </Text>
+                  </Descriptions.Item>
+
+                  <Descriptions.Item
+                    label={Words.client_type_details_text}
+                    span={2}
+                  >
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(ClientTypeDetailsText)}
+                    </Text>
+                  </Descriptions.Item>
+
+                  <Descriptions.Item label={Words.foods}>
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(Foods)}
+                    </Text>
+                  </Descriptions.Item>
+
+                  <Descriptions.Item label={Words.dishes}>
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(Dishes)}
+                    </Text>
+                  </Descriptions.Item>
+
+                  {NeedVehicle && (
+                    <Descriptions.Item
+                      label={Words.questions.vehicle_request_approved}
+                      span={2}
+                    >
+                      <Text
+                        style={{
+                          color: OfficialIsVehicleApproved
+                            ? Colors.green[7]
+                            : Colors.red[7],
+                        }}
+                      >
+                        {OfficialIsVehicleApproved ? Words.yes : Words.no}
+                      </Text>
+                    </Descriptions.Item>
+                  )}
+
+                  {OfficialVehicleDetailsText.length > 0 && (
+                    <Descriptions.Item
+                      label={Words.transfer_description}
+                      span={2}
+                    >
+                      <Text
+                        style={{
+                          color: Colors.purple[7],
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {utils.farsiNum(OfficialVehicleDetailsText)}
+                      </Text>
+                    </Descriptions.Item>
+                  )}
+
+                  {NeedHoteling && (
+                    <Descriptions.Item
+                      label={Words.questions.hoteling_request_approved}
+                      span={2}
+                    >
+                      <Text
+                        style={{
+                          color: OfficialIsHotelingApproved
+                            ? Colors.green[7]
+                            : Colors.red[7],
+                        }}
+                      >
+                        {OfficialIsHotelingApproved ? Words.yes : Words.no}
+                      </Text>
+                    </Descriptions.Item>
+                  )}
+
+                  {OfficialHotelingDetailsText.length > 0 && (
+                    <Descriptions.Item
+                      label={Words.hoteling_description}
+                      span={2}
+                    >
+                      <Text
+                        style={{
+                          color: Colors.purple[7],
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {utils.farsiNum(OfficialHotelingDetailsText)}
+                      </Text>
+                    </Descriptions.Item>
+                  )}
+                </>
+              )}
 
               {action.DetailsText.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={2}>

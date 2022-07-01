@@ -101,6 +101,7 @@ class Words extends Component {
   static department_supervisor = "سرپرست دپارتمان";
   static descriptions = "توضیحات";
   static transmission_descriptions = "توضیحات ویژه واحد نقلیه";
+  static hoteling_descriptions = "توضیحات وضعیت اقامتگاه";
   static generate_random_account_info = "تولید نام کاربری و رمز عبور تصادفی";
   static color_code = "کد رنگ";
   static color_id = "شناسه رنگ";
@@ -335,6 +336,8 @@ class Words extends Component {
   static issue_date = "تاریخ صدور";
   static seen = "مشاهده شده";
   static private = "محرمانه";
+  static transfer_description = "توضیحات وسیله نقلیه";
+  static hoteling_description = "توضیحات اقامت";
 
   static client_types = "انواع میهمان";
   static client_type = "سطح میهمان";
@@ -355,6 +358,7 @@ class Words extends Component {
   static client_type_details_text = "توضیحات تشریفات";
   static subject = "موضوع";
   static ceremony_requests = "تشریفات";
+  static ceremony_requests_official = "تشریفات (اداری)";
   static ceremony_options = "درخواست ها";
 
   static personal_transfer = "جابجایی شخصی";
@@ -655,6 +659,8 @@ class Words extends Component {
       "قبلا به این درخواست پاسخ داده شده است",
     not_submit_response_when_not_approved_store_report:
       "در صورت عدم تایید گزارش انبار مبنی بر تحویل و دریافت کالا، از ثبت پاسخ خودداری فرموده و موارد را از طریق واحد اداری پیگیری بفرمایید",
+    submit_response_in_finished_ceremony_request_failed:
+      "قبلا به این درخواست پاسخ داده شده است",
   };
 
   static questions = {
@@ -677,6 +683,8 @@ class Words extends Component {
     sure_to_cancel_done_task: "برای لغو خاتمه اجرای وظیفه اطمینان دارید؟",
     sure_to_submit_announcement: "برای ثبت ابلاغیه اطمینان دارید؟",
     sure_to_delete_announcement: "برای حذف ابلاغیه اطمینان دارید؟",
+    vehicle_request_approved: "درخواست وسیله نقلیه مورد تایید است؟",
+    hoteling_request_approved: "درخواست اقامتگاه مورد تایید است؟",
   };
 
   static monthes = {

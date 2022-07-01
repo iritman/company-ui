@@ -241,6 +241,11 @@ const mapper = (pageID) => {
       icon = <CeremonyIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
+    case 124:
+      link = "user-ceremony-requests-check-official";
+      icon = <CeremonyIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
     default:
       break;
   }
@@ -314,6 +319,7 @@ const tabs = [
       { pageName: "user-CheckoutsCheckOfficial" },
       { pageName: "user-ManagementTransfers" },
       { pageName: "user-PersonalTransfersCheckOfficial" },
+      { pageName: "user-CeremonyRequestsCheckOfficial" },
     ],
   },
   {

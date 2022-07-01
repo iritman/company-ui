@@ -13,6 +13,7 @@ const BreadcrumbMap = ({ location }) => {
     "/home/settings/org": Words.org_structure,
     "/home/settings/timex": Words.timex_settings,
     "/home/settings/transmission": Words.transmission,
+    "/home/settings/ceremony": Words.ceremony_requests,
     //---
     "/home/official": Words.official,
     "/home/official/org": Words.org_structure,
