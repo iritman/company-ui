@@ -65,7 +65,8 @@ const UserUnderSupervisionsTasksPage = ({ pageName }) => {
 
     const init_filter = {
       MemberID: 0,
-      HasNewReport: true,
+      HasNewReport: false,
+      UnfinishedTasks: true,
       FromDoneDate: "",
       ToDoneDate: "",
       FromReminderDate: "",

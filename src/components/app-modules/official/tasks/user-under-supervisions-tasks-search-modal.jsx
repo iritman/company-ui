@@ -23,6 +23,7 @@ import SwitchItem from "./../../../form-controls/switch-item";
 const schema = {
   MemberID: Joi.number(),
   HasNewReport: Joi.boolean(),
+  UnfinishedTasks: Joi.boolean(),
   FromDoneDate: Joi.string().allow(""),
   ToDoneDate: Joi.string().allow(""),
   FromReminderDate: Joi.string().allow(""),
@@ -38,6 +39,7 @@ const schema = {
 const initRecord = {
   MemberID: 0,
   HasNewReport: false,
+  UnfinishedTasks: false,
   FromDoneDate: "",
   ToDoneDate: "",
   FromReminderDate: "",
@@ -77,6 +79,7 @@ const UserUnderSupervisionTasksSearchModal = ({
   const clearRecord = () => {
     record.MemberID = 0;
     record.HasNewReport = false;
+    record.UnfinishedTasks = false;
     record.FromDoneDate = "";
     record.ToDoneDate = "";
     record.FromReminderDate = "";
@@ -145,10 +148,20 @@ const UserUnderSupervisionTasksSearchModal = ({
               autoFocus
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={12} md={6}>
             <SwitchItem
               title={Words.has_new_report}
               fieldName="HasNewReport"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={12} md={6}>
+            <SwitchItem
+              title={Words.in_progress_task}
+              fieldName="UnfinishedTasks"
               initialValue={false}
               checkedTitle={Words.yes}
               unCheckedTitle={Words.no}

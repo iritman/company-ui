@@ -308,6 +308,7 @@ class Words extends Component {
   static my_done_tasks = "انجام شده ها";
   static other_than_this_month = "بیش از یک ماه اخیر";
   static has_new_report = "حاوی گزارش جدید";
+  static in_progress_task = "درحال اجرا";
   static response_member = "مسئول اجرا";
   static is_done = "خاتمه یافته";
   static cancel_done_task = "عدم تایید اجرا و فعالسازی مجدد";
