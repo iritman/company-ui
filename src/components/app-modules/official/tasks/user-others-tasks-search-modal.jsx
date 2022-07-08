@@ -21,7 +21,7 @@ import InputItem from "./../../../form-controls/input-item";
 import SwitchItem from "./../../../form-controls/switch-item";
 
 const schema = {
-  MemberID: Joi.number(),
+  MemberID: Joi.number().min(1).required().label(Words.employee),
   IsDone: Joi.boolean(),
   FromDoneDate: Joi.string().allow(""),
   ToDoneDate: Joi.string().allow(""),
@@ -123,6 +123,7 @@ const UserOthersTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
               valueColumn="FullName"
               formConfig={formConfig}
               autoFocus
+              required
             />
           </Col>
           <Col xs={24} md={12}>
