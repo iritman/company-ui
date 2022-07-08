@@ -288,6 +288,7 @@ class Words extends Component {
   static day = "روز";
   static delay = "تاخیر";
   static minute = "دقیقه";
+  static task = "وظیفه";
   static task_details = "جزئیات وظیفه";
   static reports = "گزارش ها";
   static unseen = "مشاهده نشده";
@@ -443,6 +444,7 @@ class Words extends Component {
   static has_delay_tasks = "کارهای دارای تاخیر";
   static future_tasks = "کارهای آتی";
   static new_report = "گزارش جدید";
+  static others_tasks = "وظایف کاربران";
 
   static report_my_in_out_cards = "گزارش ورود و خروج من";
 

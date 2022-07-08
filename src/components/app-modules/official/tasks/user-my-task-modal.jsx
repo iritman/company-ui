@@ -125,7 +125,7 @@ const UserMyTaskModal = ({
         title={Words.my_task}
         footer={getFooterButtons()}
         onCancel={onCancel}
-        width={750}
+        width={850}
       >
         <Spin spinning={inProgress}>
           <section>

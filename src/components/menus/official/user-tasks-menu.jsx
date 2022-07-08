@@ -7,7 +7,11 @@ import {
   BsUiChecks as DoneListIcon,
   BsFillPersonLinesFill as SupervisonIcon,
 } from "react-icons/bs";
-import { FaTags as TagsIcon, FaListUl as MyTasksIcon } from "react-icons/fa";
+import {
+  FaTags as TagsIcon,
+  FaListUl as MyTasksIcon,
+  FaUsersCog as UsersIcon,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -55,6 +59,13 @@ const mapper = (pageID) => {
       link = "task-supervisions";
       icon = (
         <SupervisonIcon style={{ color: Colors.red[6] }} size={iconSize} />
+      );
+      break;
+
+    case 75:
+      link = "others-tasks";
+      icon = (
+        <UsersIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />
       );
       break;
 
