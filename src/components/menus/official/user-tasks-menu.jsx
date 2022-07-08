@@ -62,6 +62,11 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 74:
+      link = "department-tasks";
+      icon = <UsersIcon style={{ color: Colors.purple[3] }} size={iconSize} />;
+      break;
+
     case 75:
       link = "others-tasks";
       icon = (

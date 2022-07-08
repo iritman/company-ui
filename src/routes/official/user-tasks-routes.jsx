@@ -10,6 +10,7 @@ import UserEmployeesTasksPage from "./../../components/app-modules/official/task
 import UserUnderSupervisionTasksPage from "./../../components/app-modules/official/tasks/user-under-supervisions-tasks-page";
 import UserIntervalTasksPage from "../../components/app-modules/official/tasks/user-interval-tasks-page";
 import UserOthersTasksPage from "../../components/app-modules/official/tasks/user-others-tasks-page";
+import UserDepartmentTasksPage from "../../components/app-modules/official/tasks/user-department-tasks-page";
 //---
 
 const modulePath = "official/tasks";
@@ -58,6 +59,13 @@ const UserTasksRoutes = ({ path }) => {
         path={`${path}/${modulePath}/others-tasks`}
         exact
         render={() => <UserOthersTasksPage pageName="user-OthersTasks" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/department-tasks`}
+        exact
+        render={() => (
+          <UserDepartmentTasksPage pageName="user-DepartmentTasks" />
+        )}
       />
       <Redirect to="/not-found" />
     </Switch>

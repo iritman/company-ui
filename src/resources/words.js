@@ -445,6 +445,7 @@ class Words extends Component {
   static future_tasks = "کارهای آتی";
   static new_report = "گزارش جدید";
   static others_tasks = "وظایف کاربران";
+  static department_tasks = "وظایف دپارتمان";
 
   static report_my_in_out_cards = "گزارش ورود و خروج من";
 
