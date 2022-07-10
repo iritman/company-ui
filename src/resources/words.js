@@ -645,6 +645,7 @@ class Words extends Component {
     upload_failed: "امکان آپلود فایل وجود ندارد",
     no_any_tasks: "وظیفه ای ثبت نشده است",
     no_any_report: "گزارشی ثبت نشده است",
+    task_done: "خاتمه وظیفه ثبت شد",
     submit_report_in_done_task_failed:
       "ثبت گزارش در وظیفه خاتمه یافته امکان پذیر نمی باشد",
     not_any_tasks_founded: "وظیفه ای یافت نشد",

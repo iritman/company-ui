@@ -33,17 +33,17 @@ export async function makeTaskSeen(taskID) {
 //   return data;
 // }
 
-// export async function saveData(record) {
-//   const { data } = await http.post(`${apiEndpoint}`, record);
+export async function saveData(record) {
+  const { data } = await http.post(`${apiEndpoint}`, record);
 
-//   return data;
-// }
+  return data;
+}
 
-// export async function deleteData(recordID) {
-//   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
+export async function deleteData(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
-//   return data;
-// }
+  return data;
+}
 
 export async function saveReport(record) {
   const { data } = await http.post(`${apiEndpoint}/report`, record);
@@ -90,8 +90,8 @@ const service = {
   getAllData,
   makeTaskSeen,
   //   searchData,
-  //   saveData,
-  //   deleteData,
+  saveData,
+  deleteData,
   saveReport,
   deleteReport,
   makeReportsSeen,

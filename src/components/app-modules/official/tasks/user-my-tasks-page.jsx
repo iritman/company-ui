@@ -8,13 +8,13 @@ import {
   Badge,
   message,
   Alert,
-  //   Button,
-  //   Space,
+  Button,
+  Space,
 } from "antd";
-// import {
-//   SearchOutlined as SearchIcon,
-//   PlusOutlined as PlusIcon,
-// } from "@ant-design/icons";
+import {
+  SearchOutlined as SearchIcon,
+  PlusOutlined as PlusIcon,
+} from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import service from "../../../../services/official/tasks/my-tasks-service";
 import {
@@ -22,6 +22,7 @@ import {
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import MyTaskModal from "./user-my-task-modal";
+import MyNewTaskModal from "./user-my-new-task-modal";
 import { usePageContext } from "../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 import { handleError } from "./../../../../tools/form-manager";
@@ -45,6 +46,8 @@ const UserMyTasksPage = ({ pageName }) => {
     setAccess,
     selectedObject,
     setSelectedObject,
+    showDetailsModal,
+    setShowDetailsModal,
     showModal,
     setShowModal,
   } = usePageContext();
@@ -55,8 +58,8 @@ const UserMyTasksPage = ({ pageName }) => {
     // handleSearch,
     // handleAdd,
     // handleEdit,
-    // handleDelete,
-    // handleSave,
+    handleDelete,
+    handleSave,
     handleResetContext,
   } = GetSimplaDataPageMethods({
     service,
@@ -70,9 +73,9 @@ const UserMyTasksPage = ({ pageName }) => {
     await handleGetAll();
   });
 
-  //   const handleShowModal = () => {
-  //     setShowModal(true);
-  //   };
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
 
   //------
 
@@ -137,7 +140,8 @@ const UserMyTasksPage = ({ pageName }) => {
         setSelectedObject(task);
       }
 
-      setShowModal(true);
+      if (task.RegMemberID === task.ResponseMemberID) setShowModal(true);
+      else setShowDetailsModal(true);
     } catch (ex) {
       handleError(ex);
     }
@@ -159,6 +163,8 @@ const UserMyTasksPage = ({ pageName }) => {
 
       setSelectedObject({ ...records[index] });
       setRecords([...records.filter((r) => r.TaskID !== taskID)]);
+
+      message.success(Words.messages.task_done);
     } catch (ex) {
       handleError(ex);
     }
@@ -240,7 +246,7 @@ const UserMyTasksPage = ({ pageName }) => {
             </Text>
           </Col>
 
-          {/* <Col xs={24}>
+          <Col xs={24}>
             <Space>
               <Button
                 type="primary"
@@ -249,6 +255,7 @@ const UserMyTasksPage = ({ pageName }) => {
               >
                 {Words.search}
               </Button>
+
               <Button
                 type="primary"
                 icon={<PlusIcon />}
@@ -257,7 +264,7 @@ const UserMyTasksPage = ({ pageName }) => {
                 {Words.new_task}
               </Button>
             </Space>
-          </Col> */}
+          </Col>
 
           {records.length > 0 ? (
             <>
@@ -301,13 +308,27 @@ const UserMyTasksPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <MyTaskModal
+        <MyNewTaskModal
+          onOk={handleSave}
           onCancel={handleCloseModal}
+          onDelete={handleDelete}
           onDone={handleDoneTask}
           onSubmitReport={handleSaveReport}
           onDeleteReport={handleDeleteReport}
           onSeenReports={handleSeenReports}
           isOpen={showModal}
+          selectedObject={selectedObject}
+        />
+      )}
+
+      {showDetailsModal && (
+        <MyTaskModal
+          onCancel={() => setShowDetailsModal(false)}
+          onDone={handleDoneTask}
+          onSubmitReport={handleSaveReport}
+          onDeleteReport={handleDeleteReport}
+          onSeenReports={handleSeenReports}
+          isOpen={showDetailsModal}
           selectedObject={selectedObject}
           inProgress={inModalProgress}
         />

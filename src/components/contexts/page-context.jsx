@@ -12,8 +12,9 @@ const PageContextProvider = ({ children }) => {
   const [access, setAccess] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showSearchModal, setShowSearchModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
   const [filter, setFilter] = useState(null);
 
   const contextValue = {
@@ -33,6 +34,8 @@ const PageContextProvider = ({ children }) => {
     setShowModal,
     showDetails,
     setShowDetails,
+    showDetailsModal,
+    setShowDetailsModal,
     showSearchModal,
     setShowSearchModal,
     filter,
@@ -54,6 +57,7 @@ const useResetContext = () => {
     setSelectedObject,
     setShowModal,
     setShowDetails,
+    setShowDetailsModal,
     setShowSearchModal,
     setFilter,
   } = usePageContext();
@@ -67,6 +71,7 @@ const useResetContext = () => {
     setSelectedObject(null);
     setShowModal(false);
     setShowDetails(false);
+    setShowDetailsModal(false);
     setShowSearchModal(false);
     setFilter(null);
   };

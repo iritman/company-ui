@@ -553,7 +553,10 @@ export function textSeparator(text, len, separator) {
   return result;
 }
 
+export const valid_regex = /^[آ-یa-zA-Z0-9۰-۹.\-()\s]+$/;
+
 const methods = {
+  valid_regex,
   addFirstZero,
   farsiNum,
   reverseText,
