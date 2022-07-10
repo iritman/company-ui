@@ -26,6 +26,7 @@ import {
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import Words from "../../../../resources/words";
+import utils from "../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -38,7 +39,6 @@ import {
 } from "../../../contexts/modal-context";
 import InputItem from "../../../form-controls/input-item";
 import Colors from "../../../../resources/colors";
-import utils from "../../../../tools/utils";
 import ModalWindow from "./../../../common/modal-window";
 
 const { Panel } = Collapse;
@@ -47,7 +47,7 @@ const { Text } = Typography;
 const schema = {
   DetailsText: Joi.string()
     .max(1024)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .required()
     .label(Words.report_text),
 };

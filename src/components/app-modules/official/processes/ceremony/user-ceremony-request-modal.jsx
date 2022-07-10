@@ -10,6 +10,7 @@ import {
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
+import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -41,7 +42,7 @@ const schema = {
     .min(2)
     .max(50)
     .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.title),
   ClientCounts: Joi.number()
     .min(1)
@@ -52,7 +53,7 @@ const schema = {
     .allow("")
     .min(10)
     .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.clients),
   StartDate: Joi.string().required(),
   FinishDate: Joi.string().required(),
@@ -68,7 +69,7 @@ const schema = {
     .allow("")
     .min(10)
     .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.needed_facilities),
   OfficialClientTypeID: Joi.number(),
   OfficialSelectedSessionLocationID: Joi.number(),
@@ -76,7 +77,7 @@ const schema = {
     .allow("")
     .min(10)
     .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
   //   Files: Joi.array(),
 };

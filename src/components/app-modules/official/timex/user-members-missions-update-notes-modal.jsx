@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import Words from "../../../../resources/words";
+import utils from "../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -26,7 +27,7 @@ const schema = {
   DetailsText: Joi.string()
     .min(20)
     .max(1024)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .required()
     .label(Words.report_text),
   VisibleForEmployee: Joi.boolean(),

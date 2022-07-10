@@ -10,6 +10,7 @@ import {
   saveModalChanges,
 } from "../../../../../tools/form-manager";
 import Words from "../../../../../resources/words";
+import utils from "../../../../../tools/utils";
 import ModalWindow from "../../../../common/modal-window";
 import InputItem from "../../../../form-controls/input-item";
 import SwitchItem from "../../../../form-controls/switch-item";
@@ -23,7 +24,7 @@ const schema = {
     .min(5)
     .max(512)
     .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
   Files: Joi.array(),
 };

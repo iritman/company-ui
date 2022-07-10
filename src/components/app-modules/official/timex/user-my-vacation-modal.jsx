@@ -4,6 +4,7 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
+import utils from "../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -32,7 +33,7 @@ const schema = {
   DetailsText: Joi.string()
     .allow("")
     .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
 };
 

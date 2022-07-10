@@ -9,6 +9,7 @@ import {
   saveModalChanges,
 } from "../../../../tools/form-manager";
 import Words from "../../../../resources/words";
+import utils from "../../../../tools/utils";
 import ModalWindow from "../../../common/modal-window";
 import InputItem from "../../../form-controls/input-item";
 import FileUploader from "../../../common/file-uploader";
@@ -20,7 +21,7 @@ const schema = {
   DetailsText: Joi.string()
     .min(5)
     .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
   Files: Joi.array(),
 };

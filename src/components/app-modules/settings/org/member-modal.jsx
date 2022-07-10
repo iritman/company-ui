@@ -46,13 +46,13 @@ const schema = {
     .min(2)
     .max(50)
     .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.first_name),
   LastName: Joi.string()
     .min(2)
     .max(50)
     .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.last_name),
   FixTel: Joi.string()
     .max(50)

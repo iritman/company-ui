@@ -55,7 +55,7 @@ const schema = {
   DetailsText: Joi.string()
     .allow("")
     .max(1024)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.manager_response),
   StatusID: Joi.number().min(1).required(),
 };
@@ -172,14 +172,14 @@ const UserMembersMissionNewReportsModal = ({
       schema.DetailsText = Joi.string()
         .min(20)
         .max(1024)
-        .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+        .regex(utils.VALID_REGEX)
         .required()
         .label(Words.manager_response);
     } else {
       schema.DetailsText = Joi.string()
         .allow("")
         .max(1024)
-        .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+        .regex(utils.VALID_REGEX)
         .label(Words.manager_response);
     }
 

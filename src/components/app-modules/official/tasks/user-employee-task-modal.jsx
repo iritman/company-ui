@@ -65,12 +65,12 @@ const schema = {
     .min(2)
     .max(50)
     .required()
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.title),
   DetailsText: Joi.string()
     .allow("")
     .max(512)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
   MemberID: Joi.number(),
   ReminderDate: Joi.string(),

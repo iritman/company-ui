@@ -37,11 +37,11 @@ const schema = {
     .max(50)
     .required()
     .label(Words.pelak)
-    .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/),
+    .regex(utils.VALID_REGEX),
   DetailsText: Joi.string()
     .allow("")
     .max(512)
-    // .regex(/^[آ-یa-zA-Z0-9.\-()\s]+$/)
+    .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
 };
 
