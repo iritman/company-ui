@@ -371,9 +371,15 @@ class Words extends Component {
   static to_role = "سمت در مقصد";
 
   static store_experts = "مسئولین انبار";
+  static store_manager = "مسئول انبار";
   static informatic_experts = "کارشناسان انفورماتیک";
   static financial_experts = "کارشناسان مالی";
   static ceremony_experts = "کارشناسان تشریفات";
+
+  static stores = "انبارها";
+  static tafsil_id = "شناسه تفصیل";
+  static tafsil_title = "عنوان تفصیل";
+  static tafsil_code = "کد تفصیل";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
