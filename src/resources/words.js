@@ -377,6 +377,7 @@ class Words extends Component {
   static ceremony_experts = "کارشناسان تشریفات";
 
   static stores = "انبارها";
+  static product_nature = "ماهیت کالا";
   static tafsil_id = "شناسه تفصیل";
   static tafsil_title = "عنوان تفصیل";
   static tafsil_code = "کد تفصیل";

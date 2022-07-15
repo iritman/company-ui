@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import { TbBuildingBank as StoresIcon } from "react-icons/tb";
+import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -21,6 +22,12 @@ const mapper = (pageID) => {
       link = "stores";
       icon = <StoresIcon {...iconProps} />;
       backColor = Colors.orange[3];
+      break;
+
+    case 142:
+      link = "product-natures";
+      icon = <NatureIcon {...iconProps} />;
+      backColor = Colors.blue[3];
       break;
 
     default:

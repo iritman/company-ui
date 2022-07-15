@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import {
+  AiOutlineDashboard as DashboardIcon,
+  AiOutlineDeploymentUnit as NatureIcon,
+} from "react-icons/ai";
 import { TbBuildingBank as StoresIcon } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -19,6 +22,11 @@ const mapper = (pageID) => {
     case 141:
       link = "stores";
       icon = <StoresIcon style={{ color: Colors.orange[6] }} size={iconSize} />;
+      break;
+
+    case 142:
+      link = "product-natures";
+      icon = <NatureIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
     default:
