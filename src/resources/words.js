@@ -572,6 +572,10 @@ class Words extends Component {
   static role_duties = "شرح وظایف سمت";
   static duty_level = "سطح وظیفه";
   //---
+  static financial = "مالی";
+  //----
+  static store_management = "مدیریت انبار";
+  //----
   static provinces = "استان ها";
   static province = "استان";
   static cities = "شهرها";

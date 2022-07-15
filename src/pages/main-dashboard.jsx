@@ -5,6 +5,7 @@ import modulesService from "./../services/app/modules-service";
 import Colors from "./../resources/colors";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
 import { FiSettings as SettingsIcon } from "react-icons/fi";
+import { RiMoneyPoundCircleLine as FinancialIcon } from "react-icons/ri";
 import DashboardTile from "../components/common/dashboard-tile";
 
 const iconProps = {
@@ -28,6 +29,12 @@ const mapper = (categoryID) => {
       link = "official";
       icon = <OfficialIcon {...iconProps} />;
       backColor = Colors.green[3];
+      break;
+
+    case 3:
+      link = "financial";
+      icon = <FinancialIcon {...iconProps} />;
+      backColor = Colors.red[4];
       break;
 
     default:

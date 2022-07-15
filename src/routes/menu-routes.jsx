@@ -18,6 +18,9 @@ import UserTransmissionMenu from "../components/menus/official/user-transmission
 import UserTasksMenu from "../components/menus/official/user-tasks-menu";
 import UserProcessesMenu from "../components/menus/official/user-processes-menu";
 //---
+import UserFinancialMenu from "../components/menus/financial/user-financial-menu";
+import UserStoreManagementMenu from "../components/menus/financial/user-store-management-menu";
+//---
 
 const MenuRoutes = ({ path }) => {
   return (
@@ -69,7 +72,16 @@ const MenuRoutes = ({ path }) => {
         component={UserProcessesMenu}
       />
       {/* ----------- */}
-
+      <ProtectedRoute
+        path={`${path}/financial`}
+        exact
+        component={UserFinancialMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/store-mgr`}
+        component={UserStoreManagementMenu}
+      />
+      {/* ----------- */}
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />
     </Switch>
   );

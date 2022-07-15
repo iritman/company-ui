@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu } from "antd";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
 import { FiSettings as SettingsIcon } from "react-icons/fi";
+import { RiMoneyPoundCircleLine as FinancialIcon } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";
@@ -20,6 +21,11 @@ const mapper = (categoryID) => {
     case 2:
       link = "official";
       icon = <OfficialIcon style={{ color: Colors.green[6] }} size={20} />;
+      break;
+
+    case 3:
+      link = "financial";
+      icon = <FinancialIcon style={{ color: Colors.red[5] }} size={20} />;
       break;
 
     default:
