@@ -8,6 +8,7 @@ import {
   TbBuildingBank as StoresIcon,
   TbBrandCodesandbox as MeasureTypeIcon,
   TbRuler2 as MeasureUnitIcon,
+  TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -44,6 +45,13 @@ const mapper = (pageID) => {
       link = "user-measure-units";
       icon = (
         <MeasureUnitIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
+
+    case 145:
+      link = "user-pricing-types";
+      icon = (
+        <PricingTypeIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
       );
       break;
 

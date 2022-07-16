@@ -1,13 +1,7 @@
 import http from "../../http-service";
 import { apiUrl } from "../../../config.json";
 
-const apiEndpoint = apiUrl + "/financial/store-mgr/user-measure-units";
-
-export async function getParams() {
-  const { data } = await http.get(`${apiEndpoint}/params`);
-
-  return data;
-}
+const apiEndpoint = apiUrl + "/financial/store-mgr/user-pricing-types";
 
 export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
@@ -34,7 +28,6 @@ export async function deleteData(recordID) {
 }
 
 const service = {
-  getParams,
   getAllData,
   searchData,
   saveData,

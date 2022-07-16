@@ -6,6 +6,7 @@ import {
   TbBuildingBank as StoresIcon,
   TbBrandCodesandbox as MeasureTypeIcon,
   TbRuler2 as MeasureUnitIcon,
+  TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
@@ -44,6 +45,12 @@ const mapper = (pageID) => {
       link = "user-measure-units";
       icon = <MeasureUnitIcon {...iconProps} />;
       backColor = Colors.purple[3];
+      break;
+
+    case 145:
+      link = "user-pricing-types";
+      icon = <PricingTypeIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     default:

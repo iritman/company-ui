@@ -7,6 +7,7 @@ import UserStoresPage from "../../components/app-modules/financial/store-managem
 import UserProductNaturesPage from "../../components/app-modules/financial/store-management/user-product-natures-page";
 import UserMeasureTypesPage from "../../components/app-modules/financial/store-management/user-measure-types-page";
 import UserMeasureUnitsPage from "../../components/app-modules/financial/store-management/user-measure-units-page";
+import UserPricingTypesPage from "../../components/app-modules/financial/store-management/user-pricing-types-page";
 //---
 
 const modulePath = "financial/store-mgr";
@@ -38,6 +39,11 @@ const UserStoreManagementRoutes = ({ path }) => {
         path={`${path}/${modulePath}/user-measure-units`}
         exact
         render={() => <UserMeasureUnitsPage pageName="user-MeasureUnits" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-pricing-types`}
+        exact
+        render={() => <UserPricingTypesPage pageName="user-PricingTypes" />}
       />
       <Redirect to="/not-found" />
     </Switch>
