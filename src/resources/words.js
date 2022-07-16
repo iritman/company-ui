@@ -381,6 +381,11 @@ class Words extends Component {
   static tafsil_id = "شناسه تفصیل";
   static tafsil_title = "عنوان تفصیل";
   static tafsil_code = "کد تفصیل";
+  static is_decimal = "اعشاری";
+  static measure_types = "ابعاد سنجش";
+  static measure_type = "بعد سنجش";
+  static measure_units = "واحدهای سنجش";
+  static measure_unit = "واحد سنجش";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

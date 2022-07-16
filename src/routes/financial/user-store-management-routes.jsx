@@ -5,6 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import UserStoreManagementDashboard from "../../components/app-modules/financial/store-management/user-store-management-dashboard";
 import UserStoresPage from "../../components/app-modules/financial/store-management/user-stores-page";
 import UserProductNaturesPage from "../../components/app-modules/financial/store-management/user-product-natures-page";
+import UserMeasureTypesPage from "../../components/app-modules/financial/store-management/user-measure-types-page";
 //---
 
 const modulePath = "financial/store-mgr";
@@ -26,6 +27,11 @@ const UserStoreManagementRoutes = ({ path }) => {
         path={`${path}/${modulePath}/product-natures`}
         exact
         render={() => <UserProductNaturesPage pageName="user-ProductNatures" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/measure-types`}
+        exact
+        render={() => <UserMeasureTypesPage pageName="user-MeasureTypes" />}
       />
       <Redirect to="/not-found" />
     </Switch>

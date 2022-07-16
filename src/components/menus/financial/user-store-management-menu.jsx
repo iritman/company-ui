@@ -4,7 +4,10 @@ import {
   AiOutlineDashboard as DashboardIcon,
   AiOutlineDeploymentUnit as NatureIcon,
 } from "react-icons/ai";
-import { TbBuildingBank as StoresIcon } from "react-icons/tb";
+import {
+  TbBuildingBank as StoresIcon,
+  TbBrandCodesandbox as MeasureTypeIcon,
+} from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -27,6 +30,13 @@ const mapper = (pageID) => {
     case 142:
       link = "product-natures";
       icon = <NatureIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 143:
+      link = "measure-types";
+      icon = (
+        <MeasureTypeIcon style={{ color: Colors.green[6] }} size={iconSize} />
+      );
       break;
 
     default:

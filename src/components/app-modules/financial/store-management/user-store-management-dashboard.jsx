@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
-import { TbBuildingBank as StoresIcon } from "react-icons/tb";
+import {
+  TbBuildingBank as StoresIcon,
+  TbBrandCodesandbox as MeasureTypeIcon,
+} from "react-icons/tb";
 import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
@@ -28,6 +31,12 @@ const mapper = (pageID) => {
       link = "product-natures";
       icon = <NatureIcon {...iconProps} />;
       backColor = Colors.blue[3];
+      break;
+
+    case 143:
+      link = "measure-types";
+      icon = <MeasureTypeIcon {...iconProps} />;
+      backColor = Colors.green[3];
       break;
 
     default:
