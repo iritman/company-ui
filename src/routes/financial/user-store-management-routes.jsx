@@ -19,17 +19,17 @@ const UserStoreManagementRoutes = ({ path }) => {
         component={UserStoreManagementDashboard}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/stores`}
+        path={`${path}/${modulePath}/user-stores`}
         exact
         render={() => <UserStoresPage pageName="user-Stores" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/product-natures`}
+        path={`${path}/${modulePath}/user-product-natures`}
         exact
         render={() => <UserProductNaturesPage pageName="user-ProductNatures" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/measure-types`}
+        path={`${path}/${modulePath}/user-measure-types`}
         exact
         render={() => <UserMeasureTypesPage pageName="user-MeasureTypes" />}
       />

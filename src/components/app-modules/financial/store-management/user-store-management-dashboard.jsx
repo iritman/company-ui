@@ -22,19 +22,19 @@ const mapper = (pageID) => {
 
   switch (pageID) {
     case 141:
-      link = "stores";
+      link = "user-stores";
       icon = <StoresIcon {...iconProps} />;
       backColor = Colors.orange[3];
       break;
 
     case 142:
-      link = "product-natures";
+      link = "user-product-natures";
       icon = <NatureIcon {...iconProps} />;
       backColor = Colors.blue[3];
       break;
 
     case 143:
-      link = "measure-types";
+      link = "user-measure-types";
       icon = <MeasureTypeIcon {...iconProps} />;
       backColor = Colors.green[3];
       break;

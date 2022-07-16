@@ -23,17 +23,17 @@ const mapper = (pageID) => {
 
   switch (pageID) {
     case 141:
-      link = "stores";
+      link = "user-stores";
       icon = <StoresIcon style={{ color: Colors.orange[6] }} size={iconSize} />;
       break;
 
     case 142:
-      link = "product-natures";
+      link = "user-product-natures";
       icon = <NatureIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
     case 143:
-      link = "measure-types";
+      link = "user-measure-types";
       icon = (
         <MeasureTypeIcon style={{ color: Colors.green[6] }} size={iconSize} />
       );
@@ -64,6 +64,7 @@ const UserStoreManagementMenu = () => {
   useEffect(() => {
     const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
+      .replace("user-", "")
       .replace("-", "")
       .toLocaleLowerCase();
     setLastPathKey(_lastPathKey);
@@ -90,7 +91,9 @@ const UserStoreManagementMenu = () => {
       <Menu.Divider />
       {accessiblePages.map((page) => (
         <Menu.Item
-          key={page.PageName.replace("-", "").toLocaleLowerCase()}
+          key={page.PageName.replace("user-", "")
+            .replace("-", "")
+            .toLocaleLowerCase()}
           icon={mapper(page.PageID).icon}
         >
           <Link to={`${prePath}${mapper(page.PageID).link}`}>
