@@ -6,6 +6,7 @@ import UserStoreManagementDashboard from "../../components/app-modules/financial
 import UserStoresPage from "../../components/app-modules/financial/store-management/user-stores-page";
 import UserProductNaturesPage from "../../components/app-modules/financial/store-management/user-product-natures-page";
 import UserMeasureTypesPage from "../../components/app-modules/financial/store-management/user-measure-types-page";
+import UserMeasureUnitsPage from "../../components/app-modules/financial/store-management/user-measure-units-page";
 //---
 
 const modulePath = "financial/store-mgr";
@@ -32,6 +33,11 @@ const UserStoreManagementRoutes = ({ path }) => {
         path={`${path}/${modulePath}/user-measure-types`}
         exact
         render={() => <UserMeasureTypesPage pageName="user-MeasureTypes" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-measure-units`}
+        exact
+        render={() => <UserMeasureUnitsPage pageName="user-MeasureUnits" />}
       />
       <Redirect to="/not-found" />
     </Switch>

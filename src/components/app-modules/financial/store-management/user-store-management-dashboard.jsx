@@ -5,6 +5,7 @@ import DashboardTile from "../../../common/dashboard-tile";
 import {
   TbBuildingBank as StoresIcon,
   TbBrandCodesandbox as MeasureTypeIcon,
+  TbRuler2 as MeasureUnitIcon,
 } from "react-icons/tb";
 import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
@@ -37,6 +38,12 @@ const mapper = (pageID) => {
       link = "user-measure-types";
       icon = <MeasureTypeIcon {...iconProps} />;
       backColor = Colors.green[3];
+      break;
+
+    case 144:
+      link = "user-measure-units";
+      icon = <MeasureUnitIcon {...iconProps} />;
+      backColor = Colors.purple[3];
       break;
 
     default:
