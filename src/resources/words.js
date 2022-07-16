@@ -387,6 +387,9 @@ class Words extends Component {
   static measure_units = "واحدهای سنجش";
   static measure_unit = "واحد سنجش";
   static pricing_types = "روش های قیمت گذاری";
+  static pricing_type = "روش قیمت گذاری";
+  static product_categories = "طبقه های کالا";
+  static product_category = "طبقه کالا";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

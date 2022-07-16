@@ -10,6 +10,7 @@ import {
   TbRuler2 as MeasureUnitIcon,
   TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
+import { CgListTree as CategoryIcon } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -52,6 +53,13 @@ const mapper = (pageID) => {
       link = "user-pricing-types";
       icon = (
         <PricingTypeIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
+      );
+      break;
+
+    case 146:
+      link = "user-product-categories";
+      icon = (
+        <CategoryIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
       );
       break;
 
