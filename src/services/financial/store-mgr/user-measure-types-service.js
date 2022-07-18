@@ -3,6 +3,12 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/financial/store-mgr/user-measure-types";
 
+export async function getParams() {
+  const { data } = await http.get(`${apiEndpoint}/params`);
+
+  return data;
+}
+
 export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
@@ -28,6 +34,7 @@ export async function deleteData(recordID) {
 }
 
 const service = {
+  getParams,
   getAllData,
   searchData,
   saveData,

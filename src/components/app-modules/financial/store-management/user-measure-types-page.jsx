@@ -1,7 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
-import { AiOutlineCheck as CheckIcon } from "react-icons/ai";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
@@ -26,10 +25,7 @@ const getSheets = (records) => [
     columns: [
       { label: Words.id, value: "MeasureTypeID" },
       { label: Words.title, value: "Title" },
-      {
-        label: Words.is_decimal,
-        value: (record) => (record.IsDecimal ? "*" : ""),
-      },
+      { label: Words.value_type, value: "ValueTypeTitle" },
     ],
   },
 ];
@@ -54,12 +50,14 @@ const baseColumns = [
     render: (Title) => <Text style={{ color: Colors.blue[7] }}>{Title}</Text>,
   },
   {
-    title: Words.is_decimal,
+    title: Words.measure_type,
     width: 75,
     align: "center",
-    sorter: getSorter("IsDecimal"),
-    render: (record) =>
-      record.IsDecimal && <CheckIcon style={{ color: Colors.green[6] }} />,
+    dataIndex: "ValueTypeTitle",
+    sorter: getSorter("ValueTypeTitle"),
+    render: (ValueTypeTitle) => (
+      <Text style={{ color: Colors.green[6] }}>{ValueTypeTitle}</Text>
+    ),
   },
 ];
 
@@ -119,7 +117,6 @@ const UserMeasureTypesPage = ({ pageName }) => {
             onGetAll={handleGetAll}
             onAdd={access?.CanAdd && handleAdd}
           />
-
           <Col xs={24}>
             {searched && (
               <SimpleDataTable records={records} columns={columns} />

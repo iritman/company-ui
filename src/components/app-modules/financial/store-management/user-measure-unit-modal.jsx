@@ -74,7 +74,6 @@ const UserMeasureUnitModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     initModal(formRef, selectedObject, setRecord);
 
     setProgress(true);
-
     try {
       const data = await service.getParams();
 
@@ -84,7 +83,6 @@ const UserMeasureUnitModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     } catch (ex) {
       handleError(ex);
     }
-
     setProgress(false);
   });
 

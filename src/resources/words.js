@@ -390,6 +390,7 @@ class Words extends Component {
   static pricing_type = "روش قیمت گذاری";
   static product_categories = "طبقه های کالا";
   static product_category = "طبقه کالا";
+  static value_type = "نوع داده";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

@@ -30,10 +30,7 @@ const getSheets = (records) => [
       { label: Words.id, value: "MeasureUnitID" },
       { label: Words.measure_type, value: "MeasureTypeTitle" },
       { label: Words.title, value: "Title" },
-      {
-        label: Words.is_decimal,
-        value: (record) => (record.IsDecimal ? "*" : ""),
-      },
+      { label: Words.value_type, value: "ValueTypeTitle" },
       {
         label: Words.status,
         value: (record) => (record.IsActive ? Words.active : Words.inactive),
@@ -72,12 +69,14 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.is_decimal,
-    width: 75,
+    title: Words.value_type,
+    width: 150,
     align: "center",
-    sorter: getSorter("IsDecimal"),
-    render: (record) =>
-      record.IsDecimal && <CheckIcon style={{ color: Colors.green[6] }} />,
+    dataIndex: "ValueTypeTitle",
+    sorter: getSorter("ValueTypeTitle"),
+    render: (ValueTypeTitle) => (
+      <Text style={{ color: Colors.green[6] }}>{ValueTypeTitle}</Text>
+    ),
   },
   {
     title: Words.status,

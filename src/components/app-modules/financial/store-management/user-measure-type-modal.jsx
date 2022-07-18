@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
+import service from "../../../../services/financial/store-mgr/user-measure-types-service";
 import {
   validateForm,
   loadFieldsValue,
@@ -12,7 +13,8 @@ import {
   saveModalChanges,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
-import SwitchItem from "./../../../form-controls/switch-item";
+import DropdownItem from "./../../../form-controls/dropdown-item";
+import { handleError } from "./../../../../tools/form-manager";
 import {
   useModalContext,
   useResetContext,
@@ -20,13 +22,13 @@ import {
 
 const schema = {
   MeasureTypeID: Joi.number().required(),
+  ValueTypeID: Joi.number().min(1).required().label(Words.value_type),
   Title: Joi.string()
     .min(2)
     .max(50)
     .required()
     .label(Words.title)
     .regex(utils.VALID_REGEX),
-  IsDecimal: Joi.boolean(),
 };
 
 const initRecord = {
@@ -41,6 +43,8 @@ const UserMeasureTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
+  const [valueTypes, setValueTypes] = useState([]);
+
   const resetContext = useResetContext();
 
   const formConfig = {
@@ -52,18 +56,30 @@ const UserMeasureTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
+    record.ValueTypeID = 0;
     record.Title = "";
-    record.IsDecimal = false;
 
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
   };
 
-  useMount(() => {
+  useMount(async () => {
     resetContext();
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
+
+    setProgress(true);
+    try {
+      const data = await service.getParams();
+
+      const { ValueTypes } = data;
+
+      setValueTypes(ValueTypes);
+    } catch (ex) {
+      handleError(ex);
+    }
+    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
@@ -87,7 +103,7 @@ const UserMeasureTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={700}
+      width={650}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
@@ -101,14 +117,14 @@ const UserMeasureTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={12} md={6}>
-            <SwitchItem
-              title={Words.is_decimal}
-              fieldName="IsDecimal"
-              initialValue={false}
-              checkedTitle={Words.yes}
-              unCheckedTitle={Words.no}
+          <Col xs={24}>
+            <DropdownItem
+              title={Words.value_type}
+              dataSource={valueTypes}
+              keyColumn="ValueTypeID"
+              valueColumn="Title"
               formConfig={formConfig}
+              required
             />
           </Col>
         </Row>
