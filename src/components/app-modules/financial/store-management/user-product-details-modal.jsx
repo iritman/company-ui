@@ -75,7 +75,7 @@ const UserProductDetailsModal = ({ product, isOpen, onOk, onSeen }) => {
                   >
                     <Descriptions.Item label={Words.id}>
                       <Text style={{ color: valueColor }}>
-                        {utils.farsiNum(`#${ProductID}`)}
+                        {utils.farsiNum(`${ProductID}`)}
                       </Text>
                     </Descriptions.Item>
                     <Descriptions.Item label={Words.product_code}>
@@ -97,17 +97,17 @@ const UserProductDetailsModal = ({ product, isOpen, onOk, onSeen }) => {
                     <Descriptions.Item label={Words.status}>
                       <Space direction="vertical">
                         {IsBuyable && (
-                          <Text style={{ color: Colors.blue[6] }}>
+                          <Text style={{ color: Colors.magenta[6] }}>
                             {Words.is_buyable}
                           </Text>
                         )}
                         {IsSalable && (
-                          <Text style={{ color: Colors.blue[6] }}>
+                          <Text style={{ color: Colors.magenta[6] }}>
                             {Words.is_salable}
                           </Text>
                         )}
                         {IsBuildable && (
-                          <Text style={{ color: Colors.blue[6] }}>
+                          <Text style={{ color: Colors.magenta[6] }}>
                             {Words.is_buildable}
                           </Text>
                         )}
