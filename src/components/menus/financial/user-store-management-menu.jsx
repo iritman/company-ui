@@ -11,7 +11,10 @@ import {
   TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
-import { MdOutlineFeaturedPlayList as FeatureIcon } from "react-icons/md";
+import {
+  MdOutlineFeaturedPlayList as FeatureIcon,
+  MdDonutSmall as ProductIcon,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -33,27 +36,27 @@ const mapper = (pageID) => {
 
     case 142:
       link = "user-product-natures";
-      icon = <NatureIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      icon = <NatureIcon style={{ color: Colors.green[6] }} size={iconSize} />;
       break;
 
     case 143:
       link = "user-measure-types";
       icon = (
-        <MeasureTypeIcon style={{ color: Colors.green[6] }} size={iconSize} />
+        <MeasureTypeIcon style={{ color: Colors.blue[6] }} size={iconSize} />
       );
       break;
 
     case 144:
       link = "user-measure-units";
       icon = (
-        <MeasureUnitIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+        <MeasureUnitIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
       );
       break;
 
     case 145:
       link = "user-pricing-types";
       icon = (
-        <PricingTypeIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
+        <PricingTypeIcon style={{ color: Colors.purple[6] }} size={iconSize} />
       );
       break;
 
@@ -66,8 +69,13 @@ const mapper = (pageID) => {
 
     case 147:
       link = "user-features";
+      icon = <FeatureIcon style={{ color: Colors.lime[6] }} size={iconSize} />;
+      break;
+
+    case 148:
+      link = "user-products";
       icon = (
-        <FeatureIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
+        <ProductIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
       );
       break;
 

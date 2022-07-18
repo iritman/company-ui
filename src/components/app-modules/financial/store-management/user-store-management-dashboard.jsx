@@ -9,7 +9,10 @@ import {
   TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
-import { MdOutlineFeaturedPlayList as FeatureIcon } from "react-icons/md";
+import {
+  MdOutlineFeaturedPlayList as FeatureIcon,
+  MdDonutSmall as ProductIcon,
+} from "react-icons/md";
 import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
@@ -34,25 +37,25 @@ const mapper = (pageID) => {
     case 142:
       link = "user-product-natures";
       icon = <NatureIcon {...iconProps} />;
-      backColor = Colors.blue[3];
+      backColor = Colors.green[3];
       break;
 
     case 143:
       link = "user-measure-types";
       icon = <MeasureTypeIcon {...iconProps} />;
-      backColor = Colors.green[3];
+      backColor = Colors.blue[3];
       break;
 
     case 144:
       link = "user-measure-units";
       icon = <MeasureUnitIcon {...iconProps} />;
-      backColor = Colors.purple[3];
+      backColor = Colors.cyan[3];
       break;
 
     case 145:
       link = "user-pricing-types";
       icon = <PricingTypeIcon {...iconProps} />;
-      backColor = Colors.cyan[3];
+      backColor = Colors.purple[3];
       break;
 
     case 146:
@@ -64,6 +67,12 @@ const mapper = (pageID) => {
     case 147:
       link = "user-features";
       icon = <FeatureIcon {...iconProps} />;
+      backColor = Colors.lime[4];
+      break;
+
+    case 148:
+      link = "user-products";
+      icon = <ProductIcon {...iconProps} />;
       backColor = Colors.volcano[3];
       break;
 
