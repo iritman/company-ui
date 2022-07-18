@@ -33,8 +33,8 @@ const schema = {
 
 const initRecord = {
   MeasureTypeID: 0,
+  ValueTypeID: 0,
   Title: "",
-  IsDecimal: false,
 };
 
 const formRef = React.createRef();
