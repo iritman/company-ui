@@ -11,6 +11,7 @@ import {
   TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
+import { MdOutlineFeaturedPlayList as FeatureIcon } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -60,6 +61,13 @@ const mapper = (pageID) => {
       link = "user-product-categories";
       icon = (
         <CategoryIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
+      );
+      break;
+
+    case 147:
+      link = "user-features";
+      icon = (
+        <FeatureIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
       );
       break;
 

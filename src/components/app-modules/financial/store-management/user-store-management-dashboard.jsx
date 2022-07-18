@@ -9,6 +9,7 @@ import {
   TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
+import { MdOutlineFeaturedPlayList as FeatureIcon } from "react-icons/md";
 import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
@@ -58,6 +59,12 @@ const mapper = (pageID) => {
       link = "user-product-categories";
       icon = <CategoryIcon {...iconProps} />;
       backColor = Colors.magenta[3];
+      break;
+
+    case 147:
+      link = "user-features";
+      icon = <FeatureIcon {...iconProps} />;
+      backColor = Colors.volcano[3];
       break;
 
     default:
