@@ -238,6 +238,8 @@ class Words extends Component {
   static extra_work_command_source = "منبع دستور اضافه کار";
   static tasks = "مدیریت وظایف";
   static tags = "برچسب ها";
+  static selected_supervisors = "ناظران منتخب";
+  static selected_supervisor = "ناظر منتخب";
   static interval_tasks = "وظایف تکرارشونده";
   static response_member = "پیگیری کننده";
   static interval_type = "نوع تکرار";
@@ -398,6 +400,7 @@ class Words extends Component {
   static is_buyable = "خریدنی";
   static is_salable = "قابل فروش";
   static is_buildable = "ساختنی";
+  static product_feature = "ویژگی کالا";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

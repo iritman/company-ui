@@ -11,6 +11,7 @@ import {
   FaTags as TagsIcon,
   FaListUl as MyTasksIcon,
   FaUsersCog as UsersIcon,
+  FaUserCheck as SelectedUserIcon,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -74,6 +75,16 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 87:
+      link = "selected-supervisors";
+      icon = (
+        <SelectedUserIcon
+          style={{ color: Colors.volcano[4] }}
+          size={iconSize}
+        />
+      );
+      break;
+
     default:
       break;
   }
@@ -99,6 +110,7 @@ const UserTasksMenu = () => {
   useEffect(() => {
     const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
+      .replace("user-", "")
       .replace("-", "")
       .toLocaleLowerCase();
     setLastPathKey(_lastPathKey);
@@ -123,7 +135,9 @@ const UserTasksMenu = () => {
       <Menu.Divider />
       {accessiblePages.map((page) => (
         <Menu.Item
-          key={page.PageName.replace("-", "").toLocaleLowerCase()}
+          key={page.PageName.replace("user-", "")
+            .replace("-", "")
+            .toLocaleLowerCase()}
           icon={mapper(page.PageID).icon}
         >
           <Link to={`${prePath}${mapper(page.PageID).link}`}>

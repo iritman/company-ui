@@ -4,6 +4,7 @@ import { Row, Col, Tag, Input } from "antd";
 const SupervisorsPopupContent = ({
   supervisors,
   selectedSupervisors,
+  favoriteSupervisors,
   onClick,
 }) => {
   const [searchText, setSearchText] = useState("");
@@ -29,11 +30,46 @@ const SupervisorsPopupContent = ({
               />
             </Col>
             <Col xs={24}>
+              {favoriteSupervisors
+                .filter(
+                  (supervisor) =>
+                    selectedSupervisors.filter(
+                      (s) => s.MemberID === supervisor.SupervisorMemberID
+                    ).length === 0
+                )
+                .filter(
+                  (supervisors) =>
+                    supervisors.FirstName.includes(searchText) ||
+                    supervisors.LastName.includes(searchText)
+                )
+                .map((supervisor) => (
+                  <Tag
+                    key={supervisor.SupervisorMemberID}
+                    color="error"
+                    onClick={() =>
+                      onClick({
+                        MemberID: supervisor.SupervisorMemberID,
+                        FullName: `${supervisor.FirstName} ${supervisor.LastName}`,
+                      })
+                    }
+                    style={{ cursor: "pointer", margin: 5 }}
+                  >
+                    {`${supervisor.FirstName} ${supervisor.LastName}`}
+                  </Tag>
+                ))}
+            </Col>
+            <Col xs={24}>
               {supervisors
                 .filter(
                   (supervisor) =>
                     selectedSupervisors.filter(
                       (s) => s.MemberID === supervisor.MemberID
+                    ).length === 0
+                )
+                .filter(
+                  (supervisor) =>
+                    favoriteSupervisors.filter(
+                      (s) => s.SupervisorMemberID === supervisor.MemberID
                     ).length === 0
                 )
                 .filter((supervisors) =>
@@ -42,7 +78,7 @@ const SupervisorsPopupContent = ({
                 .map((supervisor) => (
                   <Tag
                     key={supervisor.MemberID}
-                    color="magenta"
+                    color="blue"
                     onClick={() => onClick(supervisor)}
                     style={{ cursor: "pointer", margin: 5 }}
                   >

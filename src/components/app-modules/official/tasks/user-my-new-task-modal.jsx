@@ -45,6 +45,7 @@ import {
   useResetContext,
 } from "../../../contexts/modal-context";
 import service from "../../../../services/official/tasks/employees-tasks-service";
+import favoriteSupervisorsService from "../../../../services/official/tasks/selected-supervisors-service";
 import { handleError } from "./../../../../tools/form-manager";
 import SupervisorsPopupContent from "./supervisors-popup-content";
 import TagsPopupContent from "./tags-popup-content";
@@ -122,6 +123,7 @@ const UserMyNewTaskModal = ({
   const [fileList, setFileList] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const [favoriteSupervisors, setFavoriteSupervisors] = useState([]);
   const [showNewReportModal, setShowNewReportModal] = useState(false);
 
   const resetContext = useResetContext();
@@ -185,6 +187,13 @@ const UserMyNewTaskModal = ({
 
       setTags(Tags);
       setEmployees(Employees);
+
+      //----------------------
+
+      const favorite_supervisors =
+        await favoriteSupervisorsService.getAllData();
+
+      setFavoriteSupervisors(favorite_supervisors);
     } catch (ex) {
       handleError(ex);
     }
@@ -472,6 +481,7 @@ const UserMyNewTaskModal = ({
                               (e) => e.MemberID !== record.MemberID
                             )}
                             selectedSupervisors={record.Supervisors}
+                            favoriteSupervisors={favoriteSupervisors}
                             onClick={handleSelectSupervisor}
                           />
                         }
