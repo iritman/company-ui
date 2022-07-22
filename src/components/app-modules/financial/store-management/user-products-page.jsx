@@ -87,8 +87,8 @@ const baseColumns = [
   },
 ];
 
-const handleCheckEditable = (row) => false;
-const handleCheckDeletable = (row) => false;
+const handleCheckEditable = (row) => row.Editable;
+const handleCheckDeletable = (row) => row.Deletable;
 
 const recordID = "ProductID";
 
@@ -159,6 +159,35 @@ const UserProductsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleSaveFeature = async (row) => {
+    const feature = await service.saveFeature(row);
+
+    const so = { ...selectedObject };
+    if (so.Features.find((f) => f.FeatureID === feature.FeatureID))
+      so.Features[
+        so.Features.findIndex((f) => f.FeatureID === feature.FeatureID)
+      ] = feature;
+    else so.Features = [...so.Features, feature];
+
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  const handleDeleteFeature = async (id) => {
+    await service.deleteFeature(id);
+
+    const so = { ...selectedObject };
+    so.Features = so.Features.filter((f) => f.PFID !== id);
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
   //------
 
   return (
@@ -183,10 +212,13 @@ const UserProductsPage = ({ pageName }) => {
 
       {showModal && (
         <ProductModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
+          access={access}
           isOpen={showModal}
           selectedObject={selectedObject}
+          onOk={handleSave}
+          onCancel={handleCloseModal}
+          onSaveFeature={handleSaveFeature}
+          onDeleteFeature={handleDeleteFeature}
         />
       )}
 

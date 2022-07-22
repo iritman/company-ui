@@ -388,6 +388,8 @@ class Words extends Component {
   static measure_type = "بعد سنجش";
   static measure_units = "واحدهای سنجش";
   static measure_unit = "واحد سنجش";
+  static measure_converts = "ضریب تبدیل واحدها";
+  static measure_convert = "ضریب تبدیل واحد";
   static pricing_types = "روش های قیمت گذاری";
   static pricing_type = "روش قیمت گذاری";
   static product_categories = "طبقه های کالا";
@@ -401,6 +403,11 @@ class Words extends Component {
   static is_salable = "قابل فروش";
   static is_buildable = "ساختنی";
   static product_feature = "ویژگی کالا";
+  static new_feature = "ویژگی جدید";
+  static new_measure_unit = "واحد سنجش جدید";
+  static new_measure_convert = "ضریب تبدیل جدید";
+  static feature = "ویژگی";
+  static value = "مقدار";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
@@ -704,6 +711,7 @@ class Words extends Component {
     sure_to_logout: "برای خروج از سامانه اطمینان دارید؟",
     sure_to_delete_item: "برای حذف رکورد انتخابی اطمینان دارید؟",
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
+    sure_to_delete_feature: "برای حذف ویژگی کالا اطمینان دارید؟",
     sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
     sure_to_submit_response_for_replace_work_request:
       "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",

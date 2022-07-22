@@ -27,8 +27,20 @@ export async function saveData(record) {
   return data;
 }
 
+export async function saveFeature(record) {
+  const { data } = await http.post(`${apiEndpoint}/feature`, record);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
+
+  return data;
+}
+
+export async function deleteFeature(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/feature/${recordID}`);
 
   return data;
 }
@@ -39,6 +51,9 @@ const service = {
   searchData,
   saveData,
   deleteData,
+  //------
+  saveFeature,
+  deleteFeature,
 };
 
 export default service;
