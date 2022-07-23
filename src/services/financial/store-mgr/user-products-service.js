@@ -33,6 +33,12 @@ export async function saveFeature(record) {
   return data;
 }
 
+export async function saveMeasureUnit(record) {
+  const { data } = await http.post(`${apiEndpoint}/measure-unit`, record);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -41,6 +47,12 @@ export async function deleteData(recordID) {
 
 export async function deleteFeature(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/feature/${recordID}`);
+
+  return data;
+}
+
+export async function deleteMeasureUnit(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/measure-unit/${recordID}`);
 
   return data;
 }
@@ -54,6 +66,8 @@ const service = {
   //------
   saveFeature,
   deleteFeature,
+  saveMeasureUnit,
+  deleteMeasureUnit,
 };
 
 export default service;

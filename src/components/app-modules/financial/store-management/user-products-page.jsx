@@ -159,6 +159,8 @@ const UserProductsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  //------
+
   const handleSaveFeature = async (row) => {
     const feature = await service.saveFeature(row);
 
@@ -181,6 +183,33 @@ const UserProductsPage = ({ pageName }) => {
 
     const so = { ...selectedObject };
     so.Features = so.Features.filter((f) => f.PFID !== id);
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  //------
+
+  const handleSaveMeasureUnit = async (row) => {
+    const measure_units = await service.saveMeasureUnit(row);
+
+    const so = { ...selectedObject };
+    so.MeasureUnits = measure_units;
+
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  const handleDeleteMeasureUnit = async (id) => {
+    await service.deleteMeasureUnit(id);
+
+    const so = { ...selectedObject };
+    so.MeasureUnits = so.MeasureUnits.filter((f) => f.PMID !== id);
     setSelectedObject(so);
 
     const rec = [...records];
@@ -219,6 +248,8 @@ const UserProductsPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           onSaveFeature={handleSaveFeature}
           onDeleteFeature={handleDeleteFeature}
+          onSaveMeasureUnit={handleSaveMeasureUnit}
+          onDeleteMeasureUnit={handleDeleteMeasureUnit}
         />
       )}
 

@@ -16,6 +16,7 @@ import {
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
   DeleteOutlined as DeleteIcon,
+  CheckOutlined as CheckIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
@@ -39,11 +40,12 @@ import {
   useResetContext,
 } from "./../../../contexts/modal-context";
 import FeatureModal from "./user-product-feature-modal";
+import MeasureUnitModal from "./user-product-measure-unit-modal";
 
 const { TabPane } = Tabs;
 const { Text } = Typography;
 
-const getColumns = (access, onEdit, onDelete) => {
+const getFeaturesColumns = (access, onEdit, onDelete) => {
   let columns = [
     {
       title: Words.id,
@@ -88,7 +90,7 @@ const getColumns = (access, onEdit, onDelete) => {
         title: "",
         fixed: "right",
         align: "center",
-        width: 110,
+        width: 75,
         render: (record) => (
           <Space>
             {access.CanEdit && onEdit && (
@@ -103,6 +105,92 @@ const getColumns = (access, onEdit, onDelete) => {
               <Popconfirm
                 title={Words.questions.sure_to_delete_feature}
                 onConfirm={async () => await onDelete(record.PFID)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
+const getMeasureUnitsColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "PMID",
+      sorter: getSorter("PMID"),
+      render: (PMID) => <Text>{utils.farsiNum(`${PMID}`)}</Text>,
+    },
+    {
+      title: Words.measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "MeasureUnitTitle",
+      sorter: getSorter("MeasureUnitTitle"),
+      render: (MeasureUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {MeasureUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.measure_type,
+      width: 150,
+      align: "center",
+      dataIndex: "MeasureTypeTitle",
+      sorter: getSorter("MeasureTypeTitle"),
+      render: (MeasureTypeTitle) => (
+        <Text style={{ color: Colors.green[7] }}>{MeasureTypeTitle}</Text>
+      ),
+    },
+    {
+      title: Words.default,
+      width: 75,
+      align: "center",
+      dataIndex: "IsDefault",
+      sorter: getSorter("IsDefault"),
+      render: (IsDefault) => (
+        <>{IsDefault && <CheckIcon style={{ color: Colors.green[6] }} />}</>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_measure_unit}
+                onConfirm={async () => await onDelete(record.PMID)}
                 okText={Words.yes}
                 cancelText={Words.no}
                 icon={<QuestionIcon style={{ color: "red" }} />}
@@ -161,6 +249,8 @@ const UserProductModal = ({
   onCancel,
   onSaveFeature,
   onDeleteFeature,
+  onSaveMeasureUnit,
+  onDeleteMeasureUnit,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -168,8 +258,14 @@ const UserProductModal = ({
   const [categories, setCategories] = useState([]);
   const [natures, setNatures] = useState([]);
   const [features, setFeatures] = useState([]);
+  const [measureUnits, setMeasureUnits] = useState([]);
+  //---
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  //---
+  const [showMeasureUnitModal, setShowMeasureUnitModal] = useState(false);
+  const [selectedMeasureUnit, setSelectedMeasureUnit] = useState(null);
+  //---
 
   const resetContext = useResetContext();
 
@@ -204,11 +300,12 @@ const UserProductModal = ({
     try {
       const data = await service.getParams();
 
-      const { Categories, Natures, Features } = data;
+      const { Categories, Natures, Features, MeasureUnits } = data;
 
       setCategories(Categories);
       setNatures(Natures);
       setFeatures(Features);
+      setMeasureUnits(MeasureUnits);
     } catch (ex) {
       handleError(ex);
     }
@@ -218,7 +315,7 @@ const UserProductModal = ({
   const isEdit = selectedObject !== null;
 
   const handleSubmit = async () => {
-    saveModalChanges(
+    await saveModalChanges(
       formConfig,
       selectedObject,
       setProgress,
@@ -244,6 +341,23 @@ const UserProductModal = ({
   const handleEditFeature = (feature) => {
     setSelectedFeature(feature);
     setShowFeatureModal(true);
+  };
+
+  //-----------------
+
+  const handleShowMeasureUnitModal = () => {
+    setSelectedMeasureUnit(null);
+    setShowMeasureUnitModal(true);
+  };
+
+  const handleHideMeasureUnitModal = () => {
+    setSelectedMeasureUnit(null);
+    setShowMeasureUnitModal(false);
+  };
+
+  const handleEditMeasureUnit = (measureUnit) => {
+    setSelectedMeasureUnit(measureUnit);
+    setShowMeasureUnitModal(true);
   };
 
   //-----------------
@@ -367,7 +481,7 @@ const UserProductModal = ({
                       <Col xs={24}>
                         <DetailsTable
                           records={selectedObject.Features}
-                          columns={getColumns(
+                          columns={getFeaturesColumns(
                             access,
                             handleEditFeature, // handle edit feature
                             onDeleteFeature // handle delete feature
@@ -377,7 +491,27 @@ const UserProductModal = ({
                     </Row>
                   </TabPane>
                   <TabPane tab={Words.measure_units} key="3">
-                    Content of Tab Pane 3
+                    <Row gutter={[2, 5]}>
+                      <Col xs={24}>
+                        <Button
+                          type="primary"
+                          icon={<PlusIcon />}
+                          onClick={handleShowMeasureUnitModal}
+                        >
+                          {Words.new_measure_unit}
+                        </Button>
+                      </Col>
+                      <Col xs={24}>
+                        <DetailsTable
+                          records={selectedObject.MeasureUnits}
+                          columns={getMeasureUnitsColumns(
+                            access,
+                            handleEditMeasureUnit, // handle edit measure unit
+                            onDeleteMeasureUnit // handle delete measure unit
+                          )}
+                        />
+                      </Col>
+                    </Row>
                   </TabPane>
                   <TabPane tab={Words.measure_converts} key="4">
                     Content of Tab Pane 4
@@ -397,6 +531,17 @@ const UserProductModal = ({
           features={features}
           onOk={onSaveFeature}
           onCancel={handleHideFeatureModal}
+        />
+      )}
+
+      {showMeasureUnitModal && (
+        <MeasureUnitModal
+          isOpen={showMeasureUnitModal}
+          product={selectedObject}
+          selectedMeasureUnit={selectedMeasureUnit}
+          measureUnits={measureUnits}
+          onOk={onSaveMeasureUnit}
+          onCancel={handleHideMeasureUnitModal}
         />
       )}
     </>
