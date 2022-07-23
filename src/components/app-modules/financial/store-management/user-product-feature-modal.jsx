@@ -120,7 +120,7 @@ const UserProductFeatureModal = ({
   const isEdit = selectedFeature !== null;
 
   const handleSubmit = async () => {
-    saveModalChanges(
+    await saveModalChanges(
       formConfig,
       selectedFeature,
       setProgress,
