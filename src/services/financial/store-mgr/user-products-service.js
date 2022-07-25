@@ -39,6 +39,12 @@ export async function saveMeasureUnit(record) {
   return data;
 }
 
+export async function saveMeasureConvert(record) {
+  const { data } = await http.post(`${apiEndpoint}/measure-convert`, record);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -57,6 +63,14 @@ export async function deleteMeasureUnit(recordID) {
   return data;
 }
 
+export async function deleteMeasureConvert(recordID) {
+  const { data } = await http.delete(
+    `${apiEndpoint}/measure-convert/${recordID}`
+  );
+
+  return data;
+}
+
 const service = {
   getParams,
   getAllData,
@@ -68,6 +82,8 @@ const service = {
   deleteFeature,
   saveMeasureUnit,
   deleteMeasureUnit,
+  saveMeasureConvert,
+  deleteMeasureConvert,
 };
 
 export default service;

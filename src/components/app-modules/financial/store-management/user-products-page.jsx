@@ -219,6 +219,37 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
+  const handleSaveMeasureConvert = async (row) => {
+    const feature = await service.saveMeasureConvert(row);
+
+    const so = { ...selectedObject };
+    if (so.MeasureConverts.find((c) => c.ConvertID === feature.ConvertID))
+      so.MeasureConverts[
+        so.MeasureConverts.findIndex((c) => c.ConvertID === feature.ConvertID)
+      ] = feature;
+    else so.MeasureConverts = [...so.MeasureConverts, feature];
+
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  const handleDeleteMeasureConvert = async (id) => {
+    await service.deleteMeasureConvert(id);
+
+    const so = { ...selectedObject };
+    so.MeasureConverts = so.MeasureConverts.filter((c) => c.ConvertID !== id);
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -250,6 +281,8 @@ const UserProductsPage = ({ pageName }) => {
           onDeleteFeature={handleDeleteFeature}
           onSaveMeasureUnit={handleSaveMeasureUnit}
           onDeleteMeasureUnit={handleDeleteMeasureUnit}
+          onSaveMeasureConvert={handleSaveMeasureConvert}
+          onDeleteMeasureConvert={handleDeleteMeasureConvert}
         />
       )}
 

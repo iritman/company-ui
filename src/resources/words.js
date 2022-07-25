@@ -411,6 +411,12 @@ class Words extends Component {
   static value = "مقدار";
   static default_measure_unit = "واحد سنجش پیش فرض";
   static default = "پیش فرض";
+  static new_measure_convert = "ضریب تبدیل جدید";
+  static from_measure_unit = "واحد مبدا";
+  static from_measure_value = "مقدار مبدا";
+  static to_measure_unit = "واحد مقصد";
+  static to_measure_value = "مقدار مقصد";
+  static tolerance = "تلورانس";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

@@ -41,6 +41,7 @@ import {
 } from "./../../../contexts/modal-context";
 import FeatureModal from "./user-product-feature-modal";
 import MeasureUnitModal from "./user-product-measure-unit-modal";
+import MeasureConvertModal from "./user-product-measure-convert-modal";
 
 const { TabPane } = Tabs;
 const { Text } = Typography;
@@ -207,6 +208,118 @@ const getMeasureUnitsColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getMeasureConvertsColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "ConvertID",
+      sorter: getSorter("ConvertID"),
+      render: (ConvertID) => <Text>{utils.farsiNum(`${ConvertID}`)}</Text>,
+    },
+    {
+      title: Words.from_measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "FromUnitTitle",
+      sorter: getSorter("FromUnitTitle"),
+      render: (FromUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {FromUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.from_measure_value,
+      width: 150,
+      align: "center",
+      dataIndex: "FromUnitValue",
+      sorter: getSorter("FromUnitValue"),
+      render: (FromUnitValue) => (
+        <Text style={{ color: Colors.green[6] }}>{FromUnitValue}</Text>
+      ),
+    },
+    {
+      title: Words.to_measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "ToUnitTitle",
+      sorter: getSorter("ToUnitTitle"),
+      render: (ToUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {ToUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.to_measure_value,
+      width: 150,
+      align: "center",
+      dataIndex: "ToUnitValue",
+      sorter: getSorter("ToUnitValue"),
+      render: (ToUnitValue) => (
+        <Text style={{ color: Colors.green[6] }}>{ToUnitValue}</Text>
+      ),
+    },
+    {
+      title: Words.tolerance,
+      width: 100,
+      align: "center",
+      dataIndex: "TolerancePercent",
+      sorter: getSorter("TolerancePercent"),
+      render: (TolerancePercent) => (
+        <Text style={{ color: Colors.orange[6] }}>{TolerancePercent}</Text>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_measure_unit}
+                onConfirm={async () => await onDelete(record.ConvertID)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
 const schema = {
   ProductID: Joi.number().required(),
   CategoryID: Joi.number().min(1).required().label(Words.product_category),
@@ -251,6 +364,8 @@ const UserProductModal = ({
   onDeleteFeature,
   onSaveMeasureUnit,
   onDeleteMeasureUnit,
+  onSaveMeasureConvert,
+  onDeleteMeasureConvert,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -265,6 +380,9 @@ const UserProductModal = ({
   //---
   const [showMeasureUnitModal, setShowMeasureUnitModal] = useState(false);
   const [selectedMeasureUnit, setSelectedMeasureUnit] = useState(null);
+  //---
+  const [showMeasureConvertModal, setShowMeasureConvertModal] = useState(false);
+  const [selectedMeasureConvert, setSelectedMeasureConvert] = useState(null);
   //---
 
   const resetContext = useResetContext();
@@ -362,6 +480,23 @@ const UserProductModal = ({
 
   //-----------------
 
+  const handleShowMeasureConvertModal = () => {
+    setSelectedMeasureConvert(null);
+    setShowMeasureConvertModal(true);
+  };
+
+  const handleHideMeasureConvertModal = () => {
+    setSelectedMeasureConvert(null);
+    setShowMeasureConvertModal(false);
+  };
+
+  const handleEditMeasureConvert = (measureConvert) => {
+    setSelectedMeasureConvert(measureConvert);
+    setShowMeasureConvertModal(true);
+  };
+
+  //-----------------
+
   return (
     <>
       <ModalWindow
@@ -372,7 +507,7 @@ const UserProductModal = ({
         onClear={clearRecord}
         onSubmit={handleSubmit}
         onCancel={onCancel}
-        width={750}
+        width={850}
       >
         <Row gutter={[2, 5]}>
           {selectedObject && (
@@ -514,7 +649,27 @@ const UserProductModal = ({
                     </Row>
                   </TabPane>
                   <TabPane tab={Words.measure_converts} key="4">
-                    Content of Tab Pane 4
+                    <Row gutter={[2, 5]}>
+                      <Col xs={24}>
+                        <Button
+                          type="primary"
+                          icon={<PlusIcon />}
+                          onClick={handleShowMeasureConvertModal}
+                        >
+                          {Words.new_measure_convert}
+                        </Button>
+                      </Col>
+                      <Col xs={24}>
+                        <DetailsTable
+                          records={selectedObject.MeasureConverts}
+                          columns={getMeasureConvertsColumns(
+                            access,
+                            handleEditMeasureConvert, // handle edit measure convert
+                            onDeleteMeasureConvert // handle delete measure convert
+                          )}
+                        />
+                      </Col>
+                    </Row>
                   </TabPane>
                 </>
               )}
@@ -542,6 +697,17 @@ const UserProductModal = ({
           measureUnits={measureUnits}
           onOk={onSaveMeasureUnit}
           onCancel={handleHideMeasureUnitModal}
+        />
+      )}
+
+      {showMeasureConvertModal && (
+        <MeasureConvertModal
+          isOpen={showMeasureConvertModal}
+          product={selectedObject}
+          selectedMeasureConvert={selectedMeasureConvert}
+          measureUnits={measureUnits}
+          onOk={onSaveMeasureConvert}
+          onCancel={handleHideMeasureConvertModal}
         />
       )}
     </>
