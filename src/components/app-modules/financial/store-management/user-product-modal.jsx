@@ -42,6 +42,7 @@ import {
 import FeatureModal from "./user-product-feature-modal";
 import MeasureUnitModal from "./user-product-measure-unit-modal";
 import MeasureConvertModal from "./user-product-measure-convert-modal";
+import StoreModal from "./user-product-store-modal";
 
 const { TabPane } = Tabs;
 const { Text } = Typography;
@@ -76,10 +77,16 @@ const getFeaturesColumns = (access, onEdit, onDelete) => {
       title: Words.value,
       width: 150,
       align: "center",
-      dataIndex: "FeatureValue",
+      // dataIndex: "FeatureValue",
       sorter: getSorter("FeatureValue"),
-      render: (FeatureValue) => (
-        <Text style={{ color: Colors.green[7] }}>{FeatureValue}</Text>
+      render: (record) => (
+        <Text style={{ color: Colors.green[7] }}>
+          {record.ValueTypeID === 4
+            ? record.FeatureValue
+              ? Words.yes
+              : Words.no
+            : record.FeatureValue}
+        </Text>
       ),
     },
   ];
@@ -320,6 +327,72 @@ const getMeasureConvertsColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getStoresColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "StoreID",
+      sorter: getSorter("StoreID"),
+      render: (StoreID) => <Text>{utils.farsiNum(`${StoreID}`)}</Text>,
+    },
+    {
+      title: Words.title,
+      width: 120,
+      align: "center",
+      dataIndex: "Title",
+      sorter: getSorter("Title"),
+      render: (Title) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {Title}
+        </Text>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_store}
+                onConfirm={async () => await onDelete(record.PSID)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
 const schema = {
   ProductID: Joi.number().required(),
   CategoryID: Joi.number().min(1).required().label(Words.product_category),
@@ -366,6 +439,8 @@ const UserProductModal = ({
   onDeleteMeasureUnit,
   onSaveMeasureConvert,
   onDeleteMeasureConvert,
+  onSaveStore,
+  onDeleteStore,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -374,6 +449,7 @@ const UserProductModal = ({
   const [natures, setNatures] = useState([]);
   const [features, setFeatures] = useState([]);
   const [measureUnits, setMeasureUnits] = useState([]);
+  const [stores, setStores] = useState([]);
   //---
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -383,6 +459,9 @@ const UserProductModal = ({
   //---
   const [showMeasureConvertModal, setShowMeasureConvertModal] = useState(false);
   const [selectedMeasureConvert, setSelectedMeasureConvert] = useState(null);
+  //---
+  const [showStoreModal, setShowStoreModal] = useState(false);
+  const [selectedStore, setSelectedStore] = useState(null);
   //---
 
   const resetContext = useResetContext();
@@ -418,12 +497,13 @@ const UserProductModal = ({
     try {
       const data = await service.getParams();
 
-      const { Categories, Natures, Features, MeasureUnits } = data;
+      const { Categories, Natures, Features, MeasureUnits, Stores } = data;
 
       setCategories(Categories);
       setNatures(Natures);
       setFeatures(Features);
       setMeasureUnits(MeasureUnits);
+      setStores(Stores);
     } catch (ex) {
       handleError(ex);
     }
@@ -493,6 +573,23 @@ const UserProductModal = ({
   const handleEditMeasureConvert = (measureConvert) => {
     setSelectedMeasureConvert(measureConvert);
     setShowMeasureConvertModal(true);
+  };
+
+  //-----------------
+
+  const handleShowStoreModal = () => {
+    setSelectedStore(null);
+    setShowStoreModal(true);
+  };
+
+  const handleHideStoreModal = () => {
+    setSelectedStore(null);
+    setShowStoreModal(false);
+  };
+
+  const handleEditStore = (store) => {
+    setSelectedStore(store);
+    setShowStoreModal(true);
   };
 
   //-----------------
@@ -671,6 +768,29 @@ const UserProductModal = ({
                       </Col>
                     </Row>
                   </TabPane>
+                  <TabPane tab={Words.stores} key="5">
+                    <Row gutter={[2, 5]}>
+                      <Col xs={24}>
+                        <Button
+                          type="primary"
+                          icon={<PlusIcon />}
+                          onClick={handleShowStoreModal}
+                        >
+                          {Words.new_store}
+                        </Button>
+                      </Col>
+                      <Col xs={24}>
+                        <DetailsTable
+                          records={selectedObject.Stores}
+                          columns={getStoresColumns(
+                            access,
+                            handleEditStore, // handle edit store
+                            onDeleteStore // handle delete store
+                          )}
+                        />
+                      </Col>
+                    </Row>
+                  </TabPane>
                 </>
               )}
             </Tabs>
@@ -708,6 +828,17 @@ const UserProductModal = ({
           measureUnits={measureUnits}
           onOk={onSaveMeasureConvert}
           onCancel={handleHideMeasureConvertModal}
+        />
+      )}
+
+      {showStoreModal && (
+        <StoreModal
+          isOpen={showStoreModal}
+          product={selectedObject}
+          selectedStore={selectedStore}
+          stores={stores}
+          onOk={onSaveStore}
+          onCancel={handleHideStoreModal}
         />
       )}
     </>

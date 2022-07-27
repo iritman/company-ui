@@ -165,10 +165,9 @@ const UserProductsPage = ({ pageName }) => {
     const feature = await service.saveFeature(row);
 
     const so = { ...selectedObject };
-    if (so.Features.find((f) => f.FeatureID === feature.FeatureID))
-      so.Features[
-        so.Features.findIndex((f) => f.FeatureID === feature.FeatureID)
-      ] = feature;
+    if (so.Features.find((f) => f.PFID === feature.PFID))
+      so.Features[so.Features.findIndex((f) => f.PFID === feature.PFID)] =
+        feature;
     else so.Features = [...so.Features, feature];
 
     setSelectedObject(so);
@@ -250,6 +249,35 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
+  const handleSaveStore = async (row) => {
+    const store = await service.saveStore(row);
+
+    const so = { ...selectedObject };
+    if (so.Stores.find((s) => s.PSID === store.PSID))
+      so.Stores[so.Stores.findIndex((s) => s.PSID === store.PSID)] = store;
+    else so.Stores = [...so.Stores, store];
+
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  const handleDeleteStore = async (id) => {
+    await service.deleteStore(id);
+
+    const so = { ...selectedObject };
+    so.Stores = so.Stores.filter((s) => s.PSID !== id);
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -283,6 +311,8 @@ const UserProductsPage = ({ pageName }) => {
           onDeleteMeasureUnit={handleDeleteMeasureUnit}
           onSaveMeasureConvert={handleSaveMeasureConvert}
           onDeleteMeasureConvert={handleDeleteMeasureConvert}
+          onSaveStore={handleSaveStore}
+          onDeleteStore={handleDeleteStore}
         />
       )}
 

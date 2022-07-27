@@ -379,6 +379,7 @@ class Words extends Component {
   static ceremony_experts = "کارشناسان تشریفات";
 
   static stores = "انبارها";
+  static store = "انبار";
   static product_nature = "ماهیت کالا";
   static tafsil_id = "شناسه تفصیل";
   static tafsil_title = "عنوان تفصیل";
@@ -417,6 +418,7 @@ class Words extends Component {
   static to_measure_unit = "واحد مقصد";
   static to_measure_value = "مقدار مقصد";
   static tolerance = "تلورانس";
+  static new_store = "انبار جدید";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
@@ -722,6 +724,7 @@ class Words extends Component {
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
     sure_to_delete_feature: "برای حذف ویژگی کالا اطمینان دارید؟",
     sure_to_delete_measure_unit: "برای حذف واحد سنجش کالا اطمینان دارید؟",
+    sure_to_delete_store: "برای حذف انبار کالا اطمینان دارید؟",
     sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
     sure_to_submit_response_for_replace_work_request:
       "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",

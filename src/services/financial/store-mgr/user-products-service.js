@@ -45,6 +45,12 @@ export async function saveMeasureConvert(record) {
   return data;
 }
 
+export async function saveStore(record) {
+  const { data } = await http.post(`${apiEndpoint}/store`, record);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -71,6 +77,12 @@ export async function deleteMeasureConvert(recordID) {
   return data;
 }
 
+export async function deleteStore(recordID) {
+  const { data } = await http.delete(`${apiEndpoint}/store/${recordID}`);
+
+  return data;
+}
+
 const service = {
   getParams,
   getAllData,
@@ -84,6 +96,8 @@ const service = {
   deleteMeasureUnit,
   saveMeasureConvert,
   deleteMeasureConvert,
+  saveStore,
+  deleteStore,
 };
 
 export default service;
