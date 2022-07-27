@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiOutlineDeploymentUnit as NatureIcon,
+  AiOutlineControl as InventoryControlAgentIcon,
 } from "react-icons/ai";
 import {
   TbBuildingBank as StoresIcon,
@@ -76,6 +77,16 @@ const mapper = (pageID) => {
       link = "user-products";
       icon = (
         <ProductIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
+      );
+      break;
+
+    case 149:
+      link = "user-inventory-control-agents";
+      icon = (
+        <InventoryControlAgentIcon
+          style={{ color: Colors.red[6] }}
+          size={iconSize}
+        />
       );
       break;
 

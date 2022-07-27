@@ -419,6 +419,8 @@ class Words extends Component {
   static to_measure_value = "مقدار مقصد";
   static tolerance = "تلورانس";
   static new_store = "انبار جدید";
+  static inventory_control_agents = "عامل های کنترل موجودی";
+  static inventory_control_agent = "عامل کنترل موجودی";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

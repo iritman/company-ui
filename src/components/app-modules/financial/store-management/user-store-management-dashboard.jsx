@@ -9,6 +9,7 @@ import {
   TbReportMoney as PricingTypeIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
+import { AiOutlineControl as InventoryControlAgentIcon } from "react-icons/ai";
 import {
   MdOutlineFeaturedPlayList as FeatureIcon,
   MdDonutSmall as ProductIcon,
@@ -74,6 +75,12 @@ const mapper = (pageID) => {
       link = "user-products";
       icon = <ProductIcon {...iconProps} />;
       backColor = Colors.volcano[3];
+      break;
+
+    case 149:
+      link = "user-inventory-control-agents";
+      icon = <InventoryControlAgentIcon {...iconProps} />;
+      backColor = Colors.red[3];
       break;
 
     default:
