@@ -51,6 +51,15 @@ export async function saveStore(record) {
   return data;
 }
 
+export async function saveInventoryControlAgent(record) {
+  const { data } = await http.post(
+    `${apiEndpoint}/inventory-control-agent`,
+    record
+  );
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -83,6 +92,14 @@ export async function deleteStore(recordID) {
   return data;
 }
 
+export async function deleteInventoryControlAgent(recordID) {
+  const { data } = await http.delete(
+    `${apiEndpoint}/inventory-control-agent/${recordID}`
+  );
+
+  return data;
+}
+
 const service = {
   getParams,
   getAllData,
@@ -98,6 +115,8 @@ const service = {
   deleteMeasureConvert,
   saveStore,
   deleteStore,
+  saveInventoryControlAgent,
+  deleteInventoryControlAgent,
 };
 
 export default service;

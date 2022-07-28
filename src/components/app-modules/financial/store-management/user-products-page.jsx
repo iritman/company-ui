@@ -278,6 +278,51 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
+  const handleSaveInventoryControlAgent = async (row) => {
+    const inventory_control_agent = await service.saveInventoryControlAgent(
+      row
+    );
+
+    const so = { ...selectedObject };
+    if (
+      so.InventoryControlAgents.find(
+        (s) => s.PAID === inventory_control_agent.PAID
+      )
+    )
+      so.InventoryControlAgents[
+        so.InventoryControlAgents.findIndex(
+          (s) => s.PAID === inventory_control_agent.PAID
+        )
+      ] = inventory_control_agent;
+    else
+      so.InventoryControlAgents = [
+        ...so.InventoryControlAgents,
+        inventory_control_agent,
+      ];
+
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  const handleDeleteInventoryControlAgent = async (id) => {
+    await service.deleteInventoryControlAgent(id);
+
+    const so = { ...selectedObject };
+    so.InventoryControlAgents = so.InventoryControlAgents.filter(
+      (s) => s.PAID !== id
+    );
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -313,6 +358,8 @@ const UserProductsPage = ({ pageName }) => {
           onDeleteMeasureConvert={handleDeleteMeasureConvert}
           onSaveStore={handleSaveStore}
           onDeleteStore={handleDeleteStore}
+          onSaveInventoryControlAgent={handleSaveInventoryControlAgent}
+          onDeleteInventoryControlAgent={handleDeleteInventoryControlAgent}
         />
       )}
 

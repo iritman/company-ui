@@ -43,6 +43,7 @@ import FeatureModal from "./user-product-feature-modal";
 import MeasureUnitModal from "./user-product-measure-unit-modal";
 import MeasureConvertModal from "./user-product-measure-convert-modal";
 import StoreModal from "./user-product-store-modal";
+import InventoryControlAgentModal from "./user-product-inventory-control-agent-modal";
 
 const { TabPane } = Tabs;
 const { Text } = Typography;
@@ -393,6 +394,100 @@ const getStoresColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getInventoryControlAgentsColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "PAID",
+      sorter: getSorter("PAID"),
+      render: (PAID) => <Text>{utils.farsiNum(`${PAID}`)}</Text>,
+    },
+    {
+      title: Words.title,
+      width: 120,
+      align: "center",
+      dataIndex: "Title",
+      sorter: getSorter("Title"),
+      render: (Title) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {Title}
+        </Text>
+      ),
+    },
+    {
+      title: Words.effective_in_pricing,
+      width: 75,
+      align: "center",
+      dataIndex: "EffectiveInPricing",
+      sorter: getSorter("EffectiveInPricing"),
+      render: (EffectiveInPricing) => (
+        <>
+          {EffectiveInPricing && (
+            <CheckIcon style={{ color: Colors.green[6] }} />
+          )}
+        </>
+      ),
+    },
+    {
+      title: Words.effective_in_warehousing,
+      width: 75,
+      align: "center",
+      dataIndex: "EffectiveInWarehousing",
+      sorter: getSorter("EffectiveInWarehousing"),
+      render: (EffectiveInWarehousing) => (
+        <>
+          {EffectiveInWarehousing && (
+            <CheckIcon style={{ color: Colors.green[6] }} />
+          )}
+        </>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_inventory_control_agent}
+                onConfirm={async () => await onDelete(record.PAID)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
 const schema = {
   ProductID: Joi.number().required(),
   CategoryID: Joi.number().min(1).required().label(Words.product_category),
@@ -441,6 +536,8 @@ const UserProductModal = ({
   onDeleteMeasureConvert,
   onSaveStore,
   onDeleteStore,
+  onSaveInventoryControlAgent,
+  onDeleteInventoryControlAgent,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -450,6 +547,7 @@ const UserProductModal = ({
   const [features, setFeatures] = useState([]);
   const [measureUnits, setMeasureUnits] = useState([]);
   const [stores, setStores] = useState([]);
+  const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
   //---
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -462,6 +560,11 @@ const UserProductModal = ({
   //---
   const [showStoreModal, setShowStoreModal] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  //---
+  const [showInventoryControlAgentModal, setShowInventoryControlAgentModal] =
+    useState(false);
+  const [selectedInventoryControlAgent, setSelectedInventoryControlAgent] =
+    useState(null);
   //---
 
   const resetContext = useResetContext();
@@ -497,13 +600,21 @@ const UserProductModal = ({
     try {
       const data = await service.getParams();
 
-      const { Categories, Natures, Features, MeasureUnits, Stores } = data;
+      const {
+        Categories,
+        Natures,
+        Features,
+        MeasureUnits,
+        Stores,
+        InventoryControlAgents,
+      } = data;
 
       setCategories(Categories);
       setNatures(Natures);
       setFeatures(Features);
       setMeasureUnits(MeasureUnits);
       setStores(Stores);
+      setInventoryControlAgents(InventoryControlAgents);
     } catch (ex) {
       handleError(ex);
     }
@@ -590,6 +701,23 @@ const UserProductModal = ({
   const handleEditStore = (store) => {
     setSelectedStore(store);
     setShowStoreModal(true);
+  };
+
+  //-----------------
+
+  const handleShowInventoryControlAgentModal = () => {
+    setSelectedInventoryControlAgent(null);
+    setShowInventoryControlAgentModal(true);
+  };
+
+  const handleHideInventoryControlAgentModal = () => {
+    setSelectedInventoryControlAgent(null);
+    setShowInventoryControlAgentModal(false);
+  };
+
+  const handleEditInventoryControlAgent = (store) => {
+    setSelectedInventoryControlAgent(store);
+    setShowInventoryControlAgentModal(true);
   };
 
   //-----------------
@@ -791,6 +919,29 @@ const UserProductModal = ({
                       </Col>
                     </Row>
                   </TabPane>
+                  <TabPane tab={Words.inventory_control_agent} key="6">
+                    <Row gutter={[2, 5]}>
+                      <Col xs={24}>
+                        <Button
+                          type="primary"
+                          icon={<PlusIcon />}
+                          onClick={handleShowInventoryControlAgentModal}
+                        >
+                          {Words.new_inventory_control_agent}
+                        </Button>
+                      </Col>
+                      <Col xs={24}>
+                        <DetailsTable
+                          records={selectedObject.InventoryControlAgents}
+                          columns={getInventoryControlAgentsColumns(
+                            access,
+                            handleEditInventoryControlAgent, // handle edit inventory control agent
+                            onDeleteInventoryControlAgent // handle delete inventory control agent
+                          )}
+                        />
+                      </Col>
+                    </Row>
+                  </TabPane>
                 </>
               )}
             </Tabs>
@@ -839,6 +990,17 @@ const UserProductModal = ({
           stores={stores}
           onOk={onSaveStore}
           onCancel={handleHideStoreModal}
+        />
+      )}
+
+      {showInventoryControlAgentModal && (
+        <InventoryControlAgentModal
+          isOpen={showInventoryControlAgentModal}
+          product={selectedObject}
+          selectedInventoryControlAgent={selectedInventoryControlAgent}
+          inventoryControlAgents={inventoryControlAgents}
+          onOk={onSaveInventoryControlAgent}
+          onCancel={handleHideInventoryControlAgentModal}
         />
       )}
     </>

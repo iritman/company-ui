@@ -421,6 +421,9 @@ class Words extends Component {
   static new_store = "انبار جدید";
   static inventory_control_agents = "عامل های کنترل موجودی";
   static inventory_control_agent = "عامل کنترل موجودی";
+  static effective_in_pricing = "موثر در قیمت گذاری";
+  static effective_in_warehousing = "موثر در انبارگردانی";
+  static new_inventory_control_agent = "عامل کنترل موجودی جدید";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
@@ -727,6 +730,8 @@ class Words extends Component {
     sure_to_delete_feature: "برای حذف ویژگی کالا اطمینان دارید؟",
     sure_to_delete_measure_unit: "برای حذف واحد سنجش کالا اطمینان دارید؟",
     sure_to_delete_store: "برای حذف انبار کالا اطمینان دارید؟",
+    sure_to_delete_inventory_control_agent:
+      "برای حذف عامل کنترل موجودی کالا اطمینان دارید؟",
     sure_to_transfer: "برای انجام انتقال اطمینان دارید؟",
     sure_to_submit_response_for_replace_work_request:
       "برای ثبت پاسخ درخواست جانشینی اطمینان دارید؟",
