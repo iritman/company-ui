@@ -424,6 +424,8 @@ class Words extends Component {
   static effective_in_pricing = "موثر در قیمت گذاری";
   static effective_in_warehousing = "موثر در انبارگردانی";
   static new_inventory_control_agent = "عامل کنترل موجودی جدید";
+  static spare_part = "قابل استفاده به عنوان قطعه یدکی";
+  static fix_property = "قابل استفاده در دارایی ثابت";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

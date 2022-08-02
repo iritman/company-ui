@@ -507,6 +507,8 @@ const schema = {
   IsBuyable: Joi.boolean(),
   IsSalable: Joi.boolean(),
   IsBuildable: Joi.boolean(),
+  IsSparePart: Joi.boolean(),
+  IsFixProperty: Joi.boolean(),
 };
 
 const initRecord = {
@@ -518,6 +520,8 @@ const initRecord = {
   IsBuyable: false,
   IsSalable: false,
   IsBuildable: false,
+  IsSparePart: false,
+  IsFixProperty: false,
 };
 
 const formRef = React.createRef();
@@ -816,6 +820,26 @@ const UserProductModal = ({
                       <SwitchItem
                         title={Words.is_buildable}
                         fieldName="IsBuildable"
+                        initialValue={false}
+                        checkedTitle={Words.yes}
+                        unCheckedTitle={Words.no}
+                        formConfig={formConfig}
+                      />
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <SwitchItem
+                        title={Words.spare_part}
+                        fieldName="IsSparePart"
+                        initialValue={false}
+                        checkedTitle={Words.yes}
+                        unCheckedTitle={Words.no}
+                        formConfig={formConfig}
+                      />
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <SwitchItem
+                        title={Words.fix_property}
+                        fieldName="IsFixProperty"
                         initialValue={false}
                         checkedTitle={Words.yes}
                         unCheckedTitle={Words.no}
