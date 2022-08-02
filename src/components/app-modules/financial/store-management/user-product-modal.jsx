@@ -48,6 +48,27 @@ import InventoryControlAgentModal from "./user-product-inventory-control-agent-m
 const { TabPane } = Tabs;
 const { Text } = Typography;
 
+const getFeatureValue = (record) => {
+  let result = "";
+
+  switch (record.ValueTypeID) {
+    case 4:
+      result = record.FeatureValue ? Words.yes : Words.no;
+      break;
+    case 5:
+      result = utils.slashDate(record.FeatureValue);
+      break;
+    case 6:
+      result = utils.colonTime(record.FeatureValue);
+      break;
+    default:
+      result = record.FeatureValue;
+      break;
+  }
+
+  return result;
+};
+
 const getFeaturesColumns = (access, onEdit, onDelete) => {
   let columns = [
     {
@@ -82,11 +103,12 @@ const getFeaturesColumns = (access, onEdit, onDelete) => {
       sorter: getSorter("FeatureValue"),
       render: (record) => (
         <Text style={{ color: Colors.green[7] }}>
-          {record.ValueTypeID === 4
+          {getFeatureValue(record)}
+          {/* {record.ValueTypeID === 4
             ? record.FeatureValue
               ? Words.yes
               : Words.no
-            : record.FeatureValue}
+            : record.FeatureValue} */}
         </Text>
       ),
     },

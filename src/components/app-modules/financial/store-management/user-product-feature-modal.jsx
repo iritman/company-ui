@@ -15,6 +15,8 @@ import InputItem from "./../../../form-controls/input-item";
 import NumericInputItem from "./../../../form-controls/numeric-input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import SwitchItem from "./../../../form-controls/switch-item";
+import DateItem from "./../../../form-controls/date-item";
+import TimeItem from "./../../../form-controls/time-item";
 import {
   useModalContext,
   useResetContext,
@@ -38,6 +40,18 @@ const schema = {
     .precision(4)
     .label(Words.value),
   FeatureBoolValue: Joi.boolean().label(Words.value),
+  FeatureDateValue: Joi.string()
+    .allow("")
+    .max(8)
+    .required()
+    .label(Words.value)
+    .regex(utils.VALID_REGEX),
+  FeatureTimeValue: Joi.string()
+    .allow("")
+    .max(6)
+    .required()
+    .label(Words.value)
+    .regex(utils.VALID_REGEX),
 };
 
 const initRecord = (productID) => {
@@ -49,6 +63,8 @@ const initRecord = (productID) => {
     FeatureIntValue: 0,
     FeatureDecimalValue: 0,
     FeatureBoolValue: false,
+    FeatureDateValue: "",
+    FeatureTimeValue: "",
   };
 };
 
@@ -83,6 +99,8 @@ const UserProductFeatureModal = ({
     record.FeatureIntValue = 0;
     record.FeatureDecimalValue = 0;
     record.FeatureBoolValue = false;
+    record.FeatureDateValue = "";
+    record.FeatureTimeValue = "";
 
     setRecord(record);
     setErrors({});
@@ -112,6 +130,14 @@ const UserProductFeatureModal = ({
         completePropsFeature.ValueTypeID === 4
           ? completePropsFeature.FeatureValue === "1"
           : false;
+      completePropsFeature.FeatureDateValue =
+        completePropsFeature.ValueTypeID === 5
+          ? completePropsFeature.FeatureValue
+          : "";
+      completePropsFeature.FeatureTimeValue =
+        completePropsFeature.ValueTypeID === 6
+          ? completePropsFeature.FeatureValue
+          : "";
 
       initModal(formRef, completePropsFeature, setRecord);
     }
@@ -138,7 +164,7 @@ const UserProductFeatureModal = ({
 
     setValueTypeID(selected_ValueTypeID);
 
-    // for text inpute we should have text value, otherwise we can allow empty string
+    // for text input we should have text value, otherwise we can allow empty string
     if (selected_ValueTypeID === 3)
       schema.FeatureValue = Joi.string()
         .max(50)
@@ -240,6 +266,30 @@ const UserProductFeatureModal = ({
                 initialValue={false}
                 checkedTitle={Words.yes}
                 unCheckedTitle={Words.no}
+                formConfig={formConfig}
+                required
+              />
+            </Col>
+          )}
+
+          {valueTypeID === 5 && (
+            <Col xs={24}>
+              <DateItem
+                horizontal
+                title={Words.value}
+                fieldName="FeatureDateValue"
+                formConfig={formConfig}
+                required
+              />
+            </Col>
+          )}
+
+          {valueTypeID === 6 && (
+            <Col xs={24}>
+              <TimeItem
+                horizontal
+                title={Words.value}
+                fieldName="FeatureTimeValue"
                 formConfig={formConfig}
                 required
               />

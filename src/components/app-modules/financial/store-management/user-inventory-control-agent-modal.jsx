@@ -14,12 +14,12 @@ import {
 import InputItem from "./../../../form-controls/input-item";
 import SwitchItem from "./../../../form-controls/switch-item";
 // import DropdownItem from "./../../../form-controls/dropdown-item";
-import { handleError } from "./../../../../tools/form-manager";
+// import { handleError } from "./../../../../tools/form-manager";
 import {
   useModalContext,
   useResetContext,
 } from "./../../../contexts/modal-context";
-import service from "../../../../services/financial/store-mgr/user-inventory-control-agents-service";
+// import service from "../../../../services/financial/store-mgr/user-inventory-control-agents-service";
 
 const schema = {
   AgentID: Joi.number().required(),

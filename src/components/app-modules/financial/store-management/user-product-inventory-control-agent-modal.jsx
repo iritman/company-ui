@@ -31,7 +31,7 @@ const initRecord = (productID) => {
     ProductID: productID,
     AgentID: 0,
     EffectiveInPricing: false,
-    EffectiveInPricing: false,
+    EffectiveInWarehousing: false,
   };
 };
 
