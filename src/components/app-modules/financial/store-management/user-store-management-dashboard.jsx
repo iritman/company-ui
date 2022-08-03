@@ -7,6 +7,7 @@ import {
   TbBrandCodesandbox as MeasureTypeIcon,
   TbRuler2 as MeasureUnitIcon,
   TbReportMoney as PricingTypeIcon,
+  TbShape2 as BachPatternIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
 import { AiOutlineControl as InventoryControlAgentIcon } from "react-icons/ai";
@@ -81,6 +82,12 @@ const mapper = (pageID) => {
       link = "user-inventory-control-agents";
       icon = <InventoryControlAgentIcon {...iconProps} />;
       backColor = Colors.red[3];
+      break;
+
+    case 150:
+      link = "user-bach-patterns";
+      icon = <BachPatternIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     default:

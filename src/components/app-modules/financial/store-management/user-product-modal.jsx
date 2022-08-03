@@ -104,11 +104,6 @@ const getFeaturesColumns = (access, onEdit, onDelete) => {
       render: (record) => (
         <Text style={{ color: Colors.green[7] }}>
           {getFeatureValue(record)}
-          {/* {record.ValueTypeID === 4
-            ? record.FeatureValue
-              ? Words.yes
-              : Words.no
-            : record.FeatureValue} */}
         </Text>
       ),
     },

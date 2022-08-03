@@ -426,6 +426,8 @@ class Words extends Component {
   static new_inventory_control_agent = "عامل کنترل موجودی جدید";
   static spare_part = "قابل استفاده به عنوان قطعه یدکی";
   static fix_property = "قابل استفاده در دارایی ثابت";
+  static bach_patterns = "الگوهای بچ";
+  static select = "انتخاب";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
@@ -723,6 +725,7 @@ class Words extends Component {
       "در صورت عدم تایید گزارش انبار مبنی بر تحویل و دریافت کالا، از ثبت پاسخ خودداری فرموده و موارد را از طریق واحد اداری پیگیری بفرمایید",
     submit_response_in_finished_ceremony_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
+    no_feature_selected: "هیچ ویژگی ای ثبت نشده است",
   };
 
   static questions = {
@@ -752,6 +755,8 @@ class Words extends Component {
     sure_to_delete_announcement: "برای حذف ابلاغیه اطمینان دارید؟",
     vehicle_request_approved: "درخواست وسیله نقلیه مورد تایید است؟",
     hoteling_request_approved: "درخواست اقامتگاه مورد تایید است؟",
+    sure_to_delete_bach_pattern_feature:
+      "برای حذف ویژگی الگوی بچ اطمینان دارید؟",
   };
 
   static monthes = {

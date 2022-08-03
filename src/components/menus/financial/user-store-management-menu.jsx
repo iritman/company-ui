@@ -10,6 +10,7 @@ import {
   TbBrandCodesandbox as MeasureTypeIcon,
   TbRuler2 as MeasureUnitIcon,
   TbReportMoney as PricingTypeIcon,
+  TbShape2 as BachPatternIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
 import {
@@ -87,6 +88,13 @@ const mapper = (pageID) => {
           style={{ color: Colors.red[6] }}
           size={iconSize}
         />
+      );
+      break;
+
+    case 150:
+      link = "user-bach-patterns";
+      icon = (
+        <BachPatternIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
       );
       break;
 
