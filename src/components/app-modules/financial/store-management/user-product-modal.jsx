@@ -618,6 +618,8 @@ const UserProductModal = ({
   const [measureUnits, setMeasureUnits] = useState([]);
   const [stores, setStores] = useState([]);
   const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
+  const [systemInventoryControlAgents, setSystemInventoryControlAgents] =
+    useState([]);
   const [bachPatterns, setBachPatterns] = useState([]);
   //---
   const [showFeatureModal, setShowFeatureModal] = useState(false);
@@ -679,6 +681,7 @@ const UserProductModal = ({
         MeasureUnits,
         Stores,
         InventoryControlAgents,
+        SystemInventoryControlAgents,
         BachPatterns,
       } = data;
 
@@ -688,6 +691,7 @@ const UserProductModal = ({
       setMeasureUnits(MeasureUnits);
       setStores(Stores);
       setInventoryControlAgents(InventoryControlAgents);
+      setSystemInventoryControlAgents(SystemInventoryControlAgents);
       setBachPatterns(BachPatterns);
     } catch (ex) {
       handleError(ex);
@@ -1135,6 +1139,7 @@ const UserProductModal = ({
           product={selectedObject}
           selectedInventoryControlAgent={selectedInventoryControlAgent}
           inventoryControlAgents={inventoryControlAgents}
+          systemInventoryControlAgents={systemInventoryControlAgents}
           onOk={onSaveInventoryControlAgent}
           onCancel={handleHideInventoryControlAgentModal}
         />

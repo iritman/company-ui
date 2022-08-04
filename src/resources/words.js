@@ -429,6 +429,7 @@ class Words extends Component {
   static bach_patterns = "الگوهای بچ";
   static bach_pattern = "الگوی بچ";
   static select = "انتخاب";
+  static is_system_agent = "عامل سیستمی";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";

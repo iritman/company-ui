@@ -20,6 +20,7 @@ import {
 const schema = {
   PAID: Joi.number().required(),
   ProductID: Joi.number().required(),
+  IsSystemAgent: Joi.boolean(),
   AgentID: Joi.number().min(1).required(),
   EffectiveInPricing: Joi.boolean().label(Words.effective_in_pricing),
   EffectiveInWarehousing: Joi.boolean().label(Words.effective_in_warehousing),
@@ -29,6 +30,7 @@ const initRecord = (productID) => {
   return {
     PAID: 0,
     ProductID: productID,
+    IsSystemAgent: false,
     AgentID: 0,
     EffectiveInPricing: false,
     EffectiveInWarehousing: false,
@@ -42,6 +44,7 @@ const UserProductInventoryControlAgentModal = ({
   product,
   selectedInventoryControlAgent,
   inventoryControlAgents,
+  systemInventoryControlAgents,
   onOk,
   onCancel,
 }) => {
@@ -60,6 +63,7 @@ const UserProductInventoryControlAgentModal = ({
 
   const clearRecord = () => {
     record.AgentID = 0;
+    record.IsSystemAgent = false;
     record.EffectiveInPricing = false;
     record.EffectiveInPricing = false;
 
@@ -128,9 +132,24 @@ const UserProductInventoryControlAgentModal = ({
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
+            <SwitchItem
+              title={Words.is_system_agent}
+              fieldName="IsSystemAgent"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
+              formConfig={formConfig}
+            />
+          </Col>
+
+          <Col xs={24}>
             <DropdownItem
               title={Words.inventory_control_agent}
-              dataSource={inventoryControlAgents}
+              dataSource={
+                record.IsSystemAgent
+                  ? systemInventoryControlAgents
+                  : inventoryControlAgents
+              }
               keyColumn="AgentID"
               valueColumn="Title"
               formConfig={formConfig}
