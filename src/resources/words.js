@@ -427,6 +427,7 @@ class Words extends Component {
   static spare_part = "قابل استفاده به عنوان قطعه یدکی";
   static fix_property = "قابل استفاده در دارایی ثابت";
   static bach_patterns = "الگوهای بچ";
+  static bach_pattern = "الگوی بچ";
   static select = "انتخاب";
 
   static from_department = "دپارتمان مبدا";

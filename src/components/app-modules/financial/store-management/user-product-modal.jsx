@@ -505,6 +505,53 @@ const getInventoryControlAgentsColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getBachPatternFeaturesColumns = () => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "FeatureID",
+      sorter: getSorter("FeatureID"),
+      render: (FeatureID) => <Text>{utils.farsiNum(`${FeatureID}`)}</Text>,
+    },
+    {
+      title: Words.title,
+      width: 120,
+      align: "center",
+      dataIndex: "Title",
+      sorter: getSorter("Title"),
+      render: (Title) => (
+        <Text
+          style={{
+            color: Colors.green[6],
+          }}
+        >
+          {Title}
+        </Text>
+      ),
+    },
+    {
+      title: Words.value_type,
+      width: 100,
+      align: "center",
+      dataIndex: "ValueTypeTitle",
+      sorter: getSorter("ValueTypeTitle"),
+      render: (ValueTypeTitle) => (
+        <Text
+          style={{
+            color: Colors.orange[6],
+          }}
+        >
+          {ValueTypeTitle}
+        </Text>
+      ),
+    },
+  ];
+
+  return columns;
+};
+
 const schema = {
   ProductID: Joi.number().required(),
   CategoryID: Joi.number().min(1).required().label(Words.product_category),
@@ -521,6 +568,7 @@ const schema = {
     .required()
     .label(Words.title)
     .regex(utils.VALID_REGEX),
+  BachPatternID: Joi.number().label(Words.bach_pattern),
   IsBuyable: Joi.boolean(),
   IsSalable: Joi.boolean(),
   IsBuildable: Joi.boolean(),
@@ -534,6 +582,7 @@ const initRecord = {
   NatureID: 0,
   ProductCode: "",
   Title: "",
+  BachPatternID: 0,
   IsBuyable: false,
   IsSalable: false,
   IsBuildable: false,
@@ -569,6 +618,7 @@ const UserProductModal = ({
   const [measureUnits, setMeasureUnits] = useState([]);
   const [stores, setStores] = useState([]);
   const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
+  const [bachPatterns, setBachPatterns] = useState([]);
   //---
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -603,6 +653,7 @@ const UserProductModal = ({
     record.NatureID = 0;
     record.ProductCode = "";
     record.Title = "";
+    record.BachPatternID = 0;
     record.IsBuyable = false;
     record.IsSalable = false;
     record.IsBuildable = false;
@@ -628,6 +679,7 @@ const UserProductModal = ({
         MeasureUnits,
         Stores,
         InventoryControlAgents,
+        BachPatterns,
       } = data;
 
       setCategories(Categories);
@@ -636,6 +688,7 @@ const UserProductModal = ({
       setMeasureUnits(MeasureUnits);
       setStores(Stores);
       setInventoryControlAgents(InventoryControlAgents);
+      setBachPatterns(BachPatterns);
     } catch (ex) {
       handleError(ex);
     }
@@ -766,13 +819,13 @@ const UserProductModal = ({
             </Col>
           )}
           <Col xs={24}>
-            <Tabs
-              defaultActiveKey="1"
-              type="card"
-              //   onChange={handleTabChange}
-            >
-              <TabPane tab={Words.product} key="1">
-                <Form ref={formRef} name="dataForm">
+            <Form ref={formRef} name="dataForm">
+              <Tabs
+                defaultActiveKey="1"
+                type="card"
+                //   onChange={handleTabChange}
+              >
+                <TabPane tab={Words.product} key="1">
                   <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
                     <Col xs={24} md={12}>
                       <InputItem
@@ -864,128 +917,170 @@ const UserProductModal = ({
                       />
                     </Col>
                   </Row>
-                </Form>
-              </TabPane>
-              {selectedObject && (
-                <>
-                  <TabPane tab={Words.features} key="2">
-                    <Row gutter={[2, 5]}>
-                      <Col xs={24}>
-                        <Button
-                          type="primary"
-                          icon={<PlusIcon />}
-                          onClick={handleShowFeatureModal}
-                        >
-                          {Words.new_feature}
-                        </Button>
-                      </Col>
-                      <Col xs={24}>
-                        <DetailsTable
-                          records={selectedObject.Features}
-                          columns={getFeaturesColumns(
-                            access,
-                            handleEditFeature, // handle edit feature
-                            onDeleteFeature // handle delete feature
-                          )}
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tab={Words.measure_units} key="3">
-                    <Row gutter={[2, 5]}>
-                      <Col xs={24}>
-                        <Button
-                          type="primary"
-                          icon={<PlusIcon />}
-                          onClick={handleShowMeasureUnitModal}
-                        >
-                          {Words.new_measure_unit}
-                        </Button>
-                      </Col>
-                      <Col xs={24}>
-                        <DetailsTable
-                          records={selectedObject.MeasureUnits}
-                          columns={getMeasureUnitsColumns(
-                            access,
-                            handleEditMeasureUnit, // handle edit measure unit
-                            onDeleteMeasureUnit // handle delete measure unit
-                          )}
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tab={Words.measure_converts} key="4">
-                    <Row gutter={[2, 5]}>
-                      <Col xs={24}>
-                        <Button
-                          type="primary"
-                          icon={<PlusIcon />}
-                          onClick={handleShowMeasureConvertModal}
-                        >
-                          {Words.new_measure_convert}
-                        </Button>
-                      </Col>
-                      <Col xs={24}>
-                        <DetailsTable
-                          records={selectedObject.MeasureConverts}
-                          columns={getMeasureConvertsColumns(
-                            access,
-                            handleEditMeasureConvert, // handle edit measure convert
-                            onDeleteMeasureConvert // handle delete measure convert
-                          )}
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tab={Words.stores} key="5">
-                    <Row gutter={[2, 5]}>
-                      <Col xs={24}>
-                        <Button
-                          type="primary"
-                          icon={<PlusIcon />}
-                          onClick={handleShowStoreModal}
-                        >
-                          {Words.new_store}
-                        </Button>
-                      </Col>
-                      <Col xs={24}>
-                        <DetailsTable
-                          records={selectedObject.Stores}
-                          columns={getStoresColumns(
-                            access,
-                            handleEditStore, // handle edit store
-                            onDeleteStore // handle delete store
-                          )}
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tab={Words.inventory_control_agent} key="6">
-                    <Row gutter={[2, 5]}>
-                      <Col xs={24}>
-                        <Button
-                          type="primary"
-                          icon={<PlusIcon />}
-                          onClick={handleShowInventoryControlAgentModal}
-                        >
-                          {Words.new_inventory_control_agent}
-                        </Button>
-                      </Col>
-                      <Col xs={24}>
-                        <DetailsTable
-                          records={selectedObject.InventoryControlAgents}
-                          columns={getInventoryControlAgentsColumns(
-                            access,
-                            handleEditInventoryControlAgent, // handle edit inventory control agent
-                            onDeleteInventoryControlAgent // handle delete inventory control agent
-                          )}
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-                </>
-              )}
-            </Tabs>
+                </TabPane>
+                {selectedObject && (
+                  <>
+                    <TabPane tab={Words.features} key="2">
+                      <Row gutter={[2, 5]}>
+                        <Col xs={24}>
+                          <Button
+                            type="primary"
+                            icon={<PlusIcon />}
+                            onClick={handleShowFeatureModal}
+                          >
+                            {Words.new_feature}
+                          </Button>
+                        </Col>
+                        <Col xs={24}>
+                          <DetailsTable
+                            records={selectedObject.Features}
+                            columns={getFeaturesColumns(
+                              access,
+                              handleEditFeature, // handle edit feature
+                              onDeleteFeature // handle delete feature
+                            )}
+                          />
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tab={Words.measure_units} key="3">
+                      <Row gutter={[2, 5]}>
+                        <Col xs={24}>
+                          <Button
+                            type="primary"
+                            icon={<PlusIcon />}
+                            onClick={handleShowMeasureUnitModal}
+                          >
+                            {Words.new_measure_unit}
+                          </Button>
+                        </Col>
+                        <Col xs={24}>
+                          <DetailsTable
+                            records={selectedObject.MeasureUnits}
+                            columns={getMeasureUnitsColumns(
+                              access,
+                              handleEditMeasureUnit, // handle edit measure unit
+                              onDeleteMeasureUnit // handle delete measure unit
+                            )}
+                          />
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tab={Words.measure_converts} key="4">
+                      <Row gutter={[2, 5]}>
+                        <Col xs={24}>
+                          <Button
+                            type="primary"
+                            icon={<PlusIcon />}
+                            onClick={handleShowMeasureConvertModal}
+                          >
+                            {Words.new_measure_convert}
+                          </Button>
+                        </Col>
+                        <Col xs={24}>
+                          <DetailsTable
+                            records={selectedObject.MeasureConverts}
+                            columns={getMeasureConvertsColumns(
+                              access,
+                              handleEditMeasureConvert, // handle edit measure convert
+                              onDeleteMeasureConvert // handle delete measure convert
+                            )}
+                          />
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tab={Words.stores} key="5">
+                      <Row gutter={[2, 5]}>
+                        <Col xs={24}>
+                          <Button
+                            type="primary"
+                            icon={<PlusIcon />}
+                            onClick={handleShowStoreModal}
+                          >
+                            {Words.new_store}
+                          </Button>
+                        </Col>
+                        <Col xs={24}>
+                          <DetailsTable
+                            records={selectedObject.Stores}
+                            columns={getStoresColumns(
+                              access,
+                              handleEditStore, // handle edit store
+                              onDeleteStore // handle delete store
+                            )}
+                          />
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tab={Words.inventory_control_agent} key="6">
+                      <Row gutter={[2, 5]}>
+                        <Col xs={24}>
+                          <Button
+                            type="primary"
+                            icon={<PlusIcon />}
+                            onClick={handleShowInventoryControlAgentModal}
+                          >
+                            {Words.new_inventory_control_agent}
+                          </Button>
+                        </Col>
+                        <Col xs={24}>
+                          <DetailsTable
+                            records={selectedObject.InventoryControlAgents}
+                            columns={getInventoryControlAgentsColumns(
+                              access,
+                              handleEditInventoryControlAgent, // handle edit inventory control agent
+                              onDeleteInventoryControlAgent // handle delete inventory control agent
+                            )}
+                          />
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tab={Words.bach_pattern} key="7">
+                      {/* <Form ref={formRef} name="dataForm">
+                          </Form> */}
+                      <Row gutter={[2, 5]}>
+                        <Col xs={24}>
+                          <Col xs={24}>
+                            {selectedObject === null ||
+                            selectedObject.ChangableBachPatternID ? (
+                              <DropdownItem
+                                title={Words.bach_pattern}
+                                dataSource={bachPatterns}
+                                keyColumn="BachPatternID"
+                                valueColumn="Title"
+                                formConfig={formConfig}
+                              />
+                            ) : (
+                              <Alert
+                                type="success"
+                                showIcon
+                                message={
+                                  <Text>{`${
+                                    Words.bach_pattern
+                                  }: ${utils.farsiNum(
+                                    record.BachPatternTitle
+                                  )}`}</Text>
+                                }
+                              />
+                            )}
+                          </Col>
+                        </Col>
+                        <Col xs={24}>
+                          <DetailsTable
+                            records={
+                              bachPatterns.find(
+                                (p) => p.BachPatternID === record.BachPatternID
+                              )?.Features || []
+                            }
+                            columns={getBachPatternFeaturesColumns()}
+                          />
+                        </Col>
+                      </Row>
+                    </TabPane>
+                  </>
+                )}
+              </Tabs>
+            </Form>
           </Col>
         </Row>
       </ModalWindow>
