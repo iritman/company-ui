@@ -574,6 +574,11 @@ const schema = {
   IsBuildable: Joi.boolean(),
   IsSparePart: Joi.boolean(),
   IsFixProperty: Joi.boolean(),
+  DetailsText: Joi.string()
+    .allow("")
+    .max(1024)
+    .regex(utils.VALID_REGEX)
+    .label(Words.descriptions),
 };
 
 const initRecord = {
@@ -588,6 +593,7 @@ const initRecord = {
   IsBuildable: false,
   IsSparePart: false,
   IsFixProperty: false,
+  DetailsText: "",
 };
 
 const formRef = React.createRef();
@@ -659,6 +665,7 @@ const UserProductModal = ({
     record.IsBuyable = false;
     record.IsSalable = false;
     record.IsBuildable = false;
+    record.DetailsText = "";
 
     setRecord(record);
     setErrors({});
@@ -827,9 +834,9 @@ const UserProductModal = ({
               <Tabs
                 defaultActiveKey="1"
                 type="card"
-                //   onChange={handleTabChange}
+                // onChange={handleTabChange}
               >
-                <TabPane tab={Words.product} key="1">
+                <TabPane tab={Words.product} key="tab-global-info">
                   <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
                     <Col xs={24} md={12}>
                       <InputItem
@@ -924,7 +931,21 @@ const UserProductModal = ({
                 </TabPane>
                 {selectedObject && (
                   <>
-                    <TabPane tab={Words.features} key="2">
+                    <TabPane tab={Words.descriptions} key="tab-details-text">
+                      <Col xs={24}>
+                        <InputItem
+                          title={Words.descriptions}
+                          fieldName="DetailsText"
+                          multiline
+                          rows={7}
+                          showCount
+                          maxLength={512}
+                          formConfig={formConfig}
+                          autoFocus
+                        />
+                      </Col>
+                    </TabPane>
+                    <TabPane tab={Words.features} key="tab-features">
                       <Row gutter={[2, 5]}>
                         <Col xs={24}>
                           <Button
@@ -947,7 +968,7 @@ const UserProductModal = ({
                         </Col>
                       </Row>
                     </TabPane>
-                    <TabPane tab={Words.measure_units} key="3">
+                    <TabPane tab={Words.measure_units} key="tab-measure-units">
                       <Row gutter={[2, 5]}>
                         <Col xs={24}>
                           <Button
@@ -970,7 +991,10 @@ const UserProductModal = ({
                         </Col>
                       </Row>
                     </TabPane>
-                    <TabPane tab={Words.measure_converts} key="4">
+                    <TabPane
+                      tab={Words.measure_converts}
+                      key="tab-measure-converts"
+                    >
                       <Row gutter={[2, 5]}>
                         <Col xs={24}>
                           <Button
@@ -993,7 +1017,7 @@ const UserProductModal = ({
                         </Col>
                       </Row>
                     </TabPane>
-                    <TabPane tab={Words.stores} key="5">
+                    <TabPane tab={Words.stores} key="tab-stores">
                       <Row gutter={[2, 5]}>
                         <Col xs={24}>
                           <Button
@@ -1016,7 +1040,10 @@ const UserProductModal = ({
                         </Col>
                       </Row>
                     </TabPane>
-                    <TabPane tab={Words.inventory_control_agent} key="6">
+                    <TabPane
+                      tab={Words.inventory_control_agent}
+                      key="tab-inventory-control-agents"
+                    >
                       <Row gutter={[2, 5]}>
                         <Col xs={24}>
                           <Button
@@ -1039,7 +1066,7 @@ const UserProductModal = ({
                         </Col>
                       </Row>
                     </TabPane>
-                    <TabPane tab={Words.bach_pattern} key="7">
+                    <TabPane tab={Words.bach_pattern} key="tab-bach-pattern">
                       {/* <Form ref={formRef} name="dataForm">
                           </Form> */}
                       <Row gutter={[2, 5]}>
