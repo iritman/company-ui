@@ -310,7 +310,7 @@ const SettingsTimexMenu = () => {
     tab = tabs.find(
       (t) =>
         t.pages.filter(
-          (p) => p.pageName.replace("-", "").toLocaleLowerCase() === pageName
+          (p) => p.pageName.replaceAll("-", "").toLocaleLowerCase() === pageName
         ).length > 0
     );
 
@@ -360,7 +360,7 @@ const SettingsTimexMenu = () => {
               )
               .map((page) => (
                 <Menu.Item
-                  key={page.PageName.replace("-", "").toLocaleLowerCase()}
+                  key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
                   icon={mapper(page.PageID).icon}
                 >
                   <Link to={`${prePath}${mapper(page.PageID).link}`}>

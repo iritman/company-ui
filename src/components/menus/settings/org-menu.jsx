@@ -148,7 +148,7 @@ const OrgMenu = () => {
   useEffect(() => {
     const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
-      .replace("-", "")
+      .replaceAll("-", "")
       .toLocaleLowerCase();
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
@@ -172,7 +172,7 @@ const OrgMenu = () => {
       <Menu.Divider />
       {accessiblePages.map((page) => (
         <Menu.Item
-          key={page.PageName.replace("-", "").toLocaleLowerCase()}
+          key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
           icon={mapper(page.PageID).icon}
         >
           <Link to={`${prePath}${mapper(page.PageID).link}`}>

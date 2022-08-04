@@ -111,7 +111,7 @@ const UserTasksMenu = () => {
     const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
       .replace("user-", "")
-      .replace("-", "")
+      .replaceAll("-", "")
       .toLocaleLowerCase();
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
@@ -136,7 +136,7 @@ const UserTasksMenu = () => {
       {accessiblePages.map((page) => (
         <Menu.Item
           key={page.PageName.replace("user-", "")
-            .replace("-", "")
+            .replaceAll("-", "")
             .toLocaleLowerCase()}
           icon={mapper(page.PageID).icon}
         >
