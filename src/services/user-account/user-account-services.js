@@ -9,10 +9,12 @@ async function getMemberProfile() {
   return data;
 }
 
-async function changePassword(current_password, new_password) {
+async function changePassword(password_info) {
+  const { CurrentPassword, NewPassword } = password_info;
+
   const { data } = await http.post(`${apiEndpoint}/change-password`, {
-    CurrentPassword: current_password,
-    NewPassword: new_password,
+    CurrentPassword,
+    NewPassword,
   });
 
   return data;

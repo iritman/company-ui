@@ -436,6 +436,9 @@ class Words extends Component {
   static main_page = "صفحه اصلی";
   static profile = "پروفایل";
   static change_password = "تغییر رمز";
+  static current_password = "رمز عبور فعلی";
+  static new_password = "رمز عبور جدید";
+  static confirm_new_password = "تکرار رمز عبور جدید";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
@@ -734,6 +737,10 @@ class Words extends Component {
     submit_response_in_finished_ceremony_request_failed:
       "قبلا به این درخواست پاسخ داده شده است",
     no_feature_selected: "هیچ ویژگی ای ثبت نشده است",
+    difference_between_new_pass_and_its_confirm:
+      "رمز عبور جدید و تکرار آن همخوانی ندارند",
+    new_password_is_same_as_current_password:
+      "رمز عبور جدید وارد شده مشابه رمز عبور فعلی می باشد",
   };
 
   static questions = {
