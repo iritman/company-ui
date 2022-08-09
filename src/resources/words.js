@@ -431,6 +431,12 @@ class Words extends Component {
   static select = "انتخاب";
   static is_system_agent = "عامل سیستمی";
 
+  static user_account = "حساب کاربری";
+  static visit_user_account = "مشاهده حساب کاربری";
+  static main_page = "صفحه اصلی";
+  static profile = "پروفایل";
+  static change_password = "تغییر رمز";
+
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
   static delivery_properties = "تحویل اموال";

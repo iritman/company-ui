@@ -3,6 +3,8 @@ import { Switch } from "react-router-dom";
 import ProtectedRoute from "../components/common/protected-route";
 import MainMenu from "../components/menus/main-menu";
 //---
+import AccountMenu from "../components/menus/user-account/user-account-menu";
+//---
 import SettingsMenu from "../components/menus/settings/settings-menu";
 import AccessesMenu from "../components/menus/settings/accesses-menu";
 import BasicInfoMenu from "../components/menus/settings/basic-info-menu";
@@ -25,6 +27,8 @@ import UserStoreManagementMenu from "../components/menus/financial/user-store-ma
 const MenuRoutes = ({ path }) => {
   return (
     <Switch>
+      <ProtectedRoute path={`${path}/account`} component={AccountMenu} />
+      {/* ----------- */}
       <ProtectedRoute
         path={`${path}/settings`}
         exact

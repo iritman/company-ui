@@ -7,6 +7,8 @@ const BreadcrumbMap = ({ location }) => {
   const breadcrumbNameMap = {
     "/home": Words.dashboard,
     //---
+    "/home/account": Words.user_account,
+    //---
     "/home/settings": Words.admin_panel,
     "/home/settings/accesses": Words.accesses,
     "/home/settings/basic-info": Words.basic_settings,

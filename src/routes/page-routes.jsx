@@ -7,6 +7,8 @@ import SettingsRoutes from "./settings/settings-routes";
 import UserOfficialRoutes from "./official/user-official-routes";
 import UserFinancialRoutes from "./financial/user-financial-routes";
 //---
+import UserProfileRoutes from "./user-account/user-account-routes";
+//---
 
 const PageRoutes = ({ path }) => {
   return (
@@ -23,6 +25,10 @@ const PageRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial`}
         render={() => <UserFinancialRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/account`}
+        render={() => <UserProfileRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

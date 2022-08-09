@@ -108,11 +108,11 @@ const MainHeader = ({ mobileView, trigger, history }) => {
 
             <Text style={{ fontSize: 13 }}>
               <Link
-                to={`/home/profile`}
+                to={`/home/account`}
                 style={{ display: "flex", alignItems: "center" }}
               >
                 <Space>
-                  {Words.visit_profile}
+                  {Words.visit_user_account}
                   <LeftIcon style={{ fontSize: 10 }} />
                 </Space>
               </Link>
