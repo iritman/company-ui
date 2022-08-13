@@ -19,6 +19,7 @@ import UserTimexMenu from "../components/menus/official/user-timex-menu";
 import UserTransmissionMenu from "../components/menus/official/user-transmission-menu";
 import UserTasksMenu from "../components/menus/official/user-tasks-menu";
 import UserProcessesMenu from "../components/menus/official/user-processes-menu";
+import UserEDocsMenu from "../components/menus/official/user-edocs-menu";
 //---
 import UserFinancialMenu from "../components/menus/financial/user-financial-menu";
 import UserStoreManagementMenu from "../components/menus/financial/user-store-management-menu";
@@ -74,6 +75,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/processes`}
         component={UserProcessesMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/official/edocs`}
+        component={UserEDocsMenu}
       />
       {/* ----------- */}
       <ProtectedRoute

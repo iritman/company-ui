@@ -439,6 +439,7 @@ class Words extends Component {
   static current_password = "رمز عبور فعلی";
   static new_password = "رمز عبور جدید";
   static confirm_new_password = "تکرار رمز عبور جدید";
+  static forget_password = "بازیابی رمز عبور";
 
   static from_department = "دپارتمان مبدا";
   static to_department = "دپارتمان مقصد";
@@ -670,6 +671,15 @@ class Words extends Component {
   //---
   static transmission = "ترابری";
   static transmission_requests = "درخواست های نقلیه";
+  //---
+
+  static edocs = "اسناد الکترونیک";
+  static folder_groups = "گروه های پرونده";
+  static folder_group = "";
+  static folders = "پوشه ها";
+  static folder = "پوشه";
+  static parent_folder = "پوشه والد";
+
   //---
 
   static messages = {

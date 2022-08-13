@@ -23,6 +23,7 @@ const BreadcrumbMap = ({ location }) => {
     "/home/official/transmission": Words.transmission,
     "/home/official/tasks": Words.tasks,
     "/home/official/processes": Words.processes,
+    "/home/official/edocs": Words.edocs,
     //---
     "/home/financial": Words.financial,
     "/home/financial/store-mgr": Words.store_management,

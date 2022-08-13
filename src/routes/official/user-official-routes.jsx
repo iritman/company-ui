@@ -7,6 +7,7 @@ import UserTimexRoutes from "./user-timex-routes";
 import UserTransmissionRoutes from "./user-transmission-routes";
 import UserTasksRoutes from "./user-tasks-routes";
 import UserProcessesRoutes from "./user-processes-routes";
+import UserEDocsRoutes from "./user-edocs-routes";
 //---
 
 const UserOfficialRoutes = ({ path }) => {
@@ -36,6 +37,10 @@ const UserOfficialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/processes`}
         render={() => <UserProcessesRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/edocs`}
+        render={() => <UserEDocsRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 import { FaCar as CarIcon, FaTasks as TasksIcon } from "react-icons/fa";
 import { RiFlowChart as ProcessIcon } from "react-icons/ri";
+import { HiOutlineDocumentDuplicate as EDocsIcon } from "react-icons/hi";
 import {
   AiOutlineFieldTime as TimexSettingsIcon,
   AiFillBank as OrgIcon,
@@ -56,6 +57,12 @@ const mapper = (moduleID) => {
       link = "processes";
       icon = <ProcessIcon {...iconProps} />;
       backColor = Colors.red[3];
+      break;
+
+    case 15:
+      link = "edocs";
+      icon = <EDocsIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
       break;
 
     default:
