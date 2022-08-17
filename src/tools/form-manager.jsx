@@ -298,13 +298,13 @@ export const GetSimplaDataPageMethods = (config) => {
         const data = await service.getAllData();
 
         setRecords(data);
-        setProgress(false);
         setSearched(true);
         setSearchText("");
       } catch (ex) {
-        setProgress(false);
         handleError(ex);
       }
+
+      setProgress(false);
     },
 
     handleSearch: async () => {

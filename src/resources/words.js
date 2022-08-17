@@ -675,7 +675,8 @@ class Words extends Component {
 
   static edocs = "اسناد الکترونیک";
   static folder_groups = "گروه های پرونده";
-  static folder_group = "";
+  static folder_group = "گروه پرونده";
+  static folders_structure = "ساختار پوشه ها";
   static folders = "پوشه ها";
   static folder = "پوشه";
   static parent_folder = "پوشه والد";
@@ -782,6 +783,7 @@ class Words extends Component {
     hoteling_request_approved: "درخواست اقامتگاه مورد تایید است؟",
     sure_to_delete_bach_pattern_feature:
       "برای حذف ویژگی الگوی بچ اطمینان دارید؟",
+    sure_to_delete_folder: "برای حذف پوشه اطمینان دارید؟",
   };
 
   static monthes = {
