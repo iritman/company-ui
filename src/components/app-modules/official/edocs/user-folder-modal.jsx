@@ -25,6 +25,7 @@ import {
 } from "./../../../contexts/modal-context";
 import service from "./../../../../services/official/edocs/user-folders-service";
 import { handleError } from "./../../../../tools/form-manager";
+import PermissionsModal from "./user-folder-permissions-modal";
 
 const { Text } = Typography;
 
@@ -54,6 +55,7 @@ const formRef = React.createRef();
 const UserFolderModal = ({
   isOpen,
   selectedObject,
+  access,
   onOk,
   onCancel,
   onDelete,
@@ -63,6 +65,7 @@ const UserFolderModal = ({
 
   const [folderGroups, setFolderGroups] = useState([]);
   const [parentFolders, setParentFolders] = useState([]);
+  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
 
   const resetContext = useResetContext();
 
@@ -89,6 +92,11 @@ const UserFolderModal = ({
     resetContext();
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
+
+    if (selectedObject !== null) {
+      selectedObject.LevelTypeID = selectedObject.ParentFolderID === 0 ? 2 : 3;
+      selectedObject.LevelID = selectedObject.FolderID;
+    }
 
     setProgress(true);
     try {
@@ -145,103 +153,118 @@ const UserFolderModal = ({
   };
 
   return (
-    <ModalWindow
-      isOpen={isOpen}
-      isEdit={isEdit}
-      inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      buttons={
-        selectedObject &&
-        selectedObject.SubFolders.length === 0 && [
-          <Popconfirm
-            title={Words.questions.sure_to_delete_folder}
-            onConfirm={handleDelete}
-            okText={Words.yes}
-            cancelText={Words.no}
-            icon={<QuestionIcon style={{ color: "red" }} />}
-            key="submit-confirm"
-            disabled={progress}
-          >
-            <Button type="primary" icon={<DeleteIcon />} danger>
-              {Words.delete}
-            </Button>
-          </Popconfirm>,
-        ]
-      }
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
-      onCancel={onCancel}
-    >
-      <Form ref={formRef} name="dataForm">
-        <Row gutter={[5, 10]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
-            <DropdownItem
-              title={Words.folder_group}
-              dataSource={folderGroups}
-              keyColumn="GroupID"
-              valueColumn="Title"
-              onChange={handleChangeFolderGroup}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24}>
-            <DropdownItem
-              title={Words.parent_folder}
-              dataSource={getFilteredParentFolders()}
-              keyColumn="ParentFolderID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.title}
-              fieldName="Title"
-              required
-              autoFocus
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <ColorItem
-              title={Words.color_code}
-              fieldName="Color"
-              required
-              formConfig={formConfig}
-            />
-          </Col>
+    <>
+      <ModalWindow
+        isOpen={isOpen}
+        isEdit={isEdit}
+        inProgress={progress}
+        disabled={validateForm({ record, schema }) && true}
+        buttons={
+          selectedObject && [
+            selectedObject.SubFolders.length === 0 && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_folder}
+                onConfirm={handleDelete}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+                key="submit-confirm"
+                disabled={progress}
+              >
+                <Button type="primary" icon={<DeleteIcon />} danger>
+                  {Words.delete}
+                </Button>
+              </Popconfirm>
+            ),
+            <Button onClick={() => setShowPermissionsModal(true)}>
+              {Words.accesses}
+            </Button>,
+          ]
+        }
+        onClear={clearRecord}
+        onSubmit={handleSubmit}
+        onCancel={onCancel}
+      >
+        <Form ref={formRef} name="dataForm">
+          <Row gutter={[5, 10]} style={{ marginLeft: 1 }}>
+            <Col xs={24}>
+              <DropdownItem
+                title={Words.folder_group}
+                dataSource={folderGroups}
+                keyColumn="GroupID"
+                valueColumn="Title"
+                onChange={handleChangeFolderGroup}
+                formConfig={formConfig}
+                required
+              />
+            </Col>
+            <Col xs={24}>
+              <DropdownItem
+                title={Words.parent_folder}
+                dataSource={getFilteredParentFolders()}
+                keyColumn="ParentFolderID"
+                valueColumn="Title"
+                formConfig={formConfig}
+              />
+            </Col>
+            <Col xs={24}>
+              <InputItem
+                title={Words.title}
+                fieldName="Title"
+                required
+                autoFocus
+                maxLength={50}
+                formConfig={formConfig}
+              />
+            </Col>
+            <Col xs={24}>
+              <ColorItem
+                title={Words.color_code}
+                fieldName="Color"
+                required
+                formConfig={formConfig}
+              />
+            </Col>
 
-          {selectedObject !== null && (
-            <>
-              <Col xs={24}>
-                <Space>
-                  <Text>{`${Words.registerar}:`}</Text>
+            {selectedObject !== null && (
+              <>
+                <Col xs={24}>
+                  <Space>
+                    <Text>{`${Words.registerar}:`}</Text>
 
-                  <Text style={{ color: Colors.magenta[6] }}>
-                    {`${selectedObject.FirstName} ${selectedObject.LastName}`}
-                  </Text>
-                </Space>
-              </Col>
-              <Col xs={24}>
-                <Space>
-                  <Text>{`${Words.reg_date_time}:`}</Text>
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {`${selectedObject.FirstName} ${selectedObject.LastName}`}
+                    </Text>
+                  </Space>
+                </Col>
+                <Col xs={24}>
+                  <Space>
+                    <Text>{`${Words.reg_date_time}:`}</Text>
 
-                  <Text style={{ color: Colors.magenta[6] }}>
-                    {utils.farsiNum(
-                      `${utils.slashDate(
-                        selectedObject.RegDate
-                      )} - ${utils.colonTime(selectedObject.RegTime)}`
-                    )}
-                  </Text>
-                </Space>
-              </Col>
-            </>
-          )}
-        </Row>
-      </Form>
-    </ModalWindow>
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {utils.farsiNum(
+                        `${utils.slashDate(
+                          selectedObject.RegDate
+                        )} - ${utils.colonTime(selectedObject.RegTime)}`
+                      )}
+                    </Text>
+                  </Space>
+                </Col>
+              </>
+            )}
+          </Row>
+        </Form>
+      </ModalWindow>
+
+      {selectedObject !== null && showPermissionsModal && (
+        <PermissionsModal
+          isOpen={showPermissionsModal}
+          selectedObject={selectedObject}
+          access={access}
+          onOk={() => setShowPermissionsModal(false)}
+        />
+      )}
+    </>
   );
 };
 

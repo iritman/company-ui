@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, Tree, message, Badge, Space } from "antd";
 import { AiFillFolder as FolderIcon } from "react-icons/ai";
-import { BsFillKeyFill as KeyIcon } from "react-icons/bs";
 import Words from "../../../../resources/words";
-import utils from "./../../../../tools/utils";
 import service from "./../../../../services/official/edocs/user-folders-service";
 import {
   checkAccess,
@@ -12,6 +10,7 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import FolderModal from "./user-folder-modal";
+import PermissionsModal from "./user-folder-permissions-modal";
 import { usePageContext } from "./../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 import { handleError } from "./../../../../tools/form-manager";
@@ -38,6 +37,9 @@ const UserFoldersPage = ({ pageName }) => {
     showModal,
     setShowModal,
   } = usePageContext();
+
+  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+  const [groupID, setGroupID] = useState(0);
 
   const getSubFolders = (folder) => {
     let subFolders = [];
@@ -184,6 +186,10 @@ const UserFoldersPage = ({ pageName }) => {
     if (selected_folder) {
       setSelectedObject(selected_folder);
       setShowModal(true);
+    } else {
+      const groupID = parseInt(info.node.key.replace("group-", ""));
+      setGroupID(groupID);
+      setShowPermissionsModal(true);
     }
   };
 
@@ -219,11 +225,21 @@ const UserFoldersPage = ({ pageName }) => {
 
       {showModal && (
         <FolderModal
+          isOpen={showModal}
+          selectedObject={selectedObject}
+          access={access}
           onOk={handleSave}
           onCancel={handleCloseModal}
           onDelete={handleDelete}
-          isOpen={showModal}
-          selectedObject={selectedObject}
+        />
+      )}
+
+      {showPermissionsModal && (
+        <PermissionsModal
+          isOpen={showPermissionsModal}
+          selectedObject={{ LevelTypeID: 1, LevelID: groupID }}
+          access={access}
+          onOk={() => setShowPermissionsModal(false)}
         />
       )}
     </>

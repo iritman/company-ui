@@ -34,10 +34,17 @@ class Words extends Component {
   static active = "فعال";
   static inactive = "غیرفعال";
   static accesses = "دسترسی ها";
+
+  static can_view = "امکان مشاهده";
   static can_add = "امکان ثبت";
   static can_edit = "امکان ویرایش";
   static can_delete = "امکان حذف";
-  static can_view = "امکان مشاهده";
+
+  static just_view = "مشاهده";
+  static just_add = "ثبت";
+  static just_edit = "ویرایش";
+  static just_delete = "حذف";
+
   static role = "سمت";
   static roles = "سمت ها";
   static close = "بستن";
@@ -680,6 +687,7 @@ class Words extends Component {
   static folders = "پوشه ها";
   static folder = "پوشه";
   static parent_folder = "پوشه والد";
+  static new_access = "دسترسی جدید";
 
   //---
 
@@ -784,6 +792,7 @@ class Words extends Component {
     sure_to_delete_bach_pattern_feature:
       "برای حذف ویژگی الگوی بچ اطمینان دارید؟",
     sure_to_delete_folder: "برای حذف پوشه اطمینان دارید؟",
+    sure_to_delete_permission: "برای حذف دسترسی اطمینان دارید؟",
   };
 
   static monthes = {
