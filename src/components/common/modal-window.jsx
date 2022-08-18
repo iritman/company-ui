@@ -21,6 +21,7 @@ const ModalWindow = (props) => {
     title,
     buttons,
     confirm,
+    footer,
     ...rest
   } = props;
 
@@ -53,23 +54,25 @@ const ModalWindow = (props) => {
           </Space>
         )
       }
-      footer={[
-        buttons || <React.Fragment key="empty" />,
-        <Button key="clear-button" onClick={onClear}>
-          {Words.clear}
-        </Button>,
-        confirm || (
-          <Button
-            key="submit-button"
-            type="primary"
-            onClick={onSubmit}
-            loading={inProgress}
-            disabled={disabled}
-          >
-            {searchModal ? Words.search : Words.submit}
-          </Button>
-        ),
-      ]}
+      footer={
+        footer || [
+          buttons || <React.Fragment key="empty" />,
+          <Button key="clear-button" onClick={onClear}>
+            {Words.clear}
+          </Button>,
+          confirm || (
+            <Button
+              key="submit-button"
+              type="primary"
+              onClick={onSubmit}
+              loading={inProgress}
+              disabled={disabled}
+            >
+              {searchModal ? Words.search : Words.submit}
+            </Button>
+          ),
+        ]
+      }
       onCancel={onCancel}
       {...rest}
     >
