@@ -6,7 +6,6 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/official/edocs/user-folder-permissions-service";
-import { AiOutlineCheck as CheckIcon } from "react-icons/ai";
 import {
   getSorter,
   checkAccess,

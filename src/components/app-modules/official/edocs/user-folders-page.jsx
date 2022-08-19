@@ -69,7 +69,7 @@ const UserFoldersPage = ({ pageName }) => {
   const getGroupFolders = (group) => {
     let folders = [];
 
-    group.Folders.filter((f) => f.ParentFolderID === 0).forEach((folder) => {
+    group.Folders?.filter((f) => f.ParentFolderID === 0).forEach((folder) => {
       folders = [
         ...folders,
         {
