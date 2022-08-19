@@ -25,7 +25,7 @@ import {
 } from "./../../../contexts/modal-context";
 import service from "./../../../../services/official/edocs/user-folders-service";
 import { handleError } from "./../../../../tools/form-manager";
-import PermissionsModal from "./user-folder-permissions-modal";
+import PermissionsModal from "./user-permissions-modal";
 
 const { Text } = Typography;
 

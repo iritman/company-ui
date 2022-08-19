@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Space, Typography, TreeSelect } from "antd";
-import { FolderOpenFilled as FolderIcon } from "@ant-design/icons";
-import { AiFillFolder as SmallFolderIcon } from "react-icons/ai";
+import { Form, Row, Col, Space, Typography } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -14,130 +12,36 @@ import {
   initModal,
   saveModalChanges,
 } from "../../../../tools/form-manager";
+import DropdownItem from "../../../form-controls/dropdown-item";
 import SwitchItem from "../../../form-controls/switch-item";
 import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/edocs/user-folder-permissions-service";
+import service from "../../../../services/official/edocs/user-permissions-service";
 import { handleError } from "../../../../tools/form-manager";
 
 const { Text } = Typography;
-const { TreeNode } = TreeSelect;
-
-const FolderNode = ({ title, color }) => {
-  return (
-    <Space>
-      <SmallFolderIcon style={{ color }} />
-      <Text>{title}</Text>
-    </Space>
-  );
-};
-
-const FoldersList = ({ value, groups, folders, onChange }) => {
-  return (
-    <TreeSelect
-      showSearch
-      style={{
-        width: "100%",
-      }}
-      value={value}
-      dropdownStyle={{
-        maxHeight: 400,
-        overflow: "auto",
-      }}
-      placeholder={Words.select_folder}
-      allowClear
-      treeDefaultExpandAll
-      onChange={onChange}
-      treeLine={{
-        showLeafIcon: false,
-      }}
-    >
-      {groups.map((group) => (
-        <TreeNode
-          value={`group-${group.GroupID}`}
-          title={<FolderNode title={group.Title} color={Colors.blue[6]} />}
-        >
-          {folders
-            .filter(
-              (f) => f.GroupID === group.GroupID && f.ParentFolderID === 0
-            )
-            .map((folder) => (
-              <TreeNode
-                value={`folder-${folder.FolderID}`}
-                title={
-                  <FolderNode title={folder.Title} color={Colors.green[6]} />
-                }
-              >
-                {folders
-                  .filter((f) => f.ParentFolderID === folder.FolderID)
-                  .map((subFolder) => (
-                    <TreeNode
-                      value={`sub-folder-${subFolder.FolderID}`}
-                      title={
-                        <FolderNode
-                          title={subFolder.Title}
-                          color={Colors.magenta[6]}
-                        />
-                      }
-                    ></TreeNode>
-                  ))}
-              </TreeNode>
-            ))}
-        </TreeNode>
-      ))}
-
-      {/* <TreeNode value="parent 1" title="parent 1">
-        <TreeNode value="parent 1-0" title="parent 1-0">
-          <TreeNode value="leaf1" title="leaf1" />
-          <TreeNode value="leaf2" title="leaf2" />
-        </TreeNode>
-        <TreeNode value="parent 1-1" title="parent 1-1">
-          <TreeNode
-            value="leaf3"
-            title={
-              <b
-                style={{
-                  color: "#08c",
-                }}
-              >
-                leaf3
-              </b>
-            }
-          />
-        </TreeNode>
-      </TreeNode>*/}
-    </TreeSelect>
-  );
-};
 
 const schema = {
   PermissionID: Joi.number().required(),
   LevelTypeID: Joi.number().required(),
   LevelID: Joi.number().required(),
-  MemberID: Joi.number().required(),
+  MemberID: Joi.number().min(1).required(),
   CanView: Joi.boolean(),
   CanAdd: Joi.boolean(),
   CanEdit: Joi.boolean(),
   CanDelete: Joi.boolean(),
 };
 
-const initRecord = (memberID, permission) => {
-  let [levelTypeID, levelID] = [0, 0];
-
-  if (permission) {
-    const { LevelTypeID, LevelID } = permission;
-
-    levelTypeID = LevelTypeID;
-    levelID = LevelID;
-  }
+const initRecord = (levelInfo) => {
+  const { LevelTypeID, LevelID } = levelInfo;
 
   return {
     PermissionID: 0,
-    LevelTypeID: levelTypeID,
-    LevelID: levelID,
-    MemberID: memberID,
+    LevelTypeID,
+    LevelID,
+    MemberID: 0,
     CanView: true,
     CanAdd: true,
     CanEdit: true,
@@ -147,21 +51,18 @@ const initRecord = (memberID, permission) => {
 
 const formRef = React.createRef();
 
-const UserFolderPermissionModal = ({
+const UserPermissionModal = ({
   isOpen,
+  levelInfo,
   selectedPermission,
   folderPath,
-  employee,
   onOk,
   onCancel,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
-  const [folderGroups, setFolderGroups] = useState([]);
-  const [folders, setFolders] = useState([]);
-  const [selectedFolderTreeNode, setSelectedFolderTreeNode] =
-    useState(undefined);
+  const [employees, setEmployees] = useState([]);
 
   const resetContext = useResetContext();
 
@@ -181,8 +82,6 @@ const UserFolderPermissionModal = ({
     record.CanEdit = true;
     record.CanDelete = true;
 
-    setSelectedFolderTreeNode(undefined);
-
     setRecord(record);
     setErrors({});
     loadFieldsValue(formRef, record);
@@ -190,17 +89,17 @@ const UserFolderPermissionModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord(initRecord(employee.MemberID, selectedPermission));
+    setRecord(initRecord(levelInfo));
     initModal(formRef, selectedPermission, setRecord);
 
     setProgress(true);
     try {
-      const data = await service.getParams();
+      const { LevelTypeID, LevelID } = levelInfo;
+      const data = await service.getParams(LevelTypeID, LevelID);
 
-      const { FolderGroups, Folders } = data;
+      const { Employees } = data;
 
-      setFolderGroups(FolderGroups);
-      setFolders(Folders);
+      setEmployees(Employees);
     } catch (ex) {
       handleError(ex);
     }
@@ -219,25 +118,6 @@ const UserFolderPermissionModal = ({
     );
   };
 
-  const handleSelectedFolderChange = (newValue) => {
-    setSelectedFolderTreeNode(newValue);
-
-    if (newValue.includes("group")) {
-      record.LevelTypeID = 1;
-      record.LevelID = parseInt(newValue.replace("group-", ""));
-    } else if (newValue.includes("sub-folder-")) {
-      record.LevelTypeID = 3;
-      record.LevelID = parseInt(newValue.replace("sub-folder-", ""));
-    } else {
-      record.LevelTypeID = 2;
-      record.LevelID = parseInt(newValue.replace("folder-", ""));
-    }
-
-    setRecord({ ...record });
-  };
-
-  // ------
-
   return (
     <ModalWindow
       isOpen={isOpen}
@@ -251,26 +131,27 @@ const UserFolderPermissionModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 10]} style={{ marginLeft: 1 }}>
-          {selectedPermission && (
-            <Col xs={24}>
-              <Space>
-                <FolderIcon style={{ color: Colors.orange[6] }} />
-                {folderPath}
-              </Space>
-            </Col>
-          )}
-
-          {!selectedPermission && (
-            <Col xs={24}>
-              <FoldersList
-                value={selectedFolderTreeNode}
-                groups={folderGroups}
-                folders={folders}
-                onChange={handleSelectedFolderChange}
+          <Col xs={24}>{folderPath}</Col>
+          <Col xs={24}>
+            {selectedPermission === null ? (
+              <DropdownItem
+                title={Words.employee}
+                dataSource={employees}
+                keyColumn="MemberID"
+                valueColumn="FullName"
+                formConfig={formConfig}
+                required
               />
-            </Col>
-          )}
+            ) : (
+              <Space>
+                <Text>{`${Words.employee}:`}</Text>
 
+                <Text style={{ color: Colors.magenta[6] }}>
+                  {`${selectedPermission.FirstName} ${selectedPermission.LastName}`}
+                </Text>
+              </Space>
+            )}
+          </Col>
           <Col xs={12} md={6}>
             <SwitchItem
               title={Words.can_view}
@@ -344,4 +225,4 @@ const UserFolderPermissionModal = ({
   );
 };
 
-export default UserFolderPermissionModal;
+export default UserPermissionModal;

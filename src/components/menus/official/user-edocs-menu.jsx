@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
-import { VscGroupByRefType as FolderGroupIcon } from "react-icons/vsc";
+import {
+  VscGroupByRefType as FolderGroupIcon,
+  VscKey as KeyIcon,
+} from "react-icons/vsc";
 import { FaFolderOpen as FolderIcon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -26,17 +29,13 @@ const mapper = (pageID) => {
 
     case 136:
       link = "user-folders";
-      icon = (
-        <FolderIcon style={{ color: Colors.magenta[5] }} size={iconSize} />
-      );
+      icon = <FolderIcon style={{ color: Colors.green[6] }} size={iconSize} />;
       break;
 
-    // case 32:
-    //   link = "members-duties";
-    //   icon = (
-    //     <MembersDutiesIcon style={{ color: Colors.green[6] }} size={iconSize} />
-    //   );
-    //   break;
+    case 137:
+      link = "user-folder-permissions";
+      icon = <KeyIcon style={{ color: Colors.magenta[5] }} size={iconSize} />;
+      break;
 
     default:
       break;

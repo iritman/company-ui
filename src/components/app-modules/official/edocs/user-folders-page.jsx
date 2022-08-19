@@ -10,7 +10,7 @@ import {
 } from "../../../../tools/form-manager";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import FolderModal from "./user-folder-modal";
-import PermissionsModal from "./user-folder-permissions-modal";
+import PermissionsModal from "./user-permissions-modal";
 import { usePageContext } from "./../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 import { handleError } from "./../../../../tools/form-manager";

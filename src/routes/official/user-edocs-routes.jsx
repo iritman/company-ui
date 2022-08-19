@@ -5,6 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import UserEDocsDashboard from "../../components/app-modules/official/edocs/user-edocs-dashboard";
 import UserFolderGroupsPage from "../../components/app-modules/official/edocs/user-folder-groups-page";
 import UserFoldersPage from "../../components/app-modules/official/edocs/user-folders-page";
+import UserFolderPermissionsPage from "../../components/app-modules/official/edocs/user-folder-permissions-page";
 //---
 
 const modulePath = "official/edocs";
@@ -26,6 +27,13 @@ const UserOrgRoutes = ({ path }) => {
         path={`${path}/${modulePath}/user-folders`}
         exact
         render={() => <UserFoldersPage pageName="user-Folders" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-folder-permissions`}
+        exact
+        render={() => (
+          <UserFolderPermissionsPage pageName="user-FolderPermissions" />
+        )}
       />
       <Redirect to="/not-found" />
     </Switch>

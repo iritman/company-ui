@@ -688,6 +688,8 @@ class Words extends Component {
   static folder = "پوشه";
   static parent_folder = "پوشه والد";
   static new_access = "دسترسی جدید";
+  static access_path = "مسیر دسترسی";
+  static select_folder = "انتخاب پوشه";
 
   //---
 

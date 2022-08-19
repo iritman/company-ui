@@ -17,51 +17,17 @@ import {
   DeleteOutlined as DeleteIcon,
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
-  LeftOutlined as LeftIcon,
 } from "@ant-design/icons";
 import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
-import service from "../../../../services/official/edocs/user-folder-permissions-service";
-import PermissionModal from "./user-folder-permission-modal";
+import service from "../../../../services/official/edocs/user-permissions-service";
+import PermissionModal from "./user-permission-modal";
 import { handleError, getSorter } from "../../../../tools/form-manager";
 import DetailsTable from "../../../common/details-table";
 
 const { Text } = Typography;
-
-const PathViewer = ({ levelInfo }) => {
-  let result = <></>;
-
-  if (levelInfo !== null) {
-    let titles = [];
-
-    const { GroupTitle, ParentFolderTitle, FolderTitle } = levelInfo;
-
-    titles = [...titles, { Title: GroupTitle }];
-    if (ParentFolderTitle.length > 0)
-      titles = [...titles, { Title: ParentFolderTitle }];
-    if (FolderTitle.length > 0) titles = [...titles, { Title: FolderTitle }];
-
-    result = (
-      <Breadcrumb
-        separator={<LeftIcon style={{ color: Colors.cyan[6], fontSize: 12 }} />}
-      >
-        {titles.map((folder_path) => (
-          <Breadcrumb.Item>
-            {
-              <Text style={{ color: Colors.magenta[5] }}>
-                {folder_path.Title}
-              </Text>
-            }
-          </Breadcrumb.Item>
-        ))}
-      </Breadcrumb>
-    );
-  }
-
-  return result;
-};
 
 const getPermissionsColumns = (access, onDelete, onEdit) => {
   let columns = [
@@ -76,12 +42,19 @@ const getPermissionsColumns = (access, onDelete, onEdit) => {
       ),
     },
     {
-      title: Words.access_path,
-      width: 200,
+      title: Words.employee,
+      width: 175,
       align: "center",
-      //   sorter: getSorter("LevelInfo"),
-      dataIndex: "LevelInfo",
-      render: (LevelInfo) => <PathViewer levelInfo={LevelInfo} />,
+      sorter: getSorter("LastName"),
+      render: (record) => (
+        <Text
+          style={{
+            color: Colors.magenta[6],
+          }}
+        >
+          {`${record.FirstName} ${record.LastName}`}
+        </Text>
+      ),
     },
     {
       title: Words.just_view,
@@ -187,8 +160,9 @@ const getPermissionsColumns = (access, onDelete, onEdit) => {
   return columns;
 };
 
-const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
+const UserPermissionsModal = ({ isOpen, selectedObject, access, onOk }) => {
   const [permissions, setPermissions] = useState([]);
+  const [folderPath, setFolderPath] = useState(null);
   const [selectedPermission, setSelectedPermission] = useState(null);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
   const [progress, setProgress] = useState(false);
@@ -197,11 +171,15 @@ const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
     setProgress(true);
 
     try {
-      const data = await service.getEmployeeFolderPermissions(
-        employee.MemberID
+      const data = await service.searchData(
+        selectedObject.LevelTypeID,
+        selectedObject.LevelID
       );
 
-      setPermissions(data);
+      const { Permissions, FolderPath } = data;
+
+      setPermissions(Permissions);
+      setFolderPath(FolderPath);
     } catch (ex) {
       handleError(ex);
     }
@@ -221,7 +199,7 @@ const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
       setPermissions([...permissions, data]);
     } else {
       const index = permissions.findIndex(
-        (p) => p.PermissionID === data.PermissionID
+        (p) => (p.PermissionID = data.PermissionID)
       );
 
       permissions[index] = data;
@@ -250,6 +228,36 @@ const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
     setShowPermissionModal(true);
   };
 
+  const getFoldersPath = (fp) => {
+    let result = <></>;
+
+    if (fp !== null) {
+      let titles = [];
+
+      const { GroupTitle, ParentFolderTitle, FolderTitle } = fp;
+
+      titles = [...titles, { Title: GroupTitle }];
+      if (ParentFolderTitle.length > 0)
+        titles = [...titles, { Title: ParentFolderTitle }];
+      if (FolderTitle.length > 0) titles = [...titles, { Title: FolderTitle }];
+
+      result = (
+        <Alert
+          type="error"
+          message={
+            <Breadcrumb separator=">">
+              {titles.map((folder_path) => (
+                <Breadcrumb.Item>{folder_path.Title}</Breadcrumb.Item>
+              ))}
+            </Breadcrumb>
+          }
+        />
+      );
+    }
+
+    return result;
+  };
+
   // ------
 
   return (
@@ -265,19 +273,10 @@ const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
         ]}
         onSubmit={onOk}
         onCancel={onOk}
-        width={850}
+        width={800}
       >
         <Row gutter={[5, 10]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
-            <Alert
-              type="error"
-              message={
-                <Text
-                  style={{ color: Colors.red[6] }}
-                >{`${employee.FirstName} ${employee.LastName}`}</Text>
-              }
-            />
-          </Col>
+          <Col xs={24}>{getFoldersPath(folderPath)}</Col>
           <Col xs={24}>
             <Button
               type="primary"
@@ -299,15 +298,12 @@ const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
       {showPermissionModal && (
         <PermissionModal
           isOpen={showPermissionModal}
+          levelInfo={{
+            LevelTypeID: selectedObject.LevelTypeID,
+            LevelID: selectedObject.LevelID,
+          }}
           selectedPermission={selectedPermission}
-          folderPath={
-            selectedPermission ? (
-              <PathViewer levelInfo={selectedPermission.LevelInfo} />
-            ) : (
-              <></>
-            )
-          }
-          employee={employee}
+          folderPath={getFoldersPath(folderPath)}
           onOk={handleSubmit}
           onCancel={handleClosePermissionModal}
         />
@@ -316,4 +312,4 @@ const UserFolderPermissionsModal = ({ isOpen, employee, access, onOk }) => {
   );
 };
 
-export default UserFolderPermissionsModal;
+export default UserPermissionsModal;

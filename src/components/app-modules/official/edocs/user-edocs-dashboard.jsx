@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
-import { VscGroupByRefType as FolderGroupIcon } from "react-icons/vsc";
+import {
+  VscGroupByRefType as FolderGroupIcon,
+  VscKey as KeyIcon,
+} from "react-icons/vsc";
 import { FaFolderOpen as FolderIcon } from "react-icons/fa";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
@@ -27,14 +30,14 @@ const mapper = (pageID) => {
     case 136:
       link = "user-folders";
       icon = <FolderIcon {...iconProps} />;
-      backColor = Colors.magenta[3];
+      backColor = Colors.green[3];
       break;
 
-    // case 32:
-    //   link = "members-duties";
-    //   icon = <MembersDutiesIcon {...iconProps} />;
-    //   backColor = Colors.green[3];
-    //   break;
+    case 137:
+      link = "user-folder-permissions";
+      icon = <KeyIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
+      break;
 
     default:
       break;
