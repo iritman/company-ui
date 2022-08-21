@@ -11,6 +11,7 @@ import UserUnderSupervisionTasksPage from "./../../components/app-modules/offici
 import UserIntervalTasksPage from "../../components/app-modules/official/tasks/user-interval-tasks-page";
 import UserOthersTasksPage from "../../components/app-modules/official/tasks/user-others-tasks-page";
 import UserDepartmentTasksPage from "../../components/app-modules/official/tasks/user-department-tasks-page";
+import UserColleaguesTasksPage from "../../components/app-modules/official/tasks/user-colleagues-tasks-page";
 import UserSelectedSupervisorsPage from "./../../components/app-modules/official/tasks/user-selected-supervisors-page";
 //---
 
@@ -66,6 +67,13 @@ const UserTasksRoutes = ({ path }) => {
         exact
         render={() => (
           <UserDepartmentTasksPage pageName="user-DepartmentTasks" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/colleagues-tasks`}
+        exact
+        render={() => (
+          <UserColleaguesTasksPage pageName="user-ColleaguesTasks" />
         )}
       />
       <ProtectedRoute
