@@ -6,6 +6,7 @@ import UserEDocsDashboard from "../../components/app-modules/official/edocs/user
 import UserFolderGroupsPage from "../../components/app-modules/official/edocs/user-folder-groups-page";
 import UserFoldersPage from "../../components/app-modules/official/edocs/user-folders-page";
 import UserFolderPermissionsPage from "../../components/app-modules/official/edocs/user-folder-permissions-page";
+import UserLabelTagsPage from "../../components/app-modules/official/edocs/user-label-tags-page";
 //---
 
 const modulePath = "official/edocs";
@@ -34,6 +35,11 @@ const UserOrgRoutes = ({ path }) => {
         render={() => (
           <UserFolderPermissionsPage pageName="user-FolderPermissions" />
         )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-label-tags`}
+        exact
+        render={() => <UserLabelTagsPage pageName="user-LabelTags" />}
       />
       <Redirect to="/not-found" />
     </Switch>

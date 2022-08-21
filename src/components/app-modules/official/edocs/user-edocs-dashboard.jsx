@@ -6,7 +6,7 @@ import {
   VscGroupByRefType as FolderGroupIcon,
   VscKey as KeyIcon,
 } from "react-icons/vsc";
-import { FaFolderOpen as FolderIcon } from "react-icons/fa";
+import { FaFolderOpen as FolderIcon, FaTags as TagsIcon } from "react-icons/fa";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -37,6 +37,12 @@ const mapper = (pageID) => {
       link = "user-folder-permissions";
       icon = <KeyIcon {...iconProps} />;
       backColor = Colors.magenta[3];
+      break;
+
+    case 138:
+      link = "user-label-tags";
+      icon = <TagsIcon {...iconProps} />;
+      backColor = Colors.blue[3];
       break;
 
     default:
