@@ -13,6 +13,7 @@ import {
   FaUsersCog as UsersIcon,
   FaUserCheck as SelectedUserIcon,
   FaThList as DepartmentTasksIcon,
+  FaTh as DepartmentsTasksIcon,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -91,6 +92,16 @@ const mapper = (pageID) => {
       icon = (
         <DepartmentTasksIcon
           style={{ color: Colors.magenta[4] }}
+          size={iconSize}
+        />
+      );
+      break;
+
+    case 89:
+      link = "departments-tasks";
+      icon = (
+        <DepartmentsTasksIcon
+          style={{ color: Colors.blue[4] }}
           size={iconSize}
         />
       );

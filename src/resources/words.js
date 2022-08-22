@@ -520,6 +520,7 @@ class Words extends Component {
   static new_report = "گزارش جدید";
   static others_tasks = "وظایف کاربران";
   static department_tasks = "وظایف دپارتمان";
+  static departments_tasks = "وظایف دپارتمان ها";
   static colleagues_tasks = "وظایف همکاران";
 
   static report_my_in_out_cards = "گزارش ورود و خروج من";
