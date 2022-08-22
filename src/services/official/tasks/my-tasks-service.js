@@ -9,6 +9,12 @@ async function getSearchMyDoneTasksParams() {
   return data;
 }
 
+async function getSearchUnderSupervisionTasksParams() {
+  const { data } = await http.get(`${apiEndpoint}/supervision/params`);
+
+  return data;
+}
+
 // async function getTaskFiles(taskID) {
 //   const { data } = await http.get(`${apiEndpoint}/files/${taskID}`);
 
@@ -86,6 +92,7 @@ async function searchUnderSupervisionTasks(filter) {
 
 const service = {
   getSearchMyDoneTasksParams,
+  getSearchUnderSupervisionTasksParams,
   //   getTaskFiles,
   getAllData,
   makeTaskSeen,

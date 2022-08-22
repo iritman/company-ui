@@ -23,6 +23,7 @@ import SwitchItem from "./../../../form-controls/switch-item";
 
 const schema = {
   MemberID: Joi.number(),
+  DepartmentID: Joi.number(),
   HasNewReport: Joi.boolean(),
   UnfinishedTasks: Joi.boolean(),
   FromDoneDate: Joi.string().allow(""),
@@ -39,6 +40,7 @@ const schema = {
 
 const initRecord = {
   MemberID: 0,
+  DepartmentID: 0,
   HasNewReport: false,
   UnfinishedTasks: false,
   FromDoneDate: "",
@@ -65,6 +67,8 @@ const UserUnderSupervisionTasksSearchModal = ({
     setErrors,
     employees,
     setEmployees,
+    departments,
+    setDepartments,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -79,6 +83,7 @@ const UserUnderSupervisionTasksSearchModal = ({
 
   const clearRecord = () => {
     record.MemberID = 0;
+    record.DepartmentID = 0;
     record.HasNewReport = false;
     record.UnfinishedTasks = false;
     record.FromDoneDate = "";
@@ -100,11 +105,12 @@ const UserUnderSupervisionTasksSearchModal = ({
 
     setProgress(true);
     try {
-      const data = await service.getSearchMyDoneTasksParams();
+      const data = await service.getSearchUnderSupervisionTasksParams();
 
-      const { Employees } = data;
+      const { Employees, Departments } = data;
 
       setEmployees(Employees);
+      setDepartments(Departments);
     } catch (err) {
       handleError(err);
     }
@@ -149,7 +155,17 @@ const UserUnderSupervisionTasksSearchModal = ({
               autoFocus
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.department}
+              dataSource={departments}
+              keyColumn="DepartmentID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              autoFocus
+            />
+          </Col>
+          <Col xs={12}>
             <SwitchItem
               title={Words.has_new_report}
               fieldName="HasNewReport"
@@ -159,7 +175,7 @@ const UserUnderSupervisionTasksSearchModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col xs={12}>
             <SwitchItem
               title={Words.in_progress_task}
               fieldName="UnfinishedTasks"
