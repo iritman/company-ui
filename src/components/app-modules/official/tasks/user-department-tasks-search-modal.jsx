@@ -22,7 +22,7 @@ import InputItem from "./../../../form-controls/input-item";
 import SwitchItem from "./../../../form-controls/switch-item";
 
 const schema = {
-  MemberID: Joi.number().min(1).required().label(Words.employee),
+  DepartmentID: Joi.number().min(1).required().label(Words.employee),
   IsDone: Joi.boolean(),
   FromDoneDate: Joi.string().allow(""),
   ToDoneDate: Joi.string().allow(""),
@@ -37,7 +37,7 @@ const schema = {
 };
 
 const initRecord = {
-  MemberID: 0,
+  DepartmentID: 0,
   IsDone: false,
   FromDoneDate: "",
   ToDoneDate: "",
@@ -56,8 +56,8 @@ const UserDepartmentTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     setRecord,
     errors,
     setErrors,
-    employees,
-    setEmployees,
+    departments,
+    setDepartments,
   } = useModalContext();
 
   const resetContext = useResetContext();
@@ -71,7 +71,7 @@ const UserDepartmentTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.MemberID = 0;
+    record.DepartmentID = 0;
     record.IsDone = false;
     record.FromDoneDate = "";
     record.ToDoneDate = "";
@@ -94,9 +94,9 @@ const UserDepartmentTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { Employees } = data;
+      const { Departments } = data;
 
-      setEmployees(Employees);
+      setDepartments(Departments);
     } catch (err) {
       handleError(err);
     }
@@ -118,10 +118,10 @@ const UserDepartmentTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.response_member}
-              dataSource={employees}
-              keyColumn="MemberID"
-              valueColumn="FullName"
+              title={Words.department}
+              dataSource={departments}
+              keyColumn="DepartmentID"
+              valueColumn="Title"
               formConfig={formConfig}
               autoFocus
               required
