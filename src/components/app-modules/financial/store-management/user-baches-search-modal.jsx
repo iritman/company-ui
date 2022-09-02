@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
@@ -15,47 +15,39 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/tasks/my-tasks-service";
-import DropdownItem from "./../../../form-controls/dropdown-item";
-import DateItem from "../../../form-controls/date-item";
+import service from "../../../../services/financial/store-mgr/user-baches-service";
+import DateItem from "./../../../form-controls/date-item";
 import InputItem from "./../../../form-controls/input-item";
+import DropdownItem from "./../../../form-controls/dropdown-item";
 
 const schema = {
-  MemberID: Joi.number(),
-  FromDoneDate: Joi.string().allow(""),
-  ToDoneDate: Joi.string().allow(""),
-  FromReminderDate: Joi.string().allow(""),
-  ToReminderDate: Joi.string().allow(""),
-  SearchText: Joi.string()
-    .min(3)
-    .max(50)
+  BachNo: Joi.string()
+    .max(10)
     .allow("")
-    .regex(utils.VALID_REGEX)
-    .label(Words.search_text),
+    .regex(/^[0-9]+$/)
+    .label(Words.bach_no),
+  ProductID: Joi.number(),
+  RegMemberID: Joi.number(),
+  StartDate: Joi.string().allow(""),
+  FinishDate: Joi.string().allow(""),
 };
 
 const initRecord = {
-  MemberID: 0,
-  FromDoneDate: "",
-  ToDoneDate: "",
-  FromReminderDate: "",
-  ToReminderDate: "",
-  SearchText: "",
+  BachNo: "",
+  ProductID: 0,
+  RegMemberID: 0,
+  StartDate: "",
+  FinishDate: "",
 };
 
 const formRef = React.createRef();
 
-const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
-  const {
-    progress,
-    setProgress,
-    record,
-    setRecord,
-    errors,
-    setErrors,
-    employees,
-    setEmployees,
-  } = useModalContext();
+const UserBachesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+  const [products, setProducts] = useState([]);
+  const [employees, setEmployees] = useState([]);
+
+  const { progress, setProgress, record, setRecord, errors, setErrors } =
+    useModalContext();
 
   const resetContext = useResetContext();
 
@@ -68,12 +60,11 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.MemberID = 0;
-    record.FromDoneDate = "";
-    record.ToDoneDate = "";
-    record.FromReminderDate = "";
-    record.ToReminderDate = "";
-    record.SearchText = "";
+    record.BachNo = "";
+    record.ProductID = 0;
+    record.RegMemberID = 0;
+    record.StartDate = "";
+    record.FinishDate = "";
 
     setRecord(record);
     setErrors({});
@@ -88,10 +79,11 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
     setProgress(true);
     try {
-      const data = await service.getSearchMyDoneTasksParams();
+      const data = await service.getParams();
 
-      const { Employees } = data;
+      const { Products, Employees } = data;
 
+      setProducts(Products);
       setEmployees(Employees);
     } catch (err) {
       handleError(err);
@@ -109,59 +101,52 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
       }
       searchModal
       onClear={clearRecord}
-      onSubmit={() => onOk(record)}
+      onSubmit={async () => await onOk(record)}
       onCancel={onCancel}
       width={750}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
-            <DropdownItem
-              title={Words.definer}
-              dataSource={employees}
-              keyColumn="MemberID"
-              valueColumn="FullName"
+            <InputItem
+              title={Words.bach_no}
+              fieldName="BachNo"
+              maxLength={10}
               formConfig={formConfig}
               autoFocus
             />
           </Col>
           <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.from_reminder_date}
-              fieldName="FromReminderDate"
+            <DropdownItem
+              title={Words.product}
+              dataSource={products}
+              keyColumn="ProductID"
+              valueColumn="Title"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.reg_member}
+              dataSource={employees}
+              keyColumn="RegMemberID"
+              valueColumn="FullName"
               formConfig={formConfig}
             />
           </Col>
           <Col xs={24} md={12}>
             <DateItem
               horizontal
-              title={Words.to_reminder_date}
-              fieldName="ToReminderDate"
+              title={Words.start_date}
+              fieldName="StartDate"
               formConfig={formConfig}
             />
           </Col>
           <Col xs={24} md={12}>
             <DateItem
               horizontal
-              title={Words.from_done_date}
-              fieldName="FromDoneDate"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.to_done_date}
-              fieldName="ToDoneDate"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.search_text}
-              fieldName="SearchText"
-              maxLength={50}
+              title={Words.finish_date}
+              fieldName="FinishDate"
               formConfig={formConfig}
             />
           </Col>
@@ -171,4 +156,4 @@ const UserMyDoneTasksSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   );
 };
 
-export default UserMyDoneTasksSearchModal;
+export default UserBachesSearchModal;

@@ -350,6 +350,10 @@ class Words extends Component {
   static transfer_description = "توضیحات وسیله نقلیه";
   static hoteling_description = "توضیحات اقامت";
 
+  static bach = "بچ";
+  static bach_info = "اطلاعات بچ";
+  static bach_no = "شماره بچ";
+
   static client_types = "انواع میهمان";
   static client_type = "سطح میهمان";
   static client_counts = "تعداد میهمانان";

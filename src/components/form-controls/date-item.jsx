@@ -10,6 +10,7 @@ const JalaliDatePicker = ({ fieldName, formConfig }) => {
   return (
     <ConfigProvider locale={fa_IR} direction="rtl">
       <DatePickerJalali
+        allowClear={false}
         onChange={(date) => onDateChange(fieldName, date, formConfig)}
         value={
           dateValue && dateValue.length > 0 ? utils.jalaliDate(dateValue) : null

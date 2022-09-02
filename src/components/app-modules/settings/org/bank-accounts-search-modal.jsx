@@ -111,25 +111,13 @@ const BankAccountsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     setMemberSearchProgress(false);
   };
 
-  const hasSelectedFilter = () => {
-    let result = false;
-
-    for (const key in record) {
-      if (record[key] !== initRecord[key]) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
-  };
-
   return (
     <ModalWindow
       isOpen={isOpen}
       inProgress={progress}
       disabled={
-        !hasSelectedFilter() || (validateForm({ record, schema }) && true)
+        !utils.hasSelectedFilter(record, initRecord) ||
+        (validateForm({ record, schema }) && true)
       }
       searchModal
       onClear={clearRecord}

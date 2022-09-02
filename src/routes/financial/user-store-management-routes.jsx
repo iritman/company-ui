@@ -13,6 +13,7 @@ import UserFeaturesPage from "../../components/app-modules/financial/store-manag
 import UserInventoryControlAgentsPage from "../../components/app-modules/financial/store-management/user-inventory-control-agents-page";
 import UserProductsPage from "../../components/app-modules/financial/store-management/user-products-page";
 import UserBachPatternsPage from "../../components/app-modules/financial/store-management/user-bach-patterns-page";
+import UserBachesPage from "../../components/app-modules/financial/store-management/user-baches-page";
 //---
 
 const modulePath = "financial/store-mgr";
@@ -78,6 +79,11 @@ const UserStoreManagementRoutes = ({ path }) => {
         path={`${path}/${modulePath}/user-bach-patterns`}
         exact
         render={() => <UserBachPatternsPage pageName="user-BachPatterns" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-baches`}
+        exact
+        render={() => <UserBachesPage pageName="user-Baches" />}
       />
       <Redirect to="/not-found" />
     </Switch>

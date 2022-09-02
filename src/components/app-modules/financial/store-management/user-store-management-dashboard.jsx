@@ -11,6 +11,7 @@ import {
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
 import { AiOutlineControl as InventoryControlAgentIcon } from "react-icons/ai";
+import { FaBarcode as BachIcon } from "react-icons/fa";
 import {
   MdOutlineFeaturedPlayList as FeatureIcon,
   MdDonutSmall as ProductIcon,
@@ -88,6 +89,12 @@ const mapper = (pageID) => {
       link = "user-bach-patterns";
       icon = <BachPatternIcon {...iconProps} />;
       backColor = Colors.cyan[3];
+      break;
+
+    case 151:
+      link = "user-baches";
+      icon = <BachIcon {...iconProps} />;
+      backColor = Colors.geekblue[3];
       break;
 
     default:

@@ -553,6 +553,19 @@ export function textSeparator(text, len, separator) {
   return result;
 }
 
+export function hasSelectedFilter(baseObject, checkObject) {
+  let result = false;
+
+  for (const key in checkObject) {
+    if (checkObject[key] !== baseObject[key]) {
+      result = true;
+      break;
+    }
+  }
+
+  return result;
+}
+
 export const VALID_REGEX = /^[آ-یa-zA-Z0-9۰-۹.\-()\s]+$/;
 
 const methods = {
@@ -598,6 +611,7 @@ const methods = {
   minToTime,
   getMonthList,
   textSeparator,
+  hasSelectedFilter,
 };
 
 export default methods;

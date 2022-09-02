@@ -13,6 +13,7 @@ import {
   TbShape2 as BachPatternIcon,
 } from "react-icons/tb";
 import { CgListTree as CategoryIcon } from "react-icons/cg";
+import { FaBarcode as BachIcon } from "react-icons/fa";
 import {
   MdOutlineFeaturedPlayList as FeatureIcon,
   MdDonutSmall as ProductIcon,
@@ -96,6 +97,11 @@ const mapper = (pageID) => {
       icon = (
         <BachPatternIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
       );
+      break;
+
+    case 151:
+      link = "user-baches";
+      icon = <BachIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />;
       break;
 
     default:
