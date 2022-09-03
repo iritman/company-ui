@@ -22,6 +22,7 @@ import UserProcessesMenu from "../components/menus/official/user-processes-menu"
 import UserEDocsMenu from "../components/menus/official/user-edocs-menu";
 //---
 import UserFinancialMenu from "../components/menus/financial/user-financial-menu";
+import UserPublicSettingsMenu from "../components/menus/financial/user-public-settings-menu";
 import UserStoreManagementMenu from "../components/menus/financial/user-store-management-menu";
 //---
 
@@ -85,6 +86,10 @@ const MenuRoutes = ({ path }) => {
         path={`${path}/financial`}
         exact
         component={UserFinancialMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/public-settings`}
+        component={UserPublicSettingsMenu}
       />
       <ProtectedRoute
         path={`${path}/financial/store-mgr`}

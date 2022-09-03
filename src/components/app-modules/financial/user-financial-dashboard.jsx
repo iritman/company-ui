@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 import { FaDatabase as StoreIcon } from "react-icons/fa";
+import { MdSettings as SettingsIcon } from "react-icons/md";
 import Colors from "../../../resources/colors";
 import modulesService from "../../../services/app/modules-service";
 
@@ -21,6 +22,12 @@ const mapper = (moduleID) => {
       link = "store-mgr";
       icon = <StoreIcon {...iconProps} />;
       backColor = Colors.blue[3];
+      break;
+
+    case 17:
+      link = "public-settings";
+      icon = <SettingsIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     // case 6:

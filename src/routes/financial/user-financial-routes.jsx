@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 import UserFinancialDashboard from "../../components/app-modules/financial/user-financial-dashboard";
+import UserPublicSettingsRoutes from "./user-public-settings-routes";
 import UserStoreManagementRoutes from "./user-store-management-routes";
 //---
 
@@ -12,6 +13,10 @@ const UserFinancialRoutes = ({ path }) => {
         path={`${path}/financial`}
         exact
         component={UserFinancialDashboard}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/public-settings`}
+        render={() => <UserPublicSettingsRoutes path={path} />}
       />
       <ProtectedRoute
         path={`${path}/financial/store-mgr`}
