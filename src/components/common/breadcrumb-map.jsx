@@ -26,7 +26,7 @@ const BreadcrumbMap = ({ location }) => {
     "/home/official/edocs": Words.edocs,
     //---
     "/home/financial": Words.financial,
-    "/home/financial/store-mgr": Words.store_management,
+    "/home/financial/store-mgr": Words.store_basic_info,
   };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);
