@@ -658,6 +658,9 @@ class Words extends Component {
   static public_settings = "تنظیمات عمومی";
   static projects = "پروژه ها";
   static cost_center_types = "انواع مرکز هزینه";
+  static cost_center_type = "نوع مرکز هزینه";
+  static cost_centers = "مراکز هزینه";
+  static cost_center = "مرکز هزینه";
   //----
   static provinces = "استان ها";
   static province = "استان";

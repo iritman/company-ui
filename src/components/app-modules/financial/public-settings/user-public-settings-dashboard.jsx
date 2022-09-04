@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
-import { FaProjectDiagram as ProjectsIcon } from "react-icons/fa";
-import { TbReportMoney as CostCenterTypeIcon } from "react-icons/tb";
+import {
+  FaProjectDiagram as ProjectsIcon,
+  FaMoneyCheckAlt as CostCentersIcon,
+} from "react-icons/fa";
+import { SiWebmoney as CostCenterTypesIcon } from "react-icons/si";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -26,15 +29,15 @@ const mapper = (pageID) => {
 
     case 162:
       link = "cost-center-types";
-      icon = <CostCenterTypeIcon {...iconProps} />;
+      icon = <CostCenterTypesIcon {...iconProps} />;
       backColor = Colors.green[3];
       break;
 
-    // case 143:
-    //   link = "user-measure-types";
-    //   icon = <MeasureTypeIcon {...iconProps} />;
-    //   backColor = Colors.blue[3];
-    //   break;
+    case 163:
+      link = "cost-centers";
+      icon = <CostCentersIcon {...iconProps} />;
+      backColor = Colors.blue[3];
+      break;
 
     // case 144:
     //   link = "user-measure-units";
