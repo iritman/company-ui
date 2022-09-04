@@ -7,6 +7,7 @@ import {
   FaMoneyCheckAlt as CostCentersIcon,
 } from "react-icons/fa";
 import { SiWebmoney as CostCenterTypesIcon } from "react-icons/si";
+import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -39,11 +40,11 @@ const mapper = (pageID) => {
       backColor = Colors.blue[3];
       break;
 
-    // case 144:
-    //   link = "user-measure-units";
-    //   icon = <MeasureUnitIcon {...iconProps} />;
-    //   backColor = Colors.cyan[3];
-    //   break;
+    case 164:
+      link = "currencies";
+      icon = <CurrenciesIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
+      break;
 
     // case 145:
     //   link = "user-pricing-types";

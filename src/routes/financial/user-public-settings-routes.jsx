@@ -6,6 +6,7 @@ import UserPublicSettingsDashboard from "../../components/app-modules/financial/
 import ProjectsPage from "../../components/app-modules/financial/public-settings/projects-page";
 import CostCenterTypesPage from "../../components/app-modules/financial/public-settings/cost-center-types-page";
 import CostCentersPage from "../../components/app-modules/financial/public-settings/cost-centers-page";
+import CurrenciesPage from "../../components/app-modules/financial/public-settings/currencies-page";
 //---
 
 const modulePath = "financial/public-settings";
@@ -32,6 +33,11 @@ const UserPublicSettingsRoutes = ({ path }) => {
         path={`${path}/${modulePath}/cost-centers`}
         exact
         render={() => <CostCentersPage pageName="CostCenters" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/currencies`}
+        exact
+        render={() => <CurrenciesPage pageName="Currencies" />}
       />
       <Redirect to="/not-found" />
     </Switch>

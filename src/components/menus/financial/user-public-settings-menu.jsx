@@ -6,6 +6,7 @@ import {
 } from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { SiWebmoney as CostCenterTypeIcon } from "react-icons/si";
+import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -44,12 +45,12 @@ const mapper = (pageID) => {
       );
       break;
 
-    // case 144:
-    //   link = "user-measure-units";
-    //   icon = (
-    //     <MeasureUnitIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
-    //   );
-    //   break;
+    case 164:
+      link = "currencies";
+      icon = (
+        <CurrenciesIcon style={{ color: Colors.cyan[6] }} size={iconSize + 4} />
+      );
+      break;
 
     // case 145:
     //   link = "user-pricing-types";
