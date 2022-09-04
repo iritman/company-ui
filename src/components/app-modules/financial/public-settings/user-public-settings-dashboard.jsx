@@ -107,7 +107,7 @@ const UserPublicSettingsDashboard = () => {
       {accessiblePages.map((page) => (
         <Col xs={24} md={8} lg={6} key={page.PageID}>
           <DashboardTile
-            to={`store-mgr/${mapper(page.PageID).link}`}
+            to={`public-settings/${mapper(page.PageID).link}`}
             icon={mapper(page.PageID).icon}
             backColor={mapper(page.PageID).backColor}
             title={page.PageTitle}

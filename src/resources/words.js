@@ -656,6 +656,7 @@ class Words extends Component {
   static store_management = "مدیریت انبار";
   static store_basic_info = "اطلاعات پایه انبار";
   static public_settings = "تنظیمات عمومی";
+  static projects = "پروژه ها";
   //----
   static provinces = "استان ها";
   static province = "استان";
