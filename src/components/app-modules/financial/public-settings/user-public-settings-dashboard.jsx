@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import { FaProjectDiagram as ProjectsIcon } from "react-icons/fa";
+import { TbReportMoney as CostCenterTypeIcon } from "react-icons/tb";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -23,11 +24,11 @@ const mapper = (pageID) => {
       backColor = Colors.orange[3];
       break;
 
-    // case 142:
-    //   link = "user-product-natures";
-    //   icon = <NatureIcon {...iconProps} />;
-    //   backColor = Colors.green[3];
-    //   break;
+    case 162:
+      link = "cost-center-types";
+      icon = <CostCenterTypeIcon {...iconProps} />;
+      backColor = Colors.green[3];
+      break;
 
     // case 143:
     //   link = "user-measure-types";

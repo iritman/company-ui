@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { FaProjectDiagram as ProjectsIcon } from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import { TbReportMoney as CostCenterTypeIcon } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -23,10 +24,15 @@ const mapper = (pageID) => {
       );
       break;
 
-    // case 142:
-    //   link = "user-product-natures";
-    //   icon = <NatureIcon style={{ color: Colors.green[6] }} size={iconSize} />;
-    //   break;
+    case 162:
+      link = "cost-center-types";
+      icon = (
+        <CostCenterTypeIcon
+          style={{ color: Colors.green[6] }}
+          size={iconSize}
+        />
+      );
+      break;
 
     // case 143:
     //   link = "user-measure-types";
