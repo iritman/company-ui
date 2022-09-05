@@ -12,6 +12,7 @@ import {
 } from "react-icons/si";
 import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
+import { RiDatabaseLine as CreditSourcesIcon } from "react-icons/ri";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -62,11 +63,11 @@ const mapper = (pageID) => {
       backColor = Colors.magenta[3];
       break;
 
-    // case 147:
-    //   link = "user-features";
-    //   icon = <FeatureIcon {...iconProps} />;
-    //   backColor = Colors.lime[4];
-    //   break;
+    case 167:
+      link = "credit-sources";
+      icon = <CreditSourcesIcon {...iconProps} />;
+      backColor = Colors.lime[4];
+      break;
 
     // case 148:
     //   link = "user-products";
