@@ -662,6 +662,10 @@ class Words extends Component {
   static cost_centers = "مراکز هزینه";
   static cost_center = "مرکز هزینه";
   static currencies = "ارزها";
+  static currency_ratios = "نسبت تبدیل ارزها";
+  static ratio = "نسبت تبدیل";
+  static from_currency = "ارز مبدا";
+  static to_currency = "ارز مقصد";
   //----
   static provinces = "استان ها";
   static province = "استان";

@@ -6,7 +6,10 @@ import {
   FaProjectDiagram as ProjectsIcon,
   FaMoneyCheckAlt as CostCentersIcon,
 } from "react-icons/fa";
-import { SiWebmoney as CostCenterTypesIcon } from "react-icons/si";
+import {
+  SiWebmoney as CostCenterTypesIcon,
+  SiConvertio as RatioIcon,
+} from "react-icons/si";
 import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
@@ -46,11 +49,11 @@ const mapper = (pageID) => {
       backColor = Colors.cyan[3];
       break;
 
-    // case 145:
-    //   link = "user-pricing-types";
-    //   icon = <PricingTypeIcon {...iconProps} />;
-    //   backColor = Colors.purple[3];
-    //   break;
+    case 165:
+      link = "currency-ratios";
+      icon = <RatioIcon {...iconProps} />;
+      backColor = Colors.purple[3];
+      break;
 
     // case 146:
     //   link = "user-product-categories";

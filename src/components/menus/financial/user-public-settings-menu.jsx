@@ -5,7 +5,10 @@ import {
   FaMoneyCheckAlt as CostCentersIcon,
 } from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
-import { SiWebmoney as CostCenterTypeIcon } from "react-icons/si";
+import {
+  SiWebmoney as CostCenterTypesIcon,
+  SiConvertio as RatioIcon,
+} from "react-icons/si";
 import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -31,7 +34,7 @@ const mapper = (pageID) => {
     case 162:
       link = "cost-center-types";
       icon = (
-        <CostCenterTypeIcon
+        <CostCenterTypesIcon
           style={{ color: Colors.green[6] }}
           size={iconSize}
         />
@@ -52,12 +55,10 @@ const mapper = (pageID) => {
       );
       break;
 
-    // case 145:
-    //   link = "user-pricing-types";
-    //   icon = (
-    //     <PricingTypeIcon style={{ color: Colors.purple[6] }} size={iconSize} />
-    //   );
-    //   break;
+    case 165:
+      link = "currency-ratios";
+      icon = <RatioIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
+      break;
 
     // case 146:
     //   link = "user-product-categories";
