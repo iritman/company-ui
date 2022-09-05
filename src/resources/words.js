@@ -666,6 +666,8 @@ class Words extends Component {
   static ratio = "نسبت تبدیل";
   static from_currency = "ارز مبدا";
   static to_currency = "ارز مقصد";
+  static credit_source_types = "انواع منابع تامین اعتبار";
+  static credit_source_type = "نوع منابع تامین اعتبار";
   //----
   static provinces = "استان ها";
   static province = "استان";

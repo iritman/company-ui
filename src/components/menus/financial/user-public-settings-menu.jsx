@@ -10,6 +10,7 @@ import {
   SiConvertio as RatioIcon,
 } from "react-icons/si";
 import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
+import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -60,12 +61,15 @@ const mapper = (pageID) => {
       icon = <RatioIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
       break;
 
-    // case 146:
-    //   link = "user-product-categories";
-    //   icon = (
-    //     <CategoryIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
-    //   );
-    //   break;
+    case 166:
+      link = "credit-source-types";
+      icon = (
+        <CreditSourceTypesIcon
+          style={{ color: Colors.magenta[6] }}
+          size={iconSize}
+        />
+      );
+      break;
 
     // case 147:
     //   link = "user-features";

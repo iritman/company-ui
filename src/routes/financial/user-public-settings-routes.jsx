@@ -8,6 +8,7 @@ import CostCenterTypesPage from "../../components/app-modules/financial/public-s
 import CostCentersPage from "../../components/app-modules/financial/public-settings/cost-centers-page";
 import CurrenciesPage from "../../components/app-modules/financial/public-settings/currencies-page";
 import CurrencyRatiosPage from "../../components/app-modules/financial/public-settings/currency-ratios-page";
+import CreditSourceTypesPage from "../../components/app-modules/financial/public-settings/credit-source-types-page";
 //---
 
 const modulePath = "financial/public-settings";
@@ -44,6 +45,11 @@ const UserPublicSettingsRoutes = ({ path }) => {
         path={`${path}/${modulePath}/currency-ratios`}
         exact
         render={() => <CurrencyRatiosPage pageName="CurrencyRatios" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/credit-source-types`}
+        exact
+        render={() => <CreditSourceTypesPage pageName="CreditSourceTypes" />}
       />
       <Redirect to="/not-found" />
     </Switch>

@@ -11,6 +11,7 @@ import {
   SiConvertio as RatioIcon,
 } from "react-icons/si";
 import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
+import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -55,11 +56,11 @@ const mapper = (pageID) => {
       backColor = Colors.purple[3];
       break;
 
-    // case 146:
-    //   link = "user-product-categories";
-    //   icon = <CategoryIcon {...iconProps} />;
-    //   backColor = Colors.magenta[3];
-    //   break;
+    case 166:
+      link = "credit-source-types";
+      icon = <CreditSourceTypesIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
+      break;
 
     // case 147:
     //   link = "user-features";
