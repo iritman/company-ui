@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Row,
   Col,
@@ -11,6 +11,7 @@ import {
   Badge,
   Descriptions,
   Modal,
+  Popconfirm,
 } from "antd";
 import {
   PaperClipOutlined as AttachedFileIcon,
@@ -18,18 +19,31 @@ import {
   ClockCircleOutlined as ClockIcon,
   CheckCircleOutlined as DoneIcon,
   FieldTimeOutlined as InProgressIcon,
+  PlusOutlined as PlusIcon,
+  QuestionCircleOutlined as QuestionIcon,
+  DeleteOutlined as DeleteIcon,
 } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import { taskFilesUrl, taskReportFilesUrl } from "./../../../../config.json";
+import NewReportModal from "./new-report-modal";
 import MemberProfileImage from "./../../../common/member-profile-image";
 
 const { Text } = Typography;
 
 const { TabPane } = Tabs;
 
-const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
+const UserDepartmentsTaskModal = ({
+  isOpen,
+  selectedObject,
+  onCancel,
+  onSubmitReport,
+  onDeleteReport,
+  onSeenReports,
+}) => {
+  const [showNewReportModal, setShowNewReportModal] = useState(false);
+
   const {
     TaskID,
     Title,
@@ -49,6 +63,7 @@ const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
     Reports,
     Tags,
     Files,
+    CanRegReport,
   } = selectedObject;
 
   //-----------------------------------------------------------
@@ -70,6 +85,12 @@ const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
     return result;
   };
 
+  const handleTabChange = async (key) => {
+    if (key === "task-reports" && selectedObject?.NewReportsCount > 0) {
+      await onSeenReports();
+    }
+  };
+
   return (
     <>
       <Modal
@@ -87,10 +108,7 @@ const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
             className="scrollbar-normal"
             style={{ maxHeight: "calc(100vh - 180px)" }}
           >
-            <Tabs
-              defaultActiveKey="1"
-              //   onChange={handleTabChange}
-            >
+            <Tabs defaultActiveKey="1" onChange={handleTabChange}>
               <TabPane tab={Words.task_details} key="task-info">
                 <Descriptions
                   bordered
@@ -278,17 +296,17 @@ const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
                       </Col>
                     )}
 
-                    {/* {DoneDate.length === 0 && (
-                        <Col xs={24}>
-                          <Button
-                            type="primary"
-                            icon={<PlusIcon />}
-                            onClick={() => setShowNewReportModal(true)}
-                          >
-                            {Words.new_report}
-                          </Button>
-                        </Col>
-                      )} */}
+                    {DoneDate.length === 0 && CanRegReport && (
+                      <Col xs={24}>
+                        <Button
+                          type="primary"
+                          icon={<PlusIcon />}
+                          onClick={() => setShowNewReportModal(true)}
+                        >
+                          {Words.new_report}
+                        </Button>
+                      </Col>
+                    )}
 
                     {Reports.map((report) => (
                       <Col xs={24} key={report.ReportID}>
@@ -374,6 +392,21 @@ const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
                               </Col>
                             </Row>
                           }
+                          action={
+                            report.IsDeletable && (
+                              <Popconfirm
+                                title={Words.questions.sure_to_delete_report}
+                                onConfirm={async () =>
+                                  await onDeleteReport(report)
+                                }
+                                okText={Words.yes}
+                                cancelText={Words.no}
+                                icon={<QuestionIcon style={{ color: "red" }} />}
+                              >
+                                <Button size="small" icon={<DeleteIcon />} />
+                              </Popconfirm>
+                            )
+                          }
                         />
                       </Col>
                     ))}
@@ -384,6 +417,15 @@ const UserDepartmentsTaskModal = ({ isOpen, selectedObject, onCancel }) => {
           </article>
         </section>
       </Modal>
+
+      {showNewReportModal && (
+        <NewReportModal
+          onOk={onSubmitReport}
+          onCancel={() => setShowNewReportModal(false)}
+          isOpen={showNewReportModal}
+          task={selectedObject}
+        />
+      )}
     </>
   );
 };

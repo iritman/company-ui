@@ -715,7 +715,7 @@ const UserMyNewTaskModal = ({
                         action={
                           report.IsDeletable && (
                             <Popconfirm
-                              title={Words.questions.sure_to_delete_record}
+                              title={Words.questions.sure_to_delete_report}
                               onConfirm={async () =>
                                 await onDeleteReport(report)
                               }
