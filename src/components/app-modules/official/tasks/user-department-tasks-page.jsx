@@ -10,6 +10,7 @@ import {
   Badge,
   Alert,
   Tooltip,
+  message,
 } from "antd";
 import {
   SearchOutlined as SearchIcon,
@@ -137,6 +138,50 @@ const UserDepartmentTasksPage = ({ pageName }) => {
     (category) => category.tasks.length > 0
   );
 
+  const handleSaveReport = async (report) => {
+    const result = await service.saveReport(report);
+
+    const index = records.findIndex((task) => task.TaskID === report.TaskID);
+    records[index].Reports = result;
+
+    setSelectedObject({ ...records[index] });
+    setRecords([...records]);
+  };
+
+  const handleDeleteReport = async (report) => {
+    try {
+      const result = await service.deleteReport(report.ReportID);
+
+      const index = records.findIndex((task) => task.TaskID === report.TaskID);
+      records[index].Reports = records[index].Reports.filter(
+        (r) => r.ReportID !== report.ReportID
+      );
+
+      setSelectedObject({ ...records[index] });
+      setRecords([...records]);
+
+      message.success(result.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+  };
+
+  const handleSeenReports = async () => {
+    try {
+      await service.makeReportsSeen(selectedObject.TaskID);
+
+      const index = records.findIndex(
+        (task) => task.TaskID === selectedObject.TaskID
+      );
+      records[index].NewReportsCount = 0;
+
+      setSelectedObject({ ...records[index] });
+      setRecords([...records]);
+    } catch (ex) {
+      handleError(ex);
+    }
+  };
+
   //------
 
   return (
@@ -224,9 +269,12 @@ const UserDepartmentTasksPage = ({ pageName }) => {
 
       {showModal && (
         <DepartmentTaskModal
-          onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
+          onCancel={handleCloseModal}
+          onSubmitReport={handleSaveReport}
+          onDeleteReport={handleDeleteReport}
+          onSeenReports={handleSeenReports}
         />
       )}
 
