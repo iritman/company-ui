@@ -14,6 +14,7 @@ import {
   FaUserCheck as SelectedUserIcon,
   FaThList as DepartmentTasksIcon,
   FaTh as DepartmentsTasksIcon,
+  FaUserShield as TopSupervisorsIcon,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -102,6 +103,16 @@ const mapper = (pageID) => {
       icon = (
         <DepartmentsTasksIcon
           style={{ color: Colors.blue[4] }}
+          size={iconSize}
+        />
+      );
+      break;
+
+    case 90:
+      link = "top-supervisors";
+      icon = (
+        <TopSupervisorsIcon
+          style={{ color: Colors.green[5] }}
           size={iconSize}
         />
       );

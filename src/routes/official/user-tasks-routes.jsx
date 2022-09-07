@@ -14,6 +14,7 @@ import UserDepartmentTasksPage from "../../components/app-modules/official/tasks
 import UserDepartmentsTasksPage from "../../components/app-modules/official/tasks/user-departments-tasks-page";
 import UserColleaguesTasksPage from "../../components/app-modules/official/tasks/user-colleagues-tasks-page";
 import UserSelectedSupervisorsPage from "./../../components/app-modules/official/tasks/user-selected-supervisors-page";
+import UserTopSupervisorsPage from "./../../components/app-modules/official/tasks/user-top-supervisors-page";
 //---
 
 const modulePath = "official/tasks";
@@ -90,6 +91,11 @@ const UserTasksRoutes = ({ path }) => {
         render={() => (
           <UserSelectedSupervisorsPage pageName="user-SelectedSupervisors" />
         )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/top-supervisors`}
+        exact
+        render={() => <UserTopSupervisorsPage pageName="user-TopSupervisors" />}
       />
       <Redirect to="/not-found" />
     </Switch>

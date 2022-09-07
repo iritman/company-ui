@@ -106,6 +106,8 @@ class Words extends Component {
     "حجم فایل شما بیشتر از مقدار تعیین شده می باشد";
   static department_manager = "مدیر دپارتمان";
   static department_supervisor = "سرپرست دپارتمان";
+  static top_supervisors = "ناظران ارشد";
+  static top_supervisor = "ناظر ارشد";
   static descriptions = "توضیحات";
   static transmission_descriptions = "توضیحات ویژه واحد نقلیه";
   static hoteling_descriptions = "توضیحات وضعیت اقامتگاه";
