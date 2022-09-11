@@ -108,10 +108,7 @@ const UserDepartmentTaskModal = ({
             className="scrollbar-normal"
             style={{ maxHeight: "calc(100vh - 180px)" }}
           >
-            <Tabs
-              defaultActiveKey="1"
-              //   onChange={handleTabChange}
-            >
+            <Tabs defaultActiveKey="1" onChange={handleTabChange}>
               <TabPane tab={Words.task_details} key="task-info">
                 <Descriptions
                   bordered
@@ -299,7 +296,7 @@ const UserDepartmentTaskModal = ({
                       </Col>
                     )}
 
-                    {DoneDate.length === 0 && (
+                    {DoneDate.length === 0 && CanRegReport && (
                       <Col xs={24}>
                         <Button
                           type="primary"
