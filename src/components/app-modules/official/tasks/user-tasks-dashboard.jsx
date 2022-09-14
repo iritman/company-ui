@@ -11,6 +11,8 @@ import {
   Space,
   Statistic,
   Tooltip,
+  TreeSelect,
+  Checkbox,
 } from "antd";
 // import {
 //   CheckOutlined as DoneIcon,
@@ -20,6 +22,7 @@ import {
 //   FileDoneOutlined as RegedReportIcon,
 //   FileUnknownOutlined as UnreadReportIcon,
 // } from "@ant-design/icons";
+import { AiFillFolder as SmallFolderIcon } from "react-icons/ai";
 import service from "./../../../../services/dashboard/user-dashboard-service";
 import { handleError } from "./../../../../tools/form-manager";
 import utils from "./../../../../tools/utils";
@@ -29,6 +32,16 @@ import ReloadButton from "../../../common/reload-button";
 import MemberProfileImage from "./../../../common/member-profile-image";
 
 const { Text } = Typography;
+const { TreeNode } = TreeSelect;
+
+const FolderNode = ({ title, color }) => {
+  return (
+    <Space>
+      <SmallFolderIcon style={{ color }} />
+      <Text>{title}</Text>
+    </Space>
+  );
+};
 
 const DashboardTile = (props) => {
   const { title, value, color, link, inProgress /*, icon */ } = props;
@@ -74,6 +87,18 @@ const UserTasksDashboard = () => {
     EmployeesUnreadReports: 0,
     EmployeesRegedReports: 0,
   });
+  const [departments, setDepartments] = useState([]);
+  const [departmentID, setDepartmentID] = useState(0);
+  const [selectedDepartment, setSelectedDepartment] = useState(0);
+  const [calculateSubDepartments, setCalculateSubDepartments] = useState(false);
+
+  const handleSelectedDepartmentChange = (newValue) => {
+    setSelectedDepartment(newValue);
+
+    if (newValue === 0) {
+      setCalculateSubDepartments(false);
+    }
+  };
 
   // const initStatistics = () => {
   //   setStatistics({
@@ -107,15 +132,55 @@ const UserTasksDashboard = () => {
     setInProgress(true);
 
     try {
-      const data = await service.getTaskStatistics();
+      const depInfo = await service.getMemberDepartmentInfo();
+
+      const { Departments, DepartmentID } = depInfo;
+
+      setDepartments(Departments);
+      setDepartmentID(DepartmentID);
+
+      const data = await service.getTaskStatistics(
+        selectedDepartment,
+        calculateSubDepartments
+      );
 
       setStatistics(data);
-      // initStatistics();
     } catch (ex) {
       handleError(ex);
     }
 
     setInProgress(false);
+  };
+
+  const getSubDepartments = (depID) => {
+    const subDepartments = departments.filter((d) => d.ParentID === depID);
+
+    return (
+      <>
+        {subDepartments.map((sub_dep) => (
+          <TreeNode
+            key={sub_dep.DepartmentID}
+            value={sub_dep.DepartmentID}
+            title={
+              <FolderNode
+                title={
+                  departments.find(
+                    (d) => d.DepartmentID === sub_dep.DepartmentID
+                  )?.Title
+                }
+                color={Colors.blue[6]}
+              />
+            }
+          >
+            {getSubDepartments(sub_dep.DepartmentID)}
+          </TreeNode>
+        ))}
+      </>
+    );
+  };
+
+  const handleCalculateSubDepartmentsChange = (e) => {
+    setCalculateSubDepartments(e.target.checked);
   };
 
   const {
@@ -163,6 +228,65 @@ const UserTasksDashboard = () => {
           />
         </Space>
       </Col>
+      {departmentID > 0 && (
+        <>
+          <Col xs={24} md={16}>
+            <TreeSelect
+              showSearch
+              style={{
+                width: "100%",
+              }}
+              value={selectedDepartment}
+              dropdownStyle={{
+                maxHeight: 400,
+                overflow: "auto",
+              }}
+              placeholder={Words.select_department}
+              allowClear
+              treeDefaultExpandAll
+              onChange={handleSelectedDepartmentChange}
+              treeLine={{
+                showLeafIcon: false,
+              }}
+            >
+              <TreeNode
+                key={0}
+                value={0}
+                title={
+                  <FolderNode
+                    title={Words.my_personal_statistics}
+                    color={Colors.green[6]}
+                  />
+                }
+              />
+              <TreeNode
+                key={departmentID}
+                value={departmentID}
+                title={
+                  <FolderNode
+                    title={
+                      departments.find((d) => d.DepartmentID === departmentID)
+                        ?.Title
+                    }
+                    color={Colors.blue[6]}
+                  />
+                }
+              >
+                {getSubDepartments(departmentID)}
+              </TreeNode>
+            </TreeSelect>
+          </Col>
+          <Col xs={24} md={8}>
+            <Checkbox
+              checked={calculateSubDepartments}
+              disabled={selectedDepartment === 0}
+              onChange={handleCalculateSubDepartmentsChange}
+            >
+              {Words.calculate_sub_departments}
+            </Checkbox>
+          </Col>
+        </>
+      )}
       <Col xs={24}>
         <Alert type="info" message={Words.my_tasks} />
       </Col>
