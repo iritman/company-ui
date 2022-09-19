@@ -3,13 +3,13 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/settings/timex/holidays";
 
-async function getHolidays(year) {
+export async function getHolidays(year) {
   const { data } = await http.get(`${apiEndpoint}/days/${year}`);
 
   return data;
 }
 
-async function getParams() {
+export async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
   return data;

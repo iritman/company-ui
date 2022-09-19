@@ -3,6 +3,18 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/official/announces/user-my-announces";
 
+export async function getParams() {
+  const { data } = await http.get(`${apiEndpoint}/params`);
+
+  return data;
+}
+
+export async function getAnnounceFiles(announceID) {
+  const { data } = await http.get(`${apiEndpoint}/files/${announceID}`);
+
+  return data;
+}
+
 export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
@@ -40,6 +52,8 @@ export async function deleteData(recordID) {
 }
 
 const service = {
+  getParams,
+  getAnnounceFiles,
   getAllData,
   getNewData,
   getArchivedData,

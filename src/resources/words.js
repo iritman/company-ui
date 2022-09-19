@@ -357,6 +357,13 @@ class Words extends Component {
   static my_announces = "اطلاعیه های من";
   static announces = "اطلاعیه ها";
   static contacts = "مخاطبین";
+  static seen_count = "تعداد مشاهده";
+  static all_employees = "همه کارکنان";
+  static select_list = "انتخاب لیست";
+  static info = "اطلاعات";
+  static total_contacts = "تعداد مخاطبین";
+  static seen = "مشاهده شده";
+  static unseen = "مشاهده نشده";
 
   static calculate_sub_departments = "احتساب دپارتمان های زیرمجموعه";
   static select_department = "انتخاب دپارتمان";
@@ -829,6 +836,7 @@ class Words extends Component {
       "برای حذف ویژگی الگوی بچ اطمینان دارید؟",
     sure_to_delete_folder: "برای حذف پوشه اطمینان دارید؟",
     sure_to_delete_permission: "برای حذف دسترسی اطمینان دارید؟",
+    sure_to_delete_announce: "برای حذف اطلاعیه اطمینان دارید؟",
   };
 
   static monthes = {
