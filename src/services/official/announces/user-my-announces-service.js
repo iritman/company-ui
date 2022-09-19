@@ -51,6 +51,12 @@ export async function deleteData(recordID) {
   return data;
 }
 
+export async function seenData(announceID) {
+  const { data } = await http.post(`${apiEndpoint}/seen/${announceID}`, {});
+
+  return data;
+}
+
 const service = {
   getParams,
   getAnnounceFiles,
@@ -60,6 +66,7 @@ const service = {
   searchData,
   saveData,
   deleteData,
+  seenData,
 };
 
 export default service;

@@ -75,9 +75,11 @@ const AnnounceDetailsModal = ({
 
   const { Contacts } = selectedObject;
 
-  const total = Contacts.length;
-  const seen = Contacts.filter((contact) => contact.SeenDate.length > 0).length;
-  const unseen = Contacts.filter(
+  const total = Contacts?.length;
+  const seen = Contacts?.filter(
+    (contact) => contact.SeenDate.length > 0
+  ).length;
+  const unseen = Contacts?.filter(
     (contact) => contact.SeenDate.length === 0
   ).length;
 
