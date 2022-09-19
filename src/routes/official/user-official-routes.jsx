@@ -8,6 +8,7 @@ import UserTransmissionRoutes from "./user-transmission-routes";
 import UserTasksRoutes from "./user-tasks-routes";
 import UserProcessesRoutes from "./user-processes-routes";
 import UserEDocsRoutes from "./user-edocs-routes";
+import UserAnnouncesRoutes from "./user-announces-routes";
 //---
 
 const UserOfficialRoutes = ({ path }) => {
@@ -41,6 +42,10 @@ const UserOfficialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/official/edocs`}
         render={() => <UserEDocsRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/official/announces`}
+        render={() => <UserAnnouncesRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

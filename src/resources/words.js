@@ -352,6 +352,12 @@ class Words extends Component {
   static transfer_description = "توضیحات وسیله نقلیه";
   static hoteling_description = "توضیحات اقامت";
 
+  static new_announces = "اطلاعیه های جدید";
+  static archived_announces = "آرشیو اطلاعیه ها";
+  static my_announces = "اطلاعیه های من";
+  static announces = "اطلاعیه ها";
+  static contacts = "مخاطبین";
+
   static calculate_sub_departments = "احتساب دپارتمان های زیرمجموعه";
   static select_department = "انتخاب دپارتمان";
   static my_personal_statistics = "آمار شخصی";

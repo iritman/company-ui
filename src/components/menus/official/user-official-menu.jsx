@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Menu } from "antd";
 import { FaCar as CarIcon, FaTasks as TasksIcon } from "react-icons/fa";
 import { RiFlowChart as ProcessIcon } from "react-icons/ri";
-import { HiOutlineDocumentDuplicate as EDocsIcon } from "react-icons/hi";
+import {
+  HiOutlineDocumentDuplicate as EDocsIcon,
+  HiSpeakerphone as AnnouncesIcon,
+} from "react-icons/hi";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiFillBank as OrgIcon,
@@ -57,6 +60,13 @@ const mapper = (moduleID) => {
     case 15:
       link = "edocs";
       icon = <EDocsIcon style={{ color: Colors.magenta[6] }} size={iconSize} />;
+      break;
+
+    case 21:
+      link = "announces";
+      icon = (
+        <AnnouncesIcon style={{ color: Colors.lime[6] }} size={iconSize} />
+      );
       break;
 
     default:
