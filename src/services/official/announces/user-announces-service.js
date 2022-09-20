@@ -3,14 +3,20 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/official/announces/user-announces";
 
-async function getAllData() {
+export async function getParams() {
+  const { data } = await http.get(`${apiEndpoint}/params`);
+
+  return data;
+}
+
+export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
   return data;
 }
 
-async function searchData(searchText) {
-  const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
+export async function searchData(filter) {
+  const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
   return data;
 }
@@ -22,6 +28,7 @@ export async function deleteData(recordID) {
 }
 
 const service = {
+  getParams,
   getAllData,
   searchData,
   deleteData,

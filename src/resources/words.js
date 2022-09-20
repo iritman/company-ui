@@ -354,7 +354,7 @@ class Words extends Component {
 
   static new_announces = "اطلاعیه های جدید";
   static archived_announces = "آرشیو اطلاعیه ها";
-  static my_announces = "اطلاعیه های من";
+  static my_announces = "اطلاعیه های ارسالی";
   static announces = "اطلاعیه ها";
   static contacts = "مخاطبین";
   static seen_count = "تعداد مشاهده";
@@ -364,6 +364,7 @@ class Words extends Component {
   static total_contacts = "تعداد مخاطبین";
   static seen = "مشاهده شده";
   static unseen = "مشاهده نشده";
+  static sender = "فرستنده";
 
   static calculate_sub_departments = "احتساب دپارتمان های زیرمجموعه";
   static select_department = "انتخاب دپارتمان";

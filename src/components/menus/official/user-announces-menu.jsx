@@ -22,14 +22,14 @@ const mapper = (pageID) => {
 
   switch (pageID) {
     case 130:
-      link = "new";
+      link = "new-announces";
       icon = (
         <NewAnnouncesIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
     case 131:
-      link = "archive";
+      link = "archived-announces";
       icon = (
         <ArchivedAnnouncesIcon
           style={{ color: Colors.magenta[5] }}
@@ -46,7 +46,7 @@ const mapper = (pageID) => {
       break;
 
     case 133:
-      link = "announces";
+      link = "all-announces";
       icon = (
         <AnnouncesIcon style={{ color: Colors.blue[6] }} size={iconSize} />
       );
@@ -77,6 +77,7 @@ const UserAnnouncesMenu = () => {
   useEffect(() => {
     const pathKeys = currentLocation.pathname.split("/");
     const _lastPathKey = pathKeys[pathKeys.length - 1]
+      .replace("user-", "")
       .replaceAll("-", "")
       .toLocaleLowerCase();
     setLastPathKey(_lastPathKey);
@@ -101,7 +102,9 @@ const UserAnnouncesMenu = () => {
       <Menu.Divider />
       {accessiblePages.map((page) => (
         <Menu.Item
-          key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
+          key={page.PageName.replace("user-", "")
+            .replaceAll("-", "")
+            .toLocaleLowerCase()}
           icon={mapper(page.PageID).icon}
         >
           <Link to={`${prePath}${mapper(page.PageID).link}`}>

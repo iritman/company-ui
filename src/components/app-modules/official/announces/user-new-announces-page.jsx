@@ -29,10 +29,6 @@ const getSheets = (records) => [
       { label: Words.title, value: "Title" },
       { label: Words.descriptions, value: "DetailsText" },
       {
-        label: Words.contacts,
-        value: (record) => JSON.stringify(record.Contacts),
-      },
-      {
         label: Words.registerar,
         value: (record) => `${record.FirstName} ${record.LastName}`,
       },
@@ -99,9 +95,6 @@ const UserNewAnnouncesPage = ({ pageName }) => {
   const {
     progress,
     setProgress,
-    searched,
-    searchText,
-    setSearchText,
     records,
     setRecords,
     access,

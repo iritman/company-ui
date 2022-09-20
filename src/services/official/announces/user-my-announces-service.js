@@ -33,8 +33,14 @@ export async function getArchivedData() {
   return data;
 }
 
-export async function searchData(searchText) {
-  const { data } = await http.post(`${apiEndpoint}/search`, { searchText });
+export async function searchData(filter) {
+  const { data } = await http.post(`${apiEndpoint}/search`, filter);
+
+  return data;
+}
+
+export async function searchArchiveData(filter) {
+  const { data } = await http.post(`${apiEndpoint}/archive/search`, filter);
 
   return data;
 }
@@ -64,6 +70,7 @@ const service = {
   getNewData,
   getArchivedData,
   searchData,
+  searchArchiveData,
   saveData,
   deleteData,
   seenData,

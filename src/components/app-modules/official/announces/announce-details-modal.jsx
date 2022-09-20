@@ -42,7 +42,7 @@ const getContactsColumns = () => {
       dataIndex: "SeenDate",
       sorter: getSorter("SeenDate"),
       render: (SeenDate) => (
-        <Text style={{ color: Colors.cyan[6] }}>
+        <Text style={{ color: Colors.orange[6] }}>
           {SeenDate.length > 0 ? utils.farsiNum(utils.slashDate(SeenDate)) : ""}
         </Text>
       ),
@@ -55,7 +55,7 @@ const getContactsColumns = () => {
       sorter: getSorter("SeenTime"),
       render: (SeenTime) => (
         <Text style={{ color: Colors.purple[6] }}>
-          {SeenTime.Length > 0 ? utils.farsiNum(utils.colonTime(SeenTime)) : ""}
+          {SeenTime.length > 0 ? utils.farsiNum(utils.colonTime(SeenTime)) : ""}
         </Text>
       ),
     },
@@ -178,7 +178,9 @@ const AnnounceDetailsModal = ({
           <Row gutter={[10, 10]}>
             <Col xs={24}>
               <Alert
-                message={utils.farsiNum(`${selectedObject.Title}`)}
+                message={utils.farsiNum(
+                  `#${selectedObject.AnnounceID} - ${selectedObject.Title}`
+                )}
                 type="info"
                 showIcon
               />

@@ -9,12 +9,14 @@ import {
   getSorter,
   checkAccess,
   getColumns,
+  handleError,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import ChangableAnnounceModal from "./user-my-changable-announce-modal";
 import AnnounceDetailsModal from "./announce-details-modal";
+import SearchModal from "./user-my-announces-search-modal";
 import { usePageContext } from "./../../../contexts/page-context";
 import Colors from "./../../../../resources/colors";
 
@@ -42,7 +44,7 @@ const getSheets = (records) => [
       },
       {
         label: Words.registerar,
-        value: (record) => `${record.FirstName} ${record.LastName}`,
+        value: (record) => `${record.RegFirstName} ${record.RegLastName}`,
       },
       {
         label: Words.reg_date,
@@ -118,9 +120,9 @@ const recordID = "AnnounceID";
 const UserMyAnnouncesPage = ({ pageName }) => {
   const {
     progress,
+    setProgress,
     searched,
-    searchText,
-    setSearchText,
+    setSearched,
     records,
     setRecords,
     access,
@@ -130,17 +132,27 @@ const UserMyAnnouncesPage = ({ pageName }) => {
     showModal,
     showDetails,
     setShowDetails,
+    showSearchModal,
+    setShowSearchModal,
+    filter,
+    setFilter,
   } = usePageContext();
 
   useMount(async () => {
     handleResetContext();
     await checkAccess(setAccess, pageName);
+
+    const default_search_filter = {
+      FromDate: "",
+      ToDate: "",
+      SearchText: "",
+    };
+    setFilter(default_search_filter);
+    handleSearch(default_search_filter);
   });
 
   const {
     handleCloseModal,
-    handleGetAll,
-    handleSearch,
     handleAdd,
     handleEdit,
     handleDelete,
@@ -150,6 +162,24 @@ const UserMyAnnouncesPage = ({ pageName }) => {
     service,
     recordID,
   });
+
+  const handleSearch = async (filter) => {
+    setFilter(filter);
+    setShowSearchModal(false);
+
+    setProgress(true);
+
+    try {
+      const data = await service.searchArchiveData(filter);
+
+      setRecords(data);
+      setSearched(true);
+    } catch (err) {
+      handleError(err);
+    }
+
+    setProgress(false);
+  };
 
   const getOperationalButtons = (record) => {
     return (
@@ -174,6 +204,12 @@ const UserMyAnnouncesPage = ({ pageName }) => {
       )
     : [];
 
+  const handleClear = () => {
+    setRecords([]);
+    setFilter(null);
+    setSearched(false);
+  };
+
   //------
 
   return (
@@ -182,13 +218,10 @@ const UserMyAnnouncesPage = ({ pageName }) => {
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
             title={Words.my_announces}
-            searchText={searchText}
             sheets={getSheets(records)}
             fileName="MyAnnounces"
-            onSearchTextChanged={(e) => setSearchText(e.target.value)}
-            onSearch={handleSearch}
-            onClear={() => setRecords([])}
-            onGetAll={handleGetAll}
+            onSearch={() => setShowSearchModal(true)}
+            onClear={handleClear}
             onAdd={access?.CanAdd && handleAdd}
           />
 
@@ -207,6 +240,15 @@ const UserMyAnnouncesPage = ({ pageName }) => {
           onDelete={handleDelete}
           isOpen={showModal}
           selectedObject={selectedObject}
+        />
+      )}
+
+      {showSearchModal && (
+        <SearchModal
+          onOk={handleSearch}
+          onCancel={() => setShowSearchModal(false)}
+          isOpen={showSearchModal}
+          filter={filter}
         />
       )}
 

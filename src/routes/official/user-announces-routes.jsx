@@ -20,9 +20,9 @@ const UserOrgRoutes = ({ path }) => {
         component={UserAnnouncesDashboard}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/announces`}
+        path={`${path}/${modulePath}/all-announces`}
         exact
-        render={() => <UserAnnouncesPage pageName="user-Announces" />}
+        render={() => <UserAnnouncesPage pageName="user-AllAnnounces" />}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/my-announces`}
@@ -30,12 +30,12 @@ const UserOrgRoutes = ({ path }) => {
         render={() => <UserMyAnnouncesPage pageName="user-MyAnnounces" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/new`}
+        path={`${path}/${modulePath}/new-announces`}
         exact
         render={() => <UserNewAnnouncesPage pageName="user-NewAnnounces" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/archive`}
+        path={`${path}/${modulePath}/archived-announces`}
         exact
         render={() => (
           <UserArchivedAnnouncesPage pageName="user-ArchivedAnnounces" />
