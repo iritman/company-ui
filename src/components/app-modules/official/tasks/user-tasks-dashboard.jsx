@@ -50,20 +50,24 @@ const UserTasksDashboard = () => {
       setCalculateSubDepartments(false);
     }
 
-    await loadStatistics(newValue);
+    await loadStatistics(newValue, calculateSubDepartments);
   };
 
   useMount(async () => {
     await loadPersonalStatistics();
   });
 
-  const loadStatistics = async (selected_department_id) => {
+  const loadStatistics = async (
+    selected_department_id,
+    calculate_sub_departments
+  ) => {
     setInProgress(true);
 
     try {
       const data = await service.getTaskStatistics(
         selected_department_id,
-        calculateSubDepartments
+        calculate_sub_departments
+        // calculateSubDepartments
       );
 
       setStatistics(data);
@@ -98,8 +102,10 @@ const UserTasksDashboard = () => {
     setInProgress(false);
   };
 
-  const handleCalculateSubDepartmentsChange = (e) => {
+  const handleCalculateSubDepartmentsChange = async (e) => {
     setCalculateSubDepartments(e.target.checked);
+
+    await loadStatistics(selectedDepartment, e.target.checked);
   };
 
   return (
@@ -121,7 +127,9 @@ const UserTasksDashboard = () => {
           <ReloadButton
             tooltip={Words.update}
             inProgress={inProgress}
-            onClick={async () => await loadStatistics(selectedDepartment)}
+            onClick={async () =>
+              await loadStatistics(selectedDepartment, calculateSubDepartments)
+            }
           />
         </Space>
       </Col>
