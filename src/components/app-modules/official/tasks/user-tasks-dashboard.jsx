@@ -5,8 +5,9 @@ import service from "./../../../../services/dashboard/user-dashboard-service";
 import { handleError } from "./../../../../tools/form-manager";
 import Words from "./../../../../resources/words";
 import ReloadButton from "../../../common/reload-button";
-import PersonalStatistics from "./personal-statistics";
 import DepartmentsTree from "./departments-tree";
+import PersonalStatistics from "./personal-statistics";
+import DepartmentStatistics from "./department-statistics";
 
 const { Text } = Typography;
 
@@ -42,19 +43,38 @@ const UserTasksDashboard = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(0);
   const [calculateSubDepartments, setCalculateSubDepartments] = useState(false);
 
-  const handleSelectedDepartmentChange = (newValue) => {
+  const handleSelectedDepartmentChange = async (newValue) => {
     setSelectedDepartment(newValue);
 
     if (newValue === 0) {
       setCalculateSubDepartments(false);
     }
+
+    await loadStatistics(newValue);
   };
 
   useMount(async () => {
-    await loadStatistics();
+    await loadPersonalStatistics();
   });
 
-  const loadStatistics = async () => {
+  const loadStatistics = async (selected_department_id) => {
+    setInProgress(true);
+
+    try {
+      const data = await service.getTaskStatistics(
+        selected_department_id,
+        calculateSubDepartments
+      );
+
+      setStatistics(data);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setInProgress(false);
+  };
+
+  const loadPersonalStatistics = async () => {
     setInProgress(true);
 
     try {
@@ -101,7 +121,7 @@ const UserTasksDashboard = () => {
           <ReloadButton
             tooltip={Words.update}
             inProgress={inProgress}
-            onClick={loadStatistics}
+            onClick={async () => await loadStatistics(selectedDepartment)}
           />
         </Space>
       </Col>
@@ -126,8 +146,10 @@ const UserTasksDashboard = () => {
           </Col>
         </>
       )}
-      {selectedDepartment === 0 && (
+      {selectedDepartment === 0 ? (
         <PersonalStatistics statistics={statistics} inProgress={inProgress} />
+      ) : (
+        <DepartmentStatistics statistics={statistics} inProgress={inProgress} />
       )}
     </Row>
   );

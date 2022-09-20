@@ -183,7 +183,7 @@ const PersonalStatistics = ({ statistics, inProgress }) => {
       <Col xs={24}>
         <Alert type="info" message={Words.colleagues} />
       </Col>
-      {MyColleagues.length > 0 && (
+      {MyColleagues?.length > 0 && (
         <Col xs={24}>
           {MyColleagues.map((colleague) => (
             <React.Fragment key={colleague.MemberID}>
