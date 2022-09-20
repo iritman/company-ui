@@ -104,7 +104,7 @@ const UserAnnouncesDashboard = () => {
       </Col>
       <Col xs={12} md={6}>
         <DashboardTile
-          link="archive-announces"
+          link="archived-announces"
           inProgress={inProgress}
           title={Words.archived_announces}
           value={
