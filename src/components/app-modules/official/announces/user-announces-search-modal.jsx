@@ -15,7 +15,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../contexts/modal-context";
-import service from "../../../../services/official/announces/user-my-announces-service";
+import service from "../../../../services/official/announces/user-announces-service";
 import DropdownItem from "../../../form-controls/dropdown-item";
 import DateItem from "../../../form-controls/date-item";
 import InputItem from "../../../form-controls/input-item";

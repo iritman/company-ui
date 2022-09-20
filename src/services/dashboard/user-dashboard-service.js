@@ -25,6 +25,12 @@ async function getTaskStatistics(departmentID, calculateSubDepartments) {
   return result;
 }
 
+async function getAnnounceStatistics() {
+  const { data } = await http.get(`${apiEndpoint}/announce`);
+
+  return data;
+}
+
 async function getMemberDepartmentInfo() {
   const { data } = await http.get(`${apiEndpoint}/task/departments`);
 
@@ -34,6 +40,7 @@ async function getMemberDepartmentInfo() {
 const service = {
   getTimexStatistics,
   getTaskStatistics,
+  getAnnounceStatistics,
   getMemberDepartmentInfo,
 };
 
