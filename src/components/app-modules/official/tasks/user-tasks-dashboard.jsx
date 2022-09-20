@@ -11,7 +11,6 @@ import {
   TreeSelect,
   Checkbox,
 } from "antd";
-import { AiFillFolder as SmallFolderIcon } from "react-icons/ai";
 import service from "./../../../../services/dashboard/user-dashboard-service";
 import { handleError } from "./../../../../tools/form-manager";
 import utils from "./../../../../tools/utils";
@@ -20,20 +19,12 @@ import Colors from "./../../../../resources/colors";
 import ReloadButton from "../../../common/reload-button";
 import MemberProfileImage from "./../../../common/member-profile-image";
 import StatisticTile from "../../../common/statistic-tile";
+import FolderNode from "../../../common/folder-node";
 
 const { Text } = Typography;
 const { TreeNode } = TreeSelect;
 
 const link_prefix = "/home/official/tasks";
-
-const FolderNode = ({ title, color }) => {
-  return (
-    <Space>
-      <SmallFolderIcon style={{ color }} />
-      <Text>{title}</Text>
-    </Space>
-  );
-};
 
 const UserTasksDashboard = () => {
   const [inProgress, setInProgress] = useState(false);

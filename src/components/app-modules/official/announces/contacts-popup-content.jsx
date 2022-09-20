@@ -1,30 +1,10 @@
 import { useState } from "react";
-import {
-  Row,
-  Col,
-  Tag,
-  Input,
-  Space,
-  Typography,
-  TreeSelect,
-  Checkbox,
-  Button,
-} from "antd";
-import { AiFillFolder as SmallFolderIcon } from "react-icons/ai";
+import { Row, Col, Tag, Input, TreeSelect, Checkbox, Button } from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
+import FolderNode from "../../../common/folder-node";
 
-const { Text } = Typography;
 const { TreeNode } = TreeSelect;
-
-const FolderNode = ({ title, color }) => {
-  return (
-    <Space>
-      <SmallFolderIcon style={{ color }} />
-      <Text>{title}</Text>
-    </Space>
-  );
-};
 
 const ContactsPopupContent = ({
   departments,

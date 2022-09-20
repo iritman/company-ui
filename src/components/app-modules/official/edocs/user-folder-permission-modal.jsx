@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Space, Typography, TreeSelect } from "antd";
 import { FolderOpenFilled as FolderIcon } from "@ant-design/icons";
-import { AiFillFolder as SmallFolderIcon } from "react-icons/ai";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -21,18 +20,10 @@ import {
 } from "../../../contexts/modal-context";
 import service from "../../../../services/official/edocs/user-folder-permissions-service";
 import { handleError } from "../../../../tools/form-manager";
+import FolderNode from "../../../common/folder-node";
 
 const { Text } = Typography;
 const { TreeNode } = TreeSelect;
-
-const FolderNode = ({ title, color }) => {
-  return (
-    <Space>
-      <SmallFolderIcon style={{ color }} />
-      <Text>{title}</Text>
-    </Space>
-  );
-};
 
 const FoldersList = ({ value, groups, folders, onChange }) => {
   return (
