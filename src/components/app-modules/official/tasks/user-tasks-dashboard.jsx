@@ -1,27 +1,16 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Link } from "react-router-dom";
 import {
   Row,
   Col,
   Typography,
   Alert,
   Badge,
-  Card,
   Space,
-  Statistic,
   Tooltip,
   TreeSelect,
   Checkbox,
 } from "antd";
-// import {
-//   CheckOutlined as DoneIcon,
-//   ThunderboltOutlined as EventIcon,
-//   ClockCircleOutlined as ClockIcon,
-//   HourglassOutlined as WaitingIcon,
-//   FileDoneOutlined as RegedReportIcon,
-//   FileUnknownOutlined as UnreadReportIcon,
-// } from "@ant-design/icons";
 import { AiFillFolder as SmallFolderIcon } from "react-icons/ai";
 import service from "./../../../../services/dashboard/user-dashboard-service";
 import { handleError } from "./../../../../tools/form-manager";
@@ -30,9 +19,12 @@ import Words from "./../../../../resources/words";
 import Colors from "./../../../../resources/colors";
 import ReloadButton from "../../../common/reload-button";
 import MemberProfileImage from "./../../../common/member-profile-image";
+import StatisticTile from "../../../common/statistic-tile";
 
 const { Text } = Typography;
 const { TreeNode } = TreeSelect;
+
+const link_prefix = "/home/official/tasks";
 
 const FolderNode = ({ title, color }) => {
   return (
@@ -40,27 +32,6 @@ const FolderNode = ({ title, color }) => {
       <SmallFolderIcon style={{ color }} />
       <Text>{title}</Text>
     </Space>
-  );
-};
-
-const DashboardTile = (props) => {
-  const { title, value, color, link, inProgress /*, icon */ } = props;
-
-  const link_prefix = "/home/official/tasks";
-
-  return (
-    <Card loading={inProgress} hoverable style={{ height: "100%" }}>
-      <Link to={`${link_prefix}/${link}`}>
-        <Statistic
-          title={title}
-          value={value}
-          valueStyle={{
-            color,
-          }}
-          // prefix={icon}
-        />
-      </Link>
-    </Card>
   );
 };
 
@@ -291,70 +262,71 @@ const UserTasksDashboard = () => {
         <Alert type="info" message={Words.my_tasks} />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-tasks"
           inProgress={inProgress}
           title={Words.today_tasks}
           value={MyTodayTasks > 0 ? utils.farsiNum(MyTodayTasks) : "-"}
           color={Colors.green[6]}
-          // icon={<WaitingIcon style={{ color: Colors.green[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-tasks"
           inProgress={inProgress}
           title={Words.tomorrow_tasks}
           value={MyTomorrowTasks > 0 ? utils.farsiNum(MyTomorrowTasks) : "-"}
           color={Colors.purple[6]}
-          // icon={<ClockIcon style={{ color: Colors.purple[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-tasks"
           inProgress={inProgress}
           title={Words.delayed_tasks}
           value={MyDelayedTasks > 0 ? utils.farsiNum(MyDelayedTasks) : "-"}
           color={Colors.red[6]}
-          // icon={<EventIcon style={{ color: Colors.red[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-done-tasks"
           inProgress={inProgress}
           title={Words.done_tasks}
           value={MyDoneTasks > 0 ? utils.farsiNum(MyDoneTasks) : "-"}
           color={Colors.blue[6]}
-          // icon={<DoneIcon style={{ color: Colors.blue[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-tasks"
           inProgress={inProgress}
           title={Words.new_reports}
           value={MyUnreadReports > 0 ? utils.farsiNum(MyUnreadReports) : "-"}
           color={Colors.red[5]}
-          // icon={<UnreadReportIcon style={{ color: Colors.red[5] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-tasks"
           inProgress={inProgress}
           title={Words.reged_reports}
           value={MyRegedReports > 0 ? utils.farsiNum(MyRegedReports) : "-"}
           color={Colors.green[5]}
-          // icon={<RegedReportIcon style={{ color: Colors.green[5] }} />}
         />
       </Col>
       <Col xs={24}>
         <Alert type="info" message={Words.following} />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.today_tasks}
@@ -362,11 +334,11 @@ const UserTasksDashboard = () => {
             EmployeesTodayTasks > 0 ? utils.farsiNum(EmployeesTodayTasks) : "-"
           }
           color={Colors.green[6]}
-          // icon={<WaitingIcon style={{ color: Colors.green[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.tomorrow_tasks}
@@ -376,11 +348,11 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.purple[6]}
-          // icon={<ClockIcon style={{ color: Colors.purple[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.delayed_tasks}
@@ -390,11 +362,11 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.red[6]}
-          // icon={<EventIcon style={{ color: Colors.red[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.done_tasks}
@@ -402,11 +374,11 @@ const UserTasksDashboard = () => {
             EmployeesDoneTasks > 0 ? utils.farsiNum(EmployeesDoneTasks) : "-"
           }
           color={Colors.blue[6]}
-          // icon={<DoneIcon style={{ color: Colors.blue[6] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.new_reports}
@@ -416,11 +388,11 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.red[5]}
-          // icon={<UnreadReportIcon style={{ color: Colors.red[5] }} />}
         />
       </Col>
       <Col xs={12} lg={4} md={8}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.reged_reports}
@@ -430,7 +402,6 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.green[5]}
-          // icon={<RegedReportIcon style={{ color: Colors.green[5] }} />}
         />
       </Col>
       <Col xs={24}>
@@ -475,7 +446,8 @@ const UserTasksDashboard = () => {
         <Alert type="info" message={Words.task_supervisions} />
       </Col>
       <Col xs={12} lg={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="task-supervisions"
           inProgress={inProgress}
           title={Words.under_supervision_tasks}
@@ -485,11 +457,11 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.green[6]}
-          // icon={<ClockIcon style={{ color: Colors.green[6] }} />}
         />
       </Col>
       <Col xs={12} lg={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="task-supervisions"
           inProgress={inProgress}
           title={Words.finished_supervision_tasks}
@@ -499,11 +471,11 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.purple[4]}
-          // icon={<EventIcon style={{ color: Colors.purple[4] }} />}
         />
       </Col>
       <Col xs={12} lg={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="task-supervisions"
           inProgress={inProgress}
           title={Words.new_reports}
@@ -513,11 +485,11 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.red[5]}
-          // icon={<UnreadReportIcon style={{ color: Colors.red[5] }} />}
         />
       </Col>
       <Col xs={12} lg={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="employees-tasks"
           inProgress={inProgress}
           title={Words.reged_reports}
@@ -527,7 +499,6 @@ const UserTasksDashboard = () => {
               : "-"
           }
           color={Colors.green[5]}
-          // icon={<RegedReportIcon style={{ color: Colors.green[5] }} />}
         />
       </Col>
     </Row>

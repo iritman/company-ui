@@ -1,35 +1,16 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Link } from "react-router-dom";
-import { Row, Col, Typography, Card, Space, Statistic } from "antd";
+import { Row, Col, Typography, Space } from "antd";
 import service from "./../../../../services/dashboard/user-dashboard-service";
 import { handleError } from "./../../../../tools/form-manager";
 import utils from "./../../../../tools/utils";
 import Words from "./../../../../resources/words";
 import Colors from "./../../../../resources/colors";
 import ReloadButton from "../../../common/reload-button";
+import StatisticTile from "../../../common/statistic-tile";
 
 const { Text } = Typography;
-
-const DashboardTile = (props) => {
-  const { title, value, color, link, inProgress } = props;
-
-  const link_prefix = "/home/official/announces";
-
-  return (
-    <Card loading={inProgress} hoverable style={{ height: "100%" }}>
-      <Link to={`${link_prefix}/${link}`}>
-        <Statistic
-          title={title}
-          value={value}
-          valueStyle={{
-            color,
-          }}
-        />
-      </Link>
-    </Card>
-  );
-};
+const link_prefix = "/home/official/announces";
 
 const UserAnnouncesDashboard = () => {
   const [inProgress, setInProgress] = useState(false);
@@ -85,7 +66,8 @@ const UserAnnouncesDashboard = () => {
         </Space>
       </Col>
       <Col xs={12} md={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link=""
           inProgress={inProgress}
           title={Words.total}
@@ -94,7 +76,8 @@ const UserAnnouncesDashboard = () => {
         />
       </Col>
       <Col xs={12} md={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="new-announces"
           inProgress={inProgress}
           title={Words.new_announces}
@@ -103,7 +86,8 @@ const UserAnnouncesDashboard = () => {
         />
       </Col>
       <Col xs={12} md={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="archived-announces"
           inProgress={inProgress}
           title={Words.archived_announces}
@@ -114,7 +98,8 @@ const UserAnnouncesDashboard = () => {
         />
       </Col>
       <Col xs={12} md={6}>
-        <DashboardTile
+        <StatisticTile
+          linkPrefix={link_prefix}
           link="my-announces"
           inProgress={inProgress}
           title={Words.my_announces}
