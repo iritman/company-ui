@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Menu } from "antd";
 import { FaDatabase as StoreIcon } from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
-import { MdSettings as SettingsIcon } from "react-icons/md";
+import {
+  MdSettings as SettingsIcon,
+  MdAccountBalanceWallet as AccountsIcon,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -24,6 +27,13 @@ const mapper = (moduleID) => {
     case 17:
       link = "public-settings";
       icon = <SettingsIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
+      break;
+
+    case 19:
+      link = "accounts";
+      icon = (
+        <AccountsIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
+      );
       break;
 
     default:

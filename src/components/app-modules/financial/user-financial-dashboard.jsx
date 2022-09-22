@@ -3,7 +3,10 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 import { FaDatabase as StoreIcon } from "react-icons/fa";
-import { MdSettings as SettingsIcon } from "react-icons/md";
+import {
+  MdSettings as SettingsIcon,
+  MdAccountBalanceWallet as AccountsIcon,
+} from "react-icons/md";
 import Colors from "../../../resources/colors";
 import modulesService from "../../../services/app/modules-service";
 
@@ -30,11 +33,11 @@ const mapper = (moduleID) => {
       backColor = Colors.cyan[3];
       break;
 
-    // case 6:
-    //   link = "timex";
-    //   icon = <TimexSettingsIcon {...iconProps} />;
-    //   backColor = Colors.orange[3];
-    //   break;
+    case 19:
+      link = "accounts";
+      icon = <AccountsIcon {...iconProps} />;
+      backColor = Colors.volcano[3];
+      break;
 
     // case 7:
     //   link = "automation";

@@ -27,6 +27,8 @@ import UserFinancialMenu from "../components/menus/financial/user-financial-menu
 import UserPublicSettingsMenu from "../components/menus/financial/user-public-settings-menu";
 import UserStoreManagementMenu from "../components/menus/financial/user-store-management-menu";
 //---
+import UserAccountsMenu from "../components/menus/financial/user-accounts-menu";
+//---
 
 const MenuRoutes = ({ path }) => {
   return (
@@ -100,6 +102,11 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/store-mgr`}
         component={UserStoreManagementMenu}
+      />
+      {/* ----------- */}
+      <ProtectedRoute
+        path={`${path}/financial/accounts`}
+        component={UserAccountsMenu}
       />
       {/* ----------- */}
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />

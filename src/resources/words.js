@@ -370,6 +370,13 @@ class Words extends Component {
   static select_department = "انتخاب دپارتمان";
   static my_personal_statistics = "آمار شخصی";
 
+  static accounts = "حساب ها";
+  static tafsil_types = "انواع تفصیل";
+  static tafsil_type = "نوع تفصیل";
+  static parent_tafsil_type = "نوع تفصیل پدر";
+  static base_module = "ماژول پایه";
+  static start_code = "اولین کد پیش فرض";
+
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
   static bach_no = "شماره بچ";
