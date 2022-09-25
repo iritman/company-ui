@@ -375,7 +375,11 @@ class Words extends Component {
   static tafsil_type = "نوع تفصیل";
   static parent_tafsil_type = "نوع تفصیل پدر";
   static base_module = "ماژول پایه";
+  static base_module_item_id = "شناسه آیتم ماژول پایه";
+  static base_module_item_title = "عنوان آیتم ماژول پایه";
   static start_code = "اولین کد پیش فرض";
+  static tafsil_accounts = "حساب های تفصیلی";
+  static code_length = "طول کد طبقه بندی";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
@@ -689,6 +693,7 @@ class Words extends Component {
   static cost_centers = "مراکز هزینه";
   static cost_center = "مرکز هزینه";
   static currencies = "ارزها";
+  static default_currency = "ارز پیش فرض";
   static currency_ratios = "نسبت تبدیل ارزها";
   static ratio = "نسبت تبدیل";
   static from_currency = "ارز مبدا";

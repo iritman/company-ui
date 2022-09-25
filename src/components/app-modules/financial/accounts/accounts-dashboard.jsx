@@ -12,7 +12,7 @@ import {
 // } from "react-icons/si";
 // import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 // import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
-// import { RiDatabaseLine as CreditSourcesIcon } from "react-icons/ri";
+import { MdOutlineAccountTree as TafsilAccountsIcon } from "react-icons/md";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -33,11 +33,11 @@ const mapper = (pageID) => {
       backColor = Colors.orange[3];
       break;
 
-    // case 162:
-    //   link = "cost-center-types";
-    //   icon = <CostCenterTypesIcon {...iconProps} />;
-    //   backColor = Colors.green[3];
-    //   break;
+    case 203:
+      link = "tafsil-accounts";
+      icon = <TafsilAccountsIcon {...iconProps} />;
+      backColor = Colors.green[3];
+      break;
 
     // case 163:
     //   link = "cost-centers";

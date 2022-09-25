@@ -4,6 +4,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 //---
 import AccountsDashboard from "../../components/app-modules/financial/accounts/accounts-dashboard";
 import TafsilTypesPage from "../../components/app-modules/financial/accounts/tafsil-types-page";
+import TafsilAccountsPage from "../../components/app-modules/financial/accounts/tafsil-accounts-page";
 //---
 
 const modulePath = "financial/accounts";
@@ -20,6 +21,11 @@ const UserPublicSettingsRoutes = ({ path }) => {
         path={`${path}/${modulePath}/tafsil-types`}
         exact
         render={() => <TafsilTypesPage pageName="TafsilTypes" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/tafsil-accounts`}
+        exact
+        render={() => <TafsilAccountsPage pageName="TafsilAccounts" />}
       />
       <Redirect to="/not-found" />
     </Switch>
