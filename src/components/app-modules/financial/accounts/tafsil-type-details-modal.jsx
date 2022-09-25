@@ -15,6 +15,7 @@ const TafsilTypeDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     ParentTitle,
     BaseTableTitle,
     StartCode,
+    CodeLength,
     DetailsText,
   } = selectedObject;
 
@@ -63,13 +64,20 @@ const TafsilTypeDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                     {utils.farsiNum(`${TafsilTypeID}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.start_code}>
-                  <Text style={{ color: Colors.red[7] }}>{StartCode}</Text>
-                </Descriptions.Item>
                 <Descriptions.Item label={Words.parent_tafsil_type}>
                   <Text style={{ color: Colors.green[6] }}>{ParentTitle}</Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.base_module}>
+                <Descriptions.Item label={Words.start_code}>
+                  <Text style={{ color: Colors.red[7] }}>
+                    {utils.farsiNum(`${StartCode}`)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.code_length}>
+                  <Text style={{ color: Colors.red[7] }}>
+                    {utils.farsiNum(`${CodeLength}`)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.base_module} span={2}>
                   <Text style={{ color: Colors.blue[6] }}>
                     {BaseTableTitle}
                   </Text>

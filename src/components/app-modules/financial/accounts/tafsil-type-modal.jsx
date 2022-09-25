@@ -26,6 +26,7 @@ const schema = {
   ParentTafsilTypeID: Joi.number().required(),
   BaseTableID: Joi.number().required(),
   StartCode: Joi.number().min(1).required().label(Words.start_code),
+  CodeLength: Joi.number().min(1).required().label(Words.code_length),
   Title: Joi.string()
     .min(2)
     .max(50)
@@ -45,6 +46,7 @@ const initRecord = {
   ParentTafsilTypeID: 0,
   BaseTableID: 0,
   StartCode: 1,
+  CodeLength: 4,
   Title: "",
   DetailsText: "",
 };
@@ -72,6 +74,7 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     record.ParentTafsilTypeID = 0;
     record.BaseTableID = 0;
     record.StartCode = 1;
+    record.CodeLength = 4;
     record.Title = "";
     record.DetailsText = "";
 
@@ -155,14 +158,25 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <NumericInputItem
               horizontal
               required
               title={Words.start_code}
               fieldName="StartCode"
               min={1}
-              max={10000}
+              max={9999}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              required
+              title={Words.code_length}
+              fieldName="CodeLength"
+              min={1}
+              max={9 - `${record.StartCode}`.length}
               formConfig={formConfig}
             />
           </Col>
