@@ -380,6 +380,13 @@ class Words extends Component {
   static start_code = "اولین کد پیش فرض";
   static tafsil_accounts = "حساب های تفصیلی";
   static code_length = "طول کد طبقه بندی";
+  static account_structures = "ساختار حساب ها";
+  static new_group = "گروه جدید";
+  static new_total = "حساب کل جدید";
+  static new_moein = "حساب معین جدید";
+  static group_code = "کد گروه";
+  static account_type = "نوع حساب";
+  static nature = "ماهیت";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
@@ -850,6 +857,7 @@ class Words extends Component {
     sure_to_delete_folder: "برای حذف پوشه اطمینان دارید؟",
     sure_to_delete_permission: "برای حذف دسترسی اطمینان دارید؟",
     sure_to_delete_announce: "برای حذف اطلاعیه اطمینان دارید؟",
+    sure_to_delete_selected_item: "برای حذف آیتم انتخابی اطمینان دارید؟",
   };
 
   static monthes = {

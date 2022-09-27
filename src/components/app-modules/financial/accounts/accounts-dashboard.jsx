@@ -12,7 +12,10 @@ import {
 // } from "react-icons/si";
 // import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 // import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
-import { MdOutlineAccountTree as TafsilAccountsIcon } from "react-icons/md";
+import {
+  MdOutlineAccountTree as TafsilAccountsIcon,
+  MdOutlineConstruction as StructureIcon,
+} from "react-icons/md";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -27,6 +30,12 @@ const mapper = (pageID) => {
   let backColor = Colors.blue[3];
 
   switch (pageID) {
+    case 201:
+      link = "account-structures";
+      icon = <StructureIcon {...iconProps} />;
+      backColor = Colors.purple[3];
+      break;
+
     case 202:
       link = "tafsil-types";
       icon = <TafsilTypesIcon {...iconProps} />;

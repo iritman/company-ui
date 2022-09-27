@@ -11,7 +11,10 @@ import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 // } from "react-icons/si";
 // import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
 // import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
-import { MdOutlineAccountTree as TafsilAccountsIcon } from "react-icons/md";
+import {
+  MdOutlineAccountTree as TafsilAccountsIcon,
+  MdOutlineConstruction as StructureIcon,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -26,6 +29,13 @@ const mapper = (pageID) => {
   let icon = null;
 
   switch (pageID) {
+    case 201:
+      link = "account-structures";
+      icon = (
+        <StructureIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
+
     case 202:
       link = "tafsil-types";
       icon = (
