@@ -566,7 +566,7 @@ export function hasSelectedFilter(baseObject, checkObject) {
   return result;
 }
 
-export const VALID_REGEX = /^[آ-یa-zA-Z0-9۰-۹.\-()\s]+$/;
+export const VALID_REGEX = /^[آ-یa-zA-Z0-9,:<>?-_=+()*&^%$#@!~{}۰-۹.\-()\s]+$/;
 
 const methods = {
   VALID_REGEX,
