@@ -21,6 +21,7 @@ import Words from "../../../../resources/words";
 // import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import groupService from "../../../../services/financial/accounts/structure-groups-service";
+import totalService from "../../../../services/financial/accounts/structure-totals-service";
 import { checkAccess, handleError } from "../../../../tools/form-manager";
 // import TafsilAccountModal from "./tafsil-account-modal";
 // import DetailsModal from "./tafsil-account-details-modal";
@@ -29,7 +30,9 @@ import {
   useResetContext,
 } from "../../../contexts/page-context";
 import GroupModal from "./structure-group-modal";
+import TotalModal from "./structure-total-modal";
 import StructureGroupDetails from "./structure-group-details";
+import StructureTotalDetails from "./structure-total-details";
 
 const { Text } = Typography;
 
@@ -57,8 +60,8 @@ const AccountStructuesPage = ({ pageName }) => {
   const [groupsTree, setGroupsTree] = useState([]);
   const [selectedNode, setSelectedNode] = useState(null);
   const [showGroupModal, setShowGroupModal] = useState(false);
-  //   const [showTotalModal, setShowTotalModal] = useState(false);
-  //   const [showMoeinModal, setShowMoeinModal] = useState(false);
+  const [showTotalModal, setShowTotalModal] = useState(false);
+  const [showMoeinModal, setShowMoeinModal] = useState(false);
 
   useMount(async () => {
     resetContext();
@@ -87,6 +90,43 @@ const AccountStructuesPage = ({ pageName }) => {
     setProgress(false);
   };
 
+  //------
+
+  const arrangeMoeins = (moeins) => {
+    let moeinsList = [];
+
+    moeins.forEach((moein) => {
+      moeinsList = [
+        ...moeinsList,
+        {
+          title: utils.farsiNum(`${moein.MoeinCode} - ${moein.Title}`),
+          key: `m${moein.MoeinID}`,
+        },
+      ];
+    });
+
+    return moeinsList;
+  };
+
+  const arrangeTotals = (totals) => {
+    let totalsList = [];
+
+    totals.forEach((total) => {
+      totalsList = [
+        ...totalsList,
+        {
+          title: utils.farsiNum(
+            `${total.GroupCode}${total.TotalCode} - ${total.Title}`
+          ),
+          key: `t${total.TotalID}`,
+          children: arrangeMoeins(total.Moeins),
+        },
+      ];
+    });
+
+    return totalsList;
+  };
+
   const arrangeStructure = (groups) => {
     let groupsList = [];
 
@@ -96,6 +136,7 @@ const AccountStructuesPage = ({ pageName }) => {
         {
           title: utils.farsiNum(`${group.GroupCode} - ${group.Title}`),
           key: `g${group.GroupID}`,
+          children: arrangeTotals(group.Totals),
         },
       ];
     });
@@ -124,6 +165,12 @@ const AccountStructuesPage = ({ pageName }) => {
           break;
         case "t":
           node.type = "total";
+          node = {
+            ...node,
+            ...groups
+              .find((g) => g.Totals.find((t) => t.TotalID === id))
+              .Totals.find((t) => t.TotalID === id),
+          };
           break;
         case "m":
           node.type = "moein";
@@ -134,6 +181,24 @@ const AccountStructuesPage = ({ pageName }) => {
 
       setSelectedNode(node);
     }
+  };
+
+  const renderDetails = () => {
+    let result = <></>;
+
+    switch (selectedNode.type) {
+      case "group":
+        result = <StructureGroupDetails group={selectedNode} />;
+        break;
+      case "total":
+        result = <StructureTotalDetails total={selectedNode} />;
+        break;
+      default:
+        result = <></>;
+        break;
+    }
+
+    return result;
   };
 
   const getNewButtonTitle = () => {
@@ -163,8 +228,13 @@ const AccountStructuesPage = ({ pageName }) => {
 
   const handleNewButtonClick = async () => {
     if (selectedNode) {
-      if (selectedNode.type === "group") {
-        setShowGroupModal(true);
+      switch (selectedNode.type) {
+        case "group":
+          setShowTotalModal(true);
+          break;
+        case "total":
+          setShowMoeinModal(true);
+          break;
       }
     } else {
       setShowGroupModal(true);
@@ -183,6 +253,34 @@ const AccountStructuesPage = ({ pageName }) => {
     await refreshContent();
   };
 
+  const handleSaveTotal = async (total) => {
+    // const saved_data =
+    await totalService.saveData(total);
+
+    // if (selectedNode) {
+    //   const { id, key, type } = selectedNode;
+    //   setSelectedNode({ ...saved_data, id, key, type });
+    //   setSelectedObject({ ...saved_data, id, key, type });
+    // }
+
+    await refreshContent();
+  };
+
+  const handleEdit = () => {
+    setSelectedObject(selectedNode);
+
+    switch (selectedNode.type) {
+      case "group":
+        setShowGroupModal(true);
+        break;
+      case "total":
+        setShowTotalModal(true);
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleDelete = async () => {
     if (selectedNode) {
       setProgress(true);
@@ -193,6 +291,9 @@ const AccountStructuesPage = ({ pageName }) => {
         switch (selectedNode.type) {
           case "group":
             data = await groupService.deleteData(selectedNode.GroupID);
+            break;
+          case "total":
+            data = await totalService.deleteData(selectedNode.TotalID);
             break;
           default:
             data = null;
@@ -255,11 +356,7 @@ const AccountStructuesPage = ({ pageName }) => {
           <Col xs={24} md={12}>
             {selectedNode && (
               <Row gutter={[5, 10]}>
-                <Col xs={24}>
-                  {selectedNode.type === "group" && (
-                    <StructureGroupDetails group={selectedNode} />
-                  )}
-                </Col>
+                <Col xs={24}>{renderDetails()}</Col>
                 {selectedNode && (access?.CanEdit || access?.CanDelete) && (
                   <Col xs={24} md={12}>
                     <Space>
@@ -267,28 +364,29 @@ const AccountStructuesPage = ({ pageName }) => {
                         <Button
                           type="primary"
                           icon={<EditIcon />}
-                          onClick={() => {
-                            setSelectedObject(selectedNode);
-                            setShowGroupModal(true);
-                          }}
+                          onClick={handleEdit}
                         >
                           {Words.edit}
                         </Button>
                       )}
 
-                      {access.CanDelete && selectedNode.Totals.length === 0 && (
-                        <Popconfirm
-                          title={Words.questions.sure_to_delete_selected_item}
-                          onConfirm={handleDelete}
-                          okText={Words.yes}
-                          cancelText={Words.no}
-                          icon={<QuestionIcon style={{ color: "red" }} />}
-                        >
-                          <Button type="primary" danger icon={<DeleteIcon />}>
-                            {Words.delete}
-                          </Button>
-                        </Popconfirm>
-                      )}
+                      {access.CanDelete &&
+                        ((selectedNode.type === "group" &&
+                          selectedNode.Totals.length === 0) ||
+                          (selectedNode.type === "total" &&
+                            selectedNode.Moeins.length === 0)) && (
+                          <Popconfirm
+                            title={Words.questions.sure_to_delete_selected_item}
+                            onConfirm={handleDelete}
+                            okText={Words.yes}
+                            cancelText={Words.no}
+                            icon={<QuestionIcon style={{ color: "red" }} />}
+                          >
+                            <Button type="primary" danger icon={<DeleteIcon />}>
+                              {Words.delete}
+                            </Button>
+                          </Popconfirm>
+                        )}
                     </Space>
                   </Col>
                 )}
@@ -303,7 +401,23 @@ const AccountStructuesPage = ({ pageName }) => {
           selectedObject={selectedObject}
           isOpen={showGroupModal}
           onOk={handleSaveGroup}
-          onCancel={() => setShowGroupModal(false)}
+          onCancel={() => {
+            setShowGroupModal(false);
+            setSelectedObject(null);
+          }}
+        />
+      )}
+
+      {showTotalModal && (
+        <TotalModal
+          selectedObject={selectedObject}
+          group={selectedNode}
+          isOpen={showTotalModal}
+          onOk={handleSaveTotal}
+          onCancel={() => {
+            setShowTotalModal(false);
+            setSelectedObject(null);
+          }}
         />
       )}
 

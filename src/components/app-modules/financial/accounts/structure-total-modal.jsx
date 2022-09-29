@@ -12,7 +12,7 @@ import {
   saveModalChanges,
   handleError,
 } from "../../../../tools/form-manager";
-import service from "../../../../services/financial/accounts/structure-groups-service";
+import service from "../../../../services/financial/accounts/structure-totals-service";
 import InputItem from "./../../../form-controls/input-item";
 import NumericInputItem from "./../../../form-controls/numeric-input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
@@ -23,8 +23,9 @@ import {
 } from "./../../../contexts/modal-context";
 
 const schema = {
+  TotalID: Joi.number().required(),
   GroupID: Joi.number().required(),
-  GroupCode: Joi.number().min(1).required().label(Words.start_code),
+  TotalCode: Joi.number().required().label(Words.start_code),
   Title: Joi.string()
     .min(2)
     .max(50)
@@ -33,6 +34,7 @@ const schema = {
     .regex(utils.VALID_REGEX),
   AccountTypeID: Joi.number().min(1).required(),
   NatureID: Joi.number().min(1).required(),
+  MoeinCodeLength: Joi.number().min(1).required(),
   DetailsText: Joi.string()
     .min(5)
     .max(512)
@@ -43,18 +45,26 @@ const schema = {
 };
 
 const initRecord = {
-  GroupID: 0,
-  GroupCode: 0,
+  TotalID: 0,
+  //   GroupID: 0,
+  TotalCode: 0,
   Title: "",
   AccountTypeID: 0,
   NatureID: 0,
+  MoeinCodeLength: 2,
   DetailsText: "",
   IsActive: true,
 };
 
 const formRef = React.createRef();
 
-const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const StructureTotalModal = ({
+  isOpen,
+  group,
+  selectedObject,
+  onOk,
+  onCancel,
+}) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
@@ -72,7 +82,7 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.GroupCode = 0;
+    record.TotalCode = 0;
     record.Title = "";
     record.AccountTypeID = 0;
     record.NatureID = 0;
@@ -86,6 +96,7 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   useMount(async () => {
     resetContext();
+    initRecord.GroupID = group.GroupID;
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
     initModal(formRef, selectedObject, setRecord);
@@ -103,10 +114,10 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       setNatures(Natures);
 
       if (!selectedObject) {
-        const code = await service.getNewCode();
+        const code = await service.getNewCode(group.GroupID);
 
         const rec = { ...initRecord };
-        rec.GroupCode = code.NewCode;
+        rec.TotalCode = code.NewCode;
 
         setRecord(rec);
         loadFieldsValue(formRef, rec);
@@ -140,7 +151,7 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       isEdit={isEdit}
       inProgress={progress}
       disabled={validateForm({ record, schema }) && true}
-      title={Words.account_group}
+      title={Words.account_total}
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
@@ -152,10 +163,11 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             <NumericInputItem
               horizontal
               required
-              title={Words.group_code}
-              fieldName="GroupCode"
-              min={1}
-              max={99}
+              title={Words.total_code}
+              fieldName="TotalCode"
+              addonAfter={1}
+              min={0}
+              max={9}
               formConfig={formConfig}
             />
           </Col>
@@ -189,6 +201,17 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               required
             />
           </Col>
+          <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              required
+              title={Words.code_length}
+              fieldName="MoeinCodeLength"
+              min={1}
+              max={4}
+              formConfig={formConfig}
+            />
+          </Col>
           <Col xs={24}>
             <InputItem
               title={Words.descriptions}
@@ -216,4 +239,4 @@ const StructureGroupModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   );
 };
 
-export default StructureGroupModal;
+export default StructureTotalModal;
