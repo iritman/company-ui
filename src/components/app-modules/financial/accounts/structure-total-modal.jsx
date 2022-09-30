@@ -34,7 +34,6 @@ const schema = {
     .regex(utils.VALID_REGEX),
   AccountTypeID: Joi.number().min(1).required(),
   NatureID: Joi.number().min(1).required(),
-  MoeinCodeLength: Joi.number().min(1).required(),
   DetailsText: Joi.string()
     .min(5)
     .max(512)
@@ -51,7 +50,6 @@ const initRecord = {
   Title: "",
   AccountTypeID: 0,
   NatureID: 0,
-  MoeinCodeLength: 2,
   DetailsText: "",
   IsActive: true,
 };
@@ -199,17 +197,6 @@ const StructureTotalModal = ({
               valueColumn="Title"
               formConfig={formConfig}
               required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <NumericInputItem
-              horizontal
-              required
-              title={Words.code_length}
-              fieldName="MoeinCodeLength"
-              min={1}
-              max={4}
-              formConfig={formConfig}
             />
           </Col>
           <Col xs={24}>
