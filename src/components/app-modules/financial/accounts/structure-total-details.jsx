@@ -14,7 +14,7 @@ const valueColor = Colors.blue[7];
 const StructureTotalDetails = ({ total }) => {
   const {
     TotalID,
-    GroupID,
+    // GroupID,
     GroupCode,
     TotalCode,
     Title,
@@ -22,12 +22,9 @@ const StructureTotalDetails = ({ total }) => {
     AccountTypeTitle,
     // NatureID,
     NatureTitle,
-    MoeinCodeLength,
     DetailsText,
     IsActive,
   } = total;
-
-  console.log(total);
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>

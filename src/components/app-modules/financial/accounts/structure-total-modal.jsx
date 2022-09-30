@@ -163,7 +163,7 @@ const StructureTotalModal = ({
               required
               title={Words.total_code}
               fieldName="TotalCode"
-              addonAfter={1}
+              addonAfter={group.GroupCode}
               min={0}
               max={9}
               formConfig={formConfig}
