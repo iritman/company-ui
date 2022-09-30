@@ -388,9 +388,12 @@ class Words extends Component {
   static account_type = "نوع حساب";
   static nature = "ماهیت";
   static total_code = "کد";
+  static moein_code = "کد معین";
   static account_group = "گروه حساب";
   static account_total = "حساب کل";
   static account_moein = "حساب معین";
+  static account_control_type = "کنترل ماهیت حساب طی دوره";
+  static is_convertable = "تسعیر پذیر";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";

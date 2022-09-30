@@ -10,7 +10,6 @@ import {
   Space,
   Popconfirm,
 } from "antd";
-// import { AiFillFolder as FolderIcon } from "react-icons/ai";
 import {
   PlusOutlined as PlusIcon,
   QuestionCircleOutlined as QuestionIcon,
@@ -18,21 +17,21 @@ import {
   DeleteOutlined as DeleteIcon,
 } from "@ant-design/icons";
 import Words from "../../../../resources/words";
-// import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import groupService from "../../../../services/financial/accounts/structure-groups-service";
 import totalService from "../../../../services/financial/accounts/structure-totals-service";
+import moeinService from "../../../../services/financial/accounts/structure-moeins-service";
 import { checkAccess, handleError } from "../../../../tools/form-manager";
-// import TafsilAccountModal from "./tafsil-account-modal";
-// import DetailsModal from "./tafsil-account-details-modal";
 import {
   usePageContext,
   useResetContext,
 } from "../../../contexts/page-context";
 import GroupModal from "./structure-group-modal";
 import TotalModal from "./structure-total-modal";
+import MoeinModal from "./structure-moein-modal";
 import StructureGroupDetails from "./structure-group-details";
 import StructureTotalDetails from "./structure-total-details";
+import StructureMoeinDetails from "./structure-moein-details";
 
 const { Text } = Typography;
 
@@ -42,16 +41,8 @@ const AccountStructuesPage = ({ pageName }) => {
     setProgress,
     access,
     setAccess,
-    // searched,
-    // searchText,
-    // setSearchText,
-    // records,
-    // setRecords,
     selectedObject,
     setSelectedObject,
-    // showModal,
-    // showDetails,
-    // setShowDetails,
   } = usePageContext();
 
   const resetContext = useResetContext();
@@ -99,7 +90,7 @@ const AccountStructuesPage = ({ pageName }) => {
       moeinsList = [
         ...moeinsList,
         {
-          title: utils.farsiNum(`${moein.MoeinCode} - ${moein.Title}`),
+          title: utils.farsiNum(`${moein.GeneralMoeinCode} - ${moein.Title}`),
           key: `m${moein.MoeinID}`,
         },
       ];
@@ -174,6 +165,15 @@ const AccountStructuesPage = ({ pageName }) => {
           break;
         case "m":
           node.type = "moein";
+          node = {
+            ...node,
+            ...groups
+              .find((g) =>
+                g.Totals.find((t) => t.Moeins.find((m) => m.MoeinID === id))
+              )
+              .Totals.find((t) => t.Moeins.find((m) => m.MoeinID === id))
+              .Moeins.find((m) => m.MoeinID === id),
+          };
           break;
         default:
           break;
@@ -192,6 +192,9 @@ const AccountStructuesPage = ({ pageName }) => {
         break;
       case "total":
         result = <StructureTotalDetails total={selectedNode} />;
+        break;
+      case "moein":
+        result = <StructureMoeinDetails moein={selectedNode} />;
         break;
       default:
         result = <></>;
@@ -235,6 +238,8 @@ const AccountStructuesPage = ({ pageName }) => {
         case "total":
           setShowMoeinModal(true);
           break;
+        default:
+          break;
       }
     } else {
       setShowGroupModal(true);
@@ -254,14 +259,25 @@ const AccountStructuesPage = ({ pageName }) => {
   };
 
   const handleSaveTotal = async (total) => {
-    // const saved_data =
-    await totalService.saveData(total);
+    const saved_data = await totalService.saveData(total);
 
-    // if (selectedNode) {
-    //   const { id, key, type } = selectedNode;
-    //   setSelectedNode({ ...saved_data, id, key, type });
-    //   setSelectedObject({ ...saved_data, id, key, type });
-    // }
+    if (selectedNode) {
+      const { id, key, type } = selectedNode;
+      setSelectedNode({ ...saved_data, id, key, type });
+      setSelectedObject({ ...saved_data, id, key, type });
+    }
+
+    await refreshContent();
+  };
+
+  const handleSaveMoein = async (moein) => {
+    const saved_data = await moeinService.saveData(moein);
+
+    if (selectedNode) {
+      const { id, key, type } = selectedNode;
+      setSelectedNode({ ...saved_data, id, key, type });
+      setSelectedObject({ ...saved_data, id, key, type });
+    }
 
     await refreshContent();
   };
@@ -276,6 +292,9 @@ const AccountStructuesPage = ({ pageName }) => {
       case "total":
         setShowTotalModal(true);
         break;
+      case "moein":
+        setShowMoeinModal(true);
+        break;
       default:
         break;
     }
@@ -286,17 +305,17 @@ const AccountStructuesPage = ({ pageName }) => {
       setProgress(true);
 
       try {
-        let data = null;
-
         switch (selectedNode.type) {
           case "group":
-            data = await groupService.deleteData(selectedNode.GroupID);
+            await groupService.deleteData(selectedNode.GroupID);
             break;
           case "total":
-            data = await totalService.deleteData(selectedNode.TotalID);
+            await totalService.deleteData(selectedNode.TotalID);
+            break;
+          case "moein":
+            await moeinService.deleteData(selectedNode.MoeinID);
             break;
           default:
-            data = null;
             break;
         }
 
@@ -343,7 +362,7 @@ const AccountStructuesPage = ({ pageName }) => {
               {!selectedNode ? Words.new_group : getNewButtonTitle()}
             </Button>
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={8}>
             <Tree
               showLine={{ showLeafIcon: false }}
               showIcon={false}
@@ -353,7 +372,7 @@ const AccountStructuesPage = ({ pageName }) => {
               defaultExpandAll
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={16}>
             {selectedNode && (
               <Row gutter={[5, 10]}>
                 <Col xs={24}>{renderDetails()}</Col>
@@ -374,7 +393,8 @@ const AccountStructuesPage = ({ pageName }) => {
                         ((selectedNode.type === "group" &&
                           selectedNode.Totals.length === 0) ||
                           (selectedNode.type === "total" &&
-                            selectedNode.Moeins.length === 0)) && (
+                            selectedNode.Moeins.length === 0) ||
+                          selectedNode.type === "moein") && (
                           <Popconfirm
                             title={Words.questions.sure_to_delete_selected_item}
                             onConfirm={handleDelete}
@@ -421,25 +441,18 @@ const AccountStructuesPage = ({ pageName }) => {
         />
       )}
 
-      {/* {showModal && (
-        <TafsilAccountModal
-          onOk={handleSave}
-          onCancel={handleCloseModal}
-          isOpen={showModal}
+      {showMoeinModal && (
+        <MoeinModal
           selectedObject={selectedObject}
-        />
-      )}
-
-      {showDetails && (
-        <DetailsModal
-          isOpen={showDetails}
-          selectedObject={selectedObject}
-          onOk={() => {
-            setShowDetails(false);
+          total={selectedNode}
+          isOpen={showMoeinModal}
+          onOk={handleSaveMoein}
+          onCancel={() => {
+            setShowMoeinModal(false);
             setSelectedObject(null);
           }}
         />
-      )} */}
+      )}
     </>
   );
 };
