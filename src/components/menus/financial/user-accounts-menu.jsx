@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import {
-  FaProjectDiagram as TafsilTypesIcon,
-  //   FaMoneyCheckAlt as CostCentersIcon,
-} from "react-icons/fa";
+import { FaProjectDiagram as TafsilTypesIcon } from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
-// import {
-//   SiWebmoney as CostCenterTypesIcon,
-//   SiConvertio as RatioIcon,
-// } from "react-icons/si";
-// import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
-// import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
 import {
   MdOutlineAccountTree as TafsilAccountsIcon,
   MdOutlineConstruction as StructureIcon,
@@ -52,74 +43,6 @@ const mapper = (pageID) => {
         />
       );
       break;
-
-    // case 163:
-    //   link = "cost-centers";
-    //   icon = (
-    //     <CostCentersIcon style={{ color: Colors.blue[6] }} size={iconSize} />
-    //   );
-    //   break;
-
-    // case 164:
-    //   link = "currencies";
-    //   icon = (
-    //     <CurrenciesIcon style={{ color: Colors.cyan[6] }} size={iconSize + 4} />
-    //   );
-    //   break;
-
-    // case 165:
-    //   link = "currency-ratios";
-    //   icon = <RatioIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
-    //   break;
-
-    // case 166:
-    //   link = "credit-source-types";
-    //   icon = (
-    //     <CreditSourceTypesIcon
-    //       style={{ color: Colors.magenta[6] }}
-    //       size={iconSize}
-    //     />
-    //   );
-    //   break;
-
-    // case 167:
-    //   link = "credit-sources";
-    //   icon = (
-    //     <CreditSourcesIcon
-    //       style={{ color: Colors.lime[6] }}
-    //       size={iconSize + 4}
-    //     />
-    //   );
-    //   break;
-
-    // case 148:
-    //   link = "user-products";
-    //   icon = (
-    //     <ProductIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
-    //   );
-    //   break;
-
-    // case 149:
-    //   link = "user-inventory-control-agents";
-    //   icon = (
-    //     <InventoryControlAgentIcon
-    //       style={{ color: Colors.red[6] }}
-    //       size={iconSize}
-    //     />
-    //   );
-    //   break;
-
-    // case 150:
-    //   link = "user-bach-patterns";
-    //   icon = (
-    //     <BachPatternIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
-    //   );
-    //   break;
-
-    // case 151:
-    //   link = "user-baches";
-    //   icon = <BachIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />;
-    //   break;
 
     default:
       break;

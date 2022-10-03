@@ -2,16 +2,7 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
-import {
-  FaProjectDiagram as TafsilTypesIcon,
-  //   FaMoneyCheckAlt as CostCentersIcon,
-} from "react-icons/fa";
-// import {
-//   SiWebmoney as CostCenterTypesIcon,
-//   SiConvertio as RatioIcon,
-// } from "react-icons/si";
-// import { HiOutlineCurrencyDollar as CurrenciesIcon } from "react-icons/hi";
-// import { VscSourceControl as CreditSourceTypesIcon } from "react-icons/vsc";
+import { FaProjectDiagram as TafsilTypesIcon } from "react-icons/fa";
 import {
   MdOutlineAccountTree as TafsilAccountsIcon,
   MdOutlineConstruction as StructureIcon,
@@ -47,60 +38,6 @@ const mapper = (pageID) => {
       icon = <TafsilAccountsIcon {...iconProps} />;
       backColor = Colors.green[3];
       break;
-
-    // case 163:
-    //   link = "cost-centers";
-    //   icon = <CostCentersIcon {...iconProps} />;
-    //   backColor = Colors.blue[3];
-    //   break;
-
-    // case 164:
-    //   link = "currencies";
-    //   icon = <CurrenciesIcon {...iconProps} />;
-    //   backColor = Colors.cyan[3];
-    //   break;
-
-    // case 165:
-    //   link = "currency-ratios";
-    //   icon = <RatioIcon {...iconProps} />;
-    //   backColor = Colors.purple[3];
-    //   break;
-
-    // case 166:
-    //   link = "credit-source-types";
-    //   icon = <CreditSourceTypesIcon {...iconProps} />;
-    //   backColor = Colors.magenta[3];
-    //   break;
-
-    // case 167:
-    //   link = "credit-sources";
-    //   icon = <CreditSourcesIcon {...iconProps} />;
-    //   backColor = Colors.lime[4];
-    //   break;
-
-    // case 148:
-    //   link = "user-products";
-    //   icon = <ProductIcon {...iconProps} />;
-    //   backColor = Colors.volcano[3];
-    //   break;
-
-    // case 149:
-    //   link = "user-inventory-control-agents";
-    //   icon = <InventoryControlAgentIcon {...iconProps} />;
-    //   backColor = Colors.red[3];
-    //   break;
-
-    // case 150:
-    //   link = "user-bach-patterns";
-    //   icon = <BachPatternIcon {...iconProps} />;
-    //   backColor = Colors.cyan[3];
-    //   break;
-
-    // case 151:
-    //   link = "user-baches";
-    //   icon = <BachIcon {...iconProps} />;
-    //   backColor = Colors.geekblue[3];
-    //   break;
 
     default:
       break;
