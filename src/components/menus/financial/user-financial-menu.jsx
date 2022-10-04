@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu } from "antd";
 import { FaDatabase as StoreIcon } from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import { TbNotebook as LedgerIcon } from "react-icons/tb";
 import {
   MdSettings as SettingsIcon,
   MdAccountBalanceWallet as AccountsIcon,
@@ -33,6 +34,13 @@ const mapper = (moduleID) => {
       link = "accounts";
       icon = (
         <AccountsIcon style={{ color: Colors.volcano[6] }} size={iconSize} />
+      );
+      break;
+
+    case 22:
+      link = "ledger";
+      icon = (
+        <LedgerIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
       );
       break;
 

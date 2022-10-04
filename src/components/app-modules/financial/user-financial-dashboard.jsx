@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 import { FaDatabase as StoreIcon } from "react-icons/fa";
+import { TbNotebook as LedgerIcon } from "react-icons/tb";
 import {
   MdSettings as SettingsIcon,
   MdAccountBalanceWallet as AccountsIcon,
@@ -39,29 +40,11 @@ const mapper = (moduleID) => {
       backColor = Colors.volcano[3];
       break;
 
-    // case 7:
-    //   link = "automation";
-    //   icon = <TimexSettingsIcon {...iconProps} />;
-    //   backColor = Colors.red[3];
-    //   break;
-
-    // case 8:
-    //   link = "transmission";
-    //   icon = <CarIcon {...iconProps} />;
-    //   backColor = Colors.cyan[3];
-    //   break;
-
-    // case 9:
-    //   link = "tasks";
-    //   icon = <TasksIcon {...iconProps} />;
-    //   backColor = Colors.purple[3];
-    //   break;
-
-    // case 10:
-    //   link = "processes";
-    //   icon = <ProcessIcon {...iconProps} />;
-    //   backColor = Colors.red[3];
-    //   break;
+    case 22:
+      link = "ledger";
+      icon = <LedgerIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
+      break;
 
     default:
       break;

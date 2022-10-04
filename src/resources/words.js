@@ -395,6 +395,11 @@ class Words extends Component {
   static account_control_type = "کنترل ماهیت حساب طی دوره";
   static is_convertable = "تسعیر پذیر";
 
+  static financial_periods = "دوره های مالی";
+  static ledgers = "دفاتر کل";
+  static ledger = "دفتر کل";
+  static financial_doc_types = "انواع سند";
+
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
   static bach_no = "شماره بچ";
