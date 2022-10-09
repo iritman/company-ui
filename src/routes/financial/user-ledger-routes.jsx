@@ -4,7 +4,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 //---
 import LedgerDashboard from "../../components/app-modules/financial/ledger/ledger-dashboard";
 import FinancialPeriodsPage from "../../components/app-modules/financial/ledger/financial-periods-page";
-// import LedgersPage from "../../components/app-modules/financial/ledger/ledgers-page";
+import LedgersPage from "../../components/app-modules/financial/ledger/ledgers-page";
 import DocTypesPage from "../../components/app-modules/financial/ledger/doc-types-page";
 //---
 
@@ -23,11 +23,11 @@ const UserPublicSettingsRoutes = ({ path }) => {
         exact
         render={() => <FinancialPeriodsPage pageName="FinancialPeriods" />}
       />
-      {/* <ProtectedRoute
+      <ProtectedRoute
         path={`${path}/${modulePath}/ledgers`}
         exact
         render={() => <LedgersPage pageName="Ledgers" />}
-      />*/}
+      />
       <ProtectedRoute
         path={`${path}/${modulePath}/doc-types`}
         exact

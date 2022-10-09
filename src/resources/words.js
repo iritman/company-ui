@@ -399,6 +399,10 @@ class Words extends Component {
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";
   static financial_doc_types = "انواع سند";
+  static is_main_ledger = "دفتر کل اصلی";
+  static is_docable_ledger = "امکان صدور سند حسابداری در دفتر کل";
+  static financial_year = "سال مالی";
+  static financial_years = "سال های مالی";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
@@ -835,6 +839,8 @@ class Words extends Component {
       "رمز عبور جدید و تکرار آن همخوانی ندارند",
     new_password_is_same_as_current_password:
       "رمز عبور جدید وارد شده مشابه رمز عبور فعلی می باشد",
+    no_financial_year_selected: "سال مالی ثبت نشده است",
+    financial_year_no_already_exists: "سال مالی قبلا ثبت شده است",
   };
 
   static questions = {
@@ -870,6 +876,7 @@ class Words extends Component {
     sure_to_delete_permission: "برای حذف دسترسی اطمینان دارید؟",
     sure_to_delete_announce: "برای حذف اطلاعیه اطمینان دارید؟",
     sure_to_delete_selected_item: "برای حذف آیتم انتخابی اطمینان دارید؟",
+    sure_to_delete_financial_year: "برای حذف سال مالی اطمینان دارید؟",
   };
 
   static monthes = {
