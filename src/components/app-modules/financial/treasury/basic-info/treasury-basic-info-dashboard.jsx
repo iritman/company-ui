@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
 import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
+import { AiFillBank as BankIcon } from "react-icons/ai";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
 
@@ -21,6 +22,12 @@ const mapper = (pageID) => {
       link = "bank-types";
       icon = <BankTypesIcon {...iconProps} />;
       backColor = Colors.green[3];
+      break;
+
+    case 222:
+      link = "banks";
+      icon = <BankIcon {...iconProps} />;
+      backColor = Colors.blue[3];
       break;
 
     default:

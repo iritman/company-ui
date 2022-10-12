@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
+import {
+  AiOutlineDashboard as DashboardIcon,
+  AiFillBank as BankIcon,
+} from "react-icons/ai";
 import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -21,6 +24,11 @@ const mapper = (pageID) => {
       icon = (
         <BankTypesIcon style={{ color: Colors.green[6] }} size={iconSize} />
       );
+      break;
+
+    case 222:
+      link = "banks";
+      icon = <BankIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
     default:

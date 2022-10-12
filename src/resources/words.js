@@ -406,6 +406,10 @@ class Words extends Component {
 
   static treasury_basic_info = "اطلاعات پایه خزانه داری";
   static bank_types = "انواع بانک";
+  static bank_type = "نوع بانک";
+  static pr_tel_no = "تلفن روابط عمومی";
+  static website = "وب سایت";
+  static swift_code = "کد سوئیفت";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
