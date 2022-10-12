@@ -88,11 +88,6 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 71:
-      link = "banks";
-      icon = <BankIcon style={{ color: Colors.red[4] }} size={iconSize} />;
-      break;
-
     default:
       break;
   }

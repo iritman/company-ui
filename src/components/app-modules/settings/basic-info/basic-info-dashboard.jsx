@@ -12,7 +12,6 @@ import {
   MdMergeType as EmploymentTypeIcon,
   MdOutlineModelTraining as EmploymentStatusIcon,
 } from "react-icons/md";
-import { AiFillBank as BankIcon } from "react-icons/ai";
 import { BiSelectMultiple as EduFieldIcon } from "react-icons/bi";
 import { HiOutlineOfficeBuilding as WorkPlaceIcon } from "react-icons/hi";
 import Colors from "../../../../resources/colors";
@@ -75,12 +74,6 @@ const mapper = (pageID) => {
       link = "work-places";
       icon = <WorkPlaceIcon {...iconProps} />;
       backColor = Colors.geekblue[3];
-      break;
-
-    case 71:
-      link = "banks";
-      icon = <BankIcon {...iconProps} />;
-      backColor = Colors.red[3];
       break;
 
     default:
