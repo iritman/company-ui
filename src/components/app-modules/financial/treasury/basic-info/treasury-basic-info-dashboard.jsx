@@ -47,7 +47,7 @@ const TreasuryBasicInfoDashboard = () => {
       {accessiblePages.map((page) => (
         <Col xs={24} md={8} lg={6} key={page.PageID}>
           <DashboardTile
-            to={`treasury/basic/${mapper(page.PageID).link}`}
+            to={`basic/${mapper(page.PageID).link}`}
             icon={mapper(page.PageID).icon}
             backColor={mapper(page.PageID).backColor}
             title={page.PageTitle}

@@ -54,7 +54,7 @@ const UserTreasuryBasicInfoMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  const financial_treasury_basic_info_path_name = "treasury/basic";
+  const financial_treasury_basic_info_path_name = "basic";
   const isEndsWithModuleName = useLocation().pathname.endsWith(
     `/${financial_treasury_basic_info_path_name}`
   );

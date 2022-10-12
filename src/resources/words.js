@@ -404,6 +404,9 @@ class Words extends Component {
   static financial_year = "سال مالی";
   static financial_years = "سال های مالی";
 
+  static treasury_basic_info = "اطلاعات پایه خزانه داری";
+  static bank_types = "انواع بانک";
+
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
   static bach_no = "شماره بچ";
@@ -767,10 +770,6 @@ class Words extends Component {
   static new_access = "دسترسی جدید";
   static access_path = "مسیر دسترسی";
   static select_folder = "انتخاب پوشه";
-
-  //---
-
-  static treasury_basic_info = "اطلاعات پایه خزانه داری";
 
   //---
 
