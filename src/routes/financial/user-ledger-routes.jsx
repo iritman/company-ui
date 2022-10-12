@@ -10,7 +10,7 @@ import DocTypesPage from "../../components/app-modules/financial/ledger/doc-type
 
 const modulePath = "financial/ledger";
 
-const UserPublicSettingsRoutes = ({ path }) => {
+const UserLedgerRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
@@ -38,4 +38,4 @@ const UserPublicSettingsRoutes = ({ path }) => {
   );
 };
 
-export default UserPublicSettingsRoutes;
+export default UserLedgerRoutes;
