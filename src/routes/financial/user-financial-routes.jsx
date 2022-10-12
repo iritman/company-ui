@@ -6,6 +6,7 @@ import UserPublicSettingsRoutes from "./user-public-settings-routes";
 import UserStoreManagementRoutes from "./user-store-management-routes";
 import UserAccountsRoutes from "./user-accounts-routes";
 import UserLedgerRoutes from "./user-ledger-routes";
+import UserTreasuryBasicInfoRoutes from "./user-treasury-basic-info-routes";
 //---
 
 const UserFinancialRoutes = ({ path }) => {
@@ -31,6 +32,10 @@ const UserFinancialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/ledger`}
         render={() => <UserLedgerRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/treasury/basic`}
+        render={() => <UserTreasuryBasicInfoRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

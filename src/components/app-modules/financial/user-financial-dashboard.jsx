@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
-import { FaDatabase as StoreIcon } from "react-icons/fa";
+import {
+  FaDatabase as StoreIcon,
+  FaMoneyCheckAlt as TreasuryIcon,
+} from "react-icons/fa";
 import { TbNotebook as LedgerIcon } from "react-icons/tb";
 import {
   MdSettings as SettingsIcon,
@@ -44,6 +47,12 @@ const mapper = (moduleID) => {
       link = "ledger";
       icon = <LedgerIcon {...iconProps} />;
       backColor = Colors.magenta[3];
+      break;
+
+    case 23:
+      link = "treasury/basic";
+      icon = <TreasuryIcon {...iconProps} />;
+      backColor = Colors.lime[5];
       break;
 
     default:

@@ -30,6 +30,7 @@ const BreadcrumbMap = ({ location }) => {
     "/home/financial/store-mgr": Words.store_basic_info,
     "/home/financial/public-settings": Words.public_settings,
     "/home/financial/ledger": Words.ledger,
+    "/home/financial/treasury/basic": Words.treasury_basic_info,
     //---
     "/home/financial/accounts": Words.accounts,
   };

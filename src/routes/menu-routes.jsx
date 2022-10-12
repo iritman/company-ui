@@ -28,6 +28,7 @@ import UserPublicSettingsMenu from "../components/menus/financial/user-public-se
 import UserStoreManagementMenu from "../components/menus/financial/user-store-management-menu";
 import UserAccountsMenu from "../components/menus/financial/user-accounts-menu";
 import UserLedgerMenu from "../components/menus/financial/user-ledger-menu";
+import UserTreasuryBasicInfoMenu from "../components/menus/financial/user-treasury-basic-info-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -110,6 +111,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/ledger`}
         component={UserLedgerMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/treasury/basic`}
+        component={UserTreasuryBasicInfoMenu}
       />
       {/* ----------- */}
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />
