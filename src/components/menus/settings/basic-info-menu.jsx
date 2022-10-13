@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import {
-  AiOutlineDashboard as DashboardIcon,
-  AiFillBank as BankIcon,
-} from "react-icons/ai";
+import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import {
   FaMapMarkerAlt as MapIcon,
   FaUniversity as UniversityIcon,

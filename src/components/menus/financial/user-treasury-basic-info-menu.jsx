@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import {
   AiOutlineDashboard as DashboardIcon,
   AiFillBank as BankIcon,
+  AiOutlineBranches as BankAccountTypeIcon,
 } from "react-icons/ai";
 import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -29,6 +30,16 @@ const mapper = (pageID) => {
     case 222:
       link = "banks";
       icon = <BankIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 224:
+      link = "bank-account-types";
+      icon = (
+        <BankAccountTypeIcon
+          style={{ color: Colors.orange[6] }}
+          size={iconSize}
+        />
+      );
       break;
 
     default:

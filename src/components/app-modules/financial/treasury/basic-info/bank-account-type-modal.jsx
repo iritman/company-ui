@@ -12,29 +12,32 @@ import {
   saveModalChanges,
 } from "../../../../../tools/form-manager";
 import InputItem from "./../../../../form-controls/input-item";
+import SwitchItem from "./../../../../form-controls/switch-item";
 import {
   useModalContext,
   useResetContext,
 } from "./../../../../contexts/modal-context";
 
 const schema = {
-  BankTypeID: Joi.number().required(),
+  BankAccountTypeID: Joi.number().required(),
   Title: Joi.string()
     .min(2)
     .max(50)
     .required()
     .label(Words.title)
     .regex(utils.VALID_REGEX),
+  WithCheque: Joi.boolean(),
 };
 
 const initRecord = {
-  BankTypeID: 0,
+  BankAccountTypeID: 0,
   Title: "",
+  WithCheque: false,
 };
 
 const formRef = React.createRef();
 
-const BankTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const BankAccountTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
@@ -50,6 +53,7 @@ const BankTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.Title = "";
+    record.WithCheque = false;
 
     setRecord(record);
     setErrors({});
@@ -100,10 +104,20 @@ const BankTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
+          <Col xs={24}>
+            <SwitchItem
+              title={Words.with_cheque}
+              fieldName="WithCheque"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
+              formConfig={formConfig}
+            />
+          </Col>
         </Row>
       </Form>
     </ModalWindow>
   );
 };
 
-export default BankTypeModal;
+export default BankAccountTypeModal;

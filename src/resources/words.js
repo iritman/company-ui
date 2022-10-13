@@ -410,6 +410,9 @@ class Words extends Component {
   static pr_tel_no = "تلفن روابط عمومی";
   static website = "وب سایت";
   static swift_code = "کد سوئیفت";
+  static bank_account_types = "انواع حساب بانکی";
+  static bank_account_type = "نوع حساب بانکی";
+  static with_cheque = "دارای دسته چک";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
