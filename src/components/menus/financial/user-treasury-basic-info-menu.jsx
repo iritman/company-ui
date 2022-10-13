@@ -5,6 +5,7 @@ import {
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
 } from "react-icons/ai";
+import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -30,6 +31,13 @@ const mapper = (pageID) => {
     case 222:
       link = "banks";
       icon = <BankIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 223:
+      link = "bank-branches";
+      icon = (
+        <BankBranchIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
       break;
 
     case 224:

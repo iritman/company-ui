@@ -413,6 +413,10 @@ class Words extends Component {
   static bank_account_types = "انواع حساب بانکی";
   static bank_account_type = "نوع حساب بانکی";
   static with_cheque = "دارای دسته چک";
+  static bank_branches = "شعب بانکی";
+  static bank_branch = "شعبه بانک";
+  static branch_code = "کد شعبه";
+  static tel_no = "شماره تلفن";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";

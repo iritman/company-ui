@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
 import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
+import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import {
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
@@ -31,6 +32,12 @@ const mapper = (pageID) => {
       link = "banks";
       icon = <BankIcon {...iconProps} />;
       backColor = Colors.blue[3];
+      break;
+
+    case 223:
+      link = "bank-branches";
+      icon = <BankBranchIcon {...iconProps} />;
+      backColor = Colors.purple[3];
       break;
 
     case 224:
