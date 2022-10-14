@@ -7,6 +7,7 @@ import BankTypesPage from "../../components/app-modules/financial/treasury/basic
 import BanksPage from "../../components/app-modules/financial/treasury/basic-info/banks-page";
 import BankAccountTypesPage from "../../components/app-modules/financial/treasury/basic-info/bank-account-types-page";
 import BankBranchesPage from "../../components/app-modules/financial/treasury/basic-info/bank-branches-page";
+import RegardsPage from "../../components/app-modules/financial/treasury/basic-info/regards-page";
 //---
 
 const modulePath = "financial/treasury/basic";
@@ -38,6 +39,11 @@ const UserTreasuryBasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/bank-branches`}
         exact
         render={() => <BankBranchesPage pageName="BankBranches" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/regards`}
+        exact
+        render={() => <RegardsPage pageName="Regards" />}
       />
       <Redirect to="/not-found" />
     </Switch>

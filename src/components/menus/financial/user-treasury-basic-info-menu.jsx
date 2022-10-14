@@ -6,7 +6,10 @@ import {
   AiOutlineBranches as BankAccountTypeIcon,
 } from "react-icons/ai";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
-import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
+import {
+  FaProjectDiagram as BankTypesIcon,
+  FaWpforms as RegardIcon,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -47,6 +50,13 @@ const mapper = (pageID) => {
           style={{ color: Colors.orange[6] }}
           size={iconSize}
         />
+      );
+      break;
+
+    case 230:
+      link = "regards";
+      icon = (
+        <RegardIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
       );
       break;
 

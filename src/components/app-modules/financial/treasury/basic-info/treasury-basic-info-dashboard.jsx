@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
-import { FaProjectDiagram as BankTypesIcon } from "react-icons/fa";
+import {
+  FaProjectDiagram as BankTypesIcon,
+  FaWpforms as RegardIcon,
+} from "react-icons/fa";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import {
   AiFillBank as BankIcon,
@@ -44,6 +47,12 @@ const mapper = (pageID) => {
       link = "bank-account-types";
       icon = <BankAccountTypeIcon {...iconProps} />;
       backColor = Colors.orange[3];
+      break;
+
+    case 230:
+      link = "regards";
+      icon = <RegardIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
       break;
 
     default:

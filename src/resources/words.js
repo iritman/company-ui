@@ -417,6 +417,8 @@ class Words extends Component {
   static bank_branch = "شعبه بانک";
   static branch_code = "کد شعبه";
   static tel_no = "شماره تلفن";
+  static regards = "بابت";
+  static doc_type = "نوع سند";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";
