@@ -6,6 +6,7 @@ import {
   AiOutlineBranches as BankAccountTypeIcon,
 } from "react-icons/ai";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
+import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import {
   FaProjectDiagram as BankTypesIcon,
   FaWpforms as RegardIcon,
@@ -50,6 +51,13 @@ const mapper = (pageID) => {
           style={{ color: Colors.orange[6] }}
           size={iconSize}
         />
+      );
+      break;
+
+    case 227:
+      link = "person-company-bank-accounts";
+      icon = (
+        <BankAccountIcon style={{ color: Colors.red[6] }} size={iconSize} />
       );
       break;
 

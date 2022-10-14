@@ -419,6 +419,11 @@ class Words extends Component {
   static tel_no = "شماره تلفن";
   static regards = "بابت";
   static doc_type = "نوع سند";
+  static person_company_bank_accounts = "حساب های بانکی";
+  static pc_person = "شخص";
+  static pc_company = "شرکت";
+  static pc_person_company = "شخص/شرکت";
+  static in_black_list = "در لیست سیاه";
 
   static bach = "بچ";
   static bach_info = "اطلاعات بچ";

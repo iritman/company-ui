@@ -53,7 +53,7 @@ const schema = {
     .max(512)
     .allow("")
     .regex(utils.VALID_REGEX)
-    .label(Words.descriptions),
+    .label(Words.address),
   Website: Joi.string()
     .min(2)
     .max(150)

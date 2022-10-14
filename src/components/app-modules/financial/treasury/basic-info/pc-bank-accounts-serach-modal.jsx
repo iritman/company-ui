@@ -15,13 +15,16 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
-import service from "../../../../../services/financial/treasury/basic-info/bank-branches-service";
+import service from "../../../../../services/financial/treasury/basic-info/person-company-bank-accounts-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import InputItem from "../../../../form-controls/input-item";
 
 const schema = {
   BankID: Joi.number(),
-  CityID: Joi.number(),
+  BranchID: Joi.number(),
+  TypeID: Joi.number(),
+  MemberID: Joi.number(),
+  CompanyID: Joi.number(),
   SearchText: Joi.string()
     .allow("")
     .max(50)
@@ -31,15 +34,26 @@ const schema = {
 
 const initRecord = {
   BankID: 0,
-  CityID: 0,
+  BranchID: 0,
+  TypeID: 0,
+  MemberID: 0,
+  CompanyID: 0,
   SearchText: "",
 };
 
 const formRef = React.createRef();
 
-const BankBranchesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+const PersonCompanyBankAccountsSearchModal = ({
+  isOpen,
+  filter,
+  onOk,
+  onCancel,
+}) => {
   const [banks, setBanks] = useState([]);
+  const [branches, setBranches] = useState([]);
   const [cities, setCities] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -55,8 +69,10 @@ const BankBranchesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
-    record.BankID = 0;
-    record.CityID = 0;
+    record.BranchID = 0;
+    record.TypeID = 0;
+    record.MemberID = 0;
+    record.CompanyID = 0;
     record.SearchText = "";
 
     setRecord(record);
@@ -76,16 +92,23 @@ const BankBranchesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { Banks, Cities } = data;
+      const { Banks, Branches, Cities, Companies, Employees } = data;
 
       setBanks(Banks);
+      setBranches(Branches);
       setCities(Cities);
+      setCompanies(Companies);
+      setEmployees(Employees);
     } catch (err) {
       handleError(err);
     }
 
     setProgress(false);
   });
+
+  //------
+
+  const filtered_branches = branches.filter((b) => b.BankID === record.BankID);
 
   return (
     <ModalWindow
@@ -112,6 +135,16 @@ const BankBranchesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
           </Col>
           <Col xs={24} md={12}>
             <DropdownItem
+              title={Words.bank_branch}
+              dataSource={filtered_branches}
+              keyColumn="BranchID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              autoFocus
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
               title={Words.city}
               dataSource={cities}
               keyColumn="CityID"
@@ -119,7 +152,25 @@ const BankBranchesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.employee}
+              dataSource={employees}
+              keyColumn="MemberID"
+              valueColumn="FullName"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.company}
+              dataSource={companies}
+              keyColumn="CompanyID"
+              valueColumn="Title"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
             <InputItem
               title={Words.search_text}
               fieldName="SearchText"
@@ -133,4 +184,4 @@ const BankBranchesSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   );
 };
 
-export default BankBranchesSearchModal;
+export default PersonCompanyBankAccountsSearchModal;

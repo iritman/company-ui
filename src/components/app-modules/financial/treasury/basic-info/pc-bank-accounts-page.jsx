@@ -5,7 +5,7 @@ import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "./../../../../../resources/words";
 import Colors from "./../../../../../resources/colors";
 import utils from "./../../../../../tools/utils";
-import service from "./../../../../../services/financial/treasury/basic-info/bank-branches-service";
+import service from "./../../../../../services/financial/treasury/basic-info/person-company-bank-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -14,27 +14,34 @@ import {
 } from "../../../../../tools/form-manager";
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
-import BranchModal from "./bank-branch-modal";
-import DetailsModal from "./bank-branch-details-modal";
-import SearchModal from "./bank-branches-search-modal";
+import PersonCompanyBankAccountModal from "./pc-bank-account-modal";
+import DetailsModal from "./pc-bank-account-details-modal";
+import SearchModal from "./pc-bank-accounts-serach-modal";
 import { usePageContext } from "./../../../../contexts/page-context";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "BankBranches",
+    title: "PersonCompanyBankAccounts",
     data: records,
     columns: [
-      { label: Words.id, value: "BranchID" },
-      { label: Words.city, value: "CityTitle" },
-      { label: Words.bank, value: "BankTitle" },
-      { label: Words.title, value: "Title" },
+      { label: Words.id, value: "AccountID" },
+      { label: Words.bank_branch, value: "BankBranchTitle" },
       { label: Words.branch_code, value: "BranchCode" },
-      { label: Words.swift_code, value: "SwiftCode" },
-      { label: Words.tel_no, value: "TelNo" },
-      { label: Words.website, value: "Website" },
-      { label: Words.address, value: "Address" },
+      { label: Words.bank, value: "BankTitle" },
+      { label: Words.city, value: "CityTitle" },
+      { label: Words.doc_type, value: "TypeTitle" },
+      {
+        label: Words.pc_person,
+        value: (record) => `${record.FirstName} ${record.LastName}`,
+      },
+      { label: Words.pc_company, value: "CompanyTitle" },
+      {
+        label: Words.in_black_list,
+        value: (record) => (record.InBlackList ? Words.yes : Words.no),
+      },
+      { label: Words.descriptions, value: "DetailsText" },
     ],
   },
 ];
@@ -44,39 +51,43 @@ const baseColumns = [
     title: Words.id,
     width: 100,
     align: "center",
-    dataIndex: "BranchID",
-    sorter: getSorter("BranchID"),
-    render: (BranchID) => <Text>{utils.farsiNum(`${BranchID}`)}</Text>,
+    dataIndex: "AccountID",
+    sorter: getSorter("AccountID"),
+    render: (AccountID) => <Text>{utils.farsiNum(`${AccountID}`)}</Text>,
+  },
+  {
+    title: Words.pc_person_company,
+    width: 200,
+    align: "center",
+    // dataIndex: "BankTitle",
+    // sorter: getSorter("BankTitle"),
+    render: (record) => (
+      <Text style={{ color: Colors.cyan[6] }}>
+        {record.MemberID > 0
+          ? `${record.FirstName} ${record.LastName}`
+          : record.CompanyTitle}
+      </Text>
+    ),
+  },
+  {
+    title: Words.account_no,
+    width: 120,
+    align: "center",
+    dataIndex: "AccountNo",
+    sorter: getSorter("AccountNo"),
+    render: (AccountNo) => (
+      <Text style={{ color: Colors.blue[6] }}>{utils.farsiNum(AccountNo)}</Text>
+    ),
   },
   {
     title: Words.bank,
-    width: 120,
+    width: 150,
     align: "center",
     dataIndex: "BankTitle",
     sorter: getSorter("BankTitle"),
     render: (BankTitle) => (
-      <Text style={{ color: Colors.cyan[6] }}>{BankTitle}</Text>
-    ),
-  },
-  {
-    title: Words.title,
-    width: 200,
-    align: "center",
-    dataIndex: "Title",
-    sorter: getSorter("Title"),
-    render: (Title) => (
-      <Text style={{ color: Colors.blue[6] }}>{utils.farsiNum(Title)}</Text>
-    ),
-  },
-  {
-    title: Words.branch_code,
-    width: 200,
-    align: "center",
-    dataIndex: "BranchCode",
-    sorter: getSorter("BranchCode"),
-    render: (BranchCode) => (
       <Text style={{ color: Colors.orange[6] }}>
-        {utils.farsiNum(BranchCode)}
+        {utils.farsiNum(BankTitle)}
       </Text>
     ),
   },
@@ -92,9 +103,9 @@ const baseColumns = [
   },
 ];
 
-const recordID = "BranchID";
+const recordID = "AccountID";
 
-const BankBranchesPage = ({ pageName }) => {
+const PersonCompanyBankAccountsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -168,9 +179,9 @@ const BankBranchesPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.bank_branches}
+            title={Words.person_company_bank_accounts}
             sheets={getSheets(records)}
-            fileName="BankBranches"
+            fileName="PersonCompanyBankAccounts"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onAdd={access?.CanAdd && handleAdd}
@@ -185,7 +196,7 @@ const BankBranchesPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <BranchModal
+        <PersonCompanyBankAccountModal
           isOpen={showModal}
           selectedObject={selectedObject}
           onOk={handleSave}
@@ -217,4 +228,4 @@ const BankBranchesPage = ({ pageName }) => {
   );
 };
 
-export default BankBranchesPage;
+export default PersonCompanyBankAccountsPage;
