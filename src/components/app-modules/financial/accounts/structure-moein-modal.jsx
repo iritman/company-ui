@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Tabs, Radio } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -21,6 +21,8 @@ import {
   useModalContext,
   useResetContext,
 } from "./../../../contexts/modal-context";
+
+const { TabPane } = Tabs;
 
 const schema = {
   MoeinID: Joi.number().required(),
@@ -163,6 +165,12 @@ const StructureMoeinModal = ({
     loadFieldsValue(formRef, rec);
   };
 
+  const handleTafsilLevelChange = (e) => {
+    const new_value = e.target.value;
+
+    console.log(new_value);
+  };
+
   //------
 
   return (
@@ -171,108 +179,129 @@ const StructureMoeinModal = ({
       isEdit={isEdit}
       inProgress={progress}
       disabled={validateForm({ record, schema }) && true}
-      title={Words.account_total}
+      title={Words.account_moein}
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
       width={750}
     >
       <Form ref={formRef} name="dataForm">
-        <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
-            <NumericInputItem
-              horizontal
-              required
-              title={Words.moein_code}
-              fieldName="MoeinCode"
-              addonAfter={`${total.GroupCode}${total.TotalCode}`}
-              min={1}
-              max={9}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <InputItem
-              title={Words.title}
-              fieldName="Title"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-              autoFocus
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.account_type}
-              dataSource={accountTypes}
-              keyColumn="AccountTypeID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.nature}
-              dataSource={natures}
-              keyColumn="NatureID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.default_currency}
-              dataSource={currencies}
-              keyColumn="CurrencyID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              disabled={!record.IsConvertable}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.account_control_type}
-              dataSource={controlTypes}
-              keyColumn="ControlTypeID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.descriptions}
-              fieldName="DetailsText"
-              multiline
-              rows={7}
-              showCount
-              maxLength={512}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <SwitchItem
-              title={Words.is_convertable}
-              fieldName="IsConvertable"
-              initialValue={false}
-              checkedTitle={Words.yes}
-              unCheckedTitle={Words.no}
-              formConfig={formConfig}
-              onChange={handleIsConvertableSwitchChange}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <SwitchItem
-              title={Words.status}
-              fieldName="IsActive"
-              initialValue={true}
-              checkedTitle={Words.active}
-              unCheckedTitle={Words.inactive}
-              formConfig={formConfig}
-            />
-          </Col>
-        </Row>
+        <Tabs type="card" defaultActiveKey="1">
+          <TabPane tab={Words.info} key="1">
+            <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+              <Col xs={24} md={12}>
+                <NumericInputItem
+                  horizontal
+                  required
+                  title={Words.moein_code}
+                  fieldName="MoeinCode"
+                  addonAfter={`${total.GroupCode}${total.TotalCode}`}
+                  min={1}
+                  max={9}
+                  formConfig={formConfig}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <InputItem
+                  title={Words.title}
+                  fieldName="Title"
+                  maxLength={50}
+                  formConfig={formConfig}
+                  required
+                  autoFocus
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <DropdownItem
+                  title={Words.account_type}
+                  dataSource={accountTypes}
+                  keyColumn="AccountTypeID"
+                  valueColumn="Title"
+                  formConfig={formConfig}
+                  required
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <DropdownItem
+                  title={Words.nature}
+                  dataSource={natures}
+                  keyColumn="NatureID"
+                  valueColumn="Title"
+                  formConfig={formConfig}
+                  required
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <DropdownItem
+                  title={Words.default_currency}
+                  dataSource={currencies}
+                  keyColumn="CurrencyID"
+                  valueColumn="Title"
+                  formConfig={formConfig}
+                  disabled={!record.IsConvertable}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <DropdownItem
+                  title={Words.account_control_type}
+                  dataSource={controlTypes}
+                  keyColumn="ControlTypeID"
+                  valueColumn="Title"
+                  formConfig={formConfig}
+                />
+              </Col>
+              <Col xs={24}>
+                <InputItem
+                  title={Words.descriptions}
+                  fieldName="DetailsText"
+                  multiline
+                  rows={7}
+                  showCount
+                  maxLength={512}
+                  formConfig={formConfig}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <SwitchItem
+                  title={Words.is_convertable}
+                  fieldName="IsConvertable"
+                  initialValue={false}
+                  checkedTitle={Words.yes}
+                  unCheckedTitle={Words.no}
+                  formConfig={formConfig}
+                  onChange={handleIsConvertableSwitchChange}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <SwitchItem
+                  title={Words.status}
+                  fieldName="IsActive"
+                  initialValue={true}
+                  checkedTitle={Words.active}
+                  unCheckedTitle={Words.inactive}
+                  formConfig={formConfig}
+                />
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tab={Words.tafsil_levels} key="2">
+            <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+              <Col xs={24}>
+                <Radio.Group
+                  defaultValue={4}
+                  buttonStyle="solid"
+                  onChange={handleTafsilLevelChange}
+                >
+                  <Radio.Button value={4}>{Words.level_4}</Radio.Button>
+                  <Radio.Button value={5}>{Words.level_5}</Radio.Button>
+                  <Radio.Button value={6}>{Words.level_6}</Radio.Button>
+                  <Radio.Button value={7}>{Words.level_7}</Radio.Button>
+                  <Radio.Button value={8}>{Words.level_8}</Radio.Button>
+                </Radio.Group>
+              </Col>
+            </Row>
+          </TabPane>
+        </Tabs>
       </Form>
     </ModalWindow>
   );

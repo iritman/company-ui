@@ -394,6 +394,12 @@ class Words extends Component {
   static account_moein = "حساب معین";
   static account_control_type = "کنترل ماهیت حساب طی دوره";
   static is_convertable = "تسعیر پذیر";
+  static tafsil_levels = "سطوح تفصیلی";
+  static level_4 = "سطح چهار";
+  static level_5 = "سطح پنج";
+  static level_6 = "سطح شش";
+  static level_7 = "سطح هفت";
+  static level_8 = "سطح هشت";
 
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
