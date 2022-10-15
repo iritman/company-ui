@@ -99,6 +99,9 @@ const PersonCompanyBankAccountDetailsModal = ({
                     {ShebaID.length > 0 ? utils.farsiNum(ShebaID) : ""}
                   </Text>
                 </Descriptions.Item>
+                <Descriptions.Item label={Words.doc_type}>
+                  <Text style={{ color: valueColor }}>{TypeTitle}</Text>
+                </Descriptions.Item>
                 <Descriptions.Item label={Words.in_black_list} span={2}>
                   <Text
                     style={{
