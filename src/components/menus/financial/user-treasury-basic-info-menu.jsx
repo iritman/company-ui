@@ -4,6 +4,7 @@ import {
   AiOutlineDashboard as DashboardIcon,
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
+  AiFillCreditCard as CompanyBankAccountIcon,
 } from "react-icons/ai";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
@@ -54,14 +55,24 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 227:
+    case 225:
+      link = "company-bank-accounts";
+      icon = (
+        <CompanyBankAccountIcon
+          style={{ color: Colors.yellow[8] }}
+          size={iconSize}
+        />
+      );
+      break;
+
+    case 228:
       link = "person-company-bank-accounts";
       icon = (
         <BankAccountIcon style={{ color: Colors.red[6] }} size={iconSize} />
       );
       break;
 
-    case 230:
+    case 231:
       link = "regards";
       icon = (
         <RegardIcon style={{ color: Colors.magenta[6] }} size={iconSize} />

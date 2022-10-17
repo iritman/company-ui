@@ -379,6 +379,7 @@ class Words extends Component {
   static base_module_item_title = "عنوان آیتم ماژول پایه";
   static start_code = "اولین کد پیش فرض";
   static tafsil_accounts = "حساب های تفصیلی";
+  static tafsil_account = "حساب تفصیلی";
   static code_length = "طول کد طبقه بندی";
   static account_structures = "ساختار حساب ها";
   static new_group = "گروه جدید";
@@ -400,6 +401,12 @@ class Words extends Component {
   static level_6 = "سطح شش";
   static level_7 = "سطح هفت";
   static level_8 = "سطح هشت";
+
+  static company_bank_accounts = "حساب های بانکی شرکت";
+  static credit = "اعتبار حساب";
+  static currency_type = "نوع ارز";
+  static tafsil_info = "اطلاعات تفصیلی";
+  static company_bank_account_info = "اطلاعات حساب بانکی";
 
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";

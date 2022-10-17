@@ -11,6 +11,7 @@ import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import {
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
+  AiFillCreditCard as CompanyBankAccountIcon,
 } from "react-icons/ai";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
@@ -50,13 +51,19 @@ const mapper = (pageID) => {
       backColor = Colors.orange[3];
       break;
 
-    case 227:
+    case 225:
+      link = "company-bank-accounts";
+      icon = <CompanyBankAccountIcon {...iconProps} />;
+      backColor = Colors.yellow[6];
+      break;
+
+    case 228:
       link = "person-company-bank-accounts";
       icon = <BankAccountIcon {...iconProps} />;
       backColor = Colors.red[3];
       break;
 
-    case 230:
+    case 231:
       link = "regards";
       icon = <RegardIcon {...iconProps} />;
       backColor = Colors.magenta[3];

@@ -5,7 +5,7 @@ import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "./../../../../../resources/words";
 import Colors from "./../../../../../resources/colors";
 import utils from "./../../../../../tools/utils";
-import service from "./../../../../../services/financial/treasury/basic-info/person-company-bank-accounts-service";
+import service from "./../../../../../services/financial/treasury/basic-info/company-bank-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -14,16 +14,15 @@ import {
 } from "../../../../../tools/form-manager";
 import SimpleDataTable from "../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
-import PersonCompanyBankAccountModal from "./pc-bank-account-modal";
-import DetailsModal from "./pc-bank-account-details-modal";
-import SearchModal from "./pc-bank-accounts-serach-modal";
+import CompanyBankAccountModal from "./company-bank-account-modal";
+import DetailsModal from "./company-bank-account-details-modal";
 import { usePageContext } from "./../../../../contexts/page-context";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "PersonCompanyBankAccounts",
+    title: "CompanyBankAccounts",
     data: records,
     columns: [
       { label: Words.id, value: "AccountID" },
@@ -31,19 +30,22 @@ const getSheets = (records) => [
       { label: Words.branch_code, value: "BranchCode" },
       { label: Words.bank, value: "BankTitle" },
       { label: Words.city, value: "CityTitle" },
-      { label: Words.doc_type, value: "TypeTitle" },
       { label: Words.account_no, value: "AccountNo" },
+      {
+        label: Words.credit,
+        value: "Credit",
+      },
+      {
+        label: Words.currency_type,
+        value: "CurrencyTitle",
+      },
       { label: Words.sheba_no, value: "ShebaID" },
       {
-        label: Words.pc_person,
-        value: (record) => `${record.FirstName} ${record.LastName}`,
+        label: Words.bank_account_type,
+        value: "BankAccountTypeTitle",
       },
-      { label: Words.pc_company, value: "CompanyTitle" },
-      {
-        label: Words.in_black_list,
-        value: (record) => (record.InBlackList ? Words.yes : Words.no),
-      },
-      { label: Words.descriptions, value: "DetailsText" },
+      { label: Words.tafsil_account, value: "TafsilAccountTitle" },
+      { label: Words.tafsil_type, value: "TafsilTypeTitle" },
     ],
   },
 ];
@@ -107,7 +109,7 @@ const baseColumns = [
 
 const recordID = "AccountID";
 
-const PersonCompanyBankAccountsPage = ({ pageName }) => {
+const CompanyBankAccountsPage = ({ pageName }) => {
   const {
     progress,
     searched,
@@ -121,10 +123,7 @@ const PersonCompanyBankAccountsPage = ({ pageName }) => {
     showModal,
     showDetails,
     setShowDetails,
-    showSearchModal,
-    setShowSearchModal,
-    filter,
-    setFilter,
+    setSearchText,
   } = usePageContext();
 
   useMount(async () => {
@@ -139,7 +138,8 @@ const PersonCompanyBankAccountsPage = ({ pageName }) => {
     handleDelete,
     handleSave,
     handleResetContext,
-    handleAdvancedSearch,
+    handleSearch,
+    handleGetAll,
   } = GetSimplaDataPageMethods({
     service,
     recordID,
@@ -170,7 +170,6 @@ const PersonCompanyBankAccountsPage = ({ pageName }) => {
 
   const handleClear = () => {
     setRecords([]);
-    setFilter(null);
     setSearched(false);
   };
 
@@ -181,12 +180,14 @@ const PersonCompanyBankAccountsPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.person_company_bank_accounts}
+            title={Words.company_bank_accounts}
             sheets={getSheets(records)}
-            fileName="PersonCompanyBankAccounts"
-            onSearch={() => setShowSearchModal(true)}
+            fileName="CompanyBankAccounts"
+            onSearchTextChanged={(e) => setSearchText(e.target.value)}
+            onSearch={handleSearch}
             onClear={handleClear}
             onAdd={access?.CanAdd && handleAdd}
+            onGetAll={handleGetAll}
           />
 
           <Col xs={24}>
@@ -198,20 +199,11 @@ const PersonCompanyBankAccountsPage = ({ pageName }) => {
       </Spin>
 
       {showModal && (
-        <PersonCompanyBankAccountModal
+        <CompanyBankAccountModal
           isOpen={showModal}
           selectedObject={selectedObject}
           onOk={handleSave}
           onCancel={handleCloseModal}
-        />
-      )}
-
-      {showSearchModal && (
-        <SearchModal
-          onOk={handleAdvancedSearch}
-          onCancel={() => setShowSearchModal(false)}
-          isOpen={showSearchModal}
-          filter={filter}
         />
       )}
 
@@ -230,4 +222,4 @@ const PersonCompanyBankAccountsPage = ({ pageName }) => {
   );
 };
 
-export default PersonCompanyBankAccountsPage;
+export default CompanyBankAccountsPage;
