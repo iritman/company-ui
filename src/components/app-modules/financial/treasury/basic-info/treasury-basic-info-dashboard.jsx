@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
+import { GiBanknote as ChequeBookIcon } from "react-icons/gi";
 import {
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
@@ -56,6 +57,12 @@ const mapper = (pageID) => {
       link = "company-bank-accounts";
       icon = <CompanyBankAccountIcon {...iconProps} />;
       backColor = Colors.yellow[6];
+      break;
+
+    case 226:
+      link = "cheque-books";
+      icon = <ChequeBookIcon {...iconProps} />;
+      backColor = Colors.blue[4];
       break;
 
     case 227:

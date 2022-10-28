@@ -8,6 +8,7 @@ import {
 } from "react-icons/ai";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
+import { GiBanknote as ChequeBookIcon } from "react-icons/gi";
 import {
   FaProjectDiagram as BankTypesIcon,
   FaWpforms as RegardIcon,
@@ -63,6 +64,13 @@ const mapper = (pageID) => {
           style={{ color: Colors.yellow[8] }}
           size={iconSize}
         />
+      );
+      break;
+
+    case 226:
+      link = "cheque-books";
+      icon = (
+        <ChequeBookIcon style={{ color: Colors.blue[7] }} size={iconSize} />
       );
       break;
 

@@ -409,9 +409,24 @@ class Words extends Component {
   static company_bank_account_info = "اطلاعات حساب بانکی";
 
   static cash_boxes = "صندوق ها";
+  static cash_box = "صندوق";
   static cashier = "صندوق دار";
   static location = "محل فیزیکی";
   static cash_box_info = "اطلاعات صندوق";
+
+  static cheque_books = "دسته چک ها";
+  static cheque_book_series = "سری دسته چک";
+  static total_pages = "تعداد برگ";
+  static start_serial_no = "سریال شروع";
+  static sayad_cheque = "چک صیاد";
+  static remained_pages = "تعداد برگ باقی مانده";
+  static first_usable_serial_no = "شماره سریال اولین برگ قابل استفاده";
+  static cheque_items = "اقلام چک";
+  static serial_no = "شماره سریال";
+  static sayad_no = "شماره صیاد";
+  static bank_account = "حساب بانکی";
+  static used_cheques = "چک های صادرشده";
+  static cheque_book_info = "اطلاعات دسته چک";
 
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
