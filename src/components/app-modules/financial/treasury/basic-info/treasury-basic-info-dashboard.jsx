@@ -5,6 +5,7 @@ import DashboardTile from "../../../../common/dashboard-tile";
 import {
   FaProjectDiagram as BankTypesIcon,
   FaWpforms as RegardIcon,
+  FaCashRegister as CashBoxIcon,
 } from "react-icons/fa";
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
@@ -55,6 +56,12 @@ const mapper = (pageID) => {
       link = "company-bank-accounts";
       icon = <CompanyBankAccountIcon {...iconProps} />;
       backColor = Colors.yellow[6];
+      break;
+
+    case 227:
+      link = "cash-boxes";
+      icon = <CashBoxIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
       break;
 
     case 228:

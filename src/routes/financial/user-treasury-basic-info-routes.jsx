@@ -10,6 +10,7 @@ import BankBranchesPage from "../../components/app-modules/financial/treasury/ba
 import RegardsPage from "../../components/app-modules/financial/treasury/basic-info/regards-page";
 import PersonCompanyBankAccountsPage from "../../components/app-modules/financial/treasury/basic-info/pc-bank-accounts-page";
 import CompanyBankAccountsPage from "../../components/app-modules/financial/treasury/basic-info/company-bank-accounts-page";
+import CashBoxesPage from "../../components/app-modules/financial/treasury/basic-info/cash-boxes-page";
 //---
 
 const modulePath = "financial/treasury/basic";
@@ -60,6 +61,11 @@ const UserTreasuryBasicInfoRoutes = ({ path }) => {
         render={() => (
           <CompanyBankAccountsPage pageName="CompanyBankAccounts" />
         )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/cash-boxes`}
+        exact
+        render={() => <CashBoxesPage pageName="CashBoxes" />}
       />
       <Redirect to="/not-found" />
     </Switch>

@@ -408,6 +408,11 @@ class Words extends Component {
   static tafsil_info = "اطلاعات تفصیلی";
   static company_bank_account_info = "اطلاعات حساب بانکی";
 
+  static cash_boxes = "صندوق ها";
+  static cashier = "صندوق دار";
+  static location = "محل فیزیکی";
+  static cash_box_info = "اطلاعات صندوق";
+
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";

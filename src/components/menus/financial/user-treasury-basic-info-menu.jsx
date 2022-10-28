@@ -11,6 +11,7 @@ import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import {
   FaProjectDiagram as BankTypesIcon,
   FaWpforms as RegardIcon,
+  FaCashRegister as CashBoxIcon,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -63,6 +64,11 @@ const mapper = (pageID) => {
           size={iconSize}
         />
       );
+      break;
+
+    case 227:
+      link = "cash-boxes";
+      icon = <CashBoxIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
     case 228:
