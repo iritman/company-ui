@@ -10,6 +10,7 @@ import {
 import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import { GiBanknote as ChequeBookIcon } from "react-icons/gi";
+import { RiFlowChart as CashFlowIcon } from "react-icons/ri";
 import {
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
@@ -38,7 +39,7 @@ const mapper = (pageID) => {
     case 222:
       link = "banks";
       icon = <BankIcon {...iconProps} />;
-      backColor = Colors.blue[3];
+      backColor = Colors.blue[2];
       break;
 
     case 223:
@@ -62,7 +63,7 @@ const mapper = (pageID) => {
     case 226:
       link = "cheque-books";
       icon = <ChequeBookIcon {...iconProps} />;
-      backColor = Colors.blue[4];
+      backColor = Colors.volcano[4];
       break;
 
     case 227:
@@ -77,10 +78,16 @@ const mapper = (pageID) => {
       backColor = Colors.red[3];
       break;
 
+    case 230:
+      link = "cash-flows";
+      icon = <CashFlowIcon {...iconProps} />;
+      backColor = Colors.magenta[3];
+      break;
+
     case 231:
       link = "regards";
       icon = <RegardIcon {...iconProps} />;
-      backColor = Colors.magenta[3];
+      backColor = Colors.blue[4];
       break;
 
     default:

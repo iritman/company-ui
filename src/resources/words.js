@@ -396,6 +396,7 @@ class Words extends Component {
   static account_control_type = "کنترل ماهیت حساب طی دوره";
   static is_convertable = "تسعیر پذیر";
   static tafsil_levels = "سطوح تفصیلی";
+  static tafsil_level = "سطح تفصیل";
   static level_4 = "سطح چهار";
   static level_5 = "سطح پنج";
   static level_6 = "سطح شش";
@@ -427,6 +428,24 @@ class Words extends Component {
   static bank_account = "حساب بانکی";
   static used_cheques = "چک های صادرشده";
   static cheque_book_info = "اطلاعات دسته چک";
+
+  static cash_flows = "عوامل گردش نقدینگی";
+  static cash_flow = "عامل گردش نقدینگی";
+  static show_in_receip_operation = "نمایش در عملیات دریافت";
+  static show_in_payment_operation = "نمایش در عملیات پرداخت";
+  static show_in_fund_summary_operation = "نمایش در صورت خلاصه تنخواه";
+  static tafsil_type_level_4 = "نوع تفصیلی سطح 4";
+  static tafsil_type_level_5 = "نوع تفصیلی سطح 5";
+  static tafsil_type_level_6 = "نوع تفصیلی سطح 6";
+  static fix_side_4 = "طرف ثابت 4";
+  static fix_side_5 = "طرف ثابت 5";
+  static fix_side_6 = "طرف ثابت 6";
+  static related_tafsil_levels = "سطوح تفصیلی مرتبط";
+  static level = "سطح";
+  static show_in_operation = "نمایش در عملیات";
+  static receipt = "دریافت";
+  static payment = "پرداخت";
+  static fund_summary = "صورت خلاصه تنخواه";
 
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";

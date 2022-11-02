@@ -12,6 +12,7 @@ import PersonCompanyBankAccountsPage from "../../components/app-modules/financia
 import CompanyBankAccountsPage from "../../components/app-modules/financial/treasury/basic-info/company-bank-accounts-page";
 import CashBoxesPage from "../../components/app-modules/financial/treasury/basic-info/cash-boxes-page";
 import ChequeBooksPage from "../../components/app-modules/financial/treasury/basic-info/cheque-books-page";
+import CashFlowsPage from "../../components/app-modules/financial/treasury/basic-info/cash-flows-page";
 //---
 
 const modulePath = "financial/treasury/basic";
@@ -72,6 +73,11 @@ const UserTreasuryBasicInfoRoutes = ({ path }) => {
         path={`${path}/${modulePath}/cheque-books`}
         exact
         render={() => <ChequeBooksPage pageName="ChequeBooks" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/cash-flows`}
+        exact
+        render={() => <CashFlowsPage pageName="CashFlows" />}
       />
       <Redirect to="/not-found" />
     </Switch>
