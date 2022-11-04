@@ -20,7 +20,9 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
-import RelatedTafsilTypesTree from "./related-tafsil-types-tree";
+import RelatedTafsilTypesTree, {
+  getTafsilTypeLevels,
+} from "./related-tafsil-types-tree";
 
 const { Text } = Typography;
 
@@ -196,27 +198,7 @@ const FinancialOperationModal = ({
 
   //------
 
-  const getTafsilTypeLevels = () => {
-    let levels = [];
-
-    tafsilTypes
-      .filter((tt) => tt.MoeinID === record.MoeinID)
-      .forEach((tt) => {
-        if (!levels.find((l) => l.LevelID === tt.LevelID)) {
-          levels = [
-            ...levels,
-            {
-              LevelID: tt.LevelID,
-              Title: utils.farsiNum(`${Words.level} ${tt.LevelID}`),
-            },
-          ];
-        }
-      });
-
-    return levels;
-  };
-
-  const levels = getTafsilTypeLevels();
+  const levels = getTafsilTypeLevels(record.MoeinID, tafsilTypes);
 
   const getTafsilTypeDdlStatus = (levelID) =>
     levels.filter((level) => level.LevelID === levelID).length === 0;

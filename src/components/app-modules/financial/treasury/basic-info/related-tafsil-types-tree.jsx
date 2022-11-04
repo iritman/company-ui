@@ -89,4 +89,24 @@ const RelatedTafsilTypesTree = ({ moeinID, tafsilTypes }) => {
   );
 };
 
+export const getTafsilTypeLevels = (moeinID, tafsilTypes) => {
+  let levels = [];
+
+  tafsilTypes
+    .filter((tt) => tt.MoeinID === moeinID)
+    .forEach((tt) => {
+      if (!levels.find((l) => l.LevelID === tt.LevelID)) {
+        levels = [
+          ...levels,
+          {
+            LevelID: tt.LevelID,
+            Title: utils.farsiNum(`${Words.level} ${tt.LevelID}`),
+          },
+        ];
+      }
+    });
+
+  return levels;
+};
+
 export default RelatedTafsilTypesTree;
