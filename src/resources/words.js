@@ -447,6 +447,14 @@ class Words extends Component {
   static payment = "پرداخت";
   static fund_summary = "صورت خلاصه تنخواه";
 
+  static financial_operations = "عملیات حسابداری";
+  static financial_operation = "عمیات حسابداری";
+  static financial_operation_type = "نوع عملیات حسابداری";
+  static item_type = "نوع قلم";
+  static paper_nature = "ماهیت چک/سفته";
+  static duration_type = "نوع مدت";
+  static is_default = "پیش فرض";
+
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";

@@ -6,7 +6,10 @@ import {
   AiOutlineBranches as BankAccountTypeIcon,
   AiFillCreditCard as CompanyBankAccountIcon,
 } from "react-icons/ai";
-import { VscTypeHierarchySub as BankBranchIcon } from "react-icons/vsc";
+import {
+  VscTypeHierarchySub as BankBranchIcon,
+  VscGithubAction as FinancialOperationIcon,
+} from "react-icons/vsc";
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import { GiBanknote as ChequeBookIcon } from "react-icons/gi";
 import { RiFlowChart as CashFlowIcon } from "react-icons/ri";
@@ -84,6 +87,16 @@ const mapper = (pageID) => {
       link = "person-company-bank-accounts";
       icon = (
         <BankAccountIcon style={{ color: Colors.red[6] }} size={iconSize} />
+      );
+      break;
+
+    case 229:
+      link = "financial-operations";
+      icon = (
+        <FinancialOperationIcon
+          style={{ color: Colors.purple[5] }}
+          size={iconSize}
+        />
       );
       break;
 
