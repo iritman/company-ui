@@ -23,7 +23,7 @@ const getSheets = (records) => [
     title: "StandardDescriptions",
     data: records,
     columns: [
-      { label: Words.id, value: "StandardID" },
+      { label: Words.id, value: "StandardDetailsID" },
       { label: Words.descriptions, value: "DetailsText" },
     ],
   },
@@ -34,9 +34,11 @@ const baseColumns = [
     title: Words.id,
     width: 100,
     align: "center",
-    dataIndex: "StandardID",
-    sorter: getSorter("StandardID"),
-    render: (StandardID) => <Text>{utils.farsiNum(`${StandardID}`)}</Text>,
+    dataIndex: "StandardDetailsID",
+    sorter: getSorter("StandardDetailsID"),
+    render: (StandardDetailsID) => (
+      <Text>{utils.farsiNum(`${StandardDetailsID}`)}</Text>
+    ),
   },
   {
     title: Words.descriptions,
@@ -52,7 +54,7 @@ const baseColumns = [
   },
 ];
 
-const recordID = "StandardID";
+const recordID = "StandardDetailsID";
 
 const StandardDescriptionsPage = ({ pageName }) => {
   const {

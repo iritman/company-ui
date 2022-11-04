@@ -18,7 +18,7 @@ import {
 } from "../../../../contexts/modal-context";
 
 const schema = {
-  StandardID: Joi.number().required(),
+  StandardDetailsID: Joi.number().required(),
   DetailsText: Joi.string()
     .min(5)
     .max(150)
@@ -27,7 +27,7 @@ const schema = {
 };
 
 const initRecord = {
-  StandardID: 0,
+  StandardDetailsID: 0,
   DetailsText: "",
 };
 
