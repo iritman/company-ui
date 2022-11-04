@@ -8,15 +8,14 @@ import {
   Col,
   Typography,
   Descriptions,
-  Tree,
   Alert,
 } from "antd";
-import { DownOutlined as DownIcon } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import service from "../../../../../services/financial/treasury/basic-info/cash-flows-service";
 import { handleError } from "../../../../../tools/form-manager";
+import RelatedTafsilTypesTree from "./related-tafsil-types-tree";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -73,80 +72,6 @@ const CashFlowDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     else result = "-";
 
     return result;
-  };
-
-  //------
-
-  const getTafsilTypeLevels = () => {
-    let levels = [];
-
-    tafsilTypes
-      .filter((tt) => tt.MoeinID === MoeinID)
-      .forEach((tt) => {
-        if (!levels.find((l) => l.LevelID === tt.LevelID)) {
-          levels = [
-            ...levels,
-            {
-              LevelID: tt.LevelID,
-              Title: utils.farsiNum(`${Words.level} ${tt.LevelID}`),
-            },
-          ];
-        }
-      });
-
-    return levels;
-  };
-
-  const levels = getTafsilTypeLevels();
-
-  const getTafsilTypesData = () => {
-    let nodes = [];
-
-    //------
-
-    levels.forEach((level) => {
-      nodes = [
-        ...nodes,
-        {
-          title: (
-            <Text style={{ color: Colors.volcano[6] }}>{level.Title}</Text>
-          ),
-          key: level.LevelID,
-        },
-      ];
-    });
-
-    //------
-
-    nodes.forEach((node) => {
-      const data = tafsilTypes.filter(
-        (tt) => tt.MoeinID === MoeinID && tt.LevelID === node.key
-      );
-
-      if (data.length > 0) {
-        let children = [];
-
-        data.forEach((tafsil_type) => {
-          children = [
-            ...children,
-            {
-              title: (
-                <Text style={{ color: Colors.blue[7] }}>
-                  {tafsil_type.Title}
-                </Text>
-              ),
-              key: `tafsil_type_id_${tafsil_type.TafsilTypeID}`,
-            },
-          ];
-        });
-
-        node.children = [...children];
-      }
-    });
-
-    //------
-
-    return nodes;
   };
 
   //------
@@ -241,10 +166,9 @@ const CashFlowDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                     label={Words.related_tafsil_levels}
                     span={2}
                   >
-                    <Tree
-                      showLine
-                      switcherIcon={<DownIcon />}
-                      treeData={getTafsilTypesData()}
+                    <RelatedTafsilTypesTree
+                      moeinID={MoeinID}
+                      tafsilTypes={tafsilTypes}
                     />
                   </Descriptions.Item>
                 </Descriptions>

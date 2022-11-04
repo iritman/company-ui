@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Divider, Typography, Tree, Alert } from "antd";
-import { DownOutlined as DownIcon } from "@ant-design/icons";
+import { Form, Row, Col, Divider, Typography, Alert } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   validateForm,
@@ -22,6 +20,7 @@ import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
+import RelatedTafsilTypesTree from "./related-tafsil-types-tree";
 
 const { Text } = Typography;
 
@@ -183,56 +182,6 @@ const CashFlowModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const levels = getTafsilTypeLevels();
 
-  const getTafsilTypesData = () => {
-    let nodes = [];
-
-    //------
-
-    levels.forEach((level) => {
-      nodes = [
-        ...nodes,
-        {
-          title: (
-            <Text style={{ color: Colors.volcano[6] }}>{level.Title}</Text>
-          ),
-          key: level.LevelID,
-        },
-      ];
-    });
-
-    //------
-
-    nodes.forEach((node) => {
-      const data = tafsilTypes.filter(
-        (tt) => tt.MoeinID === record.MoeinID && tt.LevelID === node.key
-      );
-
-      if (data.length > 0) {
-        let children = [];
-
-        data.forEach((tafsil_type) => {
-          children = [
-            ...children,
-            {
-              title: (
-                <Text style={{ color: Colors.blue[7] }}>
-                  {tafsil_type.Title}
-                </Text>
-              ),
-              key: `tafsil_type_id_${tafsil_type.TafsilTypeID}`,
-            },
-          ];
-        });
-
-        node.children = [...children];
-      }
-    });
-
-    //------
-
-    return nodes;
-  };
-
   const getTafsilTypeDdlStatus = (levelID) =>
     levels.filter((level) => level.LevelID === levelID).length === 0;
 
@@ -375,10 +324,9 @@ const CashFlowModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               </Col>
               {levels.length > 0 ? (
                 <Col xs={24}>
-                  <Tree
-                    showLine
-                    switcherIcon={<DownIcon />}
-                    treeData={getTafsilTypesData()}
+                  <RelatedTafsilTypesTree
+                    moeinID={record.MoeinID}
+                    tafsilTypes={tafsilTypes}
                   />
                 </Col>
               ) : (
