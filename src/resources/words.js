@@ -467,7 +467,7 @@ class Words extends Component {
   static financial_year = "سال مالی";
   static financial_years = "سال های مالی";
 
-  static treasury_basic_info = "اطلاعات پایه خزانه داری";
+  static treasury_basic_info = "خزانه داری - پایه";
   static bank_types = "انواع بانک";
   static bank_type = "نوع بانک";
   static pr_tel_no = "تلفن روابط عمومی";
