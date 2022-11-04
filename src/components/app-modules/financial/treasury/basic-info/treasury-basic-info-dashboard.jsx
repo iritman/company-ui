@@ -14,6 +14,7 @@ import {
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import { GiBanknote as ChequeBookIcon } from "react-icons/gi";
 import { RiFlowChart as CashFlowIcon } from "react-icons/ri";
+import { BsChatSquareText as DescriptionIcon } from "react-icons/bs";
 import {
   AiFillBank as BankIcon,
   AiOutlineBranches as BankAccountTypeIcon,
@@ -97,6 +98,12 @@ const mapper = (pageID) => {
       link = "regards";
       icon = <RegardIcon {...iconProps} />;
       backColor = Colors.blue[4];
+      break;
+
+    case 232:
+      link = "standard-descriptions";
+      icon = <DescriptionIcon {...iconProps} />;
+      backColor = Colors.geekblue[3];
       break;
 
     default:

@@ -13,6 +13,7 @@ import {
 import { HiCreditCard as BankAccountIcon } from "react-icons/hi";
 import { GiBanknote as ChequeBookIcon } from "react-icons/gi";
 import { RiFlowChart as CashFlowIcon } from "react-icons/ri";
+import { BsChatSquareText as DescriptionIcon } from "react-icons/bs";
 import {
   FaProjectDiagram as BankTypesIcon,
   FaWpforms as RegardIcon,
@@ -110,6 +111,16 @@ const mapper = (pageID) => {
     case 231:
       link = "regards";
       icon = <RegardIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 232:
+      link = "standard-descriptions";
+      icon = (
+        <DescriptionIcon
+          style={{ color: Colors.geekblue[6] }}
+          size={iconSize}
+        />
+      );
       break;
 
     default:

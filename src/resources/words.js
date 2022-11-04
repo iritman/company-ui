@@ -455,6 +455,9 @@ class Words extends Component {
   static duration_type = "نوع مدت";
   static is_default = "پیش فرض";
 
+  static standard_descriptions = "شرح های استاندارد";
+  static standard_description = "شرح";
+
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";
