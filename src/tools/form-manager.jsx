@@ -163,7 +163,8 @@ export const saveModalChanges = async (
   selectedObject,
   setProgress,
   onOk,
-  clearRecord
+  clearRecord,
+  showMessage
 ) => {
   const { errors, schema, record } = formConfig;
 
@@ -182,7 +183,7 @@ export const saveModalChanges = async (
       await onOk(rec_to_submit);
       if (selectedObject === null) clearRecord();
 
-      message.success(Words.messages.success_submit);
+      if (showMessage !== false) message.success(Words.messages.success_submit);
     } catch (ex) {
       handleError(ex);
     } finally {
