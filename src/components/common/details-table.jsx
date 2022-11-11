@@ -3,7 +3,11 @@ import { Table, Alert } from "antd";
 import Words from "../../resources/words";
 import { getData } from "../../tools/form-manager";
 
-const DetailsTable = ({ /* isSearched, */ records, columns }) => {
+const DetailsTable = ({
+  /* isSearched, */ records,
+  columns,
+  emptyDataMessage,
+}) => {
   return (
     <>
       {records.length > 0 ? (
@@ -24,7 +28,11 @@ const DetailsTable = ({ /* isSearched, */ records, columns }) => {
           size="small"
         />
       ) : (
-        <Alert message={Words.empty_data} type="warning" showIcon />
+        <Alert
+          message={emptyDataMessage || Words.empty_data}
+          type="warning"
+          showIcon
+        />
       )}
     </>
   );

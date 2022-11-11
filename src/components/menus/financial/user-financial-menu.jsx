@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import { FaDatabase as StoreIcon } from "react-icons/fa";
+import {
+  FaDatabase as StoreIcon,
+  FaMoneyCheckAlt as TreasuryIcon,
+} from "react-icons/fa";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { TbNotebook as LedgerIcon } from "react-icons/tb";
 import {
@@ -41,6 +44,18 @@ const mapper = (moduleID) => {
       link = "ledger";
       icon = (
         <LedgerIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
+      );
+      break;
+
+    case 23:
+      link = "basic";
+      icon = <TreasuryIcon style={{ color: Colors.lime[6] }} size={iconSize} />;
+      break;
+
+    case 24:
+      link = "receive";
+      icon = (
+        <TreasuryIcon style={{ color: Colors.purple[6] }} size={iconSize} />
       );
       break;
 

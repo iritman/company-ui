@@ -55,6 +55,12 @@ const mapper = (moduleID) => {
       backColor = Colors.lime[5];
       break;
 
+    case 24:
+      link = "treasury/receive";
+      icon = <TreasuryIcon {...iconProps} />;
+      backColor = Colors.purple[3];
+      break;
+
     default:
       break;
   }

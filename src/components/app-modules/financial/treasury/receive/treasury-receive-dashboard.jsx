@@ -1,0 +1,79 @@
+import React, { useState } from "react";
+import { useMount } from "react-use";
+import { Row, Col } from "antd";
+import DashboardTile from "../../../../common/dashboard-tile";
+import { MdSouthWest as ReceiveIcon } from "react-icons/md";
+import Colors from "../../../../../resources/colors";
+import modulesService from "../../../../../services/app/modules-service";
+
+const iconProps = {
+  size: 55,
+  style: { marginTop: 10 },
+};
+
+const mapper = (pageID) => {
+  let link = "";
+  let icon = null;
+  let backColor = Colors.blue[3];
+
+  switch (pageID) {
+    case 241:
+      link = "receive-requests";
+      icon = <ReceiveIcon {...iconProps} />;
+      backColor = Colors.blue[3];
+      break;
+
+    // case 242:
+    //   link = "banks";
+    //   icon = <BankIcon {...iconProps} />;
+    //   backColor = Colors.blue[2];
+    //   break;
+
+    // case 243:
+    //   link = "bank-branches";
+    //   icon = <BankBranchIcon {...iconProps} />;
+    //   backColor = Colors.purple[3];
+    //   break;
+
+    // case 244:
+    //   link = "bank-account-types";
+    //   icon = <BankAccountTypeIcon {...iconProps} />;
+    //   backColor = Colors.orange[3];
+    //   break;
+
+    default:
+      break;
+  }
+
+  return { link, icon, backColor };
+};
+
+const TreasuryReceiveDashboard = () => {
+  const [accessiblePages, setAccessiblePages] = useState([]);
+
+  useMount(async () => {
+    const financial_treasury_receive_module_id = 24;
+    const accessiblePages = await modulesService.accessiblePages(
+      financial_treasury_receive_module_id
+    );
+
+    setAccessiblePages(accessiblePages);
+  });
+
+  return (
+    <Row gutter={[10, 16]}>
+      {accessiblePages.map((page) => (
+        <Col xs={24} md={8} lg={6} key={page.PageID}>
+          <DashboardTile
+            to={`receive/${mapper(page.PageID).link}`}
+            icon={mapper(page.PageID).icon}
+            backColor={mapper(page.PageID).backColor}
+            title={page.PageTitle}
+          />
+        </Col>
+      ))}
+    </Row>
+  );
+};
+
+export default TreasuryReceiveDashboard;

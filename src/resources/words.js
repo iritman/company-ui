@@ -458,6 +458,35 @@ class Words extends Component {
   static standard_descriptions = "شرح های استاندارد";
   static standard_description = "شرح";
 
+  static receive_requests = "درخواست های دریافت";
+  static receive_request = "درخواست دریافت";
+  static front_side = "طرف مقابل";
+  static due_date = "تاریخ سررسید";
+  static settlement_date = "تاریخ تسویه";
+  static base_specifications = "مشخصات مبنا";
+  static receive_base = "مبنای دریافت";
+  static base_doc_date = "تاریخ سند مبنا";
+  static base_doc_id = "شناسه سند مبنا";
+  static base_doc_price = "مبلغ سند مبنا";
+  static receive_date = "تاریخ دریافت";
+  static receive_type = "قلم دریافتی";
+  static front_side_account_id = "شناسه حساب طرف مقابل";
+  static front_side_account = "حساب طرف مقابل";
+  static currency = "ارز";
+  static requestable_balance = "مانده قابل درخواست";
+  static receive_items = "اقلام دریافتی";
+  static no_receive_item = "قلم دریافتی ثبت نشده است";
+  static price = "مبلغ";
+  static from_receive_date = "تاریخ دریافت از";
+  static to_receive_date = "تاریخ دریافت تا";
+  static from_settlement_date = "تاریخ تسویه از";
+  static to_settlement_date = "تاریخ تسویه تا";
+  static submit_and_approve = "ثبت و تایید";
+
+  static receive_request_status_1 = "ثبت شده";
+  static receive_request_status_2 = "تایید شده";
+  static receive_request_status_3 = "رد شده";
+
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";
@@ -468,6 +497,8 @@ class Words extends Component {
   static financial_years = "سال های مالی";
 
   static treasury_basic_info = "خزانه داری - پایه";
+  static treasury_receive = "خزانه داری - دریافت";
+
   static bank_types = "انواع بانک";
   static bank_type = "نوع بانک";
   static pr_tel_no = "تلفن روابط عمومی";
@@ -961,6 +992,8 @@ class Words extends Component {
     sure_to_delete_announce: "برای حذف اطلاعیه اطمینان دارید؟",
     sure_to_delete_selected_item: "برای حذف آیتم انتخابی اطمینان دارید؟",
     sure_to_delete_financial_year: "برای حذف سال مالی اطمینان دارید؟",
+    sure_to_reject_request: "برای رد درخواست اطمینان دارید؟",
+    sure_to_submit_approve_request: "برای ثبت و تایید درخواست اطمینان دارید؟",
   };
 
   static monthes = {

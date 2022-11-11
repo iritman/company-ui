@@ -169,8 +169,6 @@ const CashFlowModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   //------
 
-  console.log(levels);
-
   return (
     <ModalWindow
       isOpen={isOpen}
