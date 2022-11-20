@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
-import { MdSouthWest as ReceiveIcon } from "react-icons/md";
+import {
+  MdSouthWest as ReceiveIcon,
+  MdReceiptLong as ReceiptIcon,
+} from "react-icons/md";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
 
@@ -23,11 +26,11 @@ const mapper = (pageID) => {
       backColor = Colors.blue[3];
       break;
 
-    // case 242:
-    //   link = "banks";
-    //   icon = <BankIcon {...iconProps} />;
-    //   backColor = Colors.blue[2];
-    //   break;
+    case 242:
+      link = "receive-receipts";
+      icon = <ReceiptIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
+      break;
 
     // case 243:
     //   link = "bank-branches";

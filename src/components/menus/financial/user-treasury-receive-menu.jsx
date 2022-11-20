@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
-import { MdSouthWest as ReceiveIcon } from "react-icons/md";
+import {
+  MdSouthWest as ReceiveIcon,
+  MdReceiptLong as ReceiptIcon,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -21,10 +24,10 @@ const mapper = (pageID) => {
       icon = <ReceiveIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
       break;
 
-    // case 242:
-    //   link = "banks";
-    //   icon = <BankIcon style={{ color: Colors.blue[5] }} size={iconSize} />;
-    //   break;
+    case 242:
+      link = "receive-receipts";
+      icon = <ReceiptIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
+      break;
 
     // case 243:
     //   link = "bank-branches";

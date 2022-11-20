@@ -470,6 +470,8 @@ class Words extends Component {
   static base_doc_price = "مبلغ سند مبنا";
   static receive_date = "تاریخ دریافت";
   static receive_type = "قلم دریافتی";
+  static delivery_member = "";
+  static receive_date = "";
   static front_side_account_id = "شناسه حساب طرف مقابل";
   static front_side_account = "حساب طرف مقابل";
   static currency = "ارز";
@@ -486,6 +488,22 @@ class Words extends Component {
   static receive_request_status_1 = "ثبت شده";
   static receive_request_status_2 = "تایید شده";
   static receive_request_status_3 = "رد شده";
+
+  static receive_receipts = "رسیدهای دریافت";
+  static receive_receipt = "رسید دریافت";
+  static cheque = "چک";
+  static demand = "سفته";
+  static cash = "وجه نقد";
+  static payment_notice = "اعلامیه واریز";
+  static return_from_other = "برگشت از واگذاری به غیر";
+  static return_payable_cheque = "استرداد چک پرداختنی";
+  static return_payable_demand = "استرداد سفته پرداختنی";
+  static receipt_receive_type = "نوع دریافت";
+  static delivery_member = "تحویل دهنده";
+  static receive_date = "تاریخ دریافت";
+  static cheque_series = "سری عددی چک";
+  static agreed_date = "تاریخ توافق شده";
+  static cheque_no = "شماره چک";
 
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
@@ -994,6 +1012,8 @@ class Words extends Component {
     sure_to_delete_financial_year: "برای حذف سال مالی اطمینان دارید؟",
     sure_to_reject_request: "برای رد درخواست اطمینان دارید؟",
     sure_to_submit_approve_request: "برای ثبت و تایید درخواست اطمینان دارید؟",
+    sure_to_submit_approve_receive_receipt:
+      "برای ثبت و تایید رسید دریافت اطمینان دارید؟",
   };
 
   static monthes = {

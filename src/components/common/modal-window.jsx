@@ -28,7 +28,7 @@ const ModalWindow = (props) => {
   return (
     <Modal
       // style={{ maxWidth: "100vw", margin: 0 }}
-      visible={isOpen}
+      open={isOpen}
       maskClosable={true}
       centered={true}
       title={
