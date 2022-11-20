@@ -8,6 +8,7 @@ import UserAccountsRoutes from "./user-accounts-routes";
 import UserLedgerRoutes from "./user-ledger-routes";
 import UserTreasuryBasicInfoRoutes from "./user-treasury-basic-info-routes";
 import UserTreasuryReceiveRoutes from "./user-treasury-receive-routes";
+import UserTreasuryCollectorAgentRoutes from "./user-treasury-collector-agent-routes";
 //---
 
 const UserFinancialRoutes = ({ path }) => {
@@ -41,6 +42,10 @@ const UserFinancialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/treasury/receive`}
         render={() => <UserTreasuryReceiveRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/treasury/collector-agent`}
+        render={() => <UserTreasuryCollectorAgentRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

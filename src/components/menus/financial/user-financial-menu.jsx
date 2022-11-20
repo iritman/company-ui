@@ -10,6 +10,7 @@ import {
   MdSettings as SettingsIcon,
   MdAccountBalanceWallet as AccountsIcon,
 } from "react-icons/md";
+import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -56,6 +57,13 @@ const mapper = (moduleID) => {
       link = "receive";
       icon = (
         <TreasuryIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
+
+    case 28:
+      link = "collector-agent";
+      icon = (
+        <CollectorAgentIcon style={{ color: Colors.red[6] }} size={iconSize} />
       );
       break;
 

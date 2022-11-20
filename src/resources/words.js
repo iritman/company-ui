@@ -505,6 +505,12 @@ class Words extends Component {
   static agreed_date = "تاریخ توافق شده";
   static cheque_no = "شماره چک";
 
+  static collector_agents = "ماموران وصول";
+  static collector_agent = "مامور وصول";
+  static allocated_ceiling = "سقف واگذاری";
+  static appointment_date = "تاریخ انتصاب";
+  static ryal = "ریال";
+
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";

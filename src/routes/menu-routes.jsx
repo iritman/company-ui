@@ -30,6 +30,7 @@ import UserAccountsMenu from "../components/menus/financial/user-accounts-menu";
 import UserLedgerMenu from "../components/menus/financial/user-ledger-menu";
 import UserTreasuryBasicInfoMenu from "../components/menus/financial/user-treasury-basic-info-menu";
 import UserTreasuryReceiveMenu from "../components/menus/financial/user-treasury-receive-menu";
+import UserTreasuryCollectorAgentMenu from "../components/menus/financial/user-treasury-collector-agent-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -120,6 +121,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/treasury/receive`}
         component={UserTreasuryReceiveMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/treasury/collector-agent`}
+        component={UserTreasuryCollectorAgentMenu}
       />
       {/* ----------- */}
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />
