@@ -511,6 +511,14 @@ class Words extends Component {
   static appointment_date = "تاریخ انتصاب";
   static ryal = "ریال";
 
+  static funds = "تنخواه";
+  static fund = "تنخواه";
+  static funder_member = "تنخواه دار";
+  static establish_date = "تاریخ استقرار";
+  static initial_inventory = "موجودی اولیه";
+  static max_inventory = "سقف موجودی";
+  static fund_info = "اطلاعات تنخواه";
+
   static financial_periods = "دوره های مالی";
   static ledgers = "دفاتر کل";
   static ledger = "دفتر کل";

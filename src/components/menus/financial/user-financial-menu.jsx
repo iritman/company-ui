@@ -10,6 +10,7 @@ import {
   MdSettings as SettingsIcon,
   MdAccountBalanceWallet as AccountsIcon,
 } from "react-icons/md";
+import { RiRefundFill as FundIcon } from "react-icons/ri";
 import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -58,6 +59,11 @@ const mapper = (moduleID) => {
       icon = (
         <TreasuryIcon style={{ color: Colors.purple[6] }} size={iconSize} />
       );
+      break;
+
+    case 27:
+      link = "fund";
+      icon = <FundIcon style={{ color: Colors.gold[6] }} size={iconSize} />;
       break;
 
     case 28:
