@@ -724,7 +724,7 @@ const ReceiveReceiptModal = ({
                 title={Words.delivery_member}
                 dataSource={deliveryMembers}
                 keyColumn="DeliveryMemberID"
-                valueColumn="Title"
+                valueColumn="FullName"
                 formConfig={formConfig}
                 required
                 autoFocus
