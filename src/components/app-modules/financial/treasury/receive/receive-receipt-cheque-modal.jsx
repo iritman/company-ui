@@ -42,49 +42,49 @@ const schema = {
   StandardDetailsID: Joi.number(),
 };
 
-// const initRecord = {
-//   ChequeID: 0,
-//   ReceiveID: 0,
-//   FrontSideAccountID: 0,
-//   OperationID: 0,
-//   CashFlowID: 0,
-//   AccountNo: "",
-//   BranchCode: "",
-//   BranchName: "",
-//   BankID: 0,
-//   CityID: 0,
-//   ShebaID: "",
-//   ChequeNo: "",
-//   SayadNo: "",
-//   ChequeSeries: "",
-//   CurrencyID: 0,
-//   Amount: 0,
-//   DueDate: "",
-//   AgreedDate: "",
-//   StandardDetailsID: 0,
-// };
-
 const initRecord = {
   ChequeID: 0,
   ReceiveID: 0,
-  FrontSideAccountID: 1,
-  OperationID: 1,
-  CashFlowID: 1,
-  AccountNo: "11112222",
-  BranchCode: "123",
-  BranchName: "میدان امام",
-  BankID: 2,
-  CityID: 387,
+  FrontSideAccountID: 0,
+  OperationID: 0,
+  CashFlowID: 0,
+  AccountNo: "",
+  BranchCode: "",
+  BranchName: "",
+  BankID: 0,
+  CityID: 0,
   ShebaID: "",
-  ChequeNo: "102030",
+  ChequeNo: "",
   SayadNo: "",
   ChequeSeries: "",
-  CurrencyID: 1,
-  Amount: 257500000,
-  DueDate: "14010916",
-  AgreedDate: "14010929",
-  StandardDetailsID: 1,
+  CurrencyID: 0,
+  Amount: 0,
+  DueDate: "",
+  AgreedDate: "",
+  StandardDetailsID: 0,
 };
+
+// const initRecord = {
+//   ChequeID: 0,
+//   ReceiveID: 0,
+//   FrontSideAccountID: 1,
+//   OperationID: 1,
+//   CashFlowID: 1,
+//   AccountNo: "11112222",
+//   BranchCode: "123",
+//   BranchName: "میدان امام",
+//   BankID: 2,
+//   CityID: 387,
+//   ShebaID: "",
+//   ChequeNo: "102030",
+//   SayadNo: "",
+//   ChequeSeries: "",
+//   CurrencyID: 1,
+//   Amount: 257500000,
+//   DueDate: "14010916",
+//   AgreedDate: "14010929",
+//   StandardDetailsID: 1,
+// };
 
 const formRef = React.createRef();
 
@@ -117,29 +117,29 @@ const ReceiveReceiptChequeModal = ({
   };
 
   const clearRecord = () => {
-    // record.FrontSideAccountID = 0;
-    // record.OperationID = 0;
-    // record.CashFlowID = 0;
-    // record.AccountNo = "";
-    // record.BranchCode = "";
-    // record.BranchName = "";
-    // record.BankID = 0;
-    // record.CityID = 0;
-    // record.ShebaID = "";
-    // record.ChequeNo = "";
-    // record.SayadNo = "";
-    // record.ChequeSeries = "";
-    // record.CurrencyID = 0;
-    // record.Amount = 0;
-    // record.DueDate = "";
-    // record.AgreedDate = "";
-    // record.StandardDetailsID = 0;
+    record.FrontSideAccountID = 0;
+    record.OperationID = 0;
+    record.CashFlowID = 0;
+    record.AccountNo = "";
+    record.BranchCode = "";
+    record.BranchName = "";
+    record.BankID = 0;
+    record.CityID = 0;
+    record.ShebaID = "";
+    record.ChequeNo = "";
+    record.SayadNo = "";
+    record.ChequeSeries = "";
+    record.CurrencyID = 0;
+    record.Amount = 0;
+    record.DueDate = "";
+    record.AgreedDate = "";
+    record.StandardDetailsID = 0;
 
-    // setRecord(record);
-    setRecord(initRecord);
+    setRecord(record);
+    // setRecord(initRecord);
     setErrors({});
-    // loadFieldsValue(formRef, record);
-    loadFieldsValue(formRef, initRecord);
+    loadFieldsValue(formRef, record);
+    // loadFieldsValue(formRef, initRecord);
   };
 
   useMount(async () => {
