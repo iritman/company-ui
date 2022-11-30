@@ -191,8 +191,6 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   //------
 
-  console.log(validateForm({ record, schema }));
-
   return (
     <ModalWindow
       isOpen={isOpen}

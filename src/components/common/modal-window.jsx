@@ -22,6 +22,7 @@ const ModalWindow = (props) => {
     buttons,
     confirm,
     footer,
+    showIcon,
     ...rest
   } = props;
 
@@ -34,7 +35,10 @@ const ModalWindow = (props) => {
       title={
         title ? (
           <Space>
-            <PlusBoxIcon style={{ color: Colors.blue[6] }} />
+            {(!showIcon || showIcon === true) && (
+              <PlusBoxIcon style={{ color: Colors.blue[6] }} />
+            )}
+
             {title}
           </Space>
         ) : searchModal ? (
@@ -78,7 +82,7 @@ const ModalWindow = (props) => {
     >
       <section>
         <article
-          id="lesson-info-content"
+          id="modal-content"
           className="scrollbar-normal"
           style={{ maxHeight: "calc(100vh - 180px)" }}
         >

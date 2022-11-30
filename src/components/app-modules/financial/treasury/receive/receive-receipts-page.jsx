@@ -75,7 +75,7 @@ const baseColumns = [
   },
   {
     title: Words.receipt_receive_type,
-    width: 150,
+    width: 200,
     align: "center",
     dataIndex: "ReceiveTypeTitle",
     sorter: getSorter("ReceiveTypeTitle"),
@@ -90,8 +90,32 @@ const baseColumns = [
     dataIndex: "ReceiveDate",
     sorter: getSorter("ReceiveDate"),
     render: (ReceiveDate) => (
-      <Text style={{ color: Colors.cyan[6] }}>
+      <Text style={{ color: Colors.orange[6] }}>
         {utils.farsiNum(utils.slashDate(ReceiveDate))}
+      </Text>
+    ),
+  },
+  {
+    title: Words.cash_box,
+    width: 200,
+    align: "center",
+    dataIndex: "CashBoxTitle",
+    sorter: getSorter("CashBoxTitle"),
+    render: (CashBoxTitle) => (
+      <Text style={{ color: Colors.cyan[6] }}>
+        {utils.farsiNum(CashBoxTitle)}
+      </Text>
+    ),
+  },
+  {
+    title: Words.price,
+    width: 150,
+    align: "center",
+    dataIndex: "Price",
+    sorter: getSorter("Price"),
+    render: (Price) => (
+      <Text style={{ color: Colors.purple[6] }}>
+        {utils.farsiNum(utils.moneyNumber(Price))}
       </Text>
     ),
   },
@@ -204,41 +228,79 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     setSearched(false);
   };
 
-  const handleSaveReceiveReceiptItem = async (receive_item) => {
-    const saved_receive_receipt_item = await service.saveItem(receive_item);
+  const handleSaveReceiveReceiptItem = async (itemType, receive_item) => {
+    //--- calculate new price
+
+    let diff_price = 0;
+
+    if (receive_item.ChequeID === 0) {
+      diff_price = receive_item.Amount;
+    } else {
+      diff_price =
+        receive_item.Amount -
+        selectedObject.Cheques.find((c) => c.ChequeID === receive_item.ChequeID)
+          .Amount;
+    }
+
+    //---
+
+    const saved_receipt_item = await service.saveItem(itemType, receive_item);
 
     const rec = { ...selectedObject };
-    if (receive_item.ItemID === 0)
-      rec.Items = [...rec.Items, saved_receive_receipt_item];
-    else {
-      const index = rec.Items.findIndex(
-        (i) => i.ItemID === receive_item.ItemID
-      );
-      rec.Items[index] = saved_receive_receipt_item;
+    // update price
+    rec.Price += diff_price;
+
+    switch (itemType) {
+      case "cheque": {
+        if (receive_item.ChequeID === 0)
+          rec.Cheques = [...rec.Cheques, saved_receipt_item];
+        else {
+          const index = rec.Cheques.findIndex(
+            (i) => i.ChequeID === receive_item.ChequeID
+          );
+
+          rec.Cheques[index] = saved_receipt_item;
+        }
+
+        break;
+      }
+      default:
+        break;
     }
+
     setSelectedObject(rec);
 
     //------
 
-    const receive_receipt_index = records.findIndex(
-      (receive_receipt) => receive_receipt.ReceiveID === receive_item.ReceiveID
+    const receipt_index = records.findIndex(
+      (receipt) => receipt.ReceiveID === receive_item.ReceiveID
     );
 
-    records[receive_receipt_index] = selectedObject;
+    records[receipt_index] = rec;
 
     //------
 
     setRecords([...records]);
 
-    return saved_receive_receipt_item;
+    return saved_receipt_item;
   };
 
-  const handleDeleteReceiveReceiptItem = async (item_id) => {
-    await service.deleteItem(item_id);
+  const handleDeleteReceiveReceiptItem = async (item_type, item_id) => {
+    await service.deleteItem(item_type, item_id);
 
     if (selectedObject) {
       const rec = { ...selectedObject };
-      rec.Items = rec.Items.filter((i) => i.ItemID !== item_id);
+      rec.Price -= rec.Cheques.find((c) => c.ChequeID === item_id).Amount;
+
+      switch (item_type) {
+        case "cheque": {
+          rec.Cheques = rec.Cheques.filter((i) => i.ChequeID !== item_id);
+          break;
+        }
+        default:
+          break;
+      }
+
       setSelectedObject(rec);
 
       //------
@@ -248,9 +310,6 @@ const ReceiveReceiptsPage = ({ pageName }) => {
       );
 
       records[receive_receipt_index] = rec;
-      // records[receive_receipt_index].Items = records[
-      //   receive_receipt_index
-      // ].Items.filter((i) => y.ItemID !== item_id);
 
       setRecords([...records]);
     }

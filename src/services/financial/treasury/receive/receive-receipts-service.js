@@ -21,6 +21,12 @@ export async function searchFronSideAccounts(searchText) {
   return data;
 }
 
+export async function searchFronSideAccountByID(accountID) {
+  const { data } = await http.get(`${apiEndpoint}/account/${accountID}`);
+
+  return data;
+}
+
 export async function searchDeliveryMembers(searchText) {
   const { data } = await http.post(`${apiEndpoint}/delivery-members`, {
     searchText,
@@ -41,8 +47,8 @@ export async function saveData(record) {
   return data;
 }
 
-export async function saveCheque(record) {
-  const { data } = await http.post(`${apiEndpoint}/cheque`, record);
+export async function saveItem(itemType, record) {
+  const { data } = await http.post(`${apiEndpoint}/item/${itemType}`, record);
 
   return data;
 }
@@ -75,10 +81,11 @@ const service = {
   getParams,
   getItemsParams,
   searchFronSideAccounts,
+  searchFronSideAccountByID,
   searchDeliveryMembers,
   searchData,
   saveData,
-  saveCheque,
+  saveItem,
   rejectReciveReceipt,
   approveReciveReceipt,
   deleteData,

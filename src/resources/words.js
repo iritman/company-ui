@@ -447,8 +447,10 @@ class Words extends Component {
   static payment = "پرداخت";
   static fund_summary = "صورت خلاصه تنخواه";
 
+  static reg_cheque = "ثبت چک";
+
   static financial_operations = "عملیات حسابداری";
-  static financial_operation = "عمیات حسابداری";
+  static financial_operation = "عملیات حسابداری";
   static financial_operation_type = "نوع عملیات حسابداری";
   static item_type = "نوع قلم";
   static paper_nature = "ماهیت چک/سفته";
@@ -479,6 +481,7 @@ class Words extends Component {
   static receive_items = "اقلام دریافتی";
   static no_receive_item = "قلم دریافتی ثبت نشده است";
   static price = "مبلغ";
+  static total_price = "مجموع";
   static from_receive_date = "تاریخ دریافت از";
   static to_receive_date = "تاریخ دریافت تا";
   static from_settlement_date = "تاریخ تسویه از";
@@ -542,6 +545,8 @@ class Words extends Component {
   static bank_branches = "شعب بانکی";
   static bank_branch = "شعبه بانک";
   static branch_code = "کد شعبه";
+  static branch_name = "نام شعبه";
+  static branch_city = "شهر شعبه";
   static tel_no = "شماره تلفن";
   static regards = "بابت";
   static doc_type = "نوع سند";

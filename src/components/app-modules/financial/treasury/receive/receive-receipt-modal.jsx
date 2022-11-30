@@ -34,6 +34,7 @@ import {
 import service from "../../../../../services/financial/treasury/receive/receive-receipts-service";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
+import TextItem from "./../../../../form-controls/text-item";
 import {
   useModalContext,
   useResetContext,
@@ -41,6 +42,7 @@ import {
 import DetailsTable from "../../../../common/details-table";
 import ChequeModal from "./receive-receipt-cheque-modal";
 import { v4 as uuid } from "uuid";
+import PriceViewer from "./price-viewer";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -99,8 +101,8 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
         <Text style={{ color: Colors.cyan[6] }}>
           {utils.farsiNum(
             record.MemberID > 0
-              ? `${record.FirstName} ${record.LastName} - ${record.AccountNo}`
-              : `${record.CompanyTitle} - ${record.AccountNo}`
+              ? `${record.FirstName} ${record.LastName}`
+              : `${record.CompanyTitle}`
           )}
         </Text>
       ),
@@ -124,7 +126,7 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "PaperNatureTitle",
       sorter: getSorter("PaperNatureTitle"),
       render: (PaperNatureTitle) => (
-        <Text style={{ color: Colors.orange[6] }}>{PaperNatureTitle}</Text>
+        <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
       ),
     },
     {
@@ -134,12 +136,12 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "DurationTypeTitle",
       sorter: getSorter("DurationTypeTitle"),
       render: (DurationTypeTitle) => (
-        <Text style={{ color: Colors.gold[6] }}>{DurationTypeTitle}</Text>
+        <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
       ),
     },
     {
       title: Words.cash_flow,
-      width: 100,
+      width: 150,
       align: "center",
       dataIndex: "CashFlowTitle",
       sorter: getSorter("CashFlowTitle"),
@@ -154,7 +156,9 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "AccountNo",
       sorter: getSorter("AccountNo"),
       render: (AccountNo) => (
-        <Text style={{ color: Colors.grey[6] }}>{AccountNo}</Text>
+        <Text style={{ color: Colors.orange[6] }}>
+          {utils.farsiNum(AccountNo)}
+        </Text>
       ),
     },
     {
@@ -164,17 +168,17 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "BankTitle",
       sorter: getSorter("BankTitle"),
       render: (BankTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{BankTitle}</Text>
+        <Text style={{ color: Colors.green[6] }}>{BankTitle}</Text>
       ),
     },
     {
       title: Words.city,
-      width: 100,
+      width: 120,
       align: "center",
       dataIndex: "CityTitle",
       sorter: getSorter("CityTitle"),
       render: (CityTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{CityTitle}</Text>
+        <Text style={{ color: Colors.blue[6] }}>{CityTitle}</Text>
       ),
     },
     {
@@ -184,7 +188,9 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "BranchName",
       sorter: getSorter("BranchName"),
       render: (BranchName) => (
-        <Text style={{ color: Colors.grey[6] }}>{BranchName}</Text>
+        <Text style={{ color: Colors.grey[6] }}>
+          {utils.farsiNum(BranchName)}
+        </Text>
       ),
     },
     {
@@ -194,7 +200,9 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "BranchCode",
       sorter: getSorter("BranchCode"),
       render: (BranchCode) => (
-        <Text style={{ color: Colors.grey[6] }}>{BranchCode}</Text>
+        <Text style={{ color: Colors.grey[6] }}>
+          {utils.farsiNum(BranchCode)}
+        </Text>
       ),
     },
     {
@@ -204,7 +212,7 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "ChequeNo",
       sorter: getSorter("ChequeNo"),
       render: (ChequeNo) => (
-        <Text style={{ color: Colors.grey[6] }}>{ChequeNo}</Text>
+        <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(ChequeNo)}</Text>
       ),
     },
     {
@@ -214,7 +222,9 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "ChequeSeries",
       sorter: getSorter("ChequeSeries"),
       render: (ChequeSeries) => (
-        <Text style={{ color: Colors.grey[6] }}>{ChequeSeries}</Text>
+        <Text style={{ color: Colors.grey[6] }}>
+          {utils.farsiNum(ChequeSeries)}
+        </Text>
       ),
     },
     {
@@ -261,7 +271,7 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.due_date,
-      width: 100,
+      width: 120,
       align: "center",
       dataIndex: "DueDate",
       sorter: getSorter("DueDate"),
@@ -277,7 +287,7 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.agreed_date,
-      width: 100,
+      width: 120,
       align: "center",
       dataIndex: "AgreedDate",
       sorter: getSorter("AgreedDate"),
@@ -363,8 +373,8 @@ const ReceiveReceiptModal = ({
   selectedObject,
   onOk,
   onCancel,
-  onSaveReceiveRequestItem,
-  onDeleteReceiveRequestItem,
+  onSaveReceiveReceiptItem,
+  onDeleteReceiveReceiptItem,
   onReject,
   onApprove,
 }) => {
@@ -380,6 +390,12 @@ const ReceiveReceiptModal = ({
   const [standardDetails, setStandardDetails] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
+
+  const [currencies, setCurrencies] = useState([]);
+  const [operations, setOperations] = useState([]);
+  const [cashFlows, setCashFlows] = useState([]);
+  const [banks, setBanks] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [showChequeModal, setShowChequeModal] = useState(false);
@@ -422,7 +438,9 @@ const ReceiveReceiptModal = ({
     setProgress(true);
 
     try {
-      const data = await service.getParams();
+      //------ load receipt params
+
+      let data = await service.getParams();
 
       let {
         ReceiveTypes,
@@ -445,6 +463,33 @@ const ReceiveReceiptModal = ({
 
         setDeliveryMembers([{ DeliveryMemberID, FullName }]);
       }
+
+      if (selectedObject) {
+        const {
+          DeliveryMemberID,
+          DeliveryMemberFirstName,
+          DeliveryMemberLastName,
+        } = selectedObject;
+
+        setDeliveryMembers([
+          {
+            DeliveryMemberID,
+            FullName: `${DeliveryMemberFirstName} ${DeliveryMemberLastName}`,
+          },
+        ]);
+      }
+
+      //------ load items params
+
+      data = await service.getItemsParams();
+
+      let { Currencies, Operations, CashFlows, Banks, Cities } = data;
+
+      setCurrencies(Currencies);
+      setOperations(Operations);
+      setCashFlows(CashFlows);
+      setBanks(Banks);
+      setCities(Cities);
     } catch (ex) {
       handleError(ex);
     }
@@ -499,42 +544,112 @@ const ReceiveReceiptModal = ({
 
   //------
 
-  const handleSaveCheque = async (receive_item) => {
-    if (selectedObject !== null) {
-      receive_item.RequestID = selectedObject.RequestID;
+  const findTitle = (data_source, id_col, title_col, search_value) => {
+    const record = data_source.find((row) => row[id_col] === search_value);
 
-      const saved_receive_request_item = await onSaveReceiveRequestItem(
-        receive_item
+    return record ? record[title_col] : "";
+  };
+
+  const handleSaveCheque = async (cheque_to_save) => {
+    if (selectedObject !== null) {
+      cheque_to_save.ReceiveID = selectedObject.ReceiveID;
+
+      const saved_cheque = await onSaveReceiveReceiptItem(
+        "cheque",
+        cheque_to_save
       );
 
-      const index = record.Items.findIndex(
-        (item) => item.ItemID === receive_item.ItemID
+      const index = record.Cheques.findIndex(
+        (item) => item.ChequeID === cheque_to_save.ChequeID
       );
 
       if (index === -1) {
-        record.Items = [...record.Items, saved_receive_request_item];
+        record.Cheques = [...record.Cheques, saved_cheque];
       } else {
-        record.Items[index] = saved_receive_request_item;
+        record.Cheques[index] = saved_cheque;
       }
     } else {
-      //While adding items temporarily, we have no jpin operation in database
+      //While adding items temporarily, we have no join operation in database
       //So, we need to select titles manually
-      receive_item.ReceiveTypeTitle = receiveTypes.find(
-        (rt) => rt.ReceiveTypeID === receive_item.ReceiveTypeID
-      )?.Title;
-      receive_item.DetailsText = standardDetails.find(
-        (si) => si.StandardDetailsID === receive_item.StandardDetailsID
-      )?.DetailsText;
+
+      const front_side_account = await service.searchFronSideAccountByID(
+        cheque_to_save.FrontSideAccountID
+      );
+
+      const { MemberID, FirstName, LastName, CompanyID, CompanyTitle } =
+        front_side_account;
+
+      cheque_to_save.MemberID = MemberID;
+      cheque_to_save.FirstName = FirstName;
+      cheque_to_save.LastName = LastName;
+      cheque_to_save.CompanyID = CompanyID;
+      cheque_to_save.CompanyTitle = CompanyTitle;
+
+      cheque_to_save.OperationTitle = findTitle(
+        operations,
+        "OperationID",
+        "Title",
+        cheque_to_save.OperationID
+      );
+
+      cheque_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        cheque_to_save.OperationID
+      );
+
+      cheque_to_save.DurationTypeTitle = findTitle(
+        operations,
+        "OperationID",
+        "DurationTypeTitle",
+        cheque_to_save.OperationID
+      );
+
+      cheque_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        cheque_to_save.CashFlowID
+      );
+
+      cheque_to_save.BankTitle = findTitle(
+        banks,
+        "BankID",
+        "Title",
+        cheque_to_save.BankID
+      );
+
+      cheque_to_save.CityTitle = findTitle(
+        cities,
+        "CityID",
+        "Title",
+        cheque_to_save.CityID
+      );
+
+      cheque_to_save.CurrencyTitle = findTitle(
+        currencies,
+        "CurrencyID",
+        "Title",
+        cheque_to_save.CurrencyID
+      );
+
+      cheque_to_save.DetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        cheque_to_save.StandardDetailsID
+      );
 
       //--- managing unique id (UID) for new items
-      if (receive_item.ItemID === 0 && selectedItem === null) {
-        receive_item.UID = uuid();
-        record.Items = [...record.Items, receive_item];
-      } else if (receive_item.ItemID === 0 && selectedItem !== null) {
-        const index = record.Items.findIndex(
+      if (cheque_to_save.ChequeID === 0 && selectedItem === null) {
+        cheque_to_save.UID = uuid();
+        record.Cheques = [...record.Cheques, cheque_to_save];
+      } else if (cheque_to_save.ChequeID === 0 && selectedItem !== null) {
+        const index = record.Cheques.findIndex(
           (item) => item.UID === selectedItem.UID
         );
-        record.Items[index] = receive_item;
+        record.Cheques[index] = cheque_to_save;
       }
     }
 
@@ -544,16 +659,20 @@ const ReceiveReceiptModal = ({
     setSelectedItem(null);
   };
 
-  const HandleDeleteCheque = async (item) => {
+  const HandleDeleteCheque = async (cheque_to_delete) => {
     setProgress(true);
 
     try {
-      if (item.ItemID > 0) {
-        await onDeleteReceiveRequestItem(item.ItemID);
+      if (cheque_to_delete.ChequeID > 0) {
+        await onDeleteReceiveReceiptItem("cheque", cheque_to_delete.ChequeID);
 
-        record.Items = record.Items.filter((i) => i.ItemID !== item.ItemID);
+        record.Cheques = record.Cheques.filter(
+          (i) => i.ChequeID !== cheque_to_delete.ChequeID
+        );
       } else {
-        record.Items = record.Items.filter((i) => i.UID !== item.UID);
+        record.Cheques = record.Cheques.filter(
+          (i) => i.UID !== cheque_to_delete.UID
+        );
       }
 
       setRecord({ ...record });
@@ -681,11 +800,69 @@ const ReceiveReceiptModal = ({
 
   //------
 
+  const calculatePrice = () => {
+    const price = {};
+    let sum = 0;
+
+    record.Cheques?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.ChequesAmount = sum;
+    sum = 0;
+
+    record.Demands?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.DemandsAmount = sum;
+    sum = 0;
+
+    record.Cashes?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.CashesAmount = sum;
+    sum = 0;
+
+    record.PaymentNotices?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.PaymentNoticesAmount = sum;
+    sum = 0;
+
+    record.ReturnFromOthers?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.ReturnFromOthersAmount = sum;
+    sum = 0;
+
+    record.ReturnPayableCheques?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.ReturnPayableChequesAmount = sum;
+    sum = 0;
+
+    record.ReturnPayableDemands?.forEach((i) => {
+      sum += i.Amount;
+    });
+    price.ReturnPayableDemandsAmount = sum;
+    sum = 0;
+
+    for (const key in price) {
+      sum += price[key];
+    }
+    price.Total = sum;
+
+    return price;
+  };
+
+  //------
+
   const is_disable =
-    record?.Items?.length === 0 || (validateForm({ record, schema }) && true);
+    record?.Cheques?.length === 0 || (validateForm({ record, schema }) && true);
 
   const status_id =
     selectedObject === null ? record.StatusID : selectedObject.StatusID;
+
+  const price = calculatePrice();
 
   return (
     <>
@@ -760,6 +937,17 @@ const ReceiveReceiptModal = ({
                 formConfig={formConfig}
               />
             </Col>
+            {price.Total > 0 && (
+              <Col xs={24}>
+                <TextItem
+                  title={Words.price}
+                  value={`${utils.farsiNum(utils.moneyNumber(price.Total))} ${
+                    Words.ryal
+                  }`}
+                  valueColor={Colors.magenta[6]}
+                />
+              </Col>
+            )}
 
             {/* ToDo: Implement base_doc_id field based on the selected base type */}
 
@@ -767,15 +955,22 @@ const ReceiveReceiptModal = ({
               <Form.Item>
                 <Tabs type="card" defaultActiveKey="1">
                   <TabPane tab={Words.cheque} key="cheque">
-                    <DetailsTable
-                      records={record.Cheques}
-                      columns={getChequeColumns(
-                        access,
-                        status_id,
-                        handleEditCheque,
-                        HandleDeleteCheque
-                      )}
-                    />
+                    <Row gutter={[0, 15]}>
+                      <Col xs={24}>
+                        <DetailsTable
+                          records={record.Cheques}
+                          columns={getChequeColumns(
+                            access,
+                            status_id,
+                            handleEditCheque,
+                            HandleDeleteCheque
+                          )}
+                        />
+                      </Col>
+                      <Col xs={24}>
+                        <PriceViewer price={price.ChequesAmount} />
+                      </Col>
+                    </Row>
                   </TabPane>
                   <TabPane tab={Words.demand} key="demand"></TabPane>
                   <TabPane tab={Words.cash} key="cash"></TabPane>
