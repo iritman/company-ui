@@ -448,6 +448,7 @@ class Words extends Component {
   static fund_summary = "صورت خلاصه تنخواه";
 
   static reg_cheque = "ثبت چک";
+  static reg_demand = "ثبت سفته";
 
   static financial_operations = "عملیات حسابداری";
   static financial_operation = "عملیات حسابداری";
@@ -504,9 +505,11 @@ class Words extends Component {
   static receipt_receive_type = "نوع دریافت";
   static delivery_member = "تحویل دهنده";
   static receive_date = "تاریخ دریافت";
-  static cheque_series = "سری عددی چک";
   static agreed_date = "تاریخ توافق شده";
   static cheque_no = "شماره چک";
+  static cheque_series = "سری عددی چک";
+  static demand_no = "شماره سفته";
+  static demand_series = "سری عددی سفته";
 
   static collector_agents = "ماموران وصول";
   static collector_agent = "مامور وصول";

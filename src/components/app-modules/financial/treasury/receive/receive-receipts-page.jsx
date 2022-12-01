@@ -228,44 +228,79 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     setSearched(false);
   };
 
-  const handleSaveReceiveReceiptItem = async (itemType, receive_item) => {
+  const getCollection = (itemType) => {
+    let collection = "";
+
+    switch (itemType) {
+      case "cheque":
+        collection = "Cheques";
+        break;
+      case "demand":
+        collection = "Demands";
+        break;
+      case "cash":
+        collection = "Cashes";
+        break;
+      case "payment-notice":
+        collection = "PaymentNotices";
+        break;
+      case "return-from-other":
+        collection = "ReturnFromOthers";
+        break;
+      case "return-payable-cheque":
+        collection = "ReturnPayableCheques";
+        break;
+      case "return-payable-demand":
+        collection = "ReturnPayableDemands";
+        break;
+      default:
+        break;
+    }
+
+    return collection;
+  };
+
+  const handleSaveReceiveReceiptItem = async (
+    item_type,
+    key_field,
+    receive_item
+  ) => {
+    //--- specify collection
+
+    const collection = getCollection(item_type);
+
     //--- calculate new price
 
     let diff_price = 0;
 
-    if (receive_item.ChequeID === 0) {
+    if (receive_item[key_field] === 0) {
       diff_price = receive_item.Amount;
     } else {
       diff_price =
         receive_item.Amount -
-        selectedObject.Cheques.find((c) => c.ChequeID === receive_item.ChequeID)
-          .Amount;
+        selectedObject[collection].find(
+          (c) => c[key_field] === receive_item[key_field]
+        ).Amount;
     }
 
     //---
 
-    const saved_receipt_item = await service.saveItem(itemType, receive_item);
+    const saved_receipt_item = await service.saveItem(item_type, receive_item);
 
     const rec = { ...selectedObject };
     // update price
     rec.Price += diff_price;
 
-    switch (itemType) {
-      case "cheque": {
-        if (receive_item.ChequeID === 0)
-          rec.Cheques = [...rec.Cheques, saved_receipt_item];
-        else {
-          const index = rec.Cheques.findIndex(
-            (i) => i.ChequeID === receive_item.ChequeID
-          );
+    //------
 
-          rec.Cheques[index] = saved_receipt_item;
-        }
+    if (receive_item[key_field] === 0)
+      rec[collection] = [...rec[collection], saved_receipt_item];
+    else {
+      const index = rec[collection].findIndex(
+        (i) => i[key_field] === receive_item[key_field]
+      );
 
-        break;
-      }
-      default:
-        break;
+      rec[collection][index] = saved_receipt_item;
     }
 
     setSelectedObject(rec);
@@ -285,21 +320,31 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     return saved_receipt_item;
   };
 
-  const handleDeleteReceiveReceiptItem = async (item_type, item_id) => {
+  const handleDeleteReceiveReceiptItem = async (
+    item_type,
+    key_field,
+    item_id
+  ) => {
+    //--- specify collection
+
+    const collection = getCollection(item_type);
+
+    //------
+
     await service.deleteItem(item_type, item_id);
 
     if (selectedObject) {
       const rec = { ...selectedObject };
-      rec.Price -= rec.Cheques.find((c) => c.ChequeID === item_id).Amount;
+      rec.Price -= rec[collection].find((c) => c[key_field] === item_id).Amount;
 
-      switch (item_type) {
-        case "cheque": {
-          rec.Cheques = rec.Cheques.filter((i) => i.ChequeID !== item_id);
-          break;
-        }
-        default:
-          break;
-      }
+      rec[collection] = rec[collection].filter((i) => i[key_field] !== item_id);
+      // switch (item_type) {
+      //   case "cheque": {
+      //     break;
+      //   }
+      //   default:
+      //     break;
+      // }
 
       setSelectedObject(rec);
 
