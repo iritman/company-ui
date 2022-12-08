@@ -8,7 +8,6 @@ import {
   Space,
   Popconfirm,
   Button,
-  Popover,
   Tabs,
 } from "antd";
 import {
@@ -17,7 +16,6 @@ import {
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
 import Joi from "joi-browser";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
@@ -31,7 +29,7 @@ import {
   handleError,
   getSorter,
 } from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/receive-receipts-service";
+import service from "../../../../../services/financial/treasury/receive/bank-hand-overs-service";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import TextItem from "./../../../../form-controls/text-item";
@@ -40,8 +38,8 @@ import {
   useResetContext,
 } from "../../../../contexts/modal-context";
 import DetailsTable from "../../../../common/details-table";
-import ChequeModal from "./receive-receipt-cheque-modal";
-import DemandModal from "./receive-receipt-demand-modal";
+import ChequeModal from "./bank-hand-over-cheque-modal";
+import DemandModal from "./bank-hand-over-demand-modal";
 import { v4 as uuid } from "uuid";
 import PriceViewer from "./price-viewer";
 
@@ -49,47 +47,32 @@ const { Text } = Typography;
 const { TabPane } = Tabs;
 
 const schema = {
-  ReceiveID: Joi.number().required().label(Words.id),
-  ReceiveTypeID: Joi.number()
+  HandOverID: Joi.number().required().label(Words.id),
+  CompanyBankAccountID: Joi.number()
     .min(1)
     .required()
-    .label(Words.receipt_receive_type),
-  DeliveryMemberID: Joi.number().label(Words.delivery_member),
-  DeliveryMember: Joi.string()
-    .allow("")
-    .regex(utils.VALID_REGEX)
-    .label(Words.delivery_member),
-  ReceiveDate: Joi.string().required().label(Words.receive_date),
-  RegardID: Joi.number().label(Words.regards),
-  CashBoxID: Joi.number().label(Words.cash_box),
+    .label(Words.bank_account),
+  CurrencyID: Joi.number().min(1).required().label(Words.currency),
+  ItemType: Joi.number().min(1).required().label(Words.item_type),
+  HandOverDate: Joi.string().required().label(Words.hand_over_date),
+  OperationID: Joi.number().label(Words.financial_operation),
   StandardDetailsID: Joi.number().label(Words.standard_description),
   StatusID: Joi.number(),
   Cheques: Joi.array(),
   Demands: Joi.array(),
-  Cashes: Joi.array(),
-  PaymentNotices: Joi.array(),
-  ReturnFromOthers: Joi.array(),
-  ReturnPayableCheques: Joi.array(),
-  ReturnPayableDemands: Joi.array(),
 };
 
 const initRecord = {
-  ReceiveID: 0,
-  ReceiveTypeID: 0,
-  DeliveryMemberID: 0,
-  DeliveryMember: "",
-  ReceiveDate: "",
-  RegardID: 0,
-  CashBoxID: 0,
+  HandOverID: 0,
+  CompanyBankAccountID: 0,
+  CurrencyID: 0,
+  ItemType: 0,
+  HandOverDate: "",
+  OperationID: 0,
   StandardDetailsID: 0,
   StatusID: 1,
   Cheques: [],
   Demands: [],
-  Cashes: [],
-  PaymentNotices: [],
-  ReturnFromOthers: [],
-  ReturnPayableCheques: [],
-  ReturnPayableDemands: [],
 };
 
 const getChequeColumns = (access, statusID, onEdit, onDelete) => {
@@ -113,33 +96,11 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       render: (record) => (
         <Text style={{ color: Colors.cyan[6] }}>
           {utils.farsiNum(
-            record.MemberID > 0
-              ? `${record.FirstName} ${record.LastName}`
+            record.FrontSideMemberID > 0
+              ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
               : `${record.CompanyTitle}`
           )}
         </Text>
-      ),
-    },
-    {
-      title: Words.financial_operation,
-      width: 150,
-      align: "center",
-      //   dataIndex: "Price",
-      sorter: getSorter("OperationTitle"),
-      render: (record) => (
-        <Text style={{ color: Colors.blue[6] }}>
-          {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.nature,
-      width: 100,
-      align: "center",
-      dataIndex: "PaperNatureTitle",
-      sorter: getSorter("PaperNatureTitle"),
-      render: (PaperNatureTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
       ),
     },
     {
@@ -150,16 +111,6 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       sorter: getSorter("DurationTypeTitle"),
       render: (DurationTypeTitle) => (
         <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
-      ),
-    },
-    {
-      title: Words.cash_flow,
-      width: 150,
-      align: "center",
-      dataIndex: "CashFlowTitle",
-      sorter: getSorter("CashFlowTitle"),
-      render: (CashFlowTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
       ),
     },
     {
@@ -207,18 +158,6 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       ),
     },
     {
-      title: Words.branch_code,
-      width: 100,
-      align: "center",
-      dataIndex: "BranchCode",
-      sorter: getSorter("BranchCode"),
-      render: (BranchCode) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(BranchCode)}
-        </Text>
-      ),
-    },
-    {
       title: Words.cheque_no,
       width: 150,
       align: "center",
@@ -226,48 +165,6 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       sorter: getSorter("ChequeNo"),
       render: (ChequeNo) => (
         <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(ChequeNo)}</Text>
-      ),
-    },
-    {
-      title: Words.cheque_series,
-      width: 150,
-      align: "center",
-      dataIndex: "ChequeSeries",
-      sorter: getSorter("ChequeSeries"),
-      render: (ChequeSeries) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(ChequeSeries)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.sheba_no,
-      width: 200,
-      align: "center",
-      dataIndex: "ShebaID",
-      sorter: getSorter("ShebaID"),
-      render: (ShebaID) => (
-        <Text style={{ color: Colors.grey[6] }}>{ShebaID}</Text>
-      ),
-    },
-    {
-      title: Words.sayad_no,
-      width: 200,
-      align: "center",
-      dataIndex: "SayadNo",
-      sorter: getSorter("SayadNo"),
-      render: (SayadNo) => (
-        <Text style={{ color: Colors.grey[6] }}>{SayadNo}</Text>
-      ),
-    },
-    {
-      title: Words.currency,
-      width: 200,
-      align: "center",
-      dataIndex: "CurrencyTitle",
-      sorter: getSorter("CurrencyTitle"),
-      render: (CurrencyTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{CurrencyTitle}</Text>
       ),
     },
     {
@@ -312,26 +209,6 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
         >
           {utils.farsiNum(utils.slashDate(AgreedDate))}
         </Text>
-      ),
-    },
-    {
-      title: Words.standard_description,
-      width: 150,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.StandardDetailsID > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
       ),
     },
   ];
@@ -399,33 +276,11 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       render: (record) => (
         <Text style={{ color: Colors.cyan[6] }}>
           {utils.farsiNum(
-            record.MemberID > 0
-              ? `${record.FirstName} ${record.LastName}`
+            record.FrontSideMemberID > 0
+              ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
               : `${record.CompanyTitle}`
           )}
         </Text>
-      ),
-    },
-    {
-      title: Words.financial_operation,
-      width: 150,
-      align: "center",
-      //   dataIndex: "Price",
-      sorter: getSorter("OperationTitle"),
-      render: (record) => (
-        <Text style={{ color: Colors.blue[6] }}>
-          {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.nature,
-      width: 100,
-      align: "center",
-      dataIndex: "PaperNatureTitle",
-      sorter: getSorter("PaperNatureTitle"),
-      render: (PaperNatureTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
       ),
     },
     {
@@ -439,16 +294,6 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       ),
     },
     {
-      title: Words.cash_flow,
-      width: 150,
-      align: "center",
-      dataIndex: "CashFlowTitle",
-      sorter: getSorter("CashFlowTitle"),
-      render: (CashFlowTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
-      ),
-    },
-    {
       title: Words.demand_no,
       width: 150,
       align: "center",
@@ -456,28 +301,6 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       sorter: getSorter("DemandNo"),
       render: (DemandNo) => (
         <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(DemandNo)}</Text>
-      ),
-    },
-    {
-      title: Words.demand_series,
-      width: 150,
-      align: "center",
-      dataIndex: "DemandSeries",
-      sorter: getSorter("DemandSeries"),
-      render: (ChequeSeries) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(ChequeSeries)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.currency,
-      width: 200,
-      align: "center",
-      dataIndex: "CurrencyTitle",
-      sorter: getSorter("CurrencyTitle"),
-      render: (CurrencyTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{CurrencyTitle}</Text>
       ),
     },
     {
@@ -506,26 +329,6 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
         >
           {utils.farsiNum(utils.slashDate(DueDate))}
         </Text>
-      ),
-    },
-    {
-      title: Words.standard_description,
-      width: 150,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.StandardDetailsID > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
       ),
     },
   ];
@@ -574,49 +377,38 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
 
 const formRef = React.createRef();
 
-const ReceiveReceiptModal = ({
+const BankHandOverModal = ({
   access,
   isOpen,
   selectedObject,
   onOk,
   onCancel,
-  onSaveReceiveReceiptItem,
-  onDeleteReceiveReceiptItem,
+  onSaveBankHandOverItem,
+  onDeleteBankHandOverItem,
   onReject,
   onApprove,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
-  const [receiveTypes, setReceiveTypes] = useState([]);
-  const [deliveryMemberSearchProgress, setDeliveryMemberSearchProgress] =
-    useState(false);
-  const [deliveryMembers, setDeliveryMembers] = useState([]);
-  const [cashBoxes, setCashBoxes] = useState([]);
-  const [regards, setRegards] = useState([]);
+  const [companyBankAccounts, setCompanyBankAccounts] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
+  const [itemTypes] = useState([
+    { ItemType: 1, Title: Words.cheque },
+    { ItemType: 2, Title: Words.demand },
+  ]);
+  const [operations, setOperations] = useState([]);
   const [standardDetails, setStandardDetails] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
 
-  const [currencies, setCurrencies] = useState([]);
-  const [operations, setOperations] = useState([]);
-  const [cashFlows, setCashFlows] = useState([]);
-  const [banks, setBanks] = useState([]);
-  const [cities, setCities] = useState([]);
-
   const [selectedItem, setSelectedItem] = useState(null);
   const [showChequeModal, setShowChequeModal] = useState(false);
   const [showDemandModal, setShowDemandModal] = useState(false);
-  const [showCashModal, setShowCashModal] = useState(false);
-  const [showPaymentNoticeModal, setShowPaymentNoticeModal] = useState(false);
-  const [showReturnFromOtherModal, setShowReturnFromOtherModal] =
-    useState(false);
-  const [showReturnPayableChequeModal, setShowReturnPayableChequeModal] =
-    useState(false);
-  const [showReturnPayableDemandModal, setShowReturnPayableDemandModal] =
-    useState(false);
 
   const [selectedTab, setSelectedTab] = useState("cheques");
+  const [selectedCheque, setSelectedCheque] = useState(null);
+  const [selectedDemand, setSelectedDemand] = useState(null);
 
   const resetContext = useResetContext();
 
@@ -629,25 +421,18 @@ const ReceiveReceiptModal = ({
   };
 
   const clearRecord = () => {
-    record.ReceiveTypeID = 0;
-    record.DeliveryMemberID = 0;
-    record.DeliveryMember = "";
-    record.ReceiveDate = "";
-    record.RegardID = 0;
-    record.CashBoxID = 0;
+    record.CompanyBankAccountID = 0;
+    record.CurrencyID = 0;
+    record.ItemType = 0;
+    record.HandOverDate = "";
+    record.OperationID = 0;
     record.StandardDetailsID = 0;
     record.StatusID = 1;
     record.Cheques = [];
     record.Demands = [];
-    record.Cashes = [];
-    record.PaymentNotices = [];
-    record.ReturnFromOthers = [];
-    record.ReturnPayableCheques = [];
-    record.ReturnPayableDemands = [];
 
     setRecord(record);
     setErrors({});
-    setDeliveryMembers([]);
     loadFieldsValue(formRef, record);
   };
 
@@ -667,53 +452,20 @@ const ReceiveReceiptModal = ({
       let data = await service.getParams();
 
       let {
-        ReceiveTypes,
-        CashBoxes,
-        Regards,
+        CompanyBankAccounts,
+        Currencies,
+        Operations,
         StandardDetails,
         HasSaveApproveAccess,
         HasRejectAccess,
       } = data;
 
-      setReceiveTypes(ReceiveTypes);
-      setCashBoxes(CashBoxes);
-      setRegards(Regards);
+      setCompanyBankAccounts(CompanyBankAccounts);
+      setCurrencies(Currencies);
+      setOperations(Operations);
       setStandardDetails(StandardDetails);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
-
-      if (selectedObject && selectedObject.ChequeID) {
-        const { DeliveryMemberID, FullName } = selectedObject;
-
-        setDeliveryMembers([{ DeliveryMemberID, FullName }]);
-      }
-
-      if (selectedObject) {
-        const {
-          DeliveryMemberID,
-          DeliveryMemberFirstName,
-          DeliveryMemberLastName,
-        } = selectedObject;
-
-        setDeliveryMembers([
-          {
-            DeliveryMemberID,
-            FullName: `${DeliveryMemberFirstName} ${DeliveryMemberLastName}`,
-          },
-        ]);
-      }
-
-      //------ load items params
-
-      data = await service.getItemsParams();
-
-      let { Currencies, Operations, CashFlows, Banks, Cities } = data;
-
-      setCurrencies(Currencies);
-      setOperations(Operations);
-      setCashFlows(CashFlows);
-      setBanks(Banks);
-      setCities(Cities);
     } catch (ex) {
       handleError(ex);
     }
@@ -722,26 +474,6 @@ const ReceiveReceiptModal = ({
   });
 
   const isEdit = selectedObject !== null;
-
-  //   const handleChangeDeliveryMember = (value) => {
-  //     const rec = { ...record };
-  //     rec.DeliveryMemberID = value || 0;
-  //     setRecord(rec);
-  //   };
-
-  const handleSearchDeliveryMember = async (searchText) => {
-    setDeliveryMemberSearchProgress(true);
-
-    try {
-      const data = await service.searchDeliveryMembers(searchText);
-
-      setDeliveryMembers(data);
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setDeliveryMemberSearchProgress(false);
-  };
 
   const handleSubmit = async () => {
     saveModalChanges(
@@ -768,26 +500,23 @@ const ReceiveReceiptModal = ({
 
   //------
 
-  const findTitle = (data_source, id_col, title_col, search_value) => {
-    const record = data_source.find((row) => row[id_col] === search_value);
-
-    return record ? record[title_col] : "";
+  const handleSelectCheque = (cheque) => {
+    if (cheque.ChequeID > 0) setSelectedCheque(cheque);
+    else setSelectedCheque(null);
   };
 
-  //------
-
-  const handleSaveCheque = async (cheque_to_save) => {
+  const handleSaveCheque = async () => {
     if (selectedObject !== null) {
-      cheque_to_save.ReceiveID = selectedObject.ReceiveID;
+      selectedCheque.HandOverID = selectedObject.HandOverID;
 
-      const saved_cheque = await onSaveReceiveReceiptItem(
+      const saved_cheque = await onSaveBankHandOverItem(
         "cheque",
-        "ChequeID",
-        cheque_to_save
+        "ItemID",
+        selectedCheque
       );
 
       const index = record.Cheques.findIndex(
-        (item) => item.ChequeID === cheque_to_save.ChequeID
+        (item) => item.ItemID === selectedCheque.ItemID
       );
 
       if (index === -1) {
@@ -796,83 +525,13 @@ const ReceiveReceiptModal = ({
         record.Cheques[index] = saved_cheque;
       }
     } else {
-      //While adding items temporarily, we have no join operation in database
-      //So, we need to select titles manually
-
-      const front_side_account = await service.searchFronSideAccountByID(
-        cheque_to_save.FrontSideAccountID
-      );
-
-      const { MemberID, FirstName, LastName, CompanyID, CompanyTitle } =
-        front_side_account;
-
-      cheque_to_save.MemberID = MemberID;
-      cheque_to_save.FirstName = FirstName;
-      cheque_to_save.LastName = LastName;
-      cheque_to_save.CompanyID = CompanyID;
-      cheque_to_save.CompanyTitle = CompanyTitle;
-
-      cheque_to_save.OperationTitle = findTitle(
-        operations,
-        "OperationID",
-        "Title",
-        cheque_to_save.OperationID
-      );
-
-      cheque_to_save.PaperNatureTitle = findTitle(
-        operations,
-        "OperationID",
-        "PaperNatureTitle",
-        cheque_to_save.OperationID
-      );
-
-      cheque_to_save.DurationTypeTitle = findTitle(
-        operations,
-        "OperationID",
-        "DurationTypeTitle",
-        cheque_to_save.OperationID
-      );
-
-      cheque_to_save.CashFlowTitle = findTitle(
-        cashFlows,
-        "CashFlowID",
-        "Title",
-        cheque_to_save.CashFlowID
-      );
-
-      cheque_to_save.BankTitle = findTitle(
-        banks,
-        "BankID",
-        "Title",
-        cheque_to_save.BankID
-      );
-
-      cheque_to_save.CityTitle = findTitle(
-        cities,
-        "CityID",
-        "Title",
-        cheque_to_save.CityID
-      );
-
-      cheque_to_save.CurrencyTitle = findTitle(
-        currencies,
-        "CurrencyID",
-        "Title",
-        cheque_to_save.CurrencyID
-      );
-
-      cheque_to_save.DetailsText = findTitle(
-        standardDetails,
-        "StandardDetailsID",
-        "DetailsText",
-        cheque_to_save.StandardDetailsID
-      );
+      const cheque_to_save = { ...selectedCheque };
 
       //--- managing unique id (UID) for new items
-      if (cheque_to_save.ChequeID === 0 && selectedItem === null) {
+      if (cheque_to_save.ItemID === 0 && selectedItem === null) {
         cheque_to_save.UID = uuid();
         record.Cheques = [...record.Cheques, cheque_to_save];
-      } else if (cheque_to_save.ChequeID === 0 && selectedItem !== null) {
+      } else if (cheque_to_save.ItemID === 0 && selectedItem !== null) {
         const index = record.Cheques.findIndex(
           (item) => item.UID === selectedItem.UID
         );
@@ -890,15 +549,15 @@ const ReceiveReceiptModal = ({
     setProgress(true);
 
     try {
-      if (cheque_to_delete.ChequeID > 0) {
-        await onDeleteReceiveReceiptItem(
+      if (cheque_to_delete.ItemID > 0) {
+        await onDeleteBankHandOverItem(
           "cheque",
-          "ChequeID",
-          cheque_to_delete.ChequeID
+          "ItemID",
+          cheque_to_delete.ItemID
         );
 
         record.Cheques = record.Cheques.filter(
-          (i) => i.ChequeID !== cheque_to_delete.ChequeID
+          (i) => i.ItemID !== cheque_to_delete.ItemID
         );
       } else {
         record.Cheques = record.Cheques.filter(
@@ -926,18 +585,23 @@ const ReceiveReceiptModal = ({
 
   //------
 
-  const handleSaveDemand = async (demand_to_save) => {
-    if (selectedObject !== null) {
-      demand_to_save.ReceiveID = selectedObject.ReceiveID;
+  const handleSelectDemand = (cheque) => {
+    if (cheque.DemandID > 0) setSelectedDemand(cheque);
+    else setSelectedDemand(null);
+  };
 
-      const saved_demand = await onSaveReceiveReceiptItem(
+  const handleSaveDemand = async () => {
+    if (selectedObject !== null) {
+      selectedDemand.HandOverID = selectedObject.HandOverID;
+
+      const saved_demand = await onSaveBankHandOverItem(
         "demand",
-        "DemandID",
-        demand_to_save
+        "ItemID",
+        selectedDemand
       );
 
       const index = record.Demands.findIndex(
-        (item) => item.DemandID === demand_to_save.DemandID
+        (item) => item.ItemID === selectedDemand.ItemID
       );
 
       if (index === -1) {
@@ -946,69 +610,13 @@ const ReceiveReceiptModal = ({
         record.Demands[index] = saved_demand;
       }
     } else {
-      //While adding items temporarily, we have no join operation in database
-      //So, we need to select titles manually
-
-      const front_side_account = await service.searchFronSideAccountByID(
-        demand_to_save.FrontSideAccountID
-      );
-
-      const { MemberID, FirstName, LastName, CompanyID, CompanyTitle } =
-        front_side_account;
-
-      demand_to_save.MemberID = MemberID;
-      demand_to_save.FirstName = FirstName;
-      demand_to_save.LastName = LastName;
-      demand_to_save.CompanyID = CompanyID;
-      demand_to_save.CompanyTitle = CompanyTitle;
-
-      demand_to_save.OperationTitle = findTitle(
-        operations,
-        "OperationID",
-        "Title",
-        demand_to_save.OperationID
-      );
-
-      demand_to_save.PaperNatureTitle = findTitle(
-        operations,
-        "OperationID",
-        "PaperNatureTitle",
-        demand_to_save.OperationID
-      );
-
-      demand_to_save.DurationTypeTitle = findTitle(
-        operations,
-        "OperationID",
-        "DurationTypeTitle",
-        demand_to_save.OperationID
-      );
-
-      demand_to_save.CashFlowTitle = findTitle(
-        cashFlows,
-        "CashFlowID",
-        "Title",
-        demand_to_save.CashFlowID
-      );
-
-      demand_to_save.CurrencyTitle = findTitle(
-        currencies,
-        "CurrencyID",
-        "Title",
-        demand_to_save.CurrencyID
-      );
-
-      demand_to_save.DetailsText = findTitle(
-        standardDetails,
-        "StandardDetailsID",
-        "DetailsText",
-        demand_to_save.StandardDetailsID
-      );
+      const demand_to_save = { ...selectedDemand };
 
       //--- managing unique id (UID) for new items
-      if (demand_to_save.DemandID === 0 && selectedItem === null) {
+      if (demand_to_save.ItemID === 0 && selectedItem === null) {
         demand_to_save.UID = uuid();
         record.Demands = [...record.Demands, demand_to_save];
-      } else if (demand_to_save.DemandID === 0 && selectedItem !== null) {
+      } else if (demand_to_save.ItemID === 0 && selectedItem !== null) {
         const index = record.Demands.findIndex(
           (item) => item.UID === selectedItem.UID
         );
@@ -1026,15 +634,15 @@ const ReceiveReceiptModal = ({
     setProgress(true);
 
     try {
-      if (demand_to_delete.DemandID > 0) {
-        await onDeleteReceiveReceiptItem(
+      if (demand_to_delete.ItemID > 0) {
+        await onDeleteBankHandOverItem(
           "demand",
-          "DemandID",
-          demand_to_delete.DemandID
+          "ItemID",
+          demand_to_delete.ItemID
         );
 
         record.Demands = record.Demands.filter(
-          (i) => i.DemandID !== demand_to_delete.DemandID
+          (i) => i.ItemID !== demand_to_delete.ItemID
         );
       } else {
         record.Demands = record.Demands.filter(
@@ -1069,21 +677,6 @@ const ReceiveReceiptModal = ({
         break;
       case "demands":
         setShowDemandModal(true);
-        break;
-      case "cashes":
-        setShowCashModal(true);
-        break;
-      case "payment-notices":
-        setShowPaymentNoticeModal(true);
-        break;
-      case "return-from-others":
-        setShowReturnFromOtherModal(true);
-        break;
-      case "return-payable-cheques":
-        setShowReturnPayableChequeModal(true);
-        break;
-      case "return-payable-demands":
-        setShowReturnPayableDemandModal(true);
         break;
       default:
         break;
@@ -1211,36 +804,6 @@ const ReceiveReceiptModal = ({
     price.DemandsAmount = sum;
     sum = 0;
 
-    record.Cashes?.forEach((i) => {
-      sum += i.Amount;
-    });
-    price.CashesAmount = sum;
-    sum = 0;
-
-    record.PaymentNotices?.forEach((i) => {
-      sum += i.Amount;
-    });
-    price.PaymentNoticesAmount = sum;
-    sum = 0;
-
-    record.ReturnFromOthers?.forEach((i) => {
-      sum += i.Amount;
-    });
-    price.ReturnFromOthersAmount = sum;
-    sum = 0;
-
-    record.ReturnPayableCheques?.forEach((i) => {
-      sum += i.Amount;
-    });
-    price.ReturnPayableChequesAmount = sum;
-    sum = 0;
-
-    record.ReturnPayableDemands?.forEach((i) => {
-      sum += i.Amount;
-    });
-    price.ReturnPayableDemandsAmount = sum;
-    sum = 0;
-
     for (const key in price) {
       sum += price[key];
     }
@@ -1290,9 +853,40 @@ const ReceiveReceiptModal = ({
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
             <Col xs={24} md={12}>
               <DropdownItem
-                title={Words.receipt_receive_type}
-                dataSource={receiveTypes}
-                keyColumn="ReceiveTypeID"
+                title={Words.bank_account}
+                dataSource={companyBankAccounts}
+                keyColumn="CompanyBankAccountID"
+                valueColumn="InfoTitle"
+                formConfig={formConfig}
+                required
+                autoFocus
+              />
+            </Col>
+            <Col xs={24} md={12}>
+              <DropdownItem
+                title={Words.item_type}
+                dataSource={itemTypes}
+                keyColumn="ItemType"
+                valueColumn="Title"
+                formConfig={formConfig}
+                required
+              />
+            </Col>
+            <Col xs={24} md={12}>
+              <DropdownItem
+                title={Words.currency}
+                dataSource={currencies}
+                keyColumn="CurrencyID"
+                valueColumn="Title"
+                formConfig={formConfig}
+                required
+              />
+            </Col>
+            <Col xs={24} md={12}>
+              <DropdownItem
+                title={Words.financial_operation}
+                dataSource={operations}
+                keyColumn="OperationID"
                 valueColumn="Title"
                 formConfig={formConfig}
                 required
@@ -1302,40 +896,8 @@ const ReceiveReceiptModal = ({
               <DateItem
                 horizontal
                 required
-                title={Words.receive_date}
-                fieldName="ReceiveDate"
-                formConfig={formConfig}
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.delivery_member}
-                dataSource={deliveryMembers}
-                keyColumn="DeliveryMemberID"
-                valueColumn="FullName"
-                formConfig={formConfig}
-                required
-                autoFocus
-                loading={deliveryMemberSearchProgress}
-                onSearch={handleSearchDeliveryMember}
-                // onChange={handleChangeDeliveryMember}
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.regards}
-                dataSource={regards}
-                keyColumn="RegardID"
-                valueColumn="Title"
-                formConfig={formConfig}
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.cash_box}
-                dataSource={cashBoxes}
-                keyColumn="CashBoxID"
-                valueColumn="Title"
+                title={Words.hand_over_date}
+                fieldName="HandOverDate"
                 formConfig={formConfig}
               />
             </Col>
@@ -1348,6 +910,7 @@ const ReceiveReceiptModal = ({
                 formConfig={formConfig}
               />
             </Col>
+
             {price.Total > 0 && (
               <Col xs={24}>
                 <TextItem
@@ -1359,8 +922,6 @@ const ReceiveReceiptModal = ({
                 />
               </Col>
             )}
-
-            {/* ToDo: Implement base_doc_id field based on the selected base type */}
 
             <Col xs={24}>
               <Form.Item>
@@ -1405,23 +966,6 @@ const ReceiveReceiptModal = ({
                       </Col>
                     </Row>
                   </TabPane>
-                  <TabPane tab={Words.cash} key="cashes"></TabPane>
-                  <TabPane
-                    tab={Words.payment_notice}
-                    key="payment-notices"
-                  ></TabPane>
-                  <TabPane
-                    tab={Words.return_from_other}
-                    key="return-from-others"
-                  ></TabPane>
-                  <TabPane
-                    tab={Words.return_payable_cheque}
-                    key="return-payable-cheques"
-                  ></TabPane>
-                  <TabPane
-                    tab={Words.return_payable_demand}
-                    key="return-payable-demands"
-                  ></TabPane>
                 </Tabs>
               </Form.Item>
             </Col>
@@ -1439,6 +983,7 @@ const ReceiveReceiptModal = ({
         <ChequeModal
           isOpen={showChequeModal}
           selectedObject={selectedItem}
+          onSelectCheque={handleSelectCheque}
           onOk={handleSaveCheque}
           onCancel={handleCloseChequeModal}
         />
@@ -1448,18 +993,13 @@ const ReceiveReceiptModal = ({
         <DemandModal
           isOpen={showDemandModal}
           selectedObject={selectedItem}
+          onSelectDemand={handleSelectDemand}
           onOk={handleSaveDemand}
           onCancel={handleCloseDemandModal}
         />
       )}
-
-      {showCashModal && <></>}
-      {showPaymentNoticeModal && <></>}
-      {showReturnFromOtherModal && <></>}
-      {showReturnPayableChequeModal && <></>}
-      {showReturnPayableDemandModal && <></>}
     </>
   );
 };
 
-export default ReceiveReceiptModal;
+export default BankHandOverModal;

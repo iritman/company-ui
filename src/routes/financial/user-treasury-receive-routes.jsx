@@ -5,6 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import TreasuryBasicInfoDashboard from "../../components/app-modules/financial/treasury/receive/treasury-receive-dashboard";
 import ReceiveRequestsPage from "../../components/app-modules/financial/treasury/receive/receive-requests-page";
 import ReceiveReceiptsPage from "../../components/app-modules/financial/treasury/receive/receive-receipts-page";
+import BankHandOversPage from "../../components/app-modules/financial/treasury/receive/bank-hand-overs-page";
 //---
 
 const modulePath = "financial/treasury/receive";
@@ -26,6 +27,11 @@ const UserTreasuryReceiveRoutes = ({ path }) => {
         path={`${path}/${modulePath}/receive-receipts`}
         exact
         render={() => <ReceiveReceiptsPage pageName="ReceiveReceipts" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/bank-hand-overs`}
+        exact
+        render={() => <BankHandOversPage pageName="BankHandOvers" />}
       />
       <Redirect to="/not-found" />
     </Switch>

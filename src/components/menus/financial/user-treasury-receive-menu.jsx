@@ -5,6 +5,7 @@ import {
   MdSouthWest as ReceiveIcon,
   MdReceiptLong as ReceiptIcon,
 } from "react-icons/md";
+import { TbTransferIn as HandOverIcon } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -29,12 +30,12 @@ const mapper = (pageID) => {
       icon = <ReceiptIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
       break;
 
-    // case 243:
-    //   link = "bank-branches";
-    //   icon = (
-    //     <BankBranchIcon style={{ color: Colors.purple[6] }} size={iconSize} />
-    //   );
-    //   break;
+    case 243:
+      link = "bank-hand-overs";
+      icon = (
+        <HandOverIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
 
     // case 244:
     //   link = "bank-account-types";

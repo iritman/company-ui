@@ -511,6 +511,9 @@ class Words extends Component {
   static demand_no = "شماره سفته";
   static demand_series = "سری عددی سفته";
 
+  static bank_hand_overs = "واگذار به بانک";
+  static hand_over_date = "تاریخ واگذاری";
+
   static collector_agents = "ماموران وصول";
   static collector_agent = "مامور وصول";
   static allocated_ceiling = "سقف واگذاری";
