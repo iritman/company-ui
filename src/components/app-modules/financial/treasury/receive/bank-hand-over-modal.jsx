@@ -983,6 +983,7 @@ const BankHandOverModal = ({
         <ChequeModal
           isOpen={showChequeModal}
           selectedObject={selectedItem}
+          currentCheques={record.Cheques}
           onSelectCheque={handleSelectCheque}
           onOk={handleSaveCheque}
           onCancel={handleCloseChequeModal}
@@ -993,6 +994,7 @@ const BankHandOverModal = ({
         <DemandModal
           isOpen={showDemandModal}
           selectedObject={selectedItem}
+          currentDemands={record.Demands}
           onSelectDemand={handleSelectDemand}
           onOk={handleSaveDemand}
           onCancel={handleCloseDemandModal}

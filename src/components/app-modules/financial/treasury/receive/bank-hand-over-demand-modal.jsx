@@ -34,6 +34,7 @@ const formRef = React.createRef();
 const BankHandOverDemandModal = ({
   isOpen,
   selectedObject,
+  currentDemands,
   onOk,
   onCancel,
   onSelectDemand,
@@ -72,7 +73,11 @@ const BankHandOverDemandModal = ({
     try {
       const data = await service.getDemands();
 
-      setDemands(data.Demands);
+      setDemands(
+        data.Demands.filter(
+          (d) => !currentDemands.find((dm) => dm.DemandID === d.DemandID)
+        )
+      );
     } catch (ex) {
       handleError(ex);
     }

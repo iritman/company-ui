@@ -34,6 +34,7 @@ const formRef = React.createRef();
 const BankHandOverChequeModal = ({
   isOpen,
   selectedObject,
+  currentCheques,
   onOk,
   onCancel,
   onSelectCheque,
@@ -72,7 +73,11 @@ const BankHandOverChequeModal = ({
     try {
       const data = await service.getCheques();
 
-      setCheques(data.Cheques);
+      setCheques(
+        data.Cheques.filter(
+          (c) => !currentCheques.find((ch) => ch.ChequeID === c.ChequeID)
+        )
+      );
     } catch (ex) {
       handleError(ex);
     }
