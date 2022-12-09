@@ -493,6 +493,14 @@ class Words extends Component {
   static receive_request_status_2 = "تایید شده";
   static receive_request_status_3 = "رد شده";
 
+  static receive_receipt_status_1 = "ثبت شده";
+  static receive_receipt_status_2 = "تایید شده";
+  static receive_receipt_status_3 = "رد شده";
+
+  static hand_over_status_1 = "ثبت شده";
+  static hand_over_status_2 = "تایید شده";
+  static hand_over_status_3 = "رد شده";
+
   static receive_receipts = "رسیدهای دریافت";
   static receive_receipt = "رسید دریافت";
   static cheque = "چک";

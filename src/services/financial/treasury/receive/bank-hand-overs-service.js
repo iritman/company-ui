@@ -33,14 +33,14 @@ export async function saveItem(itemType, record) {
   return data;
 }
 
-export async function rejectReciveReceipt(receiveID) {
-  const { data } = await http.post(`${apiEndpoint}/reject/${receiveID}`, {});
+export async function rejectHandOver(handOverID) {
+  const { data } = await http.post(`${apiEndpoint}/reject/${handOverID}`, {});
 
   return data;
 }
 
-export async function approveReciveReceipt(receiveID) {
-  const { data } = await http.post(`${apiEndpoint}/approve/${receiveID}`, {});
+export async function approveHandOver(handOverID) {
+  const { data } = await http.post(`${apiEndpoint}/approve/${handOverID}`, {});
 
   return data;
 }

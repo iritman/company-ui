@@ -365,14 +365,14 @@ const BankHandOversPage = ({ pageName }) => {
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
-      selectedObject.StatusTitle = Words.receive_receipt_status_2;
+      selectedObject.StatusTitle = Words.hand_over_status_2;
       setSelectedObject({ ...selectedObject });
 
       // Update records
-      const receipt_index = records.findIndex(
-        (r) => r.HandOverID === selectedObject.HandOverID
+      const hand_over_index = records.findIndex(
+        (ho) => ho.HandOverID === selectedObject.HandOverID
       );
-      records[receipt_index] = { ...selectedObject };
+      records[hand_over_index] = { ...selectedObject };
       setRecords([...records]);
 
       //---
@@ -388,18 +388,18 @@ const BankHandOversPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.rejectReciveReceipt(selectedObject.HandOverID);
+      const data = await service.rejectHandOver(selectedObject.HandOverID);
 
       // Update selected object
       selectedObject.StatusID = 3; // Reject
-      selectedObject.StatusTitle = Words.receive_receipt_status_3;
+      selectedObject.StatusTitle = Words.hand_over_status_3;
       setSelectedObject({ ...selectedObject });
 
       // Update records
-      const receipt_index = records.findIndex(
-        (r) => r.HandOverID === selectedObject.HandOverID
+      const hand_over_index = records.findIndex(
+        (ho) => ho.HandOverID === selectedObject.HandOverID
       );
-      records[receipt_index] = { ...selectedObject };
+      records[hand_over_index] = { ...selectedObject };
       setRecords([...records]);
 
       //---
