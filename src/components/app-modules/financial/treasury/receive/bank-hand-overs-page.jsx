@@ -284,10 +284,7 @@ const BankHandOversPage = ({ pageName }) => {
 
     //---
 
-    const saved_receipt_item = await service.saveItem(
-      item_type,
-      hand_over_item
-    );
+    const saved_item = await service.saveItem(item_type, hand_over_item);
 
     const rec = { ...selectedObject };
     // update price
@@ -296,30 +293,30 @@ const BankHandOversPage = ({ pageName }) => {
     //------
 
     if (hand_over_item[key_field] === 0)
-      rec[collection] = [...rec[collection], saved_receipt_item];
+      rec[collection] = [...rec[collection], saved_item];
     else {
       const index = rec[collection].findIndex(
         (i) => i[key_field] === hand_over_item[key_field]
       );
 
-      rec[collection][index] = saved_receipt_item;
+      rec[collection][index] = saved_item;
     }
 
     setSelectedObject(rec);
 
     //------
 
-    const receipt_index = records.findIndex(
-      (receipt) => receipt.HandOverID === hand_over_item.HandOverID
+    const hand_over_index = records.findIndex(
+      (hand_over) => hand_over.HandOverID === hand_over_item.HandOverID
     );
 
-    records[receipt_index] = rec;
+    records[hand_over_index] = rec;
 
     //------
 
     setRecords([...records]);
 
-    return saved_receipt_item;
+    return saved_item;
   };
 
   const handleDeleteBankHandOverItem = async (
@@ -345,11 +342,11 @@ const BankHandOversPage = ({ pageName }) => {
 
       //------
 
-      const receive_receipt_index = records.findIndex(
-        (receive_receipt) => receive_receipt.HandOverID === rec.HandOverID
+      const hand_over_index = records.findIndex(
+        (hand_over) => hand_over.HandOverID === rec.HandOverID
       );
 
-      records[receive_receipt_index] = rec;
+      records[hand_over_index] = rec;
 
       setRecords([...records]);
     }
