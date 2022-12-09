@@ -33,13 +33,13 @@ export async function saveItem(itemType, record) {
   return data;
 }
 
-export async function rejectHandOver(handOverID) {
+export async function reject(handOverID) {
   const { data } = await http.post(`${apiEndpoint}/reject/${handOverID}`, {});
 
   return data;
 }
 
-export async function approveHandOver(handOverID) {
+export async function approve(handOverID) {
   const { data } = await http.post(`${apiEndpoint}/approve/${handOverID}`, {});
 
   return data;
@@ -75,8 +75,8 @@ const service = {
   searchData,
   saveData,
   saveItem,
-  rejectHandOver,
-  approveHandOver,
+  reject,
+  approve,
   deleteData,
   deleteItem,
   getCheques,
