@@ -44,7 +44,7 @@ const getSheets = (records) => [
       },
       {
         label: Words.hand_over_date,
-        value: (record) => utils.slashDate(record.ReceiveDate),
+        value: (record) => utils.slashDate(record.HandOverDate),
       },
       { label: Words.financial_operation, value: "OperationTitle" },
       { label: Words.cash_box, value: "CashBoxTitle" },
