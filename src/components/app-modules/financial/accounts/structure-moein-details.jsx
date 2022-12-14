@@ -1,5 +1,5 @@
 import React from "react";
-import { Descriptions, Typography, Space, Alert } from "antd";
+import { Descriptions, Typography, Space, Alert, Tag } from "antd";
 import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
@@ -23,7 +23,16 @@ const StructureMoeinDetails = ({ moein }) => {
     IsActive,
     IsConvertable,
     ControlTypeTitle,
+    TafsilTypes,
   } = moein;
+
+  const levels = [
+    { LevelID: 4 },
+    { LevelID: 5 },
+    { LevelID: 6 },
+    { LevelID: 7 },
+    { LevelID: 8 },
+  ];
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
@@ -98,6 +107,24 @@ const StructureMoeinDetails = ({ moein }) => {
             </Text>
           </Space>
         </Descriptions.Item>
+
+        {levels.map((lvl) => (
+          <Descriptions.Item
+            label={Words[`level_${lvl.LevelID}`]}
+            span={2}
+            key={lvl.LevelID}
+          >
+            <Space>
+              {TafsilTypes.find(
+                (tt) => tt.LevelID === lvl.LevelID
+              ).TafsilTypes.map((tt) => (
+                <Tag color="magenta" key={tt.TafsilTypeID}>
+                  {tt.Title}
+                </Tag>
+              ))}
+            </Space>
+          </Descriptions.Item>
+        ))}
       </Descriptions>
     </Space>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tabs, Radio } from "antd";
+import { Form, Row, Col, Tabs, Radio, Checkbox } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -46,6 +46,7 @@ const schema = {
   IsActive: Joi.boolean(),
   IsConvertable: Joi.boolean(),
   ControlTypeID: Joi.number().required(),
+  TafsilTypes: Joi.array(),
 };
 
 const initRecord = {
@@ -60,6 +61,16 @@ const initRecord = {
   IsActive: true,
   IsConvertable: false,
   ControlTypeID: 0,
+  //----
+  // nabayad inja initialize beshe vagarna badaz darj clear nemishe! Why!!?!!!
+  //----
+  // TafsilTypes: [
+  //   { LevelID: 4, TafsilTypes: [] },
+  //   { LevelID: 5, TafsilTypes: [] },
+  //   { LevelID: 6, TafsilTypes: [] },
+  //   { LevelID: 7, TafsilTypes: [] },
+  //   { LevelID: 8, TafsilTypes: [] },
+  // ],
 };
 
 const formRef = React.createRef();
@@ -78,6 +89,9 @@ const StructureMoeinModal = ({
   const [natures, setNatures] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [controlTypes, setControlTypes] = useState([]);
+  const [tafsilTypes, setTafsilTypes] = useState([]);
+
+  const [selectedLevel, setSelectedLevel] = useState(4);
 
   const resetContext = useResetContext();
 
@@ -99,6 +113,13 @@ const StructureMoeinModal = ({
     record.IsActive = true;
     record.IsConvertable = false;
     record.ControlTypeID = 0;
+    record.TafsilTypes = [
+      { level_id: 4, tafsil_types: [] },
+      { level_id: 5, tafsil_types: [] },
+      { level_id: 6, tafsil_types: [] },
+      { level_id: 7, tafsil_types: [] },
+      { level_id: 8, tafsil_types: [] },
+    ];
 
     setRecord(record);
     setErrors({});
@@ -108,6 +129,13 @@ const StructureMoeinModal = ({
   useMount(async () => {
     resetContext();
     initRecord.TotalID = total.TotalID;
+    initRecord.TafsilTypes = [
+      { LevelID: 4, TafsilTypes: [] },
+      { LevelID: 5, TafsilTypes: [] },
+      { LevelID: 6, TafsilTypes: [] },
+      { LevelID: 7, TafsilTypes: [] },
+      { LevelID: 8, TafsilTypes: [] },
+    ];
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
     initModal(formRef, selectedObject, setRecord);
@@ -119,12 +147,14 @@ const StructureMoeinModal = ({
     try {
       const data = await service.getParams();
 
-      let { AccountTypes, Natures, Currencies, ControlTypes } = data;
+      let { AccountTypes, Natures, Currencies, ControlTypes, TafsilTypes } =
+        data;
 
       setAccountTypes(AccountTypes);
       setNatures(Natures);
       setCurrencies(Currencies);
       setControlTypes(ControlTypes);
+      setTafsilTypes(TafsilTypes);
 
       if (!selectedObject) {
         const code = await service.getNewCode(total.TotalID);
@@ -168,7 +198,37 @@ const StructureMoeinModal = ({
   const handleTafsilLevelChange = (e) => {
     const new_value = e.target.value;
 
-    console.log(new_value);
+    setSelectedLevel(new_value);
+  };
+
+  const handleChangeTafsilTypes = (checked_values) => {
+    let tafsil_types = [];
+    checked_values.forEach(
+      (ttid) =>
+        (tafsil_types = [
+          ...tafsil_types,
+          { ...tafsilTypes.find((tt) => tt.TafsilTypeID === ttid) },
+        ])
+    );
+
+    const level_tafsil_types = {
+      LevelID: selectedLevel,
+      TafsilTypes: tafsil_types,
+    };
+    record.TafsilTypes[selectedLevel - 4] = level_tafsil_types;
+
+    setRecord({ ...record });
+  };
+
+  const getSelectedTafsilTypes = () => {
+    const TafsilTypes = record.TafsilTypes?.find(
+      (t_t) => t_t.LevelID === selectedLevel
+    )?.TafsilTypes;
+
+    let result = [];
+    TafsilTypes?.forEach((tt) => (result = [...result, tt.TafsilTypeID]));
+
+    return result;
   };
 
   //------
@@ -298,6 +358,23 @@ const StructureMoeinModal = ({
                   <Radio.Button value={7}>{Words.level_7}</Radio.Button>
                   <Radio.Button value={8}>{Words.level_8}</Radio.Button>
                 </Radio.Group>
+              </Col>
+              <Col xs={24}>
+                <Checkbox.Group
+                  style={{
+                    width: "100%",
+                  }}
+                  onChange={handleChangeTafsilTypes}
+                  value={getSelectedTafsilTypes()}
+                >
+                  <Row>
+                    {tafsilTypes.map((tt) => (
+                      <Col span={8} key={tt.TafsilTypeID}>
+                        <Checkbox value={tt.TafsilTypeID}>{tt.Title}</Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
               </Col>
             </Row>
           </TabPane>

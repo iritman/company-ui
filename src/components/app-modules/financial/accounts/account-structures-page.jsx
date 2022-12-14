@@ -247,37 +247,40 @@ const AccountStructuesPage = ({ pageName }) => {
   };
 
   const handleSaveGroup = async (group) => {
-    const saved_data = await groupService.saveData(group);
+    // const saved_data =
+    await groupService.saveData(group);
 
-    if (selectedNode) {
-      const { id, key, type } = selectedNode;
-      setSelectedNode({ ...saved_data, id, key, type });
-      setSelectedObject({ ...saved_data, id, key, type });
-    }
+    // if (selectedNode) {
+    //   const { id, key, type } = selectedNode;
+    //   setSelectedNode({ ...saved_data, id, key, type });
+    //   setSelectedObject({ ...saved_data, id, key, type });
+    // }
 
     await refreshContent();
   };
 
   const handleSaveTotal = async (total) => {
-    const saved_data = await totalService.saveData(total);
+    // const saved_data =
+    await totalService.saveData(total);
 
-    if (selectedNode) {
-      const { id, key, type } = selectedNode;
-      setSelectedNode({ ...saved_data, id, key, type });
-      setSelectedObject({ ...saved_data, id, key, type });
-    }
+    // if (selectedNode) {
+    //   const { id, key, type } = selectedNode;
+    //   setSelectedNode({ ...saved_data, id, key, type });
+    //   setSelectedObject({ ...saved_data, id, key, type });
+    // }
 
     await refreshContent();
   };
 
   const handleSaveMoein = async (moein) => {
-    const saved_data = await moeinService.saveData(moein);
+    // const saved_data =
+    await moeinService.saveData(moein);
 
-    if (selectedNode) {
-      const { id, key, type } = selectedNode;
-      setSelectedNode({ ...saved_data, id, key, type });
-      setSelectedObject({ ...saved_data, id, key, type });
-    }
+    // if (selectedNode) {
+    //   const { id, key, type } = selectedNode;
+    //   setSelectedNode({ ...saved_data, id, key, type });
+    //   setSelectedObject({ ...saved_data, id, key, type });
+    // }
 
     await refreshContent();
   };
