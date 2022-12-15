@@ -17,6 +17,7 @@ import { FaBarcode as BachIcon } from "react-icons/fa";
 import {
   MdOutlineFeaturedPlayList as FeatureIcon,
   MdDonutSmall as ProductIcon,
+  MdOutlineStorage as StorageIcon,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
@@ -102,6 +103,13 @@ const mapper = (pageID) => {
     case 151:
       link = "user-baches";
       icon = <BachIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />;
+      break;
+
+    case 152:
+      link = "user-storage-centers";
+      icon = (
+        <StorageIcon style={{ color: Colors.magenta[7] }} size={iconSize} />
+      );
       break;
 
     default:

@@ -128,8 +128,6 @@ const CollectionRejectionChequeModal = ({
       cheque = cheques.find((c) => c.ChequeID === record.ChequeID);
     }
 
-    console.log(cheque);
-
     if (cheque !== null && 1 > 2) {
       const {
         //   ChequeID,
