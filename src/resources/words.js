@@ -501,6 +501,10 @@ class Words extends Component {
   static hand_over_status_2 = "تایید شده";
   static hand_over_status_3 = "رد شده";
 
+  static collection_rejection_status_1 = "ثبت شده";
+  static collection_rejection_status_2 = "تایید شده";
+  static collection_rejection_status_3 = "رد شده";
+
   static receive_receipts = "رسیدهای دریافت";
   static receive_receipt = "رسید دریافت";
   static cheque = "چک";
@@ -521,6 +525,13 @@ class Words extends Component {
 
   static bank_hand_overs = "واگذار به بانک";
   static hand_over_date = "تاریخ واگذاری";
+  static bank_hand_over_id = "شناسه اعلامیه واگذار به بانک";
+
+  static collection_rejection = "وصول/واخواست";
+  static collection_rejection_date = "تاریخ وصول/واخواست";
+  static collection = "وصول";
+  static rejection = "واخواست";
+  static rejection_without_action = "واخواست بدون اقدام";
 
   static collector_agents = "ماموران وصول";
   static collector_agent = "مامور وصول";
@@ -1047,6 +1058,10 @@ class Words extends Component {
     sure_to_submit_approve_request: "برای ثبت و تایید درخواست اطمینان دارید؟",
     sure_to_submit_approve_receive_receipt:
       "برای ثبت و تایید رسید دریافت اطمینان دارید؟",
+    sure_to_submit_approve_bank_hand_over:
+      "برای ثبت و تایید اعلامیه واگذار به بانک اطمینان دارید؟",
+    sure_to_submit_approve_collection_rejection:
+      "برای ثبت و تایید اعلامیه وصول/واخواست اطمینان دارید؟",
   };
 
   static monthes = {

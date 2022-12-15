@@ -7,6 +7,7 @@ import {
   MdReceiptLong as ReceiptIcon,
 } from "react-icons/md";
 import { TbTransferIn as HandOverIcon } from "react-icons/tb";
+import { GiReceiveMoney as CollectionRejectionIcon } from "react-icons/gi";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
 
@@ -39,11 +40,11 @@ const mapper = (pageID) => {
       backColor = Colors.purple[3];
       break;
 
-    // case 244:
-    //   link = "bank-account-types";
-    //   icon = <BankAccountTypeIcon {...iconProps} />;
-    //   backColor = Colors.orange[3];
-    //   break;
+    case 244:
+      link = "collection-rejections";
+      icon = <CollectionRejectionIcon {...iconProps} />;
+      backColor = Colors.orange[3];
+      break;
 
     default:
       break;

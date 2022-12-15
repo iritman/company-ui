@@ -29,7 +29,7 @@ import {
   handleError,
   getSorter,
 } from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/bank-hand-overs-service";
+import service from "../../../../../services/financial/treasury/receive/collection-rejections-service";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import TextItem from "./../../../../form-controls/text-item";
@@ -38,8 +38,8 @@ import {
   useResetContext,
 } from "../../../../contexts/modal-context";
 import DetailsTable from "../../../../common/details-table";
-import ChequeModal from "./bank-hand-over-cheque-modal";
-import DemandModal from "./bank-hand-over-demand-modal";
+import ChequeModal from "./collection-rejection-cheque-modal";
+import DemandModal from "./collection-rejection-demand-modal";
 import { v4 as uuid } from "uuid";
 import PriceViewer from "./price-viewer";
 
@@ -47,15 +47,16 @@ const { Text } = Typography;
 const { TabPane } = Tabs;
 
 const schema = {
-  HandOverID: Joi.number().required().label(Words.id),
+  CollectionRejectionID: Joi.number().required().label(Words.id),
   CompanyBankAccountID: Joi.number()
     .min(1)
     .required()
     .label(Words.bank_account),
   CurrencyID: Joi.number().min(1).required().label(Words.currency),
   ItemType: Joi.number().min(1).required().label(Words.item_type),
-  HandOverDate: Joi.string().required().label(Words.hand_over_date),
-  OperationID: Joi.number().label(Words.financial_operation),
+  CollectionRejectionDate: Joi.string()
+    .required()
+    .label(Words.collection_rejection_date),
   StandardDetailsID: Joi.number().label(Words.standard_description),
   StatusID: Joi.number(),
   Cheques: Joi.array(),
@@ -63,12 +64,11 @@ const schema = {
 };
 
 const initRecord = {
-  HandOverID: 0,
+  CollectionRejectionID: 0,
   CompanyBankAccountID: 0,
   CurrencyID: 0,
   ItemType: 0,
-  HandOverDate: "",
-  OperationID: 0,
+  CollectionRejectionDate: "",
   StandardDetailsID: 0,
   StatusID: 1,
   Cheques: [],
@@ -104,18 +104,30 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       ),
     },
     {
-      title: Words.duration,
-      width: 100,
+      title: Words.status,
+      width: 150,
       align: "center",
-      dataIndex: "DurationTypeTitle",
-      sorter: getSorter("DurationTypeTitle"),
-      render: (DurationTypeTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
+      dataIndex: "StatusTitle",
+      sorter: getSorter("StatusTitle"),
+      render: (StatusTitle) => (
+        <Text style={{ color: Colors.blue[6] }}>{StatusTitle}</Text>
+      ),
+    },
+    {
+      title: Words.bank_hand_over_id,
+      width: 220,
+      align: "center",
+      dataIndex: "HandOverID",
+      sorter: getSorter("HandOverID"),
+      render: (HandOverID) => (
+        <Text style={{ color: Colors.grey[6] }}>
+          {utils.farsiNum(HandOverID)}
+        </Text>
       ),
     },
     {
       title: Words.account_no,
-      width: 100,
+      width: 150,
       align: "center",
       dataIndex: "AccountNo",
       sorter: getSorter("AccountNo"),
@@ -377,14 +389,14 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
 
 const formRef = React.createRef();
 
-const BankHandOverModal = ({
+const CollectionRejectionModal = ({
   access,
   isOpen,
   selectedObject,
   onOk,
   onCancel,
-  onSaveBankHandOverItem,
-  onDeleteBankHandOverItem,
+  onSaveCollectionRejectionItem,
+  onDeleteCollectionRejectionItem,
   onReject,
   onApprove,
 }) => {
@@ -397,7 +409,6 @@ const BankHandOverModal = ({
     { ItemType: 1, Title: Words.cheque },
     { ItemType: 2, Title: Words.demand },
   ]);
-  const [operations, setOperations] = useState([]);
   const [standardDetails, setStandardDetails] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
@@ -424,8 +435,7 @@ const BankHandOverModal = ({
     record.CompanyBankAccountID = 0;
     record.CurrencyID = 0;
     record.ItemType = 0;
-    record.HandOverDate = "";
-    record.OperationID = 0;
+    record.CollectionRejectionDate = "";
     record.StandardDetailsID = 0;
     record.StatusID = 1;
     record.Cheques = [];
@@ -454,7 +464,6 @@ const BankHandOverModal = ({
       let {
         CompanyBankAccounts,
         Currencies,
-        Operations,
         StandardDetails,
         HasSaveApproveAccess,
         HasRejectAccess,
@@ -462,7 +471,6 @@ const BankHandOverModal = ({
 
       setCompanyBankAccounts(CompanyBankAccounts);
       setCurrencies(Currencies);
-      setOperations(Operations);
       setStandardDetails(StandardDetails);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
@@ -505,18 +513,18 @@ const BankHandOverModal = ({
     else setSelectedCheque(null);
   };
 
-  const handleSaveCheque = async () => {
+  const handleSaveCheque = async (cheque) => {
     if (selectedObject !== null) {
-      selectedCheque.HandOverID = selectedObject.HandOverID;
+      cheque.CollectionRejectionID = selectedObject.CollectionRejectionID;
 
-      const saved_cheque = await onSaveBankHandOverItem(
+      const saved_cheque = await onSaveCollectionRejectionItem(
         "cheque",
         "ItemID",
-        selectedCheque
+        cheque
       );
 
       const index = record.Cheques.findIndex(
-        (item) => item.ItemID === selectedCheque.ItemID
+        (item) => item.ItemID === cheque.ItemID
       );
 
       if (index === -1) {
@@ -550,7 +558,7 @@ const BankHandOverModal = ({
 
     try {
       if (cheque_to_delete.ItemID > 0) {
-        await onDeleteBankHandOverItem(
+        await onDeleteCollectionRejectionItem(
           "cheque",
           "ItemID",
           cheque_to_delete.ItemID
@@ -592,9 +600,10 @@ const BankHandOverModal = ({
 
   const handleSaveDemand = async () => {
     if (selectedObject !== null) {
-      selectedDemand.HandOverID = selectedObject.HandOverID;
+      selectedDemand.CollectionRejectionID =
+        selectedObject.CollectionRejectionID;
 
-      const saved_demand = await onSaveBankHandOverItem(
+      const saved_demand = await onSaveCollectionRejectionItem(
         "demand",
         "ItemID",
         selectedDemand
@@ -635,7 +644,7 @@ const BankHandOverModal = ({
 
     try {
       if (demand_to_delete.ItemID > 0) {
-        await onDeleteBankHandOverItem(
+        await onDeleteCollectionRejectionItem(
           "demand",
           "ItemID",
           demand_to_delete.ItemID
@@ -715,7 +724,9 @@ const BankHandOverModal = ({
 
             {hasSaveApproveAccess && (
               <Popconfirm
-                title={Words.questions.sure_to_submit_approve_bank_hand_over}
+                title={
+                  Words.questions.sure_to_submit_approve_collection_rejection
+                }
                 onConfirm={handleSubmitAndApprove}
                 okText={Words.yes}
                 cancelText={Words.no}
@@ -743,7 +754,9 @@ const BankHandOverModal = ({
           <>
             {hasSaveApproveAccess && (
               <Popconfirm
-                title={Words.questions.sure_to_submit_approve_bank_hand_over}
+                title={
+                  Words.questions.sure_to_submit_approve_collection_rejection
+                }
                 onConfirm={onApprove}
                 okText={Words.yes}
                 cancelText={Words.no}
@@ -876,21 +889,11 @@ const BankHandOverModal = ({
               />
             </Col>
             <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.financial_operation}
-                dataSource={operations}
-                keyColumn="OperationID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                required
-              />
-            </Col>
-            <Col xs={24} md={12}>
               <DateItem
                 horizontal
                 required
-                title={Words.hand_over_date}
-                fieldName="HandOverDate"
+                title={Words.collection_rejection_date}
+                fieldName="CollectionRejectionDate"
                 formConfig={formConfig}
               />
             </Col>
@@ -963,7 +966,7 @@ const BankHandOverModal = ({
               </Form.Item>
             </Col>
 
-            {status_id === 1 && (
+            {status_id === 1 && record.CompanyBankAccountID > 0 && (
               <Col xs={24}>
                 <Form.Item>{getNewButton()}</Form.Item>
               </Col>
@@ -977,6 +980,7 @@ const BankHandOverModal = ({
           isOpen={showChequeModal}
           selectedObject={selectedItem}
           currentCheques={record.Cheques}
+          companyBankAccountID={record.CompanyBankAccountID}
           onSelectCheque={handleSelectCheque}
           onOk={handleSaveCheque}
           onCancel={handleCloseChequeModal}
@@ -997,4 +1001,4 @@ const BankHandOverModal = ({
   );
 };
 
-export default BankHandOverModal;
+export default CollectionRejectionModal;
