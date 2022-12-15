@@ -50,24 +50,24 @@ const mapper = (moduleID) => {
       break;
 
     case 23:
-      link = "basic";
-      icon = <TreasuryIcon style={{ color: Colors.lime[6] }} size={iconSize} />;
+      link = "treasury/basic";
+      icon = <TreasuryIcon style={{ color: Colors.red[6] }} size={iconSize} />;
       break;
 
     case 24:
-      link = "receive";
+      link = "treasury/receive";
       icon = (
         <TreasuryIcon style={{ color: Colors.purple[6] }} size={iconSize} />
       );
       break;
 
     case 27:
-      link = "fund";
+      link = "treasury/fund";
       icon = <FundIcon style={{ color: Colors.gold[6] }} size={iconSize} />;
       break;
 
     case 28:
-      link = "collector-agent";
+      link = "treasury/collector-agent";
       icon = (
         <CollectorAgentIcon style={{ color: Colors.red[6] }} size={iconSize} />
       );
