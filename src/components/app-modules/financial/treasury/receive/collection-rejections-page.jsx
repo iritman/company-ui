@@ -278,7 +278,6 @@ const CollectionRejectionsPage = ({ pageName }) => {
     const rec = { ...selectedObject };
     // update price
     rec.Price += diff_price;
-
     //------
 
     if (collection_rejection_item[key_field] === 0)
@@ -295,13 +294,13 @@ const CollectionRejectionsPage = ({ pageName }) => {
 
     //------
 
-    const receipt_index = records.findIndex(
-      (receipt) =>
-        receipt.CollectionRejectionID ===
+    const collection_rejection_index = records.findIndex(
+      (collection_rejection) =>
+        collection_rejection.CollectionRejectionID ===
         collection_rejection_item.CollectionRejectionID
     );
 
-    records[receipt_index] = rec;
+    records[collection_rejection_index] = rec;
 
     //------
 
@@ -325,7 +324,7 @@ const CollectionRejectionsPage = ({ pageName }) => {
 
     if (selectedObject) {
       const rec = { ...selectedObject };
-      rec.Price -= rec[collection].find((c) => c[key_field] === item_id).Amount;
+      rec.Price -= rec[collection].find((i) => i[key_field] === item_id).Amount;
 
       rec[collection] = rec[collection].filter((i) => i[key_field] !== item_id);
 

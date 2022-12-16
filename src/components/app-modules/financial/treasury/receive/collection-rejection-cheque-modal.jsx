@@ -11,9 +11,7 @@ import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
-  handleError,
 } from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/collection-rejections-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 
 const { Text } = Typography;
@@ -36,18 +34,14 @@ const formRef = React.createRef();
 const CollectionRejectionChequeModal = ({
   isOpen,
   selectedObject,
-  currentCheques,
-  companyBankAccountID,
+  cheques,
+  itemStatuses,
   onOk,
   onCancel,
-  onSelectCheque,
 }) => {
   const [progress, setProgress] = useState(false);
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
-
-  const [cheques, setCheques] = useState([]);
-  const [itemStatuses, setItemStatuses] = useState([]);
 
   const formConfig = {
     schema,
@@ -70,43 +64,11 @@ const CollectionRejectionChequeModal = ({
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
     initModal(formRef, selectedObject, setRecord);
-
-    //------
-
-    setProgress(true);
-
-    try {
-      const paramsData = await service.getParams();
-      const { ItemStatuses } = paramsData;
-      setItemStatuses(ItemStatuses);
-
-      const data = await service.getCheques(companyBankAccountID);
-
-      setCheques(
-        data.Cheques.filter(
-          (c) => !currentCheques.find((ch) => ch.ChequeID === c.ChequeID)
-        )
-      );
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
 
   const handleSubmit = async () => {
-    if (selectedObject === null) {
-      const cheque = cheques.find((c) => c.ChequeID === record.ChequeID);
-      cheque.StatusID = record.StatusID;
-      cheque.StatusTitle = itemStatuses.find(
-        (s) => s.StatusID === record.StatusID
-      ).Title;
-      cheque.ItemID = record.ItemID;
-      onSelectCheque(cheque);
-    }
-
     await saveModalChanges(
       formConfig,
       selectedObject,
@@ -128,7 +90,7 @@ const CollectionRejectionChequeModal = ({
       cheque = cheques.find((c) => c.ChequeID === record.ChequeID);
     }
 
-    if (cheque !== null && 1 > 2) {
+    if (cheque) {
       const {
         //   ChequeID,
         ChequeNo,
@@ -218,16 +180,6 @@ const CollectionRejectionChequeModal = ({
     return result;
   };
 
-  const handleChangeCheque = (value) => {
-    const cheque = cheques.find((c) => c.ChequeID === value);
-    cheque.ItemID = record.ItemID;
-    onSelectCheque(cheque);
-
-    const rec = { ...record };
-    rec.ChequeID = value || 0;
-    setRecord(rec);
-  };
-
   //------
 
   return (
@@ -254,7 +206,6 @@ const CollectionRejectionChequeModal = ({
                 formConfig={formConfig}
                 required
                 autoFocus
-                onChange={handleChangeCheque}
               />
             </Col>
           )}
