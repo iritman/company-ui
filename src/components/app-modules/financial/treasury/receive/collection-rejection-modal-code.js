@@ -561,7 +561,7 @@ export const getDisableStatus = (record) => {
   return is_disable;
 };
 
-const columns = {
+const codes = {
   schema,
   initRecord,
   getNewButton,
@@ -571,4 +571,4 @@ const columns = {
   getDisableStatus,
 };
 
-export default columns;
+export default codes;
