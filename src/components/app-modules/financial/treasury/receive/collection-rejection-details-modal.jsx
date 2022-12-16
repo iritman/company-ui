@@ -40,7 +40,7 @@ const cheque_columns = [
   },
   {
     title: Words.duration,
-    width: 100,
+    width: 120,
     align: "center",
     dataIndex: "DurationTypeTitle",
     sorter: getSorter("DurationTypeTitle"),
@@ -50,7 +50,7 @@ const cheque_columns = [
   },
   {
     title: Words.account_no,
-    width: 100,
+    width: 150,
     align: "center",
     dataIndex: "AccountNo",
     sorter: getSorter("AccountNo"),
@@ -62,7 +62,7 @@ const cheque_columns = [
   },
   {
     title: Words.bank,
-    width: 100,
+    width: 120,
     align: "center",
     dataIndex: "BankTitle",
     sorter: getSorter("BankTitle"),
@@ -82,7 +82,7 @@ const cheque_columns = [
   },
   {
     title: Words.bank_branch,
-    width: 100,
+    width: 150,
     align: "center",
     dataIndex: "BranchName",
     sorter: getSorter("BranchName"),
