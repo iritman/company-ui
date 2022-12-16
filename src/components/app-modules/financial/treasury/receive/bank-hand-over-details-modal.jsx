@@ -145,6 +145,13 @@ const cheque_columns = [
       </Text>
     ),
   },
+  {
+    title: "",
+    fixed: "right",
+    align: "center",
+    width: 1,
+    render: () => <></>,
+  },
 ];
 
 const demand_columns = [
@@ -221,6 +228,13 @@ const demand_columns = [
         {utils.farsiNum(utils.slashDate(DueDate))}
       </Text>
     ),
+  },
+  {
+    title: "",
+    fixed: "right",
+    align: "center",
+    width: 1,
+    render: () => <></>,
   },
 ];
 
@@ -379,7 +393,7 @@ const BankHandOverDetailsModal = ({ selectedObject, isOpen, onOk }) => {
             </Descriptions.Item>
 
             {DetailsText.length > 0 && (
-              <Descriptions.Item label={Words.descriptions} span={2}>
+              <Descriptions.Item label={Words.descriptions} span={3}>
                 <Text
                   style={{
                     color: Colors.purple[7],
@@ -392,7 +406,7 @@ const BankHandOverDetailsModal = ({ selectedObject, isOpen, onOk }) => {
             )}
 
             {Price > 0 && (
-              <Descriptions.Item label={Words.price} span={2}>
+              <Descriptions.Item label={Words.price} span={3}>
                 <Text
                   style={{
                     color: Colors.magenta[7],
