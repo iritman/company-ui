@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Button,
-  Modal,
   Row,
   Col,
   Typography,
@@ -15,6 +14,7 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { getSorter } from "./../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
+import ModalWindow from "./../../../../common/modal-window";
 
 const { Text } = Typography;
 
@@ -137,16 +137,15 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
   }  - ${AccountNo}`;
 
   return (
-    <Modal
-      visible={isOpen}
-      maskClosable={false}
-      centered={true}
+    <ModalWindow
+      isOpen={isOpen}
       title={Words.more_details}
       footer={[
         <Button key="close-button" onClick={onOk}>
           {Words.close}
         </Button>,
       ]}
+      showIcon={false}
       onCancel={onOk}
       width={900}
     >
@@ -247,7 +246,7 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           </Row>
         </article>
       </section>
-    </Modal>
+    </ModalWindow>
   );
 };
 

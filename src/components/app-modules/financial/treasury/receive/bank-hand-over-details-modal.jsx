@@ -1,11 +1,12 @@
 import React from "react";
-import { Button, Modal, Row, Col, Typography, Descriptions, Tabs } from "antd";
+import { Button, Row, Col, Typography, Descriptions, Tabs } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { getSorter } from "./../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import PriceViewer from "./price-viewer";
+import ModalWindow from "./../../../../common/modal-window";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -295,16 +296,15 @@ const BankHandOverDetailsModal = ({ selectedObject, isOpen, onOk }) => {
   const price = calculatePrice();
 
   return (
-    <Modal
-      visible={isOpen}
-      maskClosable={false}
-      centered={true}
+    <ModalWindow
+      isOpen={isOpen}
       title={Words.more_details}
       footer={[
         <Button key="close-button" onClick={onOk}>
           {Words.close}
         </Button>,
       ]}
+      showIcon={false}
       onCancel={onOk}
       width={1050}
     >
@@ -443,7 +443,7 @@ const BankHandOverDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           </Tabs>
         </Col>
       </Row>
-    </Modal>
+    </ModalWindow>
   );
 };
 
