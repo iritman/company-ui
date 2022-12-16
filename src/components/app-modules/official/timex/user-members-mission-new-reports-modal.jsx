@@ -190,7 +190,7 @@ const UserMembersMissionNewReportsModal = ({
 
   return (
     <ModalWindow
-      visible={isOpen}
+      open={isOpen}
       maskClosable={false}
       centered={true}
       title={Words.mission_report}

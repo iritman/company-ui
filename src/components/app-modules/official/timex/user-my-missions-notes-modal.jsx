@@ -34,7 +34,7 @@ const UserMyMissionsNotesModal = ({ isOpen, mission, onCancel, onSeen }) => {
 
   return (
     <ModalWindow
-      visible={isOpen}
+      open={isOpen}
       maskClosable={false}
       centered={true}
       title={Words.mission_notes}

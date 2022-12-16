@@ -130,7 +130,7 @@ const UserMembersMissionsUpdateNotesModal = ({
 
   return (
     <ModalWindow
-      visible={isOpen}
+      open={isOpen}
       maskClosable={false}
       centered={true}
       title={selectedNote === null ? Words.new_note : Words.edit_note}

@@ -29,7 +29,7 @@ const UserViolationAnnouncementDetailsModal = ({
 
   return (
     <Modal
-      visible={isOpen}
+      open={isOpen}
       maskClosable={false}
       centered={true}
       title={Words.announcement}

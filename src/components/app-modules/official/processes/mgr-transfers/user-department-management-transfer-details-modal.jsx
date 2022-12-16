@@ -32,7 +32,7 @@ const UserDepartmentManagementTransferDetailsModal = ({
 
   return (
     <Modal
-      visible={isOpen}
+      open={isOpen}
       maskClosable={false}
       centered={true}
       title={Words.more_details}

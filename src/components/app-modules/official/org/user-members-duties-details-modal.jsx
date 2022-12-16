@@ -132,17 +132,19 @@ const getColumns = (access, onSelect, onShowDetails, onEdit, onDelete) => [
           />
         )}
 
-        {access.CanDelete && onDelete && record.DutyType === "PersonalBased" && (
-          <Popconfirm
-            title={Words.questions.sure_to_delete_item}
-            onConfirm={async () => await onDelete(record.DutyID)}
-            okText={Words.yes}
-            cancelText={Words.no}
-            icon={<QuestionIcon style={{ color: "red" }} />}
-          >
-            <Button type="link" icon={<DeleteIcon />} danger />
-          </Popconfirm>
-        )}
+        {access.CanDelete &&
+          onDelete &&
+          record.DutyType === "PersonalBased" && (
+            <Popconfirm
+              title={Words.questions.sure_to_delete_item}
+              onConfirm={async () => await onDelete(record.DutyID)}
+              okText={Words.yes}
+              cancelText={Words.no}
+              icon={<QuestionIcon style={{ color: "red" }} />}
+            >
+              <Button type="link" icon={<DeleteIcon />} danger />
+            </Popconfirm>
+          )}
       </Space>
     ),
   },
@@ -224,7 +226,7 @@ const UserMembersDutiesDetailsModal = ({ employee, access, isOpen, onOk }) => {
   return (
     <>
       <Modal
-        visible={isOpen}
+        open={isOpen}
         maskClosable={false}
         centered={true}
         title={Words.more_details}
