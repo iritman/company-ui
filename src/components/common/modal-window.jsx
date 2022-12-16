@@ -35,7 +35,7 @@ const ModalWindow = (props) => {
       title={
         title ? (
           <Space>
-            {(!showIcon || showIcon === true) && (
+            {showIcon !== false && (
               <PlusBoxIcon style={{ color: Colors.blue[6] }} />
             )}
 
