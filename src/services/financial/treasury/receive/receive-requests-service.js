@@ -33,13 +33,13 @@ export async function saveItem(record) {
   return data;
 }
 
-export async function rejectReciveRequest(requestID) {
+export async function rejectReceiveRequest(requestID) {
   const { data } = await http.post(`${apiEndpoint}/reject/${requestID}`, {});
 
   return data;
 }
 
-export async function approveReciveRequest(requestID) {
+export async function approveReceiveRequest(requestID) {
   const { data } = await http.post(`${apiEndpoint}/approve/${requestID}`, {});
 
   return data;
@@ -63,8 +63,8 @@ const service = {
   searchData,
   saveData,
   saveItem,
-  rejectReciveRequest,
-  approveReciveRequest,
+  rejectReceiveRequest,
+  approveReceiveRequest,
   deleteData,
   deleteItem,
 };

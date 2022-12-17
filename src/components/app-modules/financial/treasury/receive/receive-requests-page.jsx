@@ -247,7 +247,9 @@ const ReceiveRequestsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.approveReciveRequest(selectedObject.RequestID);
+      const data = await service.approveReceiveRequest(
+        selectedObject.RequestID
+      );
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
@@ -274,7 +276,7 @@ const ReceiveRequestsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.rejectReciveRequest(selectedObject.RequestID);
+      const data = await service.rejectReceiveRequest(selectedObject.RequestID);
 
       // Update selected object
       selectedObject.StatusID = 3; // Reject

@@ -53,13 +53,13 @@ export async function saveItem(itemType, record) {
   return data;
 }
 
-export async function rejectReciveReceipt(receiveID) {
+export async function rejectReceiveReceipt(receiveID) {
   const { data } = await http.post(`${apiEndpoint}/reject/${receiveID}`, {});
 
   return data;
 }
 
-export async function approveReciveReceipt(receiveID) {
+export async function approveReceiveReceipt(receiveID) {
   const { data } = await http.post(`${apiEndpoint}/approve/${receiveID}`, {});
 
   return data;
@@ -86,8 +86,8 @@ const service = {
   searchData,
   saveData,
   saveItem,
-  rejectReciveReceipt,
-  approveReciveReceipt,
+  rejectReceiveReceipt,
+  approveReceiveReceipt,
   deleteData,
   deleteItem,
 };

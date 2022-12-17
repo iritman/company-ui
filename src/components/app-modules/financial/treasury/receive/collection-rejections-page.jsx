@@ -348,7 +348,7 @@ const CollectionRejectionsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.approveReciveReceipt(
+      const data = await service.approveReceiveReceipt(
         selectedObject.CollectionRejectionID
       );
 

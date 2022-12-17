@@ -364,7 +364,9 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.approveReciveReceipt(selectedObject.ReceiveID);
+      const data = await service.approveReceiveReceipt(
+        selectedObject.ReceiveID
+      );
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
@@ -391,7 +393,7 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.rejectReciveReceipt(selectedObject.ReceiveID);
+      const data = await service.rejectReceiveReceipt(selectedObject.ReceiveID);
 
       // Update selected object
       selectedObject.StatusID = 3; // Reject
