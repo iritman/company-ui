@@ -39,6 +39,7 @@ import {
   useResetContext,
 } from "../../../../contexts/modal-context";
 import DetailsTable from "../../../../common/details-table";
+import PriceViewer from "../../../../common/price-viewer";
 import ReceiveRequestItemModal from "./receive-request-item-modal";
 import { v4 as uuid } from "uuid";
 
@@ -546,6 +547,16 @@ const ReceiveRequestModal = ({
     );
   };
 
+  const calculateTotalPrice = () => {
+    let sum = 0;
+
+    record?.Items?.forEach((item) => {
+      sum += item.Price;
+    });
+
+    return sum;
+  };
+
   //------
 
   const is_disable =
@@ -640,16 +651,23 @@ const ReceiveRequestModal = ({
               <>
                 <Col xs={24}>
                   <Form.Item>
-                    <DetailsTable
-                      records={record.Items}
-                      columns={getReceiveRequestItemsColumns(
-                        access,
-                        status_id,
-                        handleEditReceiveRequestItem,
-                        handleDeleteReceiveRequestItem
-                      )}
-                      emptyDataMessage={Words.no_receive_item}
-                    />
+                    <Row gutter={[0, 15]}>
+                      <Col xs={24}>
+                        <DetailsTable
+                          records={record.Items}
+                          columns={getReceiveRequestItemsColumns(
+                            access,
+                            status_id,
+                            handleEditReceiveRequestItem,
+                            handleDeleteReceiveRequestItem
+                          )}
+                          emptyDataMessage={Words.no_receive_item}
+                        />
+                      </Col>
+                      <Col xs={24}>
+                        <PriceViewer price={calculateTotalPrice()} />
+                      </Col>
+                    </Row>
                   </Form.Item>
                 </Col>
               </>

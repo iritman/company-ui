@@ -37,6 +37,7 @@ const getSheets = (records) => [
       { label: Words.standard_description, value: "DetailsText" },
 
       { label: Words.receive_base, value: "BaseTypeTitle" },
+      { label: Words.price, value: "TotalPrice" },
       { label: Words.base_doc_id, value: "BaseDocID" },
       { label: Words.requestable_balance, value: "DetailsText" },
       {
@@ -82,6 +83,18 @@ const baseColumns = [
     render: (ReceiveDate) => (
       <Text style={{ color: Colors.blue[6] }}>
         {utils.farsiNum(utils.slashDate(ReceiveDate))}
+      </Text>
+    ),
+  },
+  {
+    title: Words.price,
+    width: 150,
+    align: "center",
+    dataIndex: "TotalPrice",
+    sorter: getSorter("TotalPrice"),
+    render: (TotalPrice) => (
+      <Text style={{ color: Colors.orange[6] }}>
+        {utils.farsiNum(utils.moneyNumber(TotalPrice))}
       </Text>
     ),
   },
@@ -198,12 +211,14 @@ const ReceiveRequestsPage = ({ pageName }) => {
     const saved_receive_request_item = await service.saveItem(receive_item);
 
     const rec = { ...selectedObject };
-    if (receive_item.ItemID === 0)
+    if (receive_item.ItemID === 0) {
       rec.Items = [...rec.Items, saved_receive_request_item];
-    else {
+      rec.TotalPrice += receive_item.Price;
+    } else {
       const index = rec.Items.findIndex(
         (i) => i.ItemID === receive_item.ItemID
       );
+      rec.TotalPrice -= rec.Items[index].Price - receive_item.Price;
       rec.Items[index] = saved_receive_request_item;
     }
     setSelectedObject(rec);
@@ -214,7 +229,7 @@ const ReceiveRequestsPage = ({ pageName }) => {
       (receive_request) => receive_request.RequestID === receive_item.RequestID
     );
 
-    records[receive_request_index] = selectedObject;
+    records[receive_request_index] = rec;
 
     //------
 
@@ -228,6 +243,7 @@ const ReceiveRequestsPage = ({ pageName }) => {
 
     if (selectedObject) {
       const rec = { ...selectedObject };
+      rec.TotalPrice -= rec.Items.find((i) => i.ItemID === item_id).Price;
       rec.Items = rec.Items.filter((i) => i.ItemID !== item_id);
       setSelectedObject(rec);
 
@@ -238,9 +254,6 @@ const ReceiveRequestsPage = ({ pageName }) => {
       );
 
       records[receive_request_index] = rec;
-      // records[receive_request_index].Items = records[
-      //   receive_request_index
-      // ].Items.filter((i) => y.ItemID !== item_id);
 
       setRecords([...records]);
     }
