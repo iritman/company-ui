@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
-import TreasuryBasicInfoDashboard from "../../components/app-modules/financial/treasury/receive/treasury-receive-dashboard";
+import TreasuryReceiveDashboard from "../../components/app-modules/financial/treasury/receive/treasury-receive-dashboard";
 import ReceiveRequestsPage from "../../components/app-modules/financial/treasury/receive/receive-requests-page";
 import ReceiveReceiptsPage from "../../components/app-modules/financial/treasury/receive/receive-receipts-page";
 import BankHandOversPage from "../../components/app-modules/financial/treasury/receive/bank-hand-overs-page";
@@ -17,7 +17,7 @@ const UserTreasuryReceiveRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/${modulePath}`}
         exact
-        component={TreasuryBasicInfoDashboard}
+        component={TreasuryReceiveDashboard}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/receive-requests`}
