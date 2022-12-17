@@ -39,7 +39,10 @@ const getSheets = (records) => [
       { label: Words.receive_base, value: "BaseTypeTitle" },
       { label: Words.base_doc_id, value: "BaseDocID" },
       { label: Words.requestable_balance, value: "DetailsText" },
-      { label: Words.settlement_date, value: "SettlementDate" },
+      {
+        label: Words.settlement_date,
+        value: (record) => utils.slashDate(record.SettlementDate),
+      },
       { label: Words.status, value: "StatusTitle" },
     ],
   },
