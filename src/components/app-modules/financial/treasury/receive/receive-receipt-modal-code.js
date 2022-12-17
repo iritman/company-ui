@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
 import Joi from "joi-browser";
-import PriceViewer from "./price-viewer";
+import PriceViewer from "./../../../../common/price-viewer";
 import DetailsTable from "../../../../common/details-table";
 
 const { Text } = Typography;

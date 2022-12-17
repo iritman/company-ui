@@ -10,7 +10,7 @@ import {
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
-import PriceViewer from "./price-viewer";
+import PriceViewer from "./../../../../common/price-viewer";
 import DetailsTable from "../../../../common/details-table";
 
 const { Text } = Typography;

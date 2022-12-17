@@ -3,7 +3,7 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { Row, Col, Typography, Popover } from "antd";
 import DetailsTable from "../../../../common/details-table";
-import PriceViewer from "./price-viewer";
+import PriceViewer from "./../../../../common/price-viewer";
 import { getSorter } from "./../../../../../tools/form-manager";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
 

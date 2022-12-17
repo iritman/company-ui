@@ -5,8 +5,8 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { getSorter } from "./../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
-import PriceViewer from "./price-viewer";
 import ModalWindow from "./../../../../common/modal-window";
+import PriceViewer from "./../../../../common/price-viewer";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;

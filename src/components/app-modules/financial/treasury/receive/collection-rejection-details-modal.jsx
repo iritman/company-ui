@@ -5,7 +5,7 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { getSorter } from "./../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
-import PriceViewer from "./price-viewer";
+import PriceViewer from "./../../../../common/price-viewer";
 import ModalWindow from "./../../../../common/modal-window";
 
 const { Text } = Typography;

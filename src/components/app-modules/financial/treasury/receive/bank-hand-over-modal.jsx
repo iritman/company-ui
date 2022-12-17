@@ -41,7 +41,7 @@ import DetailsTable from "../../../../common/details-table";
 import ChequeModal from "./bank-hand-over-cheque-modal";
 import DemandModal from "./bank-hand-over-demand-modal";
 import { v4 as uuid } from "uuid";
-import PriceViewer from "./price-viewer";
+import PriceViewer from "./../../../../common/price-viewer";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
