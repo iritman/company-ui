@@ -1,8 +1,8 @@
 import React from "react";
 import { Typography } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import Words from "../../resources/words";
+import Colors from "../../resources/colors";
+import utils from "../../tools/utils";
 
 const { Text } = Typography;
 

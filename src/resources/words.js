@@ -481,6 +481,7 @@ class Words extends Component {
   static requestable_balance = "مانده قابل درخواست";
   static receive_items = "اقلام دریافتی";
   static no_receive_item = "قلم دریافتی ثبت نشده است";
+  static no_payment_item = "قلم پرداختی ثبت نشده است";
   static price = "مبلغ";
   static total_price = "مجموع";
   static from_receive_date = "تاریخ دریافت از";
@@ -496,6 +497,21 @@ class Words extends Component {
   static receive_receipt_status_1 = "ثبت شده";
   static receive_receipt_status_2 = "تایید شده";
   static receive_receipt_status_3 = "رد شده";
+
+  static payment_requests = "درخواست های پرداخت";
+  static payment_request = "درخواست پرداخت";
+  static pay_type = "نوع پرداخت";
+  static standard_details_text = "شرح استاندارد";
+  static request_date = "تاریخ درخواست";
+  static from_request_date = "تاریخ درخواست از";
+  static to_request_date = "تاریخ درخواست تا";
+  static payment_items = "اقلام پرداختنی";
+  static no_payment_item = "قلم پرداختی ثبت نشده است";
+  static payment_date = "تاریخ پرداخت";
+
+  static payment_request_status_1 = "ثبت شده";
+  static payment_request_status_2 = "تایید شده";
+  static payment_request_status_3 = "رد شده";
 
   static hand_over_status_1 = "ثبت شده";
   static hand_over_status_2 = "تایید شده";
@@ -557,6 +573,7 @@ class Words extends Component {
   static financial_years = "سال های مالی";
 
   static treasury_basic_info = "خزانه داری - پایه";
+  static treasury_payment = "خزانه داری - پرداخت";
   static treasury_receive = "خزانه داری - دریافت";
 
   static bank_types = "انواع بانک";

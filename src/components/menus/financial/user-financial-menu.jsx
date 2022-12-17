@@ -9,6 +9,8 @@ import { TbNotebook as LedgerIcon } from "react-icons/tb";
 import {
   MdSettings as SettingsIcon,
   MdAccountBalanceWallet as AccountsIcon,
+  MdSouthWest as ReceiveIcon,
+  MdNorthEast as PaymentIcon,
 } from "react-icons/md";
 import { RiRefundFill as FundIcon } from "react-icons/ri";
 import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
@@ -51,19 +53,24 @@ const mapper = (moduleID) => {
 
     case 23:
       link = "treasury/basic";
-      icon = <TreasuryIcon style={{ color: Colors.red[6] }} size={iconSize} />;
+      icon = <TreasuryIcon style={{ color: Colors.grey[6] }} size={iconSize} />;
       break;
 
     case 24:
       link = "treasury/receive";
+      icon = <ReceiveIcon style={{ color: Colors.green[6] }} size={iconSize} />;
+      break;
+
+    case 25:
+      link = "treasury/pay";
       icon = (
-        <TreasuryIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+        <PaymentIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
     case 27:
       link = "treasury/fund";
-      icon = <FundIcon style={{ color: Colors.gold[6] }} size={iconSize} />;
+      icon = <FundIcon style={{ color: Colors.geekblue[6] }} size={iconSize} />;
       break;
 
     case 28:
