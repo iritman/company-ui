@@ -4,6 +4,7 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
+import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -13,6 +14,7 @@ import {
 } from "../../../../../tools/form-manager";
 import service from "../../../../../services/financial/treasury/receive/receive-requests-service";
 import NumericInputItem from "./../../../../form-controls/numeric-input-item";
+import InputItem from "./../../../../form-controls/input-item";
 import DateItem from "./../../../../form-controls/date-item";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 
@@ -24,6 +26,12 @@ const schema = {
   ReceiveDate: Joi.string(),
   DueDate: Joi.string(),
   StandardDetailsID: Joi.number(),
+  DetailsText: Joi.string()
+    .min(5)
+    .max(250)
+    .allow("")
+    .regex(utils.VALID_REGEX)
+    .label(Words.standard_description),
 };
 
 const initRecord = {
@@ -34,6 +42,7 @@ const initRecord = {
   ReceiveDate: "",
   DueDate: "",
   StandardDetailsID: 0,
+  DetailsText: "",
 };
 
 const formRef = React.createRef();
@@ -65,6 +74,7 @@ const ReceiveRequestItemModal = ({
     record.ReceiveDate = "";
     record.DueDate = "";
     record.StandardDetailsID = 0;
+    record.DetailsText = "";
 
     setRecord(record);
     setErrors({});
@@ -166,10 +176,21 @@ const ReceiveRequestItemModal = ({
           </Col>
           <Col xs={24}>
             <DropdownItem
-              title={Words.standard_description}
+              title={Words.standard_details_text}
               dataSource={standardDetails}
               keyColumn="StandardDetailsID"
               valueColumn="DetailsText"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <InputItem
+              title={Words.standard_description}
+              fieldName="DetailsText"
+              multiline
+              rows={2}
+              showCount
+              maxLength={250}
               formConfig={formConfig}
             />
           </Col>

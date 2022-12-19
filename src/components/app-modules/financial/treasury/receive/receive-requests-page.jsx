@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, message } from "antd";
 import Words from "../../../../../resources/words";
@@ -29,17 +29,16 @@ const getSheets = (records) => [
     columns: [
       { label: Words.id, value: "RequestID" },
       { label: Words.front_side_account_id, value: "FrontSideAccountID" },
-      { label: Words.account_no, value: "AccountNo" },
-      { label: Words.first_name, value: "FirstName" },
-      { label: Words.last_name, value: "LastName" },
-      { label: Words.company, value: "CompanyTitle" },
+      { label: Words.front_side_account, value: "FrontSideAccountTitle" },
+      { label: Words.tafsil_code, value: "TafsilCode" },
+      { label: Words.tafsil_type, value: "TafsilTypeTitle" },
       { label: Words.currency, value: "CurrencyTitle" },
+      { label: Words.standard_details_text, value: "StandardDetailsText" },
       { label: Words.standard_description, value: "DetailsText" },
-
       { label: Words.receive_base, value: "BaseTypeTitle" },
       { label: Words.price, value: "TotalPrice" },
       { label: Words.base_doc_id, value: "BaseDocID" },
-      { label: Words.requestable_balance, value: "DetailsText" },
+      { label: Words.requestable_balance, value: "RequestableBalance" },
       {
         label: Words.settlement_date,
         value: (record) => utils.slashDate(record.SettlementDate),
@@ -59,17 +58,15 @@ const baseColumns = [
     render: (RequestID) => <Text>{utils.farsiNum(`${RequestID}`)}</Text>,
   },
   {
-    title: Words.front_side,
+    title: Words.front_side_account,
     width: 200,
     align: "center",
-    // dataIndex: "Title",
-    sorter: getSorter("LastName"),
+    // dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
     render: (record) => (
       <Text style={{ color: Colors.cyan[6] }}>
         {utils.farsiNum(
-          record.MemberID > 0
-            ? `${record.FirstName} ${record.LastName} - ${record.AccountNo}`
-            : `${record.CompanyTitle} - ${record.AccountNo}`
+          `${record.TafsilCode} - ${record.FrontSideAccountTitle}`
         )}
       </Text>
     ),
@@ -143,6 +140,9 @@ const ReceiveRequestsPage = ({ pageName }) => {
     filter,
     setFilter,
   } = usePageContext();
+
+  const [searchedFrontSideAccount, setSearchedFrontSideAccount] =
+    useState(null);
 
   useMount(async () => {
     handleResetContext();
@@ -342,8 +342,10 @@ const ReceiveRequestsPage = ({ pageName }) => {
         <SearchModal
           onOk={handleSearch}
           onCancel={() => setShowSearchModal(false)}
+          onFrontSideAccountChange={setSearchedFrontSideAccount}
           isOpen={showSearchModal}
           filter={filter}
+          searchedFrontSideAccount={searchedFrontSideAccount}
         />
       )}
 

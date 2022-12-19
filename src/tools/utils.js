@@ -566,6 +566,15 @@ export function hasSelectedFilter(baseObject, checkObject) {
   return result;
 }
 
+export function getDescription(standard_details_text, details_text) {
+  let result = `${standard_details_text} - ${details_text}`;
+
+  if (result.startsWith(" - ")) result = result.substring(3);
+  if (result.endsWith(" - ")) result = result.substring(0, result.length - 4);
+
+  return result;
+}
+
 export const VALID_REGEX = /^[آ-یa-zA-Z0-9,:<>?-_=+()*&^%$#@!~{}۰-۹.\-()\s]+$/;
 
 const methods = {
@@ -612,6 +621,7 @@ const methods = {
   getMonthList,
   textSeparator,
   hasSelectedFilter,
+  getDescription,
 };
 
 export default methods;

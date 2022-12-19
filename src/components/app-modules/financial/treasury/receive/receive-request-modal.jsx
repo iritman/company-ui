@@ -33,6 +33,7 @@ import {
 } from "../../../../../tools/form-manager";
 import service from "../../../../../services/financial/treasury/receive/receive-requests-service";
 import DateItem from "../../../../form-controls/date-item";
+import InputItem from "../../../../form-controls/input-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import {
   useModalContext,
@@ -54,6 +55,12 @@ const schema = {
   CurrencyID: Joi.number().min(1).required().label(Words.currency),
   ReceiveDate: Joi.string().required().label(Words.receive_date),
   StandardDetailsID: Joi.number().label(Words.standard_description),
+  DetailsText: Joi.string()
+    .min(5)
+    .max(250)
+    .allow("")
+    .regex(utils.VALID_REGEX)
+    .label(Words.standard_description),
   BaseTypeID: Joi.number().min(1).required().label(Words.receive_base),
   RequestableBalance: Joi.number().label(Words.requestable_balance),
   BaseDocID: Joi.number().label(Words.base_doc_id),
@@ -68,7 +75,8 @@ const initRecord = {
   CurrencyID: 0,
   ReceiveDate: "",
   StandardDetailsID: 0,
-  BaseTypeID: 0,
+  DetailsText: "",
+  BaseTypeID: 1,
   RequestableBalance: 0,
   BaseDocID: 0,
   SettlementDate: "",
@@ -148,8 +156,15 @@ const getReceiveRequestItemsColumns = (access, statusID, onEdit, onDelete) => {
       align: "center",
       render: (record) => (
         <>
-          {record.StandardDetailsID > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Popover
+              content={
+                <Text>{`${utils.getDescription(
+                  record.StandardDetailsText,
+                  record.DetailsText
+                )}`}</Text>
+              }
+            >
               <InfoIcon
                 style={{
                   color: Colors.green[6],
@@ -227,7 +242,7 @@ const ReceiveRequestModal = ({
   const [frontSideAccounts, setFrontSideAccounts] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [standardDetails, setStandardDetails] = useState([]);
-  const [baseTypes, setBaseTypes] = useState([]);
+  // const [baseTypes, setBaseTypes] = useState([]);
   const [receiveTypes, setReceiveTypes] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
@@ -281,7 +296,7 @@ const ReceiveRequestModal = ({
       let {
         Currencies,
         StandardDetails,
-        BaseTypes,
+        // BaseTypes,
         ReceiveTypes,
         HasSaveApproveAccess,
         HasRejectAccess,
@@ -289,7 +304,7 @@ const ReceiveRequestModal = ({
 
       setCurrencies(Currencies);
       setStandardDetails(StandardDetails);
-      setBaseTypes(BaseTypes);
+      // setBaseTypes(BaseTypes);
       setReceiveTypes(ReceiveTypes);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
@@ -297,16 +312,12 @@ const ReceiveRequestModal = ({
       if (selectedObject) {
         const {
           FrontSideAccountID,
-          AccountNo,
-          MemberID,
-          FirstName,
-          LastName,
-          CompanyTitle,
+          FrontSideAccountTitle,
+          TafsilCode,
+          TafsilTypeTitle,
         } = selectedObject;
 
-        let account_title = `${
-          MemberID > 0 ? `${FirstName} ${LastName}` : CompanyTitle
-        }  - ${AccountNo}`;
+        let account_title = `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`;
 
         setFrontSideAccounts([{ FrontSideAccountID, Title: account_title }]);
       }
@@ -387,7 +398,7 @@ const ReceiveRequestModal = ({
       receive_item.ReceiveTypeTitle = receiveTypes.find(
         (rt) => rt.ReceiveTypeID === receive_item.ReceiveTypeID
       )?.Title;
-      receive_item.DetailsText = standardDetails.find(
+      receive_item.StandardDetailsText = standardDetails.find(
         (si) => si.StandardDetailsID === receive_item.StandardDetailsID
       )?.DetailsText;
 
@@ -574,8 +585,6 @@ const ReceiveRequestModal = ({
         disabled={is_disable}
         width={1050}
         footer={getFooterButtons(is_disable)}
-        // onClear={clearRecord}
-        // onSubmit={handleSubmit}
         onCancel={onCancel}
       >
         <Form ref={formRef} name="dataForm">
@@ -615,7 +624,7 @@ const ReceiveRequestModal = ({
             </Col>
             <Col xs={24} md={12}>
               <DropdownItem
-                title={Words.standard_description}
+                title={Words.standard_details_text}
                 dataSource={standardDetails}
                 keyColumn="StandardDetailsID"
                 valueColumn="DetailsText"
@@ -623,6 +632,17 @@ const ReceiveRequestModal = ({
               />
             </Col>
             <Col xs={24}>
+              <InputItem
+                title={Words.standard_description}
+                fieldName="DetailsText"
+                multiline
+                rows={2}
+                showCount
+                maxLength={250}
+                formConfig={formConfig}
+              />
+            </Col>
+            {/* <Col xs={24}>
               <Divider orientation="right">
                 <Text style={{ fontSize: 14, color: Colors.green[6] }}>
                   {Words.base_specifications}
@@ -637,7 +657,7 @@ const ReceiveRequestModal = ({
                 valueColumn="Title"
                 formConfig={formConfig}
               />
-            </Col>
+            </Col> */}
 
             {/* ToDo: Implement base_doc_id field based on the selected base type */}
             <Col xs={24}>

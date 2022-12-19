@@ -89,8 +89,17 @@ const columns = [
     align: "center",
     render: (record) => (
       <>
-        {record.StandardDetailsID > 0 && (
-          <Popover content={<Text>{record.DetailsText}</Text>}>
+        {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+          <Popover
+            content={
+              <Text>
+                {utils.getDescription(
+                  record.StandardDetailsText,
+                  record.DetailsText
+                )}
+              </Text>
+            }
+          >
             <InfoIcon
               style={{
                 color: Colors.green[6],
@@ -110,31 +119,29 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
 
   const {
     RequestID,
-    FrontSideAccountID,
-    AccountNo,
-    MemberID,
-    FirstName,
-    LastName,
-    // CompanyID,
-    CompanyTitle,
+    // FrontSideAccountID,
+    FrontSideAccountTitle,
+    TafsilCode,
+    TafsilTypeTitle,
     // CurrencyID,
     CurrencyTitle,
     ReceiveDate,
     // StandardDetailsID,
+    StandardDetailsText,
     DetailsText,
     // BaseTypeID,
-    BaseTypeTitle,
+    // BaseTypeTitle,
     // RequestableBalance,
     // BaseDocID,
-    SettlementDate,
+    // SettlementDate,
     StatusID,
     StatusTitle,
     Items,
   } = selectedObject;
 
-  let account_title = `${
-    MemberID > 0 ? `${FirstName} ${LastName}` : CompanyTitle
-  }  - ${AccountNo}`;
+  let account_title = utils.farsiNum(
+    `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`
+  );
 
   return (
     <ModalWindow
@@ -158,13 +165,7 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           <Row gutter={[10, 10]}>
             <Col xs={24}>
               <Alert
-                message={
-                  <Text style={{ fontSize: 14 }}>
-                    {utils.farsiNum(
-                      `#${FrontSideAccountID} - ${account_title}`
-                    )}
-                  </Text>
-                }
+                message={<Text style={{ fontSize: 14 }}>{account_title}</Text>}
                 type="info"
               />
             </Col>
@@ -192,7 +193,7 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                     {utils.farsiNum(utils.slashDate(ReceiveDate))}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.receive_base}>
+                {/* <Descriptions.Item label={Words.receive_base}>
                   <Text
                     style={{
                       color: Colors.cyan[6],
@@ -200,14 +201,14 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                   >
                     {BaseTypeTitle}
                   </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.settlement_date}>
+                </Descriptions.Item> */}
+                {/* <Descriptions.Item label={Words.settlement_date}>
                   <Text style={{ color: valueColor }}>
                     {SettlementDate.length > 0
                       ? utils.farsiNum(utils.slashDate(SettlementDate))
                       : "-"}
                   </Text>
-                </Descriptions.Item>
+                </Descriptions.Item> */}
                 <Descriptions.Item label={Words.status}>
                   <Text
                     style={{
@@ -222,8 +223,26 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                     {StatusTitle}
                   </Text>
                 </Descriptions.Item>
+                {StandardDetailsText.length > 0 && (
+                  <Descriptions.Item
+                    label={Words.standard_details_text}
+                    span={2}
+                  >
+                    <Text
+                      style={{
+                        color: Colors.purple[7],
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {utils.farsiNum(StandardDetailsText)}
+                    </Text>
+                  </Descriptions.Item>
+                )}
                 {DetailsText.length > 0 && (
-                  <Descriptions.Item label={Words.descriptions} span={2}>
+                  <Descriptions.Item
+                    label={Words.standard_description}
+                    span={2}
+                  >
                     <Text
                       style={{
                         color: Colors.purple[7],

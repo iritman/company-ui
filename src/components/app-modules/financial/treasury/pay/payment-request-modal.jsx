@@ -62,7 +62,7 @@ const schema = {
     .max(250)
     .allow("")
     .regex(utils.VALID_REGEX)
-    .label(Words.descriptions),
+    .label(Words.standard_description),
   StatusID: Joi.number(),
   Items: Joi.array(),
 };

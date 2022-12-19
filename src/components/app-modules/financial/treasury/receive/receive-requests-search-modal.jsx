@@ -47,7 +47,14 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const ReceiveRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
+const ReceiveRequestsSearchModal = ({
+  isOpen,
+  filter,
+  searchedFrontSideAccount,
+  onOk,
+  onCancel,
+  onFrontSideAccountChange,
+}) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
@@ -101,6 +108,10 @@ const ReceiveRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
       setCurrencies(Currencies);
       setBaseTypes(BaseTypes);
       setStatuses(Statuses);
+
+      if (filter?.FrontSideAccountID > 0) {
+        setFrontSideAccounts([searchedFrontSideAccount]);
+      }
     } catch (err) {
       handleError(err);
     }
@@ -111,6 +122,13 @@ const ReceiveRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     const rec = { ...record };
     rec.FrontSideAccountID = value || 0;
     setRecord(rec);
+
+    const frontSideAccount =
+      value > 0
+        ? frontSideAccounts.find((a) => a.FrontSideAccountID === value)
+        : null;
+
+    onFrontSideAccountChange(frontSideAccount);
   };
 
   const handleSearchFrontSideAccount = async (searchText) => {
@@ -136,7 +154,7 @@ const ReceiveRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={() => onOk(record)}
       onCancel={onCancel}
-      width={750}
+      width={850}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
