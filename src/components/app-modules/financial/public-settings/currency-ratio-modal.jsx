@@ -153,9 +153,9 @@ const CurrencyRatioModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               fieldName="Ratio"
               min={0}
               max={1000}
-              precision={2}
-              maxLength={7}
-              step="0.01"
+              precision={10}
+              maxLength={15}
+              step="0.0000000001"
               stringMode
               decimalText
               formConfig={formConfig}
