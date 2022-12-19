@@ -28,7 +28,7 @@ const schema = {
     .max(1000)
     .positive()
     .allow(0)
-    .precision(2)
+    .precision(10)
     .label(Words.ratio),
 };
 
