@@ -37,7 +37,7 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.sheba_no),
-  TypeID: Joi.number().min(1).required().label(Words.doc_type),
+  TypeID: Joi.number().min(1).required().label(Words.account_type),
   MemberID: Joi.number().required().label(Words.pc_person),
   CompanyID: Joi.number().required().label(Words.pc_company),
   InBlackList: Joi.boolean().label(Words.in_black_list),
@@ -221,7 +221,7 @@ const PersonCompanyBankAccountModal = ({
           </Col>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.doc_type}
+              title={Words.account_type}
               dataSource={docTypes}
               keyColumn="TypeID"
               valueColumn="Title"

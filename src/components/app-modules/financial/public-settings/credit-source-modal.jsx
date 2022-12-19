@@ -117,7 +117,7 @@ const CreditSourceModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <DropdownItem
-              title={Words.cost_center_type}
+              title={Words.credit_source_type}
               dataSource={costCenterTypes}
               keyColumn="CreditSourceTypeID"
               valueColumn="Title"

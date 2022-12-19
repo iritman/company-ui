@@ -29,7 +29,7 @@ const getSheets = (records) => [
       { label: Words.id, value: "BranchID" },
       { label: Words.city, value: "CityTitle" },
       { label: Words.bank, value: "BankTitle" },
-      { label: Words.title, value: "Title" },
+      { label: Words.branch_name, value: "Title" },
       { label: Words.branch_code, value: "BranchCode" },
       { label: Words.swift_code, value: "SwiftCode" },
       { label: Words.tel_no, value: "TelNo" },
@@ -59,7 +59,7 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.title,
+    title: Words.branch_name,
     width: 200,
     align: "center",
     dataIndex: "Title",
