@@ -22,30 +22,38 @@ const UserAccountMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  return (
-    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
-      <Menu.Item
-        key="home"
-        icon={<HomeIcon style={{ color: Colors.green[6] }} size={iconSize} />}
-      >
-        <Link to={`/home`}>{Words.main_page}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item
-        key="profile"
-        icon={<ProfileIcon style={{ color: Colors.blue[6] }} size={iconSize} />}
-      >
-        <Link to={`/home/account/profile`}>{Words.profile}</Link>
-      </Menu.Item>
-      <Menu.Item
-        key="changepassword"
-        icon={<PasswordIcon style={{ color: Colors.red[6] }} size={iconSize} />}
-      >
+  const menu_items = [
+    {
+      label: <Link to={`/home`}>{Words.main_page}</Link>,
+      key: "home",
+      icon: <HomeIcon style={{ color: Colors.green[6] }} size={iconSize} />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: <Link to={`/home/account/profile`}>{Words.profile}</Link>,
+      key: "profile",
+      icon: <ProfileIcon style={{ color: Colors.blue[6] }} size={iconSize} />,
+    },
+    {
+      label: (
         <Link to={`/home/account/change-password`}>
           {Words.change_password}
         </Link>
-      </Menu.Item>
-    </Menu>
+      ),
+      key: "changepassword",
+      icon: <PasswordIcon style={{ color: Colors.red[6] }} size={iconSize} />,
+    },
+  ];
+
+  return (
+    <Menu
+      mode="inline"
+      theme="light"
+      selectedKeys={[lastPathKey]}
+      items={menu_items}
+    />
   );
 };
 

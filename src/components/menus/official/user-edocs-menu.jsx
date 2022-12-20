@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import {
   VscGroupByRefType as FolderGroupIcon,
   VscKey as KeyIcon,
 } from "react-icons/vsc";
 import { FaFolderOpen as FolderIcon, FaTags as TagsIcon } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
 import Words from "../../../resources/words";
 import { useLocation } from "react-router-dom";
+import ModuleMenu from "./../module-menu";
 
 const iconSize = 20;
 
@@ -72,34 +70,16 @@ const UserEDocsMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  const edocs_module_path_name = "edocs";
-  const isEndsWithModuleName = useLocation().pathname.endsWith(
-    `/${edocs_module_path_name}`
-  );
-  const prePath = isEndsWithModuleName ? `${edocs_module_path_name}/` : "";
-
   return (
-    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
-      <Menu.Item
-        key="settings"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home/official`}>{Words.official}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessiblePages.map((page) => (
-        <Menu.Item
-          key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
-          icon={mapper(page.PageID).icon}
-        >
-          <Link to={`${prePath}${mapper(page.PageID).link}`}>
-            {page.PageTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
+    <ModuleMenu
+      type="official"
+      typeTitle={Words.official}
+      modulePathName="edocs"
+      lastPathKey={lastPathKey}
+      accessiblePages={accessiblePages}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 

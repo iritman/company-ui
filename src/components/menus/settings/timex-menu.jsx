@@ -40,8 +40,6 @@ import {
   BiCalendar as WorkShiftIcon,
 } from "react-icons/bi";
 
-const { SubMenu } = Menu;
-
 const iconSize = 20;
 
 const mapper = (pageID) => {
@@ -332,16 +330,35 @@ const SettingsTimexMenu = () => {
     }
   };
 
-  const getSubMenus = () => {
+  const getChildItems = (pages) => {
     const timex_module_path_name = "timex";
     const isEndsWithModuleName = currentLocation.pathname.endsWith(
       `/${timex_module_path_name}`
     );
     const prePath = isEndsWithModuleName ? `${timex_module_path_name}/` : "";
 
-    //---
+    //------
 
-    let subMenus = [];
+    let sub_items = [];
+
+    pages.forEach(({ PageID, PageName, PageTitle }) => {
+      sub_items = [
+        ...sub_items,
+        {
+          label: (
+            <Link to={`${prePath}${mapper(PageID).link}`}>{PageTitle}</Link>
+          ),
+          key: PageName.replaceAll("-", "").toLocaleLowerCase(),
+          icon: mapper(PageID).icon,
+        },
+      ];
+    });
+
+    return sub_items;
+  };
+
+  const getMenuTabs = () => {
+    let tab_items = [];
 
     tabs.forEach((tab) => {
       if (
@@ -349,31 +366,42 @@ const SettingsTimexMenu = () => {
           tab.pages.filter((tp) => tp.pageName === p.PageName)
         ).length > 0
       ) {
-        subMenus = [
-          ...subMenus,
-          <SubMenu key={tab.name} title={tab.title}>
-            {accessiblePages
-              .filter(
+        tab_items = [
+          ...tab_items,
+          {
+            label: tab.title,
+            key: tab.name,
+            children: getChildItems(
+              accessiblePages.filter(
                 (ap) =>
                   tab.pages.filter((tp) => tp.pageName === ap.PageName)
                     .length === 1
               )
-              .map((page) => (
-                <Menu.Item
-                  key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
-                  icon={mapper(page.PageID).icon}
-                >
-                  <Link to={`${prePath}${mapper(page.PageID).link}`}>
-                    {page.PageTitle}
-                  </Link>
-                </Menu.Item>
-              ))}
-          </SubMenu>,
+            ),
+          },
         ];
       }
     });
 
-    return subMenus;
+    return tab_items;
+  };
+
+  const getMenuItems = () => {
+    let items = [
+      {
+        label: <Link to={`/home/settings`}>{Words.admin_panel}</Link>,
+        key: "settings",
+        icon: (
+          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
+        ),
+      },
+      {
+        type: "divider",
+      },
+      ...getMenuTabs(),
+    ];
+
+    return items;
   };
 
   return (
@@ -383,19 +411,8 @@ const SettingsTimexMenu = () => {
       openKeys={openKeys}
       selectedKeys={[lastPathKey]}
       onOpenChange={onOpenChange}
-    >
-      <Menu.Item
-        key="settings"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home/settings`}>{Words.admin_panel}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-
-      {getSubMenus()}
-    </Menu>
+      items={getMenuItems()}
+    />
   );
 };
 

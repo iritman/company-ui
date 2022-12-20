@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { BiRepeat as RepeatIcon } from "react-icons/bi";
 import { FiUserCheck as PersonCheckIcon } from "react-icons/fi";
 import {
@@ -16,12 +14,12 @@ import {
   FaTh as DepartmentsTasksIcon,
   FaUserShield as TopSupervisorsIcon,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
 import Words from "../../../resources/words";
 import { useLocation } from "react-router-dom";
+import ModuleMenu from "./../module-menu";
 
 const iconSize = 20;
 
@@ -149,36 +147,16 @@ const UserTasksMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  const tasks_module_path_name = "tasks";
-  const isEndsWithModuleName = useLocation().pathname.endsWith(
-    `/${tasks_module_path_name}`
-  );
-  const prePath = isEndsWithModuleName ? `${tasks_module_path_name}/` : "";
-
   return (
-    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
-      <Menu.Item
-        key="settings"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home/official`}>{Words.official}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessiblePages.map((page) => (
-        <Menu.Item
-          key={page.PageName.replace("user-", "")
-            .replaceAll("-", "")
-            .toLocaleLowerCase()}
-          icon={mapper(page.PageID).icon}
-        >
-          <Link to={`${prePath}${mapper(page.PageID).link}`}>
-            {page.PageTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
+    <ModuleMenu
+      type="official"
+      typeTitle={Words.official}
+      modulePathName="tasks"
+      lastPathKey={lastPathKey}
+      accessiblePages={accessiblePages}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 

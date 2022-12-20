@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { FaCar as CarIcon } from "react-icons/fa";
 import {
   MdOutlineCategory as TypeIcon,
   MdOutlineBrandingWatermark as BrandIcon,
   MdModelTraining as ModelIcon,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
 import Words from "../../../resources/words";
 import { useLocation } from "react-router-dom";
+import ModuleMenu from "./../module-menu";
 
 const iconSize = 20;
 
@@ -71,36 +69,16 @@ const TransmissionMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  const transmission_module_path_name = "transmission";
-  const isEndsWithModuleName = useLocation().pathname.endsWith(
-    `/${transmission_module_path_name}`
-  );
-  const prePath = isEndsWithModuleName
-    ? `${transmission_module_path_name}/`
-    : "";
-
   return (
-    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
-      <Menu.Item
-        key="settings"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home/settings`}>{Words.admin_panel}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessiblePages.map((page) => (
-        <Menu.Item
-          key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
-          icon={mapper(page.PageID).icon}
-        >
-          <Link to={`${prePath}${mapper(page.PageID).link}`}>
-            {page.PageTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
+    <ModuleMenu
+      type="settings"
+      typeTitle={Words.admin_panel}
+      modulePathName="transmission"
+      lastPathKey={lastPathKey}
+      accessiblePages={accessiblePages}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 

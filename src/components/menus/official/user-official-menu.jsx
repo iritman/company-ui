@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Menu } from "antd";
 import { FaCar as CarIcon, FaTasks as TasksIcon } from "react-icons/fa";
 import { RiFlowChart as ProcessIcon } from "react-icons/ri";
 import {
@@ -7,16 +6,14 @@ import {
   HiSpeakerphone as AnnouncesIcon,
 } from "react-icons/hi";
 import {
-  AiOutlineDashboard as DashboardIcon,
   AiFillBank as OrgIcon,
   AiOutlineFieldTime as TimexIcon,
   AiOutlineDeploymentUnit as AutomationIcon,
 } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
-import Words from "../../../resources/words";
+import CategoryMenu from "./../category-menu";
 
 const iconSize = 20;
 
@@ -89,24 +86,12 @@ const UserOfficialMenu = () => {
   });
 
   return (
-    <Menu mode="inline" theme="light">
-      <Menu.Item
-        key="home"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home`}>{Words.dashboard}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessibleModules.map((module) => (
-        <Menu.Item key={module.ModuleID} icon={mapper(module.ModuleID).icon}>
-          <Link to={`official/${mapper(module.ModuleID).link}`}>
-            {module.ModuleTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
+    <CategoryMenu
+      type="official"
+      accessibleModules={accessibleModules}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 

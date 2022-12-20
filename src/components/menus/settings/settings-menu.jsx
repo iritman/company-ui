@@ -82,26 +82,37 @@ const SettingsMenu = () => {
     setAccessibleModules(accessibleModules);
   });
 
-  return (
-    <Menu mode="inline" theme="light">
-      <Menu.Item
-        key="home"
-        icon={
+  const getMenuItems = () => {
+    let items = [
+      {
+        label: <Link to={`/home`}>{Words.dashboard}</Link>,
+        key: "home",
+        icon: (
           <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home`}>{Words.dashboard}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessibleModules.map((module) => (
-        <Menu.Item key={module.ModuleID} icon={mapper(module.ModuleID).icon}>
-          <Link to={`settings/${mapper(module.ModuleID).link}`}>
-            {module.ModuleTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+        ),
+      },
+      {
+        type: "divider",
+      },
+    ];
+
+    accessibleModules.forEach(({ ModuleID, ModuleTitle }) => {
+      items = [
+        ...items,
+        {
+          label: (
+            <Link to={`settings/${mapper(ModuleID).link}`}>{ModuleTitle}</Link>
+          ),
+          key: ModuleID,
+          icon: mapper(ModuleID).icon,
+        },
+      ];
+    });
+
+    return items;
+  };
+
+  return <Menu mode="inline" theme="light" items={getMenuItems()} />;
 };
 
 export default SettingsMenu;

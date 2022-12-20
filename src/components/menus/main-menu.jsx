@@ -47,20 +47,26 @@ const MainMenu = () => {
     setAccessibleModuleCategories(accessibleModuleCategories);
   });
 
-  return (
-    <Menu mode="inline" theme="light">
-      {accessibleModuleCategories.map((category) => (
-        <Menu.Item
-          key={category.CategoryID}
-          icon={mapper(category.CategoryID).icon}
-        >
-          <Link to={`home/${mapper(category.CategoryID).link}`}>
-            {category.CategoryTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  const getMenuItems = () => {
+    let items = [];
+
+    accessibleModuleCategories.forEach(({ CategoryID, CategoryTitle }) => {
+      items = [
+        ...items,
+        {
+          label: (
+            <Link to={`home/${mapper(CategoryID).link}`}>{CategoryTitle}</Link>
+          ),
+          key: CategoryID,
+          icon: mapper(CategoryID).icon,
+        },
+      ];
+    });
+
+    return items;
+  };
+
+  return <Menu mode="inline" theme="light" items={getMenuItems()} />;
 };
 
 export default MainMenu;

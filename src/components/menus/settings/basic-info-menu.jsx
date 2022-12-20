@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import {
   FaMapMarkerAlt as MapIcon,
   FaUniversity as UniversityIcon,
@@ -13,12 +11,12 @@ import {
 } from "react-icons/md";
 import { BiSelectMultiple as EduFieldIcon } from "react-icons/bi";
 import { HiOutlineOfficeBuilding as WorkPlaceIcon } from "react-icons/hi";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "./../../../resources/colors";
 import Words from "./../../../resources/words";
 import { useLocation } from "react-router-dom";
+import ModuleMenu from "./../module-menu";
 
 const iconSize = 20;
 
@@ -115,36 +113,16 @@ const BasicInfoMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  const basic_info_module_path_name = "basic-info";
-  const isEndsWithModuleName = useLocation().pathname.endsWith(
-    `/${basic_info_module_path_name}`
-  );
-  const prePath = isEndsWithModuleName ? `${basic_info_module_path_name}/` : "";
-
   return (
-    <>
-      <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
-        <Menu.Item
-          key="settings"
-          icon={
-            <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-          }
-        >
-          <Link to={`/home/settings`}>{Words.admin_panel}</Link>
-        </Menu.Item>
-        <Menu.Divider />
-        {accessiblePages.map((page) => (
-          <Menu.Item
-            key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
-            icon={mapper(page.PageID).icon}
-          >
-            <Link to={`${prePath}${mapper(page.PageID).link}`}>
-              {page.PageTitle}
-            </Link>
-          </Menu.Item>
-        ))}
-      </Menu>
-    </>
+    <ModuleMenu
+      type="settings"
+      typeTitle={Words.admin_panel}
+      modulePathName="basic-info"
+      lastPathKey={lastPathKey}
+      accessiblePages={accessiblePages}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Menu } from "antd";
 import {
   FaDatabase as StoreIcon,
   FaMoneyCheckAlt as TreasuryIcon,
 } from "react-icons/fa";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { TbNotebook as LedgerIcon } from "react-icons/tb";
 import {
   MdSettings as SettingsIcon,
@@ -14,11 +12,10 @@ import {
 } from "react-icons/md";
 import { RiRefundFill as FundIcon } from "react-icons/ri";
 import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
-import Words from "../../../resources/words";
+import CategoryMenu from "../category-menu";
 
 const iconSize = 20;
 
@@ -100,24 +97,12 @@ const UserFinancialMenu = () => {
   });
 
   return (
-    <Menu mode="inline" theme="light">
-      <Menu.Item
-        key="home"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home`}>{Words.dashboard}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessibleModules.map((module) => (
-        <Menu.Item key={module.ModuleID} icon={mapper(module.ModuleID).icon}>
-          <Link to={`financial/${mapper(module.ModuleID).link}`}>
-            {module.ModuleTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
+    <CategoryMenu
+      type="financial"
+      accessibleModules={accessibleModules}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 

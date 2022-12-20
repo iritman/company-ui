@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
-import { AiOutlineDashboard as DashboardIcon } from "react-icons/ai";
 import { RiOrganizationChart as OrgChartIcon } from "react-icons/ri";
 import { VscUngroupByRefType as MyDutiesIcon } from "react-icons/vsc";
 import { GoTasklist as MembersDutiesIcon } from "react-icons/go";
-import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
 import Words from "../../../resources/words";
 import { useLocation } from "react-router-dom";
+import ModuleMenu from "./../module-menu";
 
 const iconSize = 20;
 
@@ -67,34 +65,16 @@ const UserOrgMenu = () => {
     setLastPathKey(_lastPathKey);
   }, [currentLocation.pathname]);
 
-  const org_module_path_name = "org";
-  const isEndsWithModuleName = useLocation().pathname.endsWith(
-    `/${org_module_path_name}`
-  );
-  const prePath = isEndsWithModuleName ? `${org_module_path_name}/` : "";
-
   return (
-    <Menu mode="inline" theme="light" selectedKeys={[lastPathKey]}>
-      <Menu.Item
-        key="settings"
-        icon={
-          <DashboardIcon style={{ color: Colors.green[6] }} size={iconSize} />
-        }
-      >
-        <Link to={`/home/official`}>{Words.official}</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      {accessiblePages.map((page) => (
-        <Menu.Item
-          key={page.PageName.replaceAll("-", "").toLocaleLowerCase()}
-          icon={mapper(page.PageID).icon}
-        >
-          <Link to={`${prePath}${mapper(page.PageID).link}`}>
-            {page.PageTitle}
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
+    <ModuleMenu
+      type="official"
+      typeTitle={Words.official}
+      modulePathName="org"
+      lastPathKey={lastPathKey}
+      accessiblePages={accessiblePages}
+      iconSize={iconSize}
+      mapper={mapper}
+    />
   );
 };
 
