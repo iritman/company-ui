@@ -16,6 +16,7 @@ import {
   MdOutlineFeaturedPlayList as FeatureIcon,
   MdDonutSmall as ProductIcon,
   MdOutlineStorage as StorageIcon,
+  MdOutlineFeaturedPlayList as FeaturesIcon,
 } from "react-icons/md";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -107,6 +108,13 @@ const mapper = (pageID) => {
       link = "user-storage-centers";
       icon = (
         <StorageIcon style={{ color: Colors.magenta[7] }} size={iconSize} />
+      );
+      break;
+
+    case 153:
+      link = "user-group-features";
+      icon = (
+        <FeaturesIcon style={{ color: Colors.yellow[8] }} size={iconSize} />
       );
       break;
 

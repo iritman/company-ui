@@ -221,7 +221,7 @@ const PersonCompanyBankAccountModal = ({
           </Col>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.account_type}
+              title={Words.doc_type}
               dataSource={docTypes}
               keyColumn="TypeID"
               valueColumn="Title"

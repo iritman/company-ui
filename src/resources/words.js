@@ -692,6 +692,11 @@ class Words extends Component {
   static storage_centers = "مراکز نگهداری کالا";
   static storage_center = "مرکز نگهداری کالا";
 
+  static group_features = "ویژگی های کالا";
+  static fixed_values = "مقادیر ثابت";
+  static code = "کد";
+  static no_feature_item_value = "مقدار ثابتی ثبت نشده است";
+
   static user_account = "حساب کاربری";
   static visit_user_account = "مشاهده حساب کاربری";
   static main_page = "صفحه اصلی";

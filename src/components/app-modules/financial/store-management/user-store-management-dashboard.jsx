@@ -16,6 +16,7 @@ import {
   MdOutlineFeaturedPlayList as FeatureIcon,
   MdDonutSmall as ProductIcon,
   MdOutlineStorage as StorageIcon,
+  MdOutlineFeaturedPlayList as FeaturesIcon,
 } from "react-icons/md";
 import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
@@ -102,6 +103,12 @@ const mapper = (pageID) => {
       link = "user-storage-centers";
       icon = <StorageIcon {...iconProps} />;
       backColor = Colors.magenta[4];
+      break;
+
+    case 153:
+      link = "user-group-features";
+      icon = <FeaturesIcon {...iconProps} />;
+      backColor = Colors.yellow[6];
       break;
 
     default:

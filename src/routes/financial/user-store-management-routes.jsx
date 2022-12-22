@@ -15,6 +15,7 @@ import UserProductsPage from "../../components/app-modules/financial/store-manag
 import UserBachPatternsPage from "../../components/app-modules/financial/store-management/user-bach-patterns-page";
 import UserBachesPage from "../../components/app-modules/financial/store-management/user-baches-page";
 import UserStorageCentersPage from "../../components/app-modules/financial/store-management/user-storage-centers-page";
+import UserGroupFeaturesPage from "../../components/app-modules/financial/store-management/user-group-features-page";
 //---
 
 const modulePath = "financial/store-mgr";
@@ -90,6 +91,11 @@ const UserStoreManagementRoutes = ({ path }) => {
         path={`${path}/${modulePath}/user-storage-centers`}
         exact
         render={() => <UserStorageCentersPage pageName="user-StorageCenters" />}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/user-group-features`}
+        exact
+        render={() => <UserGroupFeaturesPage pageName="user-GroupFeatures" />}
       />
       <Redirect to="/not-found" />
     </Switch>
