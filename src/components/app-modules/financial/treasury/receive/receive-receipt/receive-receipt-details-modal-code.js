@@ -6,6 +6,7 @@ import DetailsTable from "../../../../../common/details-table";
 import PriceViewer from "./../../../../../common/price-viewer";
 import { getSorter } from "./../../../../../../tools/form-manager";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
+import BadgedTabTitle from "../../../../../common/badged-tab-title";
 
 const { Text } = Typography;
 
@@ -783,14 +784,29 @@ const calculatePrice = (receive_receipt) => {
   return price;
 };
 
-export const getTabPanes = (receive_receipt) => {
+export const getTabPanes = (receive_receipt, selectedTab) => {
   const price = calculatePrice(receive_receipt);
 
-  const { Cheques, Demands, Cashes, PaymentNotices } = receive_receipt;
+  const {
+    Cheques,
+    Demands,
+    Cashes,
+    PaymentNotices,
+    ReturnFromOthers,
+    ReturnPayableCheques,
+    ReturnPayableDemands,
+  } = receive_receipt;
 
   const tabPanes = [
     {
-      label: Words.cheque,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="cheques"
+          title={Words.cheque}
+          items={Cheques}
+        />
+      ),
       key: "cheques",
       children: (
         <Row gutter={[0, 15]}>
@@ -804,7 +820,14 @@ export const getTabPanes = (receive_receipt) => {
       ),
     },
     {
-      label: Words.demand,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="demands"
+          title={Words.demand}
+          items={Demands}
+        />
+      ),
       key: "demands",
       children: (
         <Row gutter={[0, 15]}>
@@ -818,7 +841,14 @@ export const getTabPanes = (receive_receipt) => {
       ),
     },
     {
-      label: Words.cash,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="cashes"
+          title={Words.cash}
+          items={Cashes}
+        />
+      ),
       key: "cashes",
       children: (
         <Row gutter={[0, 15]}>
@@ -832,7 +862,14 @@ export const getTabPanes = (receive_receipt) => {
       ),
     },
     {
-      label: Words.payment_notice,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="payment-notices"
+          title={Words.payment_notice}
+          items={PaymentNotices}
+        />
+      ),
       key: "payment-notices",
       children: (
         <Row gutter={[0, 15]}>
@@ -849,15 +886,36 @@ export const getTabPanes = (receive_receipt) => {
       ),
     },
     {
-      label: Words.return_from_other,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="return-from-others"
+          title={Words.return_from_other}
+          items={ReturnFromOthers}
+        />
+      ),
       key: "return-from-others",
     },
     {
-      label: Words.return_payable_cheque,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="return-payable-cheques"
+          title={Words.return_payable_cheque}
+          items={ReturnPayableCheques}
+        />
+      ),
       key: "return-payable-cheques",
     },
     {
-      label: Words.return_payable_demand,
+      label: (
+        <BadgedTabTitle
+          selectedTab={selectedTab}
+          selectionTitle="return-payable-demands"
+          title={Words.return_payable_demand}
+          items={ReturnPayableDemands}
+        />
+      ),
       key: "return-payable-demands",
     },
   ];

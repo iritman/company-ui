@@ -1010,7 +1010,7 @@ const ReceiveReceiptModal = ({
                   type="card"
                   defaultActiveKey="1"
                   onChange={(key) => setSelectedTab(key)}
-                  items={getTabPanes(tabPanesConfig)}
+                  items={getTabPanes(tabPanesConfig, selectedTab)}
                 />
               </Form.Item>
             </Col>

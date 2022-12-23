@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Row, Col, Typography, Descriptions, Tabs } from "antd";
 import Words from "../../../../../../resources/words";
 import Colors from "../../../../../../resources/colors";
@@ -10,6 +10,8 @@ const { Text } = Typography;
 
 const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
+
+  const [selectedTab, setSelectedTab] = useState("cheques");
 
   const {
     ReceiveID,
@@ -163,7 +165,8 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           <Tabs
             type="card"
             defaultActiveKey="1"
-            items={getTabPanes(selectedObject)}
+            onChange={(key) => setSelectedTab(key)}
+            items={getTabPanes(selectedObject, selectedTab)}
           />
         </Col>
       </Row>
