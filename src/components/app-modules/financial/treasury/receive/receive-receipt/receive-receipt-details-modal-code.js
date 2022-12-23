@@ -423,6 +423,129 @@ const demand_columns = [
   },
 ];
 
+const cash_columns = [
+  {
+    title: Words.id,
+    width: 75,
+    align: "center",
+    dataIndex: "CashID",
+    sorter: getSorter("CashID"),
+    render: (CashID) => (
+      <Text>{CashID > 0 ? utils.farsiNum(`${CashID}`) : ""}</Text>
+    ),
+  },
+  {
+    title: Words.front_side,
+    width: 200,
+    align: "center",
+    dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
+    render: (FrontSideAccountTitle) => (
+      <Text style={{ color: Colors.cyan[6] }}>
+        {utils.farsiNum(FrontSideAccountTitle)}
+      </Text>
+    ),
+  },
+  {
+    title: Words.financial_operation,
+    width: 150,
+    align: "center",
+    //   dataIndex: "Price",
+    sorter: getSorter("OperationTitle"),
+    render: (record) => (
+      <Text style={{ color: Colors.blue[6] }}>
+        {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
+      </Text>
+    ),
+  },
+  {
+    title: Words.nature,
+    width: 100,
+    align: "center",
+    dataIndex: "PaperNatureTitle",
+    sorter: getSorter("PaperNatureTitle"),
+    render: (PaperNatureTitle) => (
+      <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
+    ),
+  },
+  {
+    title: Words.duration,
+    width: 100,
+    align: "center",
+    dataIndex: "DurationTypeTitle",
+    sorter: getSorter("DurationTypeTitle"),
+    render: (DurationTypeTitle) => (
+      <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
+    ),
+  },
+  {
+    title: Words.cash_flow,
+    width: 150,
+    align: "center",
+    dataIndex: "CashFlowTitle",
+    sorter: getSorter("CashFlowTitle"),
+    render: (CashFlowTitle) => (
+      <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
+    ),
+  },
+  {
+    title: Words.currency,
+    width: 200,
+    align: "center",
+    dataIndex: "CurrencyTitle",
+    sorter: getSorter("CurrencyTitle"),
+    render: (CurrencyTitle) => (
+      <Text style={{ color: Colors.grey[6] }}>{CurrencyTitle}</Text>
+    ),
+  },
+  {
+    title: Words.price,
+    width: 200,
+    align: "center",
+    dataIndex: "Amount",
+    sorter: getSorter("Amount"),
+    render: (Amount) => (
+      <Text style={{ color: Colors.green[6] }}>
+        {utils.farsiNum(utils.moneyNumber(Amount))}
+      </Text>
+    ),
+  },
+  {
+    title: Words.standard_description,
+    width: 100,
+    align: "center",
+    render: (record) => (
+      <>
+        {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+          <Popover
+            content={
+              <Text>{`${utils.getDescription(
+                record.StandardDetailsText,
+                record.DetailsText
+              )}`}</Text>
+            }
+          >
+            <InfoIcon
+              style={{
+                color: Colors.green[6],
+                fontSize: 19,
+                cursor: "pointer",
+              }}
+            />
+          </Popover>
+        )}
+      </>
+    ),
+  },
+  {
+    title: "",
+    fixed: "right",
+    align: "center",
+    width: 1,
+    render: () => <></>,
+  },
+];
+
 const calculatePrice = (receive_receipt) => {
   const price = {};
   let sum = 0;
@@ -480,7 +603,7 @@ const calculatePrice = (receive_receipt) => {
 export const getTabPanes = (receive_receipt) => {
   const price = calculatePrice(receive_receipt);
 
-  const { Cheques, Demands } = receive_receipt;
+  const { Cheques, Demands, Cashes } = receive_receipt;
 
   const tabPanes = [
     {
@@ -511,7 +634,20 @@ export const getTabPanes = (receive_receipt) => {
         </Row>
       ),
     },
-    { label: Words.cash, key: "cashes" },
+    {
+      label: Words.cash,
+      key: "cashes",
+      children: (
+        <Row gutter={[0, 15]}>
+          <Col xs={24}>
+            <DetailsTable records={Cashes} columns={cash_columns} />
+          </Col>
+          <Col xs={24}>
+            <PriceViewer price={price.CashesAmount} />
+          </Col>
+        </Row>
+      ),
+    },
     { label: Words.payment_notice, key: "payment-notices" },
     {
       label: Words.return_from_other,

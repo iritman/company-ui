@@ -449,6 +449,7 @@ class Words extends Component {
 
   static reg_cheque = "ثبت چک";
   static reg_demand = "ثبت سفته";
+  static reg_cash = "ثبت وجه نقد";
 
   static financial_operations = "عملیات حسابداری";
   static financial_operation = "عملیات حسابداری";

@@ -22,6 +22,7 @@ import {
 } from "../../../../../contexts/modal-context";
 import ChequeModal from "./receive-receipt-cheque-modal";
 import DemandModal from "./receive-receipt-demand-modal";
+import CashModal from "./receive-receipt-cash-modal";
 import { v4 as uuid } from "uuid";
 import {
   schema,
@@ -516,6 +517,145 @@ const ReceiveReceiptModal = ({
 
   //------
 
+  const handleSaveCash = async (cash_to_save) => {
+    if (selectedObject !== null) {
+      cash_to_save.ReceiveID = selectedObject.ReceiveID;
+
+      const saved_cash = await onSaveReceiveReceiptItem(
+        "cash",
+        "CashID",
+        cash_to_save
+      );
+
+      const index = record.Cashes.findIndex(
+        (item) => item.CashID === cash_to_save.CashID
+      );
+
+      if (index === -1) {
+        record.Cashes = [...record.Cashes, saved_cash];
+      } else {
+        record.Cashes[index] = saved_cash;
+      }
+    } else {
+      //While adding items temporarily, we have no join operation in database
+      //So, we need to select titles manually
+
+      const front_side_account = await service.searchFronSideAccountByID(
+        cash_to_save.FrontSideAccountID
+      );
+
+      const {
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeID,
+        TafsilTypeTitle,
+      } = front_side_account;
+
+      cash_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      cash_to_save.TafsilCode = TafsilCode;
+      cash_to_save.TafsilTypeID = TafsilTypeID;
+      cash_to_save.TafsilTypeTitle = TafsilTypeTitle;
+
+      cash_to_save.OperationTitle = findTitle(
+        operations,
+        "OperationID",
+        "Title",
+        cash_to_save.OperationID
+      );
+
+      cash_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        cash_to_save.OperationID
+      );
+
+      cash_to_save.DurationTypeTitle = findTitle(
+        operations,
+        "OperationID",
+        "DurationTypeTitle",
+        cash_to_save.OperationID
+      );
+
+      cash_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        cash_to_save.CashFlowID
+      );
+
+      cash_to_save.CurrencyTitle = findTitle(
+        currencies,
+        "CurrencyID",
+        "Title",
+        cash_to_save.CurrencyID
+      );
+
+      cash_to_save.StandardDetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        cash_to_save.StandardDetailsID
+      );
+
+      //--- managing unique id (UID) for new items
+      if (cash_to_save.CashID === 0 && selectedItem === null) {
+        cash_to_save.UID = uuid();
+        record.Cashes = [...record.Cashes, cash_to_save];
+      } else if (cash_to_save.CashID === 0 && selectedItem !== null) {
+        const index = record.Cashes.findIndex(
+          (item) => item.UID === selectedItem.UID
+        );
+        record.Cashes[index] = cash_to_save;
+      }
+    }
+
+    //------
+
+    setRecord({ ...record });
+    setSelectedItem(null);
+  };
+
+  const handleDeleteCash = async (demand_to_delete) => {
+    setProgress(true);
+
+    try {
+      if (demand_to_delete.CashID > 0) {
+        await onDeleteReceiveReceiptItem(
+          "cash",
+          "CashID",
+          demand_to_delete.CashID
+        );
+
+        record.Cashes = record.Cashes.filter(
+          (i) => i.CashID !== demand_to_delete.CashID
+        );
+      } else {
+        record.Cashes = record.Cashes.filter(
+          (i) => i.UID !== demand_to_delete.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleCloseCashModal = () => {
+    setSelectedItem(null);
+    setShowCashModal(false);
+  };
+
+  const handleEditCash = (data) => {
+    setSelectedItem(data);
+    setShowCashModal(true);
+  };
+
+  //------
+
   const handleShowNewModal = () => {
     switch (selectedTab) {
       case "cheques":
@@ -578,6 +718,8 @@ const ReceiveReceiptModal = ({
     handleDeleteCheque,
     handleEditDemand,
     handleDeleteDemand,
+    handleEditCash,
+    handleDeleteCash,
   };
 
   //------
@@ -717,7 +859,15 @@ const ReceiveReceiptModal = ({
         />
       )}
 
-      {showCashModal && <></>}
+      {showCashModal && (
+        <CashModal
+          isOpen={showCashModal}
+          selectedObject={selectedItem}
+          onOk={handleSaveCash}
+          onCancel={handleCloseCashModal}
+        />
+      )}
+
       {showPaymentNoticeModal && <></>}
       {showReturnFromOtherModal && <></>}
       {showReturnPayableChequeModal && <></>}

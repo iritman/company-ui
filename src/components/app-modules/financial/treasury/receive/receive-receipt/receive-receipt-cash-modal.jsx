@@ -19,7 +19,7 @@ import DateItem from "./../../../../../form-controls/date-item";
 import DropdownItem from "./../../../../../form-controls/dropdown-item";
 
 const schema = {
-  DemandID: Joi.number().required(),
+  CashID: Joi.number().required(),
   ReceiveID: Joi.number().required(),
   FrontSideAccountID: Joi.number()
     .min(1)
@@ -27,11 +27,8 @@ const schema = {
     .label(Words.front_side_account),
   OperationID: Joi.number().min(1).required().label(Words.financial_operation),
   CashFlowID: Joi.number().min(1).required().label(Words.cash_flow),
-  DemandNo: Joi.string().max(50).required().label(Words.demand_no),
-  DemandSeries: Joi.string().max(50).allow("").label(Words.demand_series),
   CurrencyID: Joi.number().label(Words.currency),
   Amount: Joi.number().min(10).required().label(Words.price),
-  DueDate: Joi.string().required().label(Words.due_date),
   StandardDetailsID: Joi.number(),
   DetailsText: Joi.string()
     .min(5)
@@ -42,38 +39,20 @@ const schema = {
 };
 
 const initRecord = {
-  DemandID: 0,
+  CashID: 0,
   ReceiveID: 0,
   FrontSideAccountID: 0,
   OperationID: 0,
   CashFlowID: 0,
-  DemandNo: "",
-  DemandSeries: "",
   CurrencyID: 0,
   Amount: 0,
-  DueDate: "",
   StandardDetailsID: 0,
   DetailsText: "",
 };
 
-// const initRecord = {
-//   DemandID: 0,
-//   ReceiveID: 0,
-//   FrontSideAccountID: 1,
-//   OperationID: 1,
-//   CashFlowID: 1,
-//   DemandNo: "102030",
-//   DemandSeries: "",
-//   CurrencyID: 1,
-//   Amount: 257500000,
-//   DueDate: "14010916",
-//   StandardDetailsID: 1,
-//   DetailsText: ""
-// };
-
 const formRef = React.createRef();
 
-const ReceiveReceiptDemandModal = ({
+const ReceiveReceiptCashModal = ({
   isOpen,
   selectedObject,
   onOk,
@@ -103,19 +82,14 @@ const ReceiveReceiptDemandModal = ({
     record.FrontSideAccountID = 0;
     record.OperationID = 0;
     record.CashFlowID = 0;
-    record.DemandNo = "";
-    record.DemandSeries = "";
     record.CurrencyID = 0;
     record.Amount = 0;
-    record.DueDate = "";
     record.StandardDetailsID = 0;
     record.DetailsText = "";
 
     setRecord(record);
-    // setRecord(initRecord);
     setErrors({});
     loadFieldsValue(formRef, record);
-    // loadFieldsValue(formRef, initRecord);
   };
 
   useMount(async () => {
@@ -210,7 +184,7 @@ const ReceiveReceiptDemandModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      title={Words.reg_demand}
+      title={Words.reg_cash}
       width={1050}
     >
       <Form ref={formRef} name="dataForm">
@@ -249,23 +223,6 @@ const ReceiveReceiptDemandModal = ({
             />
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.demand_no}
-              fieldName="DemandNo"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.demand_series}
-              fieldName="DemandSeries"
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.currency}
               dataSource={currencies}
@@ -283,15 +240,6 @@ const ReceiveReceiptDemandModal = ({
               max={9999999999}
               formConfig={formConfig}
               required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <DateItem
-              horizontal
-              required
-              title={Words.due_date}
-              fieldName="DueDate"
-              formConfig={formConfig}
             />
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -320,4 +268,4 @@ const ReceiveReceiptDemandModal = ({
   );
 };
 
-export default ReceiveReceiptDemandModal;
+export default ReceiveReceiptCashModal;
