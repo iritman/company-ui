@@ -2,48 +2,46 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Descriptions, Typography } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "./../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "./../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
-  handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/bank-hand-overs-service";
-import DropdownItem from "./../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import DropdownItem from "./../../../../../form-controls/dropdown-item";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
 
 const schema = {
   ItemID: Joi.number().required(),
-  DemandID: Joi.number().required(),
+  DemandID: Joi.number().min(1).required(),
+  StatusID: Joi.number().min(1).required(),
 };
 
 const initRecord = {
   ItemID: 0,
   DemandID: 0,
+  StatusID: 0,
 };
 
 const formRef = React.createRef();
 
-const BankHandOverDemandModal = ({
+const CollectionRejectionDemandModal = ({
   isOpen,
   selectedObject,
-  currentDemands,
+  demands,
+  itemStatuses,
   onOk,
   onCancel,
-  onSelectDemand,
 }) => {
   const [progress, setProgress] = useState(false);
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
-
-  const [demands, setDemands] = useState([]);
 
   const formConfig = {
     schema,
@@ -55,6 +53,7 @@ const BankHandOverDemandModal = ({
 
   const clearRecord = () => {
     record.DemandID = 0;
+    record.StatusID = 0;
 
     setRecord(record);
     setErrors({});
@@ -65,24 +64,6 @@ const BankHandOverDemandModal = ({
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
     initModal(formRef, selectedObject, setRecord);
-
-    //------
-
-    setProgress(true);
-
-    try {
-      const data = await service.getDemands();
-
-      setDemands(
-        data.Demands.filter(
-          (d) => !currentDemands.find((dm) => dm.DemandID === d.DemandID)
-        )
-      );
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
@@ -102,10 +83,14 @@ const BankHandOverDemandModal = ({
 
   const renderSelectedDemandInfo = () => {
     let result = <></>;
+    let demand = null;
 
-    if (demands && demands.length > 0) {
-      const demand = demands.find((d) => d.DemandID === record.DemandID);
+    if (selectedObject !== null) demand = { ...selectedObject };
+    else if (demands && demands.length > 0) {
+      demand = demands.find((c) => c.DemandID === record.DemandID);
+    }
 
+    if (demand) {
       const {
         //   DemandID,
         DemandNo,
@@ -156,7 +141,7 @@ const BankHandOverDemandModal = ({
           <Descriptions.Item label={Words.duration_type}>
             <Text style={{ color: valueColor }}>{DurationTypeTitle}</Text>
           </Descriptions.Item>
-          <Descriptions.Item label={Words.front_side}>
+          <Descriptions.Item label={Words.front_side} span={2}>
             <Text style={{ color: valueColor }}>
               {CompanyID > 0
                 ? CompanyTitle
@@ -168,16 +153,6 @@ const BankHandOverDemandModal = ({
     }
 
     return result;
-  };
-
-  const handleChangeDemand = (value) => {
-    const demand = demands.find((d) => d.DemandID === value);
-    demand.ItemID = record.ItemID;
-    onSelectDemand(demand);
-
-    const rec = { ...record };
-    rec.DemandID = value || 0;
-    setRecord(rec);
   };
 
   //------
@@ -196,16 +171,27 @@ const BankHandOverDemandModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+          {selectedObject === null && (
+            <Col xs={24}>
+              <DropdownItem
+                title={Words.demand}
+                dataSource={demands}
+                keyColumn="DemandID"
+                valueColumn="InfoTitle"
+                formConfig={formConfig}
+                required
+                autoFocus
+              />
+            </Col>
+          )}
           <Col xs={24}>
             <DropdownItem
-              title={Words.demand}
-              dataSource={demands}
-              keyColumn="DemandID"
-              valueColumn="InfoTitle"
+              title={Words.status}
+              dataSource={itemStatuses}
+              keyColumn="StatusID"
+              valueColumn="Title"
               formConfig={formConfig}
               required
-              autoFocus
-              onChange={handleChangeDemand}
             />
           </Col>
 
@@ -218,4 +204,4 @@ const BankHandOverDemandModal = ({
   );
 };
 
-export default BankHandOverDemandModal;
+export default CollectionRejectionDemandModal;

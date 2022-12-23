@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Tabs } from "antd";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "./../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/collection-rejections-service";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/receive/collection-rejections-service";
 import {
   schema,
   initRecord,
@@ -21,13 +21,13 @@ import {
   getTabPanes,
   getDisableStatus,
 } from "./collection-rejection-modal-code";
-import DateItem from "../../../../form-controls/date-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "./../../../../form-controls/text-item";
+import DateItem from "../../../../../form-controls/date-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
+import TextItem from "../../../../../form-controls/text-item";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
+} from "../../../../../contexts/modal-context";
 import ChequeModal from "./collection-rejection-cheque-modal";
 import DemandModal from "./collection-rejection-demand-modal";
 import { v4 as uuid } from "uuid";

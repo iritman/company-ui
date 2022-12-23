@@ -2,48 +2,48 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Descriptions, Typography } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "./../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "./../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/bank-hand-overs-service";
-import DropdownItem from "./../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/receive/bank-hand-overs-service";
+import DropdownItem from "./../../../../../form-controls/dropdown-item";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
 
 const schema = {
   ItemID: Joi.number().required(),
-  ChequeID: Joi.number().required(),
+  DemandID: Joi.number().required(),
 };
 
 const initRecord = {
   ItemID: 0,
-  ChequeID: 0,
+  DemandID: 0,
 };
 
 const formRef = React.createRef();
 
-const BankHandOverChequeModal = ({
+const BankHandOverDemandModal = ({
   isOpen,
   selectedObject,
-  currentCheques,
+  currentDemands,
   onOk,
   onCancel,
-  onSelectCheque,
+  onSelectDemand,
 }) => {
   const [progress, setProgress] = useState(false);
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
 
-  const [cheques, setCheques] = useState([]);
+  const [demands, setDemands] = useState([]);
 
   const formConfig = {
     schema,
@@ -54,7 +54,7 @@ const BankHandOverChequeModal = ({
   };
 
   const clearRecord = () => {
-    record.ChequeID = 0;
+    record.DemandID = 0;
 
     setRecord(record);
     setErrors({});
@@ -71,11 +71,11 @@ const BankHandOverChequeModal = ({
     setProgress(true);
 
     try {
-      const data = await service.getCheques();
+      const data = await service.getDemands();
 
-      setCheques(
-        data.Cheques.filter(
-          (c) => !currentCheques.find((ch) => ch.ChequeID === c.ChequeID)
+      setDemands(
+        data.Demands.filter(
+          (d) => !currentDemands.find((dm) => dm.DemandID === d.DemandID)
         )
       );
     } catch (ex) {
@@ -100,23 +100,17 @@ const BankHandOverChequeModal = ({
     onCancel();
   };
 
-  const renderSelectedChequeInfo = () => {
+  const renderSelectedDemandInfo = () => {
     let result = <></>;
 
-    if (cheques && cheques.length > 0) {
-      const cheque = cheques.find((c) => c.ChequeID === record.ChequeID);
+    if (demands && demands.length > 0) {
+      const demand = demands.find((d) => d.DemandID === record.DemandID);
 
       const {
-        //   ChequeID,
-        ChequeNo,
-        //   BankID,
-        BankTitle,
-        BranchName,
-        CityTitle,
-        AccountNo,
+        //   DemandID,
+        DemandNo,
         Amount,
         DueDate,
-        AgreedDate,
         //   DurationTypeID,
         DurationTypeTitle,
         //   FrontSideAccountID,
@@ -126,7 +120,7 @@ const BankHandOverChequeModal = ({
         CompanyID,
         CompanyTitle,
         //   InfoTitle,
-      } = cheque;
+      } = demand;
 
       result = (
         <Descriptions
@@ -141,26 +135,12 @@ const BankHandOverChequeModal = ({
         >
           {/* <Descriptions.Item label={Words.id}>
           <Text style={{ color: valueColor }}>
-            {utils.farsiNum(`${ChequeID}`)}
+            {utils.farsiNum(`${DemandID}`)}
           </Text>
         </Descriptions.Item> */}
-          <Descriptions.Item label={Words.cheque_no}>
+          <Descriptions.Item label={Words.demand_no}>
             <Text style={{ color: Colors.red[6] }}>
-              {utils.farsiNum(`${ChequeNo}`)}
-            </Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.bank}>
-            <Text style={{ color: valueColor }}>{BankTitle}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.branch_name}>
-            <Text style={{ color: valueColor }}>{BranchName}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.city}>
-            <Text style={{ color: valueColor }}>{CityTitle}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.account_no}>
-            <Text style={{ color: valueColor }}>
-              {utils.farsiNum(AccountNo)}
+              {utils.farsiNum(`${DemandNo}`)}
             </Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.price}>
@@ -171,11 +151,6 @@ const BankHandOverChequeModal = ({
           <Descriptions.Item label={Words.due_date}>
             <Text style={{ color: valueColor }}>
               {utils.farsiNum(utils.slashDate(DueDate))}
-            </Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.agreed_date}>
-            <Text style={{ color: valueColor }}>
-              {utils.farsiNum(utils.slashDate(AgreedDate))}
             </Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.duration_type}>
@@ -195,13 +170,13 @@ const BankHandOverChequeModal = ({
     return result;
   };
 
-  const handleChangeCheque = (value) => {
-    const cheque = cheques.find((c) => c.ChequeID === value);
-    cheque.ItemID = record.ItemID;
-    onSelectCheque(cheque);
+  const handleChangeDemand = (value) => {
+    const demand = demands.find((d) => d.DemandID === value);
+    demand.ItemID = record.ItemID;
+    onSelectDemand(demand);
 
     const rec = { ...record };
-    rec.ChequeID = value || 0;
+    rec.DemandID = value || 0;
     setRecord(rec);
   };
 
@@ -216,26 +191,26 @@ const BankHandOverChequeModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      title={Words.reg_cheque}
+      title={Words.reg_demand}
       width={900}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <DropdownItem
-              title={Words.cheque}
-              dataSource={cheques}
-              keyColumn="ChequeID"
+              title={Words.demand}
+              dataSource={demands}
+              keyColumn="DemandID"
               valueColumn="InfoTitle"
               formConfig={formConfig}
               required
               autoFocus
-              onChange={handleChangeCheque}
+              onChange={handleChangeDemand}
             />
           </Col>
 
-          {record.ChequeID > 0 && (
-            <Col xs={24}>{renderSelectedChequeInfo()}</Col>
+          {record.DemandID > 0 && (
+            <Col xs={24}>{renderSelectedDemandInfo()}</Col>
           )}
         </Row>
       </Form>
@@ -243,4 +218,4 @@ const BankHandOverChequeModal = ({
   );
 };
 
-export default BankHandOverChequeModal;
+export default BankHandOverDemandModal;

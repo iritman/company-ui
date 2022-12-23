@@ -1,24 +1,24 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, message } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
-import service from "../../../../../services/financial/treasury/receive/receive-receipts-service";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
+import service from "../../../../../../services/financial/treasury/receive/receive-receipts-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
   handleError,
-} from "../../../../../tools/form-manager";
-import SimpleDataTable from "../../../../common/simple-data-table";
-import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
+} from "../../../../../../tools/form-manager";
+import SimpleDataTable from "../../../../../common/simple-data-table";
+import SimpleDataPageHeader from "../../../../../common/simple-data-page-header";
 import ReceiveReceiptModal from "./receive-receipt-modal";
 import SearchModal from "./receive-receipts-search-modal";
 import DetailsModal from "./receive-receipt-details-modal";
-import { usePageContext } from "../../../../contexts/page-context";
-import DetailsButton from "../../../../common/details-button";
+import { usePageContext } from "../../../../../contexts/page-context";
+import DetailsButton from "../../../../../common/details-button";
 
 const { Text } = Typography;
 

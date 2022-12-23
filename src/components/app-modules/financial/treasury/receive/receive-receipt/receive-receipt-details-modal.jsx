@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Row, Col, Typography, Descriptions, Tabs } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import { getTabPanes } from "./receive-receipt-details-modal-code";
-import ModalWindow from "../../../../common/modal-window";
+import ModalWindow from "../../../../../common/modal-window";
 
 const { Text } = Typography;
 

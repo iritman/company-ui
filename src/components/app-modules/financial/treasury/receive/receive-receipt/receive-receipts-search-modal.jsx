@@ -3,24 +3,24 @@ import { useMount } from "react-use";
 import { Form, Row, Col, Button } from "antd";
 import { EditOutlined as TextIcon } from "@ant-design/icons";
 import Joi from "joi-browser";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   handleError,
-} from "../../../../../tools/form-manager";
+} from "../../../../../../tools/form-manager";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
-import service from "../../../../../services/financial/treasury/receive/receive-receipts-service";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import DateItem from "../../../../form-controls/date-item";
-import InputItem from "../../../../form-controls/input-item";
-import NumericInputItem from "../../../../form-controls/numeric-input-item";
+} from "../../../../../contexts/modal-context";
+import service from "../../../../../../services/financial/treasury/receive/receive-receipts-service";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
+import DateItem from "../../../../../form-controls/date-item";
+import InputItem from "../../../../../form-controls/input-item";
+import NumericInputItem from "../../../../../form-controls/numeric-input-item";
 
 const schema = {
   ReceiveID: Joi.number().label(Words.id),

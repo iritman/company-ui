@@ -2,24 +2,24 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "./../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/receive-receipts-service";
-import InputItem from "./../../../../form-controls/input-item";
-import NumericInputItem from "./../../../../form-controls/numeric-input-item";
-import DateItem from "./../../../../form-controls/date-item";
-import DropdownItem from "./../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/receive/receive-receipts-service";
+import InputItem from "./../../../../../form-controls/input-item";
+import NumericInputItem from "./../../../../../form-controls/numeric-input-item";
+import DateItem from "./../../../../../form-controls/date-item";
+import DropdownItem from "./../../../../../form-controls/dropdown-item";
 
 const schema = {
-  ChequeID: Joi.number().required(),
+  DemandID: Joi.number().required(),
   ReceiveID: Joi.number().required(),
   FrontSideAccountID: Joi.number()
     .min(1)
@@ -27,19 +27,11 @@ const schema = {
     .label(Words.front_side_account),
   OperationID: Joi.number().min(1).required().label(Words.financial_operation),
   CashFlowID: Joi.number().min(1).required().label(Words.cash_flow),
-  AccountNo: Joi.string().max(50).required().label(Words.account_no),
-  BranchCode: Joi.string().max(50).required().label(Words.branch_code),
-  BranchName: Joi.string().max(50).required().label(Words.branch_name),
-  BankID: Joi.number().min(1).required().label(Words.bank),
-  CityID: Joi.number().label(Words.branch_city),
-  ShebaID: Joi.string().max(50).allow("").label(Words.sheba_no),
-  ChequeNo: Joi.string().max(50).required().label(Words.cheque_no),
-  SayadNo: Joi.string().max(50).allow("").label(Words.sayad_no),
-  ChequeSeries: Joi.string().max(50).allow("").label(Words.cheque_series),
+  DemandNo: Joi.string().max(50).required().label(Words.demand_no),
+  DemandSeries: Joi.string().max(50).allow("").label(Words.demand_series),
   CurrencyID: Joi.number().label(Words.currency),
   Amount: Joi.number().min(10).required().label(Words.price),
   DueDate: Joi.string().required().label(Words.due_date),
-  AgreedDate: Joi.string().required().label(Words.agreed_date),
   StandardDetailsID: Joi.number(),
   DetailsText: Joi.string()
     .min(5)
@@ -50,31 +42,38 @@ const schema = {
 };
 
 const initRecord = {
-  ChequeID: 0,
+  DemandID: 0,
   ReceiveID: 0,
   FrontSideAccountID: 0,
   OperationID: 0,
   CashFlowID: 0,
-  AccountNo: "",
-  BranchCode: "",
-  BranchName: "",
-  BankID: 0,
-  CityID: 0,
-  ShebaID: "",
-  ChequeNo: "",
-  SayadNo: "",
-  ChequeSeries: "",
+  DemandNo: "",
+  DemandSeries: "",
   CurrencyID: 0,
   Amount: 0,
   DueDate: "",
-  AgreedDate: "",
   StandardDetailsID: 0,
   DetailsText: "",
 };
 
+// const initRecord = {
+//   DemandID: 0,
+//   ReceiveID: 0,
+//   FrontSideAccountID: 1,
+//   OperationID: 1,
+//   CashFlowID: 1,
+//   DemandNo: "102030",
+//   DemandSeries: "",
+//   CurrencyID: 1,
+//   Amount: 257500000,
+//   DueDate: "14010916",
+//   StandardDetailsID: 1,
+//   DetailsText: ""
+// };
+
 const formRef = React.createRef();
 
-const ReceiveReceiptChequeModal = ({
+const ReceiveReceiptDemandModal = ({
   isOpen,
   selectedObject,
   onOk,
@@ -91,8 +90,6 @@ const ReceiveReceiptChequeModal = ({
   const [standardDetails, setStandardDetails] = useState([]);
   const [operations, setOperations] = useState([]);
   const [cashFlows, setCashFlows] = useState([]);
-  const [banks, setBanks] = useState([]);
-  const [cities, setCities] = useState([]);
 
   const formConfig = {
     schema,
@@ -106,25 +103,19 @@ const ReceiveReceiptChequeModal = ({
     record.FrontSideAccountID = 0;
     record.OperationID = 0;
     record.CashFlowID = 0;
-    record.AccountNo = "";
-    record.BranchCode = "";
-    record.BranchName = "";
-    record.BankID = 0;
-    record.CityID = 0;
-    record.ShebaID = "";
-    record.ChequeNo = "";
-    record.SayadNo = "";
-    record.ChequeSeries = "";
+    record.DemandNo = "";
+    record.DemandSeries = "";
     record.CurrencyID = 0;
     record.Amount = 0;
     record.DueDate = "";
-    record.AgreedDate = "";
     record.StandardDetailsID = 0;
     record.DetailsText = "";
 
     setRecord(record);
+    // setRecord(initRecord);
     setErrors({});
     loadFieldsValue(formRef, record);
+    // loadFieldsValue(formRef, initRecord);
   };
 
   useMount(async () => {
@@ -139,20 +130,11 @@ const ReceiveReceiptChequeModal = ({
     try {
       const data = await service.getItemsParams();
 
-      let {
-        Currencies,
-        Operations,
-        CashFlows,
-        Banks,
-        Cities,
-        StandardDetails,
-      } = data;
+      let { Currencies, Operations, CashFlows, StandardDetails } = data;
 
       setCurrencies(Currencies);
       setOperations(Operations);
       setCashFlows(CashFlows);
-      setBanks(Banks);
-      setCities(Cities);
       setStandardDetails(StandardDetails);
 
       if (selectedObject !== null) {
@@ -161,19 +143,30 @@ const ReceiveReceiptChequeModal = ({
         );
 
         const {
-          FrontSideAccountID,
-          FrontSideAccountTitle,
-          TafsilCode,
-          // TafsilTypeID,
-          TafsilTypeTitle,
+          AccountID,
+          AccountNo,
+          MemberID,
+          FirstName,
+          LastName,
+          CompanyID,
+          CompanyTitle,
         } = front_side_account;
 
-        setFrontSideAccounts([
-          {
-            FrontSideAccountID,
-            Title: `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`,
-          },
-        ]);
+        if (MemberID > 0) {
+          setFrontSideAccounts([
+            {
+              FrontSideAccountID: AccountID,
+              Title: `${FirstName} ${LastName} - ${AccountNo}`,
+            },
+          ]);
+        } else if (CompanyID > 0) {
+          setFrontSideAccounts([
+            {
+              FrontSideAccountID: AccountID,
+              Title: `${CompanyTitle} - ${AccountNo}`,
+            },
+          ]);
+        }
       }
     } catch (ex) {
       handleError(ex);
@@ -228,7 +221,7 @@ const ReceiveReceiptChequeModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      title={Words.reg_cheque}
+      title={Words.reg_demand}
       width={1050}
     >
       <Form ref={formRef} name="dataForm">
@@ -268,8 +261,8 @@ const ReceiveReceiptChequeModal = ({
           </Col>
           <Col xs={24} md={12} lg={8}>
             <InputItem
-              title={Words.account_no}
-              fieldName="AccountNo"
+              title={Words.demand_no}
+              fieldName="DemandNo"
               maxLength={50}
               formConfig={formConfig}
               required
@@ -277,70 +270,8 @@ const ReceiveReceiptChequeModal = ({
           </Col>
           <Col xs={24} md={12} lg={8}>
             <InputItem
-              title={Words.branch_code}
-              fieldName="BranchCode"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.branch_name}
-              fieldName="BranchName"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <DropdownItem
-              title={Words.bank}
-              dataSource={banks}
-              keyColumn="BankID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <DropdownItem
-              title={Words.branch_city}
-              dataSource={cities}
-              keyColumn="CityID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.sheba_no}
-              fieldName="ShebaID"
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.cheque_no}
-              fieldName="ChequeNo"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.sayad_no}
-              fieldName="SayadNo"
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.cheque_series}
-              fieldName="ChequeSeries"
+              title={Words.demand_series}
+              fieldName="DemandSeries"
               maxLength={50}
               formConfig={formConfig}
             />
@@ -375,15 +306,6 @@ const ReceiveReceiptChequeModal = ({
             />
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <DateItem
-              horizontal
-              required
-              title={Words.agreed_date}
-              fieldName="AgreedDate"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.standard_details_text}
               dataSource={standardDetails}
@@ -409,4 +331,4 @@ const ReceiveReceiptChequeModal = ({
   );
 };
 
-export default ReceiveReceiptChequeModal;
+export default ReceiveReceiptDemandModal;

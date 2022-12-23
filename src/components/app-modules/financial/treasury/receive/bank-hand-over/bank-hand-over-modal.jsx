@@ -17,10 +17,10 @@ import {
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "./../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -28,20 +28,20 @@ import {
   saveModalChanges,
   handleError,
   getSorter,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/bank-hand-overs-service";
-import DateItem from "../../../../form-controls/date-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "./../../../../form-controls/text-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/receive/bank-hand-overs-service";
+import DateItem from "../../../../../form-controls/date-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
+import TextItem from "../../../../../form-controls/text-item";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
-import DetailsTable from "../../../../common/details-table";
+} from "../../../../../contexts/modal-context";
+import DetailsTable from "../../../../../common/details-table";
 import ChequeModal from "./bank-hand-over-cheque-modal";
 import DemandModal from "./bank-hand-over-demand-modal";
 import { v4 as uuid } from "uuid";
-import PriceViewer from "./../../../../common/price-viewer";
+import PriceViewer from "../../../../../common/price-viewer";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;

@@ -1,8 +1,8 @@
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import { Button, Space, Typography, Popconfirm, Row, Col } from "antd";
-import { getSorter, validateForm } from "../../../../../tools/form-manager";
+import { getSorter, validateForm } from "../../../../../../tools/form-manager";
 import {
   PlusOutlined as AddIcon,
   DeleteOutlined as DeleteIcon,
@@ -10,8 +10,8 @@ import {
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
-import PriceViewer from "./../../../../common/price-viewer";
-import DetailsTable from "../../../../common/details-table";
+import PriceViewer from "./../../../../../common/price-viewer";
+import DetailsTable from "../../../../../common/details-table";
 
 const { Text } = Typography;
 

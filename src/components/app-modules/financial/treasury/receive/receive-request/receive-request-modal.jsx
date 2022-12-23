@@ -19,10 +19,10 @@ import {
 } from "@ant-design/icons";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
 import Joi from "joi-browser";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "./../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -30,17 +30,17 @@ import {
   saveModalChanges,
   handleError,
   getSorter,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/receive-requests-service";
-import DateItem from "../../../../form-controls/date-item";
-import InputItem from "../../../../form-controls/input-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/receive/receive-requests-service";
+import DateItem from "../../../../../form-controls/date-item";
+import InputItem from "../../../../../form-controls/input-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
-import DetailsTable from "../../../../common/details-table";
-import PriceViewer from "../../../../common/price-viewer";
+} from "../../../../../contexts/modal-context";
+import DetailsTable from "../../../../../common/details-table";
+import PriceViewer from "../../../../../common/price-viewer";
 import ReceiveRequestItemModal from "./receive-request-item-modal";
 import { v4 as uuid } from "uuid";
 

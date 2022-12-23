@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Descriptions, Typography } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "./../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
-} from "../../../../../tools/form-manager";
-import DropdownItem from "./../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];

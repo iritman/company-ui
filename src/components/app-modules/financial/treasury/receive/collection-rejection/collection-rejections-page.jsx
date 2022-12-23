@@ -1,33 +1,33 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography, message } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
-import service from "../../../../../services/financial/treasury/receive/bank-hand-overs-service";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
+import service from "../../../../../../services/financial/treasury/receive/collection-rejections-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
   handleError,
-} from "../../../../../tools/form-manager";
-import SimpleDataTable from "../../../../common/simple-data-table";
-import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
-import BankHandOverModal from "./bank-hand-over-modal";
-import SearchModal from "./bank-hand-overs-search-modal";
-import DetailsModal from "./bank-hand-over-details-modal";
-import { usePageContext } from "../../../../contexts/page-context";
-import DetailsButton from "../../../../common/details-button";
+} from "../../../../../../tools/form-manager";
+import SimpleDataTable from "../../../../../common/simple-data-table";
+import SimpleDataPageHeader from "../../../../../common/simple-data-page-header";
+import CollectionRejectionModal from "./collection-rejection-modal";
+import SearchModal from "./collection-rejections-search-modal";
+import DetailsModal from "./collection-rejection-details-modal";
+import { usePageContext } from "../../../../../contexts/page-context";
+import DetailsButton from "../../../../../common/details-button";
 
 const { Text } = Typography;
 
 const getSheets = (records) => [
   {
-    title: "BankHandOvers",
+    title: "CollectionRejections",
     data: records,
     columns: [
-      { label: Words.id, value: "HandOverID" },
+      { label: Words.id, value: "CollectionRejectionID" },
       {
         label: Words.bank_account,
         value: "Title",
@@ -43,12 +43,9 @@ const getSheets = (records) => [
           record.ItemType === 1 ? Words.cheque : Words.demand,
       },
       {
-        label: Words.hand_over_date,
-        value: (record) => utils.slashDate(record.HandOverDate),
+        label: Words.collection_rejection_date,
+        value: (record) => utils.slashDate(record.CollectionRejectionDate),
       },
-      { label: Words.financial_operation, value: "OperationTitle" },
-      { label: Words.cash_box, value: "CashBoxTitle" },
-
       { label: Words.standard_description, value: "DetailsText" },
       {
         label: Words.reg_date,
@@ -73,9 +70,11 @@ const baseColumns = [
     title: Words.id,
     width: 75,
     align: "center",
-    dataIndex: "HandOverID",
-    sorter: getSorter("HandOverID"),
-    render: (HandOverID) => <Text>{utils.farsiNum(`${HandOverID}`)}</Text>,
+    dataIndex: "CollectionRejectionID",
+    sorter: getSorter("CollectionRejectionID"),
+    render: (CollectionRejectionID) => (
+      <Text>{utils.farsiNum(`${CollectionRejectionID}`)}</Text>
+    ),
   },
   {
     title: Words.bank_account,
@@ -98,26 +97,14 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.hand_over_date,
+    title: Words.collection_rejection_date,
     width: 150,
     align: "center",
-    dataIndex: "HandOverDate",
-    sorter: getSorter("HandOverDate"),
-    render: (HandOverDate) => (
+    dataIndex: "CollectionRejectionDate",
+    sorter: getSorter("CollectionRejectionDate"),
+    render: (CollectionRejectionDate) => (
       <Text style={{ color: Colors.orange[6] }}>
-        {utils.farsiNum(utils.slashDate(HandOverDate))}
-      </Text>
-    ),
-  },
-  {
-    title: Words.financial_operation,
-    width: 200,
-    align: "center",
-    dataIndex: "OperationTitle",
-    sorter: getSorter("OperationTitle"),
-    render: (OperationTitle) => (
-      <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(OperationTitle)}
+        {utils.farsiNum(utils.slashDate(CollectionRejectionDate))}
       </Text>
     ),
   },
@@ -156,9 +143,9 @@ const baseColumns = [
   },
 ];
 
-const recordID = "HandOverID";
+const recordID = "CollectionRejectionID";
 
-const BankHandOversPage = ({ pageName }) => {
+const CollectionRejectionsPage = ({ pageName }) => {
   const {
     progress,
     setProgress,
@@ -259,10 +246,10 @@ const BankHandOversPage = ({ pageName }) => {
     return collection;
   };
 
-  const handleSaveBankHandOverItem = async (
+  const handleSaveCollectionRejectionItem = async (
     item_type,
     key_field,
-    hand_over_item
+    collection_rejection_item
   ) => {
     //--- specify collection
 
@@ -272,31 +259,32 @@ const BankHandOversPage = ({ pageName }) => {
 
     let diff_price = 0;
 
-    if (hand_over_item[key_field] === 0) {
-      diff_price = hand_over_item.Amount;
+    if (collection_rejection_item[key_field] === 0) {
+      diff_price = collection_rejection_item.Amount;
     } else {
       diff_price =
-        hand_over_item.Amount -
+        collection_rejection_item.Amount -
         selectedObject[collection].find(
-          (c) => c[key_field] === hand_over_item[key_field]
+          (c) => c[key_field] === collection_rejection_item[key_field]
         ).Amount;
     }
 
     //---
 
-    const saved_item = await service.saveItem(item_type, hand_over_item);
-
+    const saved_item = await service.saveItem(
+      item_type,
+      collection_rejection_item
+    );
     const rec = { ...selectedObject };
     // update price
     rec.Price += diff_price;
-
     //------
 
-    if (hand_over_item[key_field] === 0)
+    if (collection_rejection_item[key_field] === 0)
       rec[collection] = [...rec[collection], saved_item];
     else {
       const index = rec[collection].findIndex(
-        (i) => i[key_field] === hand_over_item[key_field]
+        (i) => i[key_field] === collection_rejection_item[key_field]
       );
 
       rec[collection][index] = saved_item;
@@ -306,11 +294,13 @@ const BankHandOversPage = ({ pageName }) => {
 
     //------
 
-    const hand_over_index = records.findIndex(
-      (hand_over) => hand_over.HandOverID === hand_over_item.HandOverID
+    const collection_rejection_index = records.findIndex(
+      (collection_rejection) =>
+        collection_rejection.CollectionRejectionID ===
+        collection_rejection_item.CollectionRejectionID
     );
 
-    records[hand_over_index] = rec;
+    records[collection_rejection_index] = rec;
 
     //------
 
@@ -319,7 +309,7 @@ const BankHandOversPage = ({ pageName }) => {
     return saved_item;
   };
 
-  const handleDeleteBankHandOverItem = async (
+  const handleDeleteCollectionRejectionItem = async (
     item_type,
     key_field,
     item_id
@@ -334,7 +324,7 @@ const BankHandOversPage = ({ pageName }) => {
 
     if (selectedObject) {
       const rec = { ...selectedObject };
-      rec.Price -= rec[collection].find((c) => c[key_field] === item_id).Amount;
+      rec.Price -= rec[collection].find((i) => i[key_field] === item_id).Amount;
 
       rec[collection] = rec[collection].filter((i) => i[key_field] !== item_id);
 
@@ -342,34 +332,37 @@ const BankHandOversPage = ({ pageName }) => {
 
       //------
 
-      const hand_over_index = records.findIndex(
-        (hand_over) => hand_over.HandOverID === rec.HandOverID
+      const collection_rejection_index = records.findIndex(
+        (collection_rejection) =>
+          collection_rejection.CollectionRejectionID ===
+          rec.CollectionRejectionID
       );
 
-      records[hand_over_index] = rec;
+      records[collection_rejection_index] = rec;
 
       setRecords([...records]);
     }
   };
 
-  const handleApproveBankHandOver = async () => {
+  const handleApproveCollectionRejection = async () => {
     setProgress(true);
 
     try {
       const data = await service.approveReceiveReceipt(
-        selectedObject.HandOverID
+        selectedObject.CollectionRejectionID
       );
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
-      selectedObject.StatusTitle = Words.hand_over_status_2;
+      selectedObject.StatusTitle = Words.collection_rejection_status_2;
       setSelectedObject({ ...selectedObject });
 
       // Update records
-      const hand_over_index = records.findIndex(
-        (ho) => ho.HandOverID === selectedObject.HandOverID
+      const collection_rejection_index = records.findIndex(
+        (ho) =>
+          ho.CollectionRejectionID === selectedObject.CollectionRejectionID
       );
-      records[hand_over_index] = { ...selectedObject };
+      records[collection_rejection_index] = { ...selectedObject };
       setRecords([...records]);
 
       //---
@@ -381,22 +374,25 @@ const BankHandOversPage = ({ pageName }) => {
     setProgress(false);
   };
 
-  const handleRejecetBankHandOver = async () => {
+  const handleRejecetCollectionRejection = async () => {
     setProgress(true);
 
     try {
-      const data = await service.rejectHandOver(selectedObject.HandOverID);
+      const data = await service.rejectHandOver(
+        selectedObject.CollectionRejectionID
+      );
 
       // Update selected object
       selectedObject.StatusID = 3; // Reject
-      selectedObject.StatusTitle = Words.hand_over_status_3;
+      selectedObject.StatusTitle = Words.collection_rejection_status_3;
       setSelectedObject({ ...selectedObject });
 
       // Update records
-      const hand_over_index = records.findIndex(
-        (ho) => ho.HandOverID === selectedObject.HandOverID
+      const collection_rejection_index = records.findIndex(
+        (ho) =>
+          ho.CollectionRejectionID === selectedObject.CollectionRejectionID
       );
-      records[hand_over_index] = { ...selectedObject };
+      records[collection_rejection_index] = { ...selectedObject };
       setRecords([...records]);
 
       //---
@@ -415,9 +411,9 @@ const BankHandOversPage = ({ pageName }) => {
       <Spin spinning={progress}>
         <Row gutter={[10, 15]}>
           <SimpleDataPageHeader
-            title={Words.bank_hand_overs}
+            title={Words.collection_rejection}
             sheets={getSheets(records)}
-            fileName="BankHandOvers"
+            fileName="CollectionRejections"
             onSearch={() => setShowSearchModal(true)}
             onClear={handleClear}
             onAdd={access?.CanAdd && handleAdd}
@@ -441,16 +437,16 @@ const BankHandOversPage = ({ pageName }) => {
       )}
 
       {showModal && (
-        <BankHandOverModal
+        <CollectionRejectionModal
           access={access}
           onOk={handleSave}
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
-          onSaveBankHandOverItem={handleSaveBankHandOverItem}
-          onDeleteBankHandOverItem={handleDeleteBankHandOverItem}
-          onReject={handleRejecetBankHandOver}
-          onApprove={handleApproveBankHandOver}
+          onSaveCollectionRejectionItem={handleSaveCollectionRejectionItem}
+          onDeleteCollectionRejectionItem={handleDeleteCollectionRejectionItem}
+          onReject={handleRejecetCollectionRejection}
+          onApprove={handleApproveCollectionRejection}
         />
       )}
 
@@ -468,4 +464,4 @@ const BankHandOversPage = ({ pageName }) => {
   );
 };
 
-export default BankHandOversPage;
+export default CollectionRejectionsPage;

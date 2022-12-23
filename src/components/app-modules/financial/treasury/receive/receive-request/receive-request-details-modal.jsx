@@ -9,12 +9,12 @@ import {
   Popover,
 } from "antd";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
-import { getSorter } from "./../../../../../tools/form-manager";
-import DetailsTable from "../../../../common/details-table";
-import ModalWindow from "./../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
+import { getSorter } from "../../../../../../tools/form-manager";
+import DetailsTable from "../../../../../common/details-table";
+import ModalWindow from "../../../../../common/modal-window";
 
 const { Text } = Typography;
 

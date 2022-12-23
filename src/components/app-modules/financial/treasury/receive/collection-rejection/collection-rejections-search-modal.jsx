@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   handleError,
-} from "../../../../../tools/form-manager";
+} from "../../../../../../tools/form-manager";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
-import service from "../../../../../services/financial/treasury/receive/collection-rejections-service";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import DateItem from "../../../../form-controls/date-item";
-import NumericInputItem from "../../../../form-controls/numeric-input-item";
+} from "../../../../../contexts/modal-context";
+import service from "../../../../../../services/financial/treasury/receive/collection-rejections-service";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
+import DateItem from "../../../../../form-controls/date-item";
+import NumericInputItem from "../../../../../form-controls/numeric-input-item";
 
 const schema = {
   CollectionRejectionID: Joi.number().label(Words.id),

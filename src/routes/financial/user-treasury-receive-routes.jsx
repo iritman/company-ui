@@ -3,10 +3,10 @@ import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import TreasuryReceiveDashboard from "../../components/app-modules/financial/treasury/receive/treasury-receive-dashboard";
-import ReceiveRequestsPage from "../../components/app-modules/financial/treasury/receive/receive-requests-page";
-import ReceiveReceiptsPage from "../../components/app-modules/financial/treasury/receive/receive-receipts-page";
-import BankHandOversPage from "../../components/app-modules/financial/treasury/receive/bank-hand-overs-page";
-import CollectionRejectionsPage from "../../components/app-modules/financial/treasury/receive/collection-rejections-page";
+import ReceiveRequestsPage from "../../components/app-modules/financial/treasury/receive/receive-request/receive-requests-page";
+import ReceiveReceiptsPage from "../../components/app-modules/financial/treasury/receive/receive-receipt/receive-receipts-page";
+import BankHandOversPage from "../../components/app-modules/financial/treasury/receive/bank-hand-over/bank-hand-overs-page";
+import CollectionRejectionsPage from "../../components/app-modules/financial/treasury/receive/collection-rejection/collection-rejections-page";
 //---
 
 const modulePath = "financial/treasury/receive";

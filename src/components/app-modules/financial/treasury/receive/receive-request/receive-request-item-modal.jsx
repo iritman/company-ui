@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "./../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/receive/receive-requests-service";
-import NumericInputItem from "./../../../../form-controls/numeric-input-item";
-import InputItem from "./../../../../form-controls/input-item";
-import DateItem from "./../../../../form-controls/date-item";
-import DropdownItem from "./../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/receive/receive-requests-service";
+import NumericInputItem from "../../../../../form-controls/numeric-input-item";
+import InputItem from "../../../../../form-controls/input-item";
+import DateItem from "../../../../../form-controls/date-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
 
 const schema = {
   ItemID: Joi.number().required(),

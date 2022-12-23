@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Row, Col, Typography, Descriptions, Tabs } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
-import { getSorter } from "./../../../../../tools/form-manager";
-import DetailsTable from "../../../../common/details-table";
-import PriceViewer from "./../../../../common/price-viewer";
-import ModalWindow from "./../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
+import { getSorter } from "../../../../../../tools/form-manager";
+import DetailsTable from "../../../../../common/details-table";
+import ModalWindow from "../../../../../common/modal-window";
+import PriceViewer from "../../../../../common/price-viewer";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -40,7 +40,7 @@ const cheque_columns = [
   },
   {
     title: Words.duration,
-    width: 120,
+    width: 100,
     align: "center",
     dataIndex: "DurationTypeTitle",
     sorter: getSorter("DurationTypeTitle"),
@@ -50,7 +50,7 @@ const cheque_columns = [
   },
   {
     title: Words.account_no,
-    width: 150,
+    width: 100,
     align: "center",
     dataIndex: "AccountNo",
     sorter: getSorter("AccountNo"),
@@ -62,7 +62,7 @@ const cheque_columns = [
   },
   {
     title: Words.bank,
-    width: 120,
+    width: 100,
     align: "center",
     dataIndex: "BankTitle",
     sorter: getSorter("BankTitle"),
@@ -82,7 +82,7 @@ const cheque_columns = [
   },
   {
     title: Words.bank_branch,
-    width: 150,
+    width: 100,
     align: "center",
     dataIndex: "BranchName",
     sorter: getSorter("BranchName"),
@@ -230,33 +230,32 @@ const demand_columns = [
       </Text>
     ),
   },
+  {
+    title: "",
+    fixed: "right",
+    align: "center",
+    width: 1,
+    render: () => <></>,
+  },
 ];
 
-const CollectionRejectionDetailsModal = ({ selectedObject, isOpen, onOk }) => {
+const BankHandOverDetailsModal = ({ selectedObject, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
   const {
-    CollectionRejectionID,
-    // CompanyBankAccountID,
+    HandOverID,
     AccountName,
     AccountNo,
-    // BankAccountTypeID,
-    BankAccountTypeTitle,
-    // BranchID,
+    // BankAccountTypeTitle,
     BranchCode,
-    // BankID,
     BankTitle,
-    // BankTypeID,
-    BankTypeTitle,
-    // CityID,
+    // BankTypeTitle,
     CityTitle,
-    // ProvinceID,
-    ProvinceTitle,
-    // CurrencyID,
+    // ProvinceTitle,
     CurrencyTitle,
     ItemType,
-    CollectionRejectionDate,
-    // StandardDetailsID,
+    HandOverDate,
+    OperationTitle,
     DetailsText,
     // RegMemberID,
     RegMemberFirstName,
@@ -323,10 +322,10 @@ const CollectionRejectionDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           >
             <Descriptions.Item label={Words.id}>
               <Text style={{ color: valueColor }}>
-                {utils.farsiNum(`${CollectionRejectionID}`)}
+                {utils.farsiNum(`${HandOverID}`)}
               </Text>
             </Descriptions.Item>
-            <Descriptions.Item label={Words.bank_account}>
+            <Descriptions.Item label={Words.title}>
               <Text style={{ color: valueColor }}>{AccountName}</Text>
             </Descriptions.Item>
             <Descriptions.Item label={Words.account_no}>
@@ -334,38 +333,35 @@ const CollectionRejectionDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                 {utils.farsiNum(`${AccountNo}`)}
               </Text>
             </Descriptions.Item>
-            <Descriptions.Item label={Words.bank_type}>
+            {/* <Descriptions.Item label={Words.bank_type}>
               <Text style={{ color: valueColor }}>{BankTypeTitle}</Text>
             </Descriptions.Item>
             <Descriptions.Item label={Words.bank_account_type}>
               <Text style={{ color: valueColor }}>{BankAccountTypeTitle}</Text>
-            </Descriptions.Item>
+            </Descriptions.Item> */}
             <Descriptions.Item label={Words.bank}>
               <Text style={{ color: valueColor }}>{BankTitle}</Text>
             </Descriptions.Item>
             <Descriptions.Item label={Words.branch_code}>
-              <Text style={{ color: valueColor }}>
-                {utils.farsiNum(BranchCode)}
-              </Text>
+              <Text style={{ color: valueColor }}>{BranchCode}</Text>
             </Descriptions.Item>
             <Descriptions.Item label={Words.city}>
               <Text style={{ color: valueColor }}>{CityTitle}</Text>
             </Descriptions.Item>
-            <Descriptions.Item label={Words.province}>
-              <Text style={{ color: valueColor }}>{ProvinceTitle}</Text>
-            </Descriptions.Item>
             <Descriptions.Item label={Words.currency}>
               <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
             </Descriptions.Item>
-
+            <Descriptions.Item label={Words.financial_operation}>
+              <Text style={{ color: valueColor }}>{OperationTitle}</Text>
+            </Descriptions.Item>
             <Descriptions.Item label={Words.item_type}>
               <Text style={{ color: valueColor }}>
                 {ItemType === 1 ? Words.cheque : Words.demand}
               </Text>
             </Descriptions.Item>
-            <Descriptions.Item label={Words.collection_rejection_date}>
+            <Descriptions.Item label={Words.hand_over_date}>
               <Text style={{ color: valueColor }}>
-                {utils.farsiNum(utils.slashDate(CollectionRejectionDate))}
+                {utils.farsiNum(utils.slashDate(HandOverDate))}
               </Text>
             </Descriptions.Item>
 
@@ -451,4 +447,4 @@ const CollectionRejectionDetailsModal = ({ selectedObject, isOpen, onOk }) => {
   );
 };
 
-export default CollectionRejectionDetailsModal;
+export default BankHandOverDetailsModal;
