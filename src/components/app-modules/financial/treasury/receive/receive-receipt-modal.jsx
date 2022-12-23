@@ -12,6 +12,7 @@ import {
   handleError,
 } from "../../../../../tools/form-manager";
 import service from "../../../../../services/financial/treasury/receive/receive-receipts-service";
+import InputItem from "../../../../form-controls/input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import TextItem from "./../../../../form-controls/text-item";
@@ -250,14 +251,17 @@ const ReceiveReceiptModal = ({
         cheque_to_save.FrontSideAccountID
       );
 
-      const { MemberID, FirstName, LastName, CompanyID, CompanyTitle } =
-        front_side_account;
+      const {
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeID,
+        TafsilTypeTitle,
+      } = front_side_account;
 
-      cheque_to_save.MemberID = MemberID;
-      cheque_to_save.FirstName = FirstName;
-      cheque_to_save.LastName = LastName;
-      cheque_to_save.CompanyID = CompanyID;
-      cheque_to_save.CompanyTitle = CompanyTitle;
+      cheque_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      cheque_to_save.TafsilCode = TafsilCode;
+      cheque_to_save.TafsilTypeID = TafsilTypeID;
+      cheque_to_save.TafsilTypeTitle = TafsilTypeTitle;
 
       cheque_to_save.OperationTitle = findTitle(
         operations,
@@ -308,7 +312,7 @@ const ReceiveReceiptModal = ({
         cheque_to_save.CurrencyID
       );
 
-      cheque_to_save.DetailsText = findTitle(
+      cheque_to_save.StandardDetailsText = findTitle(
         standardDetails,
         "StandardDetailsID",
         "DetailsText",
@@ -400,14 +404,17 @@ const ReceiveReceiptModal = ({
         demand_to_save.FrontSideAccountID
       );
 
-      const { MemberID, FirstName, LastName, CompanyID, CompanyTitle } =
-        front_side_account;
+      const {
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeID,
+        TafsilTypeTitle,
+      } = front_side_account;
 
-      demand_to_save.MemberID = MemberID;
-      demand_to_save.FirstName = FirstName;
-      demand_to_save.LastName = LastName;
-      demand_to_save.CompanyID = CompanyID;
-      demand_to_save.CompanyTitle = CompanyTitle;
+      demand_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      demand_to_save.TafsilCode = TafsilCode;
+      demand_to_save.TafsilTypeID = TafsilTypeID;
+      demand_to_save.TafsilTypeTitle = TafsilTypeTitle;
 
       demand_to_save.OperationTitle = findTitle(
         operations,
@@ -444,7 +451,7 @@ const ReceiveReceiptModal = ({
         demand_to_save.CurrencyID
       );
 
-      demand_to_save.DetailsText = findTitle(
+      demand_to_save.StandardDetailsText = findTitle(
         standardDetails,
         "StandardDetailsID",
         "DetailsText",
@@ -573,6 +580,8 @@ const ReceiveReceiptModal = ({
     handleDeleteDemand,
   };
 
+  //------
+
   return (
     <>
       <ModalWindow
@@ -638,10 +647,21 @@ const ReceiveReceiptModal = ({
             </Col>
             <Col xs={24} md={12}>
               <DropdownItem
-                title={Words.standard_description}
+                title={Words.standard_details_text}
                 dataSource={standardDetails}
                 keyColumn="StandardDetailsID"
                 valueColumn="DetailsText"
+                formConfig={formConfig}
+              />
+            </Col>
+            <Col xs={24}>
+              <InputItem
+                title={Words.standard_description}
+                fieldName="DetailsText"
+                multiline
+                rows={2}
+                showCount
+                maxLength={250}
                 formConfig={formConfig}
               />
             </Col>

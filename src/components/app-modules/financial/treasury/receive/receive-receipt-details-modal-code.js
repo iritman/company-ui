@@ -24,15 +24,11 @@ const cheque_columns = [
     title: Words.front_side,
     width: 200,
     align: "center",
-    // dataIndex: "Title",
-    sorter: getSorter("LastName"),
-    render: (record) => (
+    dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
+    render: (FrontSideAccountTitle) => (
       <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(
-          record.MemberID > 0
-            ? `${record.FirstName} ${record.LastName}`
-            : `${record.CompanyTitle}`
-        )}
+        {utils.farsiNum(FrontSideAccountTitle)}
       </Text>
     ),
   },
@@ -232,12 +228,19 @@ const cheque_columns = [
   },
   {
     title: Words.standard_description,
-    width: 150,
+    width: 100,
     align: "center",
     render: (record) => (
       <>
-        {record.StandardDetailsID > 0 && (
-          <Popover content={<Text>{record.DetailsText}</Text>}>
+        {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+          <Popover
+            content={
+              <Text>{`${utils.getDescription(
+                record.StandardDetailsText,
+                record.DetailsText
+              )}`}</Text>
+            }
+          >
             <InfoIcon
               style={{
                 color: Colors.green[6],
@@ -274,15 +277,11 @@ const demand_columns = [
     title: Words.front_side,
     width: 200,
     align: "center",
-    // dataIndex: "Title",
-    sorter: getSorter("LastName"),
-    render: (record) => (
+    dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
+    render: (FrontSideAccountTitle) => (
       <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(
-          record.MemberID > 0
-            ? `${record.FirstName} ${record.LastName}`
-            : `${record.CompanyTitle}`
-        )}
+        {utils.farsiNum(FrontSideAccountTitle)}
       </Text>
     ),
   },
@@ -390,12 +389,19 @@ const demand_columns = [
   },
   {
     title: Words.standard_description,
-    width: 150,
+    width: 100,
     align: "center",
     render: (record) => (
       <>
-        {record.StandardDetailsID > 0 && (
-          <Popover content={<Text>{record.DetailsText}</Text>}>
+        {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+          <Popover
+            content={
+              <Text>{`${utils.getDescription(
+                record.StandardDetailsText,
+                record.DetailsText
+              )}`}</Text>
+            }
+          >
             <InfoIcon
               style={{
                 color: Colors.green[6],

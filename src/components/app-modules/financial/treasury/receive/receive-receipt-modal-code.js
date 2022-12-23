@@ -31,6 +31,12 @@ export const schema = {
   RegardID: Joi.number().label(Words.regards),
   CashBoxID: Joi.number().label(Words.cash_box),
   StandardDetailsID: Joi.number().label(Words.standard_description),
+  DetailsText: Joi.string()
+    .min(5)
+    .max(250)
+    .allow("")
+    .regex(utils.VALID_REGEX)
+    .label(Words.standard_description),
   StatusID: Joi.number(),
   Cheques: Joi.array(),
   Demands: Joi.array(),
@@ -50,6 +56,7 @@ export const initRecord = {
   RegardID: 0,
   CashBoxID: 0,
   StandardDetailsID: 0,
+  DetailsText: "",
   StatusID: 1,
   Cheques: [],
   Demands: [],
@@ -76,15 +83,11 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.front_side,
       width: 200,
       align: "center",
-      // dataIndex: "Title",
-      sorter: getSorter("LastName"),
-      render: (record) => (
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(
-            record.MemberID > 0
-              ? `${record.FirstName} ${record.LastName}`
-              : `${record.CompanyTitle}`
-          )}
+          {utils.farsiNum(FrontSideAccountTitle)}
         </Text>
       ),
     },
@@ -154,7 +157,7 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.city,
-      width: 120,
+      width: 150,
       align: "center",
       dataIndex: "CityTitle",
       sorter: getSorter("CityTitle"),
@@ -284,12 +287,19 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.standard_description,
-      width: 150,
+      width: 100,
       align: "center",
       render: (record) => (
         <>
-          {record.StandardDetailsID > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Popover
+              content={
+                <Text>{`${utils.getDescription(
+                  record.StandardDetailsText,
+                  record.DetailsText
+                )}`}</Text>
+              }
+            >
               <InfoIcon
                 style={{
                   color: Colors.green[6],
@@ -362,15 +372,11 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.front_side,
       width: 200,
       align: "center",
-      // dataIndex: "Title",
-      sorter: getSorter("LastName"),
-      render: (record) => (
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(
-            record.MemberID > 0
-              ? `${record.FirstName} ${record.LastName}`
-              : `${record.CompanyTitle}`
-          )}
+          {utils.farsiNum(FrontSideAccountTitle)}
         </Text>
       ),
     },
@@ -478,12 +484,19 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.standard_description,
-      width: 150,
+      width: 100,
       align: "center",
       render: (record) => (
         <>
-          {record.StandardDetailsID > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Popover
+              content={
+                <Text>{`${utils.getDescription(
+                  record.StandardDetailsText,
+                  record.DetailsText
+                )}`}</Text>
+              }
+            >
               <InfoIcon
                 style={{
                   color: Colors.green[6],

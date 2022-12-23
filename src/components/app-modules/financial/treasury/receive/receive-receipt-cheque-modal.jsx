@@ -4,6 +4,7 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
+import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -40,6 +41,12 @@ const schema = {
   DueDate: Joi.string().required().label(Words.due_date),
   AgreedDate: Joi.string().required().label(Words.agreed_date),
   StandardDetailsID: Joi.number(),
+  DetailsText: Joi.string()
+    .min(5)
+    .max(250)
+    .allow("")
+    .regex(utils.VALID_REGEX)
+    .label(Words.standard_description),
 };
 
 const initRecord = {
@@ -62,29 +69,8 @@ const initRecord = {
   DueDate: "",
   AgreedDate: "",
   StandardDetailsID: 0,
+  DetailsText: "",
 };
-
-// const initRecord = {
-//   ChequeID: 0,
-//   ReceiveID: 0,
-//   FrontSideAccountID: 1,
-//   OperationID: 1,
-//   CashFlowID: 1,
-//   AccountNo: "11112222",
-//   BranchCode: "123",
-//   BranchName: "میدان امام",
-//   BankID: 2,
-//   CityID: 387,
-//   ShebaID: "",
-//   ChequeNo: "102030",
-//   SayadNo: "",
-//   ChequeSeries: "",
-//   CurrencyID: 1,
-//   Amount: 257500000,
-//   DueDate: "14010916",
-//   AgreedDate: "14010929",
-//   StandardDetailsID: 1,
-// };
 
 const formRef = React.createRef();
 
@@ -134,12 +120,11 @@ const ReceiveReceiptChequeModal = ({
     record.DueDate = "";
     record.AgreedDate = "";
     record.StandardDetailsID = 0;
+    record.DetailsText = "";
 
     setRecord(record);
-    // setRecord(initRecord);
     setErrors({});
     loadFieldsValue(formRef, record);
-    // loadFieldsValue(formRef, initRecord);
   };
 
   useMount(async () => {
@@ -176,30 +161,19 @@ const ReceiveReceiptChequeModal = ({
         );
 
         const {
-          AccountID,
-          AccountNo,
-          MemberID,
-          FirstName,
-          LastName,
-          CompanyID,
-          CompanyTitle,
+          FrontSideAccountID,
+          FrontSideAccountTitle,
+          TafsilCode,
+          // TafsilTypeID,
+          TafsilTypeTitle,
         } = front_side_account;
 
-        if (MemberID > 0) {
-          setFrontSideAccounts([
-            {
-              FrontSideAccountID: AccountID,
-              Title: `${FirstName} ${LastName} - ${AccountNo}`,
-            },
-          ]);
-        } else if (CompanyID > 0) {
-          setFrontSideAccounts([
-            {
-              FrontSideAccountID: AccountID,
-              Title: `${CompanyTitle} - ${AccountNo}`,
-            },
-          ]);
-        }
+        setFrontSideAccounts([
+          {
+            FrontSideAccountID,
+            Title: `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`,
+          },
+        ]);
       }
     } catch (ex) {
       handleError(ex);
@@ -255,11 +229,11 @@ const ReceiveReceiptChequeModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       title={Words.reg_cheque}
-      width={900}
+      width={1050}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.front_side}
               dataSource={frontSideAccounts}
@@ -273,7 +247,7 @@ const ReceiveReceiptChequeModal = ({
               autoFocus
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.financial_operation}
               dataSource={operations}
@@ -283,7 +257,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.cash_flow}
               dataSource={cashFlows}
@@ -292,7 +266,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.account_no}
               fieldName="AccountNo"
@@ -301,7 +275,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.branch_code}
               fieldName="BranchCode"
@@ -310,7 +284,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.branch_name}
               fieldName="BranchName"
@@ -319,7 +293,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.bank}
               dataSource={banks}
@@ -329,7 +303,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.branch_city}
               dataSource={cities}
@@ -338,7 +312,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.sheba_no}
               fieldName="ShebaID"
@@ -346,7 +320,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.cheque_no}
               fieldName="ChequeNo"
@@ -355,7 +329,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.sayad_no}
               fieldName="SayadNo"
@@ -363,7 +337,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.cheque_series}
               fieldName="ChequeSeries"
@@ -371,7 +345,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.currency}
               dataSource={currencies}
@@ -380,7 +354,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <NumericInputItem
               horizontal
               title={Words.price}
@@ -391,7 +365,7 @@ const ReceiveReceiptChequeModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DateItem
               horizontal
               required
@@ -400,7 +374,7 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DateItem
               horizontal
               required
@@ -409,12 +383,23 @@ const ReceiveReceiptChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
-              title={Words.standard_description}
+              title={Words.standard_details_text}
               dataSource={standardDetails}
               keyColumn="StandardDetailsID"
               valueColumn="DetailsText"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <InputItem
+              title={Words.standard_description}
+              fieldName="DetailsText"
+              multiline
+              rows={2}
+              showCount
+              maxLength={250}
               formConfig={formConfig}
             />
           </Col>

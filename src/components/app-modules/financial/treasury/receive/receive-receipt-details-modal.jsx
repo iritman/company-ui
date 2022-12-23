@@ -25,6 +25,7 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     // CashBoxID,
     CashBoxTitle,
     // StandardDetailsID,
+    StandardDetailsText,
     DetailsText,
     // RegMemberID,
     RegMemberFirstName,
@@ -119,8 +120,21 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               </Text>
             </Descriptions.Item>
 
+            {StandardDetailsText.length > 0 && (
+              <Descriptions.Item label={Words.standard_details_text} span={2}>
+                <Text
+                  style={{
+                    color: Colors.purple[7],
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {utils.farsiNum(StandardDetailsText)}
+                </Text>
+              </Descriptions.Item>
+            )}
+
             {DetailsText.length > 0 && (
-              <Descriptions.Item label={Words.descriptions} span={2}>
+              <Descriptions.Item label={Words.standard_description} span={2}>
                 <Text
                   style={{
                     color: Colors.purple[7],

@@ -4,6 +4,7 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
+import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -32,6 +33,12 @@ const schema = {
   Amount: Joi.number().min(10).required().label(Words.price),
   DueDate: Joi.string().required().label(Words.due_date),
   StandardDetailsID: Joi.number(),
+  DetailsText: Joi.string()
+    .min(5)
+    .max(250)
+    .allow("")
+    .regex(utils.VALID_REGEX)
+    .label(Words.standard_description),
 };
 
 const initRecord = {
@@ -46,6 +53,7 @@ const initRecord = {
   Amount: 0,
   DueDate: "",
   StandardDetailsID: 0,
+  DetailsText: "",
 };
 
 // const initRecord = {
@@ -60,6 +68,7 @@ const initRecord = {
 //   Amount: 257500000,
 //   DueDate: "14010916",
 //   StandardDetailsID: 1,
+//   DetailsText: ""
 // };
 
 const formRef = React.createRef();
@@ -100,6 +109,7 @@ const ReceiveReceiptDemandModal = ({
     record.Amount = 0;
     record.DueDate = "";
     record.StandardDetailsID = 0;
+    record.DetailsText = "";
 
     setRecord(record);
     // setRecord(initRecord);
@@ -212,11 +222,11 @@ const ReceiveReceiptDemandModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       title={Words.reg_demand}
-      width={900}
+      width={1050}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.front_side}
               dataSource={frontSideAccounts}
@@ -230,7 +240,7 @@ const ReceiveReceiptDemandModal = ({
               autoFocus
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.financial_operation}
               dataSource={operations}
@@ -240,7 +250,7 @@ const ReceiveReceiptDemandModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.cash_flow}
               dataSource={cashFlows}
@@ -249,7 +259,7 @@ const ReceiveReceiptDemandModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.demand_no}
               fieldName="DemandNo"
@@ -258,7 +268,7 @@ const ReceiveReceiptDemandModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <InputItem
               title={Words.demand_series}
               fieldName="DemandSeries"
@@ -266,7 +276,7 @@ const ReceiveReceiptDemandModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
               title={Words.currency}
               dataSource={currencies}
@@ -275,7 +285,7 @@ const ReceiveReceiptDemandModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <NumericInputItem
               horizontal
               title={Words.price}
@@ -286,7 +296,7 @@ const ReceiveReceiptDemandModal = ({
               required
             />
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <DateItem
               horizontal
               required
@@ -295,12 +305,23 @@ const ReceiveReceiptDemandModal = ({
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={24} md={12} lg={8}>
             <DropdownItem
-              title={Words.standard_description}
+              title={Words.standard_details_text}
               dataSource={standardDetails}
               keyColumn="StandardDetailsID"
               valueColumn="DetailsText"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <InputItem
+              title={Words.standard_description}
+              fieldName="DetailsText"
+              multiline
+              rows={2}
+              showCount
+              maxLength={250}
               formConfig={formConfig}
             />
           </Col>
