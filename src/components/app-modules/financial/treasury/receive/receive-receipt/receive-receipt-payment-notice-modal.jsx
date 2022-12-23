@@ -15,10 +15,11 @@ import {
 import service from "../../../../../../services/financial/treasury/receive/receive-receipts-service";
 import InputItem from "./../../../../../form-controls/input-item";
 import NumericInputItem from "./../../../../../form-controls/numeric-input-item";
+import DateItem from "./../../../../../form-controls/date-item";
 import DropdownItem from "./../../../../../form-controls/dropdown-item";
 
 const schema = {
-  CashID: Joi.number().required(),
+  NoticeID: Joi.number().required(),
   ReceiveID: Joi.number().required(),
   FrontSideAccountID: Joi.number()
     .min(1)
@@ -26,6 +27,12 @@ const schema = {
     .label(Words.front_side_account),
   OperationID: Joi.number().min(1).required().label(Words.financial_operation),
   CashFlowID: Joi.number().min(1).required().label(Words.cash_flow),
+  NoticeNo: Joi.string().max(50).required().label(Words.payment_notice_no),
+  NoticeDate: Joi.string().required().label(Words.payment_notice_date),
+  CompanyBankAccountID: Joi.number()
+    .min(1)
+    .required()
+    .label(Words.bank_account),
   CurrencyID: Joi.number().label(Words.currency),
   Amount: Joi.number().min(10).required().label(Words.price),
   StandardDetailsID: Joi.number(),
@@ -38,11 +45,14 @@ const schema = {
 };
 
 const initRecord = {
-  CashID: 0,
+  NoticeID: 0,
   ReceiveID: 0,
   FrontSideAccountID: 0,
   OperationID: 0,
   CashFlowID: 0,
+  NoticeNo: "",
+  NoticeDate: "",
+  BankAccountID: 0,
   CurrencyID: 0,
   Amount: 0,
   StandardDetailsID: 0,
@@ -51,7 +61,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const ReceiveReceiptCashModal = ({
+const ReceiveReceiptPaymentNoticeModal = ({
   isOpen,
   selectedObject,
   onOk,
@@ -68,6 +78,7 @@ const ReceiveReceiptCashModal = ({
   const [standardDetails, setStandardDetails] = useState([]);
   const [operations, setOperations] = useState([]);
   const [cashFlows, setCashFlows] = useState([]);
+  const [companyBankAccounts, setCompanyBankAccounts] = useState([]);
 
   const formConfig = {
     schema,
@@ -81,6 +92,9 @@ const ReceiveReceiptCashModal = ({
     record.FrontSideAccountID = 0;
     record.OperationID = 0;
     record.CashFlowID = 0;
+    record.NoticeNo = "";
+    record.NoticeDate = "";
+    record.BankAccountID = 0;
     record.CurrencyID = 0;
     record.Amount = 0;
     record.StandardDetailsID = 0;
@@ -103,11 +117,18 @@ const ReceiveReceiptCashModal = ({
     try {
       const data = await service.getItemsParams();
 
-      let { Currencies, Operations, CashFlows, StandardDetails } = data;
+      let {
+        Currencies,
+        Operations,
+        CashFlows,
+        CompanyBankAccounts,
+        StandardDetails,
+      } = data;
 
       setCurrencies(Currencies);
       setOperations(Operations);
       setCashFlows(CashFlows);
+      setCompanyBankAccounts(CompanyBankAccounts);
       setStandardDetails(StandardDetails);
 
       if (selectedObject !== null) {
@@ -183,7 +204,7 @@ const ReceiveReceiptCashModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      title={Words.reg_cash}
+      title={Words.reg_payment_notice}
       width={1050}
     >
       <Form ref={formRef} name="dataForm">
@@ -219,6 +240,34 @@ const ReceiveReceiptCashModal = ({
               keyColumn="CashFlowID"
               valueColumn="Title"
               formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <InputItem
+              title={Words.payment_notice_no}
+              fieldName="NoticeNo"
+              maxLength={50}
+              formConfig={formConfig}
+              required
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <DateItem
+              horizontal
+              required
+              title={Words.payment_notice_date}
+              fieldName="NoticeDate"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <DropdownItem
+              title={Words.bank_account}
+              dataSource={companyBankAccounts}
+              keyColumn="CompanyBankAccountID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
             />
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -267,4 +316,4 @@ const ReceiveReceiptCashModal = ({
   );
 };
 
-export default ReceiveReceiptCashModal;
+export default ReceiveReceiptPaymentNoticeModal;

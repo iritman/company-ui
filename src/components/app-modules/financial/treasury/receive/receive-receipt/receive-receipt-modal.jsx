@@ -23,6 +23,7 @@ import {
 import ChequeModal from "./receive-receipt-cheque-modal";
 import DemandModal from "./receive-receipt-demand-modal";
 import CashModal from "./receive-receipt-cash-modal";
+import PaymentNoticeModal from "./receive-receipt-payment-notice-modal";
 import { v4 as uuid } from "uuid";
 import {
   schema,
@@ -65,6 +66,7 @@ const ReceiveReceiptModal = ({
   const [operations, setOperations] = useState([]);
   const [cashFlows, setCashFlows] = useState([]);
   const [banks, setBanks] = useState([]);
+  const [companyBankAccounts, setCompanyBankAccounts] = useState([]);
   const [cities, setCities] = useState([]);
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -170,12 +172,20 @@ const ReceiveReceiptModal = ({
 
       data = await service.getItemsParams();
 
-      let { Currencies, Operations, CashFlows, Banks, Cities } = data;
+      let {
+        Currencies,
+        Operations,
+        CashFlows,
+        Banks,
+        CompanyBankAccounts,
+        Cities,
+      } = data;
 
       setCurrencies(Currencies);
       setOperations(Operations);
       setCashFlows(CashFlows);
       setBanks(Banks);
+      setCompanyBankAccounts(CompanyBankAccounts);
       setCities(Cities);
     } catch (ex) {
       handleError(ex);
@@ -616,23 +626,23 @@ const ReceiveReceiptModal = ({
     setSelectedItem(null);
   };
 
-  const handleDeleteCash = async (demand_to_delete) => {
+  const handleDeleteCash = async (cash_to_delete) => {
     setProgress(true);
 
     try {
-      if (demand_to_delete.CashID > 0) {
+      if (cash_to_delete.CashID > 0) {
         await onDeleteReceiveReceiptItem(
           "cash",
           "CashID",
-          demand_to_delete.CashID
+          cash_to_delete.CashID
         );
 
         record.Cashes = record.Cashes.filter(
-          (i) => i.CashID !== demand_to_delete.CashID
+          (i) => i.CashID !== cash_to_delete.CashID
         );
       } else {
         record.Cashes = record.Cashes.filter(
-          (i) => i.UID !== demand_to_delete.UID
+          (i) => i.UID !== cash_to_delete.UID
         );
       }
 
@@ -652,6 +662,177 @@ const ReceiveReceiptModal = ({
   const handleEditCash = (data) => {
     setSelectedItem(data);
     setShowCashModal(true);
+  };
+
+  //------
+
+  const handleSavePaymentNotice = async (payment_notice_to_save) => {
+    if (selectedObject !== null) {
+      payment_notice_to_save.ReceiveID = selectedObject.ReceiveID;
+
+      const saved_payment_notice = await onSaveReceiveReceiptItem(
+        "payment-notice",
+        "NoticeID",
+        payment_notice_to_save
+      );
+
+      const index = record.PaymentNotices.findIndex(
+        (item) => item.NoticeID === payment_notice_to_save.NoticeID
+      );
+
+      if (index === -1) {
+        record.PaymentNotices = [
+          ...record.PaymentNotices,
+          saved_payment_notice,
+        ];
+      } else {
+        record.PaymentNotices[index] = saved_payment_notice;
+      }
+    } else {
+      //While adding items temporarily, we have no join operation in database
+      //So, we need to select titles manually
+
+      const front_side_account = await service.searchFronSideAccountByID(
+        payment_notice_to_save.FrontSideAccountID
+      );
+
+      const {
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeID,
+        TafsilTypeTitle,
+      } = front_side_account;
+
+      payment_notice_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      payment_notice_to_save.TafsilCode = TafsilCode;
+      payment_notice_to_save.TafsilTypeID = TafsilTypeID;
+      payment_notice_to_save.TafsilTypeTitle = TafsilTypeTitle;
+
+      const selected_account = companyBankAccounts.find(
+        (a) =>
+          a.CompanyBankAccountID === payment_notice_to_save.CompanyBankAccountID
+      );
+
+      const {
+        AccountName,
+        AccountNo,
+        BranchID,
+        BranhCode,
+        BankBranchTitle,
+        BankID,
+        BankTitle,
+      } = selected_account;
+
+      payment_notice_to_save.AccountName = AccountName;
+      payment_notice_to_save.AccountNo = AccountNo;
+      payment_notice_to_save.BranchID = BranchID;
+      payment_notice_to_save.BranhCode = BranhCode;
+      payment_notice_to_save.BankBranchTitle = BankBranchTitle;
+      payment_notice_to_save.BankID = BankID;
+      payment_notice_to_save.BankTitle = BankTitle;
+
+      payment_notice_to_save.OperationTitle = findTitle(
+        operations,
+        "OperationID",
+        "Title",
+        payment_notice_to_save.OperationID
+      );
+
+      payment_notice_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        payment_notice_to_save.OperationID
+      );
+
+      payment_notice_to_save.DurationTypeTitle = findTitle(
+        operations,
+        "OperationID",
+        "DurationTypeTitle",
+        payment_notice_to_save.OperationID
+      );
+
+      payment_notice_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        payment_notice_to_save.CashFlowID
+      );
+
+      payment_notice_to_save.CurrencyTitle = findTitle(
+        currencies,
+        "CurrencyID",
+        "Title",
+        payment_notice_to_save.CurrencyID
+      );
+
+      payment_notice_to_save.StandardDetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        payment_notice_to_save.StandardDetailsID
+      );
+
+      //--- managing unique id (UID) for new items
+      if (payment_notice_to_save.NoticeID === 0 && selectedItem === null) {
+        payment_notice_to_save.UID = uuid();
+        record.PaymentNotices = [
+          ...record.PaymentNotices,
+          payment_notice_to_save,
+        ];
+      } else if (
+        payment_notice_to_save.NoticeID === 0 &&
+        selectedItem !== null
+      ) {
+        const index = record.PaymentNotices.findIndex(
+          (item) => item.UID === selectedItem.UID
+        );
+        record.PaymentNotices[index] = payment_notice_to_save;
+      }
+    }
+
+    //------
+
+    setRecord({ ...record });
+    setSelectedItem(null);
+  };
+
+  const handleDeletePaymentNotice = async (payment_notice_to_delete) => {
+    setProgress(true);
+
+    try {
+      if (payment_notice_to_delete.NoticeID > 0) {
+        await onDeleteReceiveReceiptItem(
+          "payment-notice",
+          "NoticeID",
+          payment_notice_to_delete.NoticeID
+        );
+
+        record.PaymentNotices = record.PaymentNotices.filter(
+          (i) => i.NoticeID !== payment_notice_to_delete.NoticeID
+        );
+      } else {
+        record.PaymentNotices = record.PaymentNotices.filter(
+          (i) => i.UID !== payment_notice_to_delete.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleClosePaymentNoticeModal = () => {
+    setSelectedItem(null);
+    setShowPaymentNoticeModal(false);
+  };
+
+  const handleEditPaymentNotice = (data) => {
+    setSelectedItem(data);
+    setShowPaymentNoticeModal(true);
   };
 
   //------
@@ -720,6 +901,8 @@ const ReceiveReceiptModal = ({
     handleDeleteDemand,
     handleEditCash,
     handleDeleteCash,
+    handleEditPaymentNotice,
+    handleDeletePaymentNotice,
   };
 
   //------
@@ -868,7 +1051,15 @@ const ReceiveReceiptModal = ({
         />
       )}
 
-      {showPaymentNoticeModal && <></>}
+      {showPaymentNoticeModal && (
+        <PaymentNoticeModal
+          isOpen={showPaymentNoticeModal}
+          selectedObject={selectedItem}
+          onOk={handleSavePaymentNotice}
+          onCancel={handleClosePaymentNoticeModal}
+        />
+      )}
+
       {showReturnFromOtherModal && <></>}
       {showReturnPayableChequeModal && <></>}
       {showReturnPayableDemandModal && <></>}
