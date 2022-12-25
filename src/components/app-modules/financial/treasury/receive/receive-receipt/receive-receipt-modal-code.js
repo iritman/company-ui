@@ -352,6 +352,17 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
         ),
       },
     ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
+      },
+    ];
   }
 
   return columns;
@@ -549,6 +560,17 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
         ),
       },
     ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
+      },
+    ];
   }
 
   return columns;
@@ -706,6 +728,17 @@ const getCashColumns = (access, statusID, onEdit, onDelete) => {
             )}
           </Space>
         ),
+      },
+    ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
       },
     ];
   }
@@ -927,6 +960,17 @@ const getPaymentNoticeColumns = (access, statusID, onEdit, onDelete) => {
             )}
           </Space>
         ),
+      },
+    ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
       },
     ];
   }
@@ -1195,9 +1239,7 @@ export const getFooterButtons = (is_disable, config) => {
 
           {hasSaveApproveAccess && (
             <Popconfirm
-              title={
-                Words.questions.sure_to_submit_approve_collection_rejection
-              }
+              title={Words.questions.sure_to_submit_approve_receive_receipt}
               onConfirm={handleSubmitAndApprove}
               okText={Words.yes}
               cancelText={Words.no}
@@ -1225,9 +1267,7 @@ export const getFooterButtons = (is_disable, config) => {
         <>
           {hasSaveApproveAccess && (
             <Popconfirm
-              title={
-                Words.questions.sure_to_submit_approve_collection_rejection
-              }
+              title={Words.questions.sure_to_submit_approve_receive_receipt}
               onConfirm={onApprove}
               okText={Words.yes}
               cancelText={Words.no}
