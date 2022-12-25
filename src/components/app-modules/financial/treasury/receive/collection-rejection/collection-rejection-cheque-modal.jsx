@@ -11,8 +11,10 @@ import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
+  handleError,
 } from "../../../../../../tools/form-manager";
 import DropdownItem from "../../../../../form-controls/dropdown-item";
+import service from "../../../../../../services/financial/treasury/receive/collection-rejections-service";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -34,14 +36,18 @@ const formRef = React.createRef();
 const CollectionRejectionChequeModal = ({
   isOpen,
   selectedObject,
-  cheques,
+  currentCheques,
+  companyBankAccountID,
   itemStatuses,
   onOk,
   onCancel,
+  onSelectCheque,
 }) => {
   const [progress, setProgress] = useState(false);
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
+
+  const [cheques, setCheques] = useState([]);
 
   const formConfig = {
     schema,
@@ -64,6 +70,24 @@ const CollectionRejectionChequeModal = ({
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
     initModal(formRef, selectedObject, setRecord);
+
+    //------
+
+    setProgress(true);
+
+    try {
+      const data = await service.getCheques(companyBankAccountID);
+
+      setCheques(
+        data.Cheques.filter(
+          (c) => !currentCheques.find((ch) => ch.ChequeID === c.ChequeID)
+        )
+      );
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
@@ -105,11 +129,9 @@ const CollectionRejectionChequeModal = ({
         //   DurationTypeID,
         DurationTypeTitle,
         //   FrontSideAccountID,
-        //   FrontSideMemberID,
-        FrontSideFirstName,
-        FrontSideLastName,
-        CompanyID,
-        CompanyTitle,
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeTitle,
         //   InfoTitle,
       } = cheque;
 
@@ -168,9 +190,9 @@ const CollectionRejectionChequeModal = ({
           </Descriptions.Item>
           <Descriptions.Item label={Words.front_side}>
             <Text style={{ color: valueColor }}>
-              {CompanyID > 0
-                ? CompanyTitle
-                : `${FrontSideFirstName} ${FrontSideLastName}`}
+              {utils.farsiNum(
+                `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`
+              )}
             </Text>
           </Descriptions.Item>
         </Descriptions>
@@ -178,6 +200,16 @@ const CollectionRejectionChequeModal = ({
     }
 
     return result;
+  };
+
+  const handleChangeCheque = (value) => {
+    const cheque = cheques.find((c) => c.ChequeID === value);
+    cheque.ItemID = record.ItemID;
+    onSelectCheque(cheque);
+
+    const rec = { ...record };
+    rec.ChequeID = value || 0;
+    setRecord(rec);
   };
 
   //------
@@ -206,6 +238,7 @@ const CollectionRejectionChequeModal = ({
                 formConfig={formConfig}
                 required
                 autoFocus
+                onChange={handleChangeCheque}
               />
             </Col>
           )}

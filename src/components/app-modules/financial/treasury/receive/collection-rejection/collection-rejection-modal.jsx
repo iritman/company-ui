@@ -64,8 +64,8 @@ const CollectionRejectionModal = ({
   const [showDemandModal, setShowDemandModal] = useState(false);
 
   const [selectedTab, setSelectedTab] = useState("cheques");
-  const [bankAccountCheques, setBankAccountCheques] = useState([]);
-  const [bankAccountDemands, setBankAccountDemands] = useState([]);
+  const [selectedCheque, setSelectedCheque] = useState(null);
+  const [selectedDemand, setSelectedDemand] = useState(null);
 
   const resetContext = useResetContext();
 
@@ -124,8 +124,7 @@ const CollectionRejectionModal = ({
       setHasRejectAccess(HasRejectAccess);
 
       if (selectedObject !== null) {
-        await loadBankAccountCheques(selectedObject.CompanyBankAccountID);
-        await loadBankAccountDemands(selectedObject.CompanyBankAccountID);
+        setSelectedTab(selectedObject.ItemType === 1 ? "cheques" : "demands");
       }
     } catch (ex) {
       handleError(ex);
@@ -159,52 +158,11 @@ const CollectionRejectionModal = ({
     );
   };
 
-  const loadBankAccountCheques = async (bank_account_id) => {
-    setProgress(true);
+  //------
 
-    try {
-      const data = await service.getCheques(bank_account_id);
-      setBankAccountCheques(data.Cheques);
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setProgress(false);
-  };
-
-  const loadBankAccountDemands = async (bank_account_id) => {
-    setProgress(true);
-
-    try {
-      const data = await service.getDemands(bank_account_id);
-      setBankAccountDemands(data.Demands);
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setProgress(false);
-  };
-
-  const handleChangeBankAccount = async (value) => {
-    const rec = { ...record };
-    rec.CompanyBankAccountID = value || 0;
-    setRecord(rec);
-
-    //--- load cheques for selected bank account
-
-    if (value > 0) {
-      setProgress(true);
-      try {
-        await loadBankAccountCheques(value);
-        await loadBankAccountDemands(value);
-      } catch (ex) {
-        handleError(ex);
-      }
-      setProgress(false);
-    } else {
-      setBankAccountCheques([]);
-      setBankAccountDemands([]);
-    }
+  const handleSelectCheque = (cheque) => {
+    if (cheque.ChequeID > 0) setSelectedCheque(cheque);
+    else setSelectedCheque(null);
   };
 
   //------
@@ -212,9 +170,6 @@ const CollectionRejectionModal = ({
   const handleSaveCheque = async (cheque) => {
     if (selectedObject !== null) {
       cheque.CollectionRejectionID = selectedObject.CollectionRejectionID;
-      cheque.Amount = bankAccountCheques.find(
-        (c) => c.ChequeID === cheque.ChequeID
-      )?.Amount;
 
       const saved_cheque = await onSaveCollectionRejectionItem(
         "cheque",
@@ -232,9 +187,7 @@ const CollectionRejectionModal = ({
         record.Cheques[index] = saved_cheque;
       }
     } else {
-      const cheque_to_save = bankAccountCheques.find(
-        (c) => c.ChequeID === cheque.ChequeID
-      );
+      const cheque_to_save = { ...selectedCheque };
 
       //--- add needed fields (ItemID, StatusID, StatusTitle) to selected cheque
 
@@ -273,9 +226,6 @@ const CollectionRejectionModal = ({
           cheque_to_delete.ItemID
         );
 
-        //--- After delete cheque, update new selectable cheques
-        await loadBankAccountCheques(selectedObject.CompanyBankAccountID);
-
         record.Cheques = record.Cheques.filter(
           (i) => i.ItemID !== cheque_to_delete.ItemID
         );
@@ -305,12 +255,14 @@ const CollectionRejectionModal = ({
 
   //------
 
+  const handleSelectDemand = (demand) => {
+    if (demand.DemandID > 0) setSelectedDemand(demand);
+    else setSelectedDemand(null);
+  };
+
   const handleSaveDemand = async (demand) => {
     if (selectedObject !== null) {
       demand.CollectionRejectionID = selectedObject.CollectionRejectionID;
-      demand.Amount = bankAccountDemands.find(
-        (c) => c.DemandID === demand.DemandID
-      )?.Amount;
 
       const saved_demand = await onSaveCollectionRejectionItem(
         "demand",
@@ -328,9 +280,7 @@ const CollectionRejectionModal = ({
         record.Demands[index] = saved_demand;
       }
     } else {
-      const demand_to_save = bankAccountDemands.find(
-        (c) => c.DemandID === demand.DemandID
-      );
+      const demand_to_save = { ...selectedDemand };
 
       //--- add needed fields (ItemID, StatusID, StatusTitle) to selected demand
 
@@ -368,9 +318,6 @@ const CollectionRejectionModal = ({
           "ItemID",
           demand_to_delete.ItemID
         );
-
-        //--- After delete demand, update new selectable demands
-        await loadBankAccountDemands(selectedObject.CompanyBankAccountID);
 
         record.Demands = record.Demands.filter(
           (i) => i.ItemID !== demand_to_delete.ItemID
@@ -419,13 +366,11 @@ const CollectionRejectionModal = ({
     handleShowNewModal();
   };
 
-  const isNewButtonVisible = () => {
-    return (
-      status_id === 1 &&
-      record.CompanyBankAccountID > 0 &&
-      ((selectedTab === "cheques" && filteredCheques.length > 0) ||
-        (selectedTab === "demands" && filteredDemands.length > 0))
-    );
+  const handleChangeItemType = (value) => {
+    const rec = { ...record };
+    rec.ItemType = value || 0;
+    setRecord(rec);
+    setSelectedTab(value === 1 ? "cheques" : "demands");
   };
 
   //------
@@ -459,14 +404,6 @@ const CollectionRejectionModal = ({
     handleDeleteDemand,
   };
 
-  const filteredCheques = bankAccountCheques.filter(
-    (c) => !record.Cheques.find((cc) => cc.ChequeID === c.ChequeID)
-  );
-
-  const filteredDemands = bankAccountDemands.filter(
-    (d) => !record.Demands.find((dd) => dd.DemandID === d.DemandID)
-  );
-
   return (
     <>
       <ModalWindow
@@ -487,9 +424,11 @@ const CollectionRejectionModal = ({
                 keyColumn="CompanyBankAccountID"
                 valueColumn="InfoTitle"
                 formConfig={formConfig}
-                onChange={handleChangeBankAccount}
                 required
                 autoFocus
+                disabled={
+                  record?.Cheques?.length > 0 || record?.Demands?.length > 0
+                }
               />
             </Col>
             <Col xs={24} md={12}>
@@ -500,6 +439,10 @@ const CollectionRejectionModal = ({
                 valueColumn="Title"
                 formConfig={formConfig}
                 required
+                disabled={
+                  record?.Cheques?.length > 0 || record?.Demands?.length > 0
+                }
+                onChange={handleChangeItemType}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -543,21 +486,25 @@ const CollectionRejectionModal = ({
               </Col>
             )}
 
-            <Col xs={24}>
-              <Form.Item>
-                <Tabs
-                  type="card"
-                  defaultActiveKey="1"
-                  onChange={(key) => setSelectedTab(key)}
-                  items={getTabPanes(tabPanesConfig)}
-                />
-              </Form.Item>
-            </Col>
+            {record?.ItemType > 0 && record?.CompanyBankAccountID > 0 && (
+              <>
+                <Col xs={24}>
+                  <Form.Item>
+                    <Tabs
+                      type="card"
+                      defaultActiveKey="1"
+                      onChange={(key) => setSelectedTab(key)}
+                      items={getTabPanes(tabPanesConfig)}
+                    />
+                  </Form.Item>
+                </Col>
 
-            {isNewButtonVisible() && (
-              <Col xs={24}>
-                <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
-              </Col>
+                {status_id === 1 && (
+                  <Col xs={24}>
+                    <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
+                  </Col>
+                )}
+              </>
             )}
           </Row>
         </Form>
@@ -567,8 +514,10 @@ const CollectionRejectionModal = ({
         <ChequeModal
           isOpen={showChequeModal}
           selectedObject={selectedItem}
-          cheques={filteredCheques}
+          currentCheques={record.Cheques}
+          companyBankAccountID={record?.CompanyBankAccountID}
           itemStatuses={itemStatuses}
+          onSelectCheque={handleSelectCheque}
           onOk={handleSaveCheque}
           onCancel={handleCloseChequeModal}
         />
@@ -578,8 +527,10 @@ const CollectionRejectionModal = ({
         <DemandModal
           isOpen={showDemandModal}
           selectedObject={selectedItem}
-          demands={filteredDemands}
+          currentDemands={record.Demands}
+          companyBankAccountID={record?.CompanyBankAccountID}
           itemStatuses={itemStatuses}
+          onSelectDemand={handleSelectDemand}
           onOk={handleSaveDemand}
           onCancel={handleCloseDemandModal}
         />

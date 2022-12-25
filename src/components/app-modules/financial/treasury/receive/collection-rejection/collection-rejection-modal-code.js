@@ -60,15 +60,11 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.front_side,
       width: 200,
       align: "center",
-      // dataIndex: "Title",
-      sorter: getSorter("LastName"),
-      render: (record) => (
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(
-            record.FrontSideMemberID > 0
-              ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
-              : `${record.CompanyTitle}`
-          )}
+          {utils.farsiNum(FrontSideAccountTitle)}
         </Text>
       ),
     },
@@ -252,15 +248,11 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.front_side,
       width: 200,
       align: "center",
-      // dataIndex: "Title",
-      sorter: getSorter("LastName"),
-      render: (record) => (
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(
-            record.FrontSideMemberID > 0
-              ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
-              : `${record.CompanyTitle}`
-          )}
+          {utils.farsiNum(FrontSideAccountTitle)}
         </Text>
       ),
     },
@@ -505,52 +497,61 @@ export const getTabPanes = (config) => {
     handleDeleteDemand,
   } = config;
 
-  return [
-    {
-      label: Words.cheque,
-      key: "cheques",
-      children: (
-        <Row gutter={[0, 15]}>
-          <Col xs={24}>
-            <DetailsTable
-              records={record.Cheques}
-              columns={getChequeColumns(
-                access,
-                status_id,
-                handleEditCheque,
-                handleDeleteCheque
-              )}
-            />
-          </Col>
-          <Col xs={24}>
-            <PriceViewer price={price.ChequesAmount} />
-          </Col>
-        </Row>
-      ),
-    },
-    {
-      label: Words.demand,
-      key: "demands",
-      children: (
-        <Row gutter={[0, 15]}>
-          <Col xs={24}>
-            <DetailsTable
-              records={record.Demands}
-              columns={getDemandColumns(
-                access,
-                status_id,
-                handleEditDemand,
-                handleDeleteDemand
-              )}
-            />
-          </Col>
-          <Col xs={24}>
-            <PriceViewer price={price.DemandsAmount} />
-          </Col>
-        </Row>
-      ),
-    },
-  ];
+  let result = [];
+
+  if (record.ItemType === 1) {
+    result = [
+      {
+        label: Words.cheque,
+        key: "cheques",
+        children: (
+          <Row gutter={[0, 15]}>
+            <Col xs={24}>
+              <DetailsTable
+                records={record.Cheques}
+                columns={getChequeColumns(
+                  access,
+                  status_id,
+                  handleEditCheque,
+                  handleDeleteCheque
+                )}
+              />
+            </Col>
+            <Col xs={24}>
+              <PriceViewer price={price.ChequesAmount} />
+            </Col>
+          </Row>
+        ),
+      },
+    ];
+  } else if (record.ItemType === 2) {
+    result = [
+      {
+        label: Words.demand,
+        key: "demands",
+        children: (
+          <Row gutter={[0, 15]}>
+            <Col xs={24}>
+              <DetailsTable
+                records={record.Demands}
+                columns={getDemandColumns(
+                  access,
+                  status_id,
+                  handleEditDemand,
+                  handleDeleteDemand
+                )}
+              />
+            </Col>
+            <Col xs={24}>
+              <PriceViewer price={price.DemandsAmount} />
+            </Col>
+          </Row>
+        ),
+      },
+    ];
+  }
+
+  return result;
 };
 
 export const getDisableStatus = (record) => {

@@ -26,15 +26,11 @@ const cheque_columns = [
     title: Words.front_side,
     width: 200,
     align: "center",
-    // dataIndex: "Title",
-    sorter: getSorter("LastName"),
-    render: (record) => (
+    dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
+    render: (FrontSideAccountTitle) => (
       <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(
-          record.FrontSideMemberID > 0
-            ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
-            : `${record.CompanyTitle}`
-        )}
+        {utils.farsiNum(FrontSideAccountTitle)}
       </Text>
     ),
   },
@@ -170,15 +166,11 @@ const demand_columns = [
     title: Words.front_side,
     width: 200,
     align: "center",
-    // dataIndex: "Title",
-    sorter: getSorter("LastName"),
-    render: (record) => (
+    dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
+    render: (FrontSideAccountTitle) => (
       <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(
-          record.FrontSideMemberID > 0
-            ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
-            : `${record.CompanyTitle}`
-        )}
+        {utils.farsiNum(FrontSideAccountTitle)}
       </Text>
     ),
   },
@@ -359,7 +351,7 @@ const CollectionRejectionDetailsModal = ({ selectedObject, isOpen, onOk }) => {
             </Descriptions.Item>
 
             <Descriptions.Item label={Words.item_type}>
-              <Text style={{ color: valueColor }}>
+              <Text style={{ color: Colors.red[6] }}>
                 {ItemType === 1 ? Words.cheque : Words.demand}
               </Text>
             </Descriptions.Item>
@@ -424,26 +416,31 @@ const CollectionRejectionDetailsModal = ({ selectedObject, isOpen, onOk }) => {
         </Col>
         <Col xs={24}>
           <Tabs type="card" defaultActiveKey="1">
-            <TabPane tab={Words.cheque} key="cheque">
-              <Row gutter={[0, 15]}>
-                <Col xs={24}>
-                  <DetailsTable records={Cheques} columns={cheque_columns} />
-                </Col>
-                <Col xs={24}>
-                  <PriceViewer price={price.ChequesAmount} />
-                </Col>
-              </Row>
-            </TabPane>
-            <TabPane tab={Words.demand} key="demand">
-              <Row gutter={[0, 15]}>
-                <Col xs={24}>
-                  <DetailsTable records={Demands} columns={demand_columns} />
-                </Col>
-                <Col xs={24}>
-                  <PriceViewer price={price.DemandsAmount} />
-                </Col>
-              </Row>
-            </TabPane>
+            {ItemType === 1 && (
+              <TabPane tab={Words.cheque} key="cheque">
+                <Row gutter={[0, 15]}>
+                  <Col xs={24}>
+                    <DetailsTable records={Cheques} columns={cheque_columns} />
+                  </Col>
+                  <Col xs={24}>
+                    <PriceViewer price={price.ChequesAmount} />
+                  </Col>
+                </Row>
+              </TabPane>
+            )}
+
+            {ItemType === 2 && (
+              <TabPane tab={Words.demand} key="demand">
+                <Row gutter={[0, 15]}>
+                  <Col xs={24}>
+                    <DetailsTable records={Demands} columns={demand_columns} />
+                  </Col>
+                  <Col xs={24}>
+                    <PriceViewer price={price.DemandsAmount} />
+                  </Col>
+                </Row>
+              </TabPane>
+            )}
           </Tabs>
         </Col>
       </Row>

@@ -11,8 +11,10 @@ import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
+  handleError,
 } from "../../../../../../tools/form-manager";
 import DropdownItem from "./../../../../../form-controls/dropdown-item";
+import service from "../../../../../../services/financial/treasury/receive/collection-rejections-service";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -34,14 +36,18 @@ const formRef = React.createRef();
 const CollectionRejectionDemandModal = ({
   isOpen,
   selectedObject,
-  demands,
+  currentDemands,
+  companyBankAccountID,
   itemStatuses,
   onOk,
   onCancel,
+  onSelectDemand,
 }) => {
   const [progress, setProgress] = useState(false);
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
+
+  const [demands, setDemands] = useState([]);
 
   const formConfig = {
     schema,
@@ -64,6 +70,24 @@ const CollectionRejectionDemandModal = ({
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
     initModal(formRef, selectedObject, setRecord);
+
+    //------
+
+    setProgress(true);
+
+    try {
+      const data = await service.getDemands(companyBankAccountID);
+
+      setDemands(
+        data.Demands.filter(
+          (d) => !currentDemands.find((dm) => dm.DemandID === d.DemandID)
+        )
+      );
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
@@ -99,11 +123,9 @@ const CollectionRejectionDemandModal = ({
         //   DurationTypeID,
         DurationTypeTitle,
         //   FrontSideAccountID,
-        //   FrontSideMemberID,
-        FrontSideFirstName,
-        FrontSideLastName,
-        CompanyID,
-        CompanyTitle,
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeTitle,
         //   InfoTitle,
       } = demand;
 
@@ -141,11 +163,11 @@ const CollectionRejectionDemandModal = ({
           <Descriptions.Item label={Words.duration_type}>
             <Text style={{ color: valueColor }}>{DurationTypeTitle}</Text>
           </Descriptions.Item>
-          <Descriptions.Item label={Words.front_side} span={2}>
+          <Descriptions.Item label={Words.front_side}>
             <Text style={{ color: valueColor }}>
-              {CompanyID > 0
-                ? CompanyTitle
-                : `${FrontSideFirstName} ${FrontSideLastName}`}
+              {utils.farsiNum(
+                `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`
+              )}
             </Text>
           </Descriptions.Item>
         </Descriptions>
@@ -153,6 +175,16 @@ const CollectionRejectionDemandModal = ({
     }
 
     return result;
+  };
+
+  const handleChangeDemand = (value) => {
+    const demand = demands.find((c) => c.DemandID === value);
+    demand.ItemID = record.ItemID;
+    onSelectDemand(demand);
+
+    const rec = { ...record };
+    rec.DemandID = value || 0;
+    setRecord(rec);
   };
 
   //------
@@ -181,6 +213,7 @@ const CollectionRejectionDemandModal = ({
                 formConfig={formConfig}
                 required
                 autoFocus
+                onChange={handleChangeDemand}
               />
             </Col>
           )}
