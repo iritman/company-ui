@@ -35,6 +35,7 @@ const BankHandOverChequeModal = ({
   isOpen,
   selectedObject,
   currentCheques,
+  companyBankAccountID,
   onOk,
   onCancel,
   onSelectCheque,
@@ -71,7 +72,7 @@ const BankHandOverChequeModal = ({
     setProgress(true);
 
     try {
-      const data = await service.getCheques();
+      const data = await service.getCheques(companyBankAccountID);
 
       setCheques(
         data.Cheques.filter(
@@ -102,10 +103,14 @@ const BankHandOverChequeModal = ({
 
   const renderSelectedChequeInfo = () => {
     let result = <></>;
+    let cheque = null;
 
-    if (cheques && cheques.length > 0) {
-      const cheque = cheques.find((c) => c.ChequeID === record.ChequeID);
+    if (selectedObject !== null) cheque = { ...selectedObject };
+    else if (cheques && cheques.length > 0) {
+      cheque = cheques.find((c) => c.ChequeID === record.ChequeID);
+    }
 
+    if (cheque) {
       const {
         //   ChequeID,
         ChequeNo,
@@ -120,11 +125,9 @@ const BankHandOverChequeModal = ({
         //   DurationTypeID,
         DurationTypeTitle,
         //   FrontSideAccountID,
-        //   FrontSideMemberID,
-        FrontSideFirstName,
-        FrontSideLastName,
-        CompanyID,
-        CompanyTitle,
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeTitle,
         //   InfoTitle,
       } = cheque;
 
@@ -183,9 +186,9 @@ const BankHandOverChequeModal = ({
           </Descriptions.Item>
           <Descriptions.Item label={Words.front_side}>
             <Text style={{ color: valueColor }}>
-              {CompanyID > 0
-                ? CompanyTitle
-                : `${FrontSideFirstName} ${FrontSideLastName}`}
+              {utils.farsiNum(
+                `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`
+              )}
             </Text>
           </Descriptions.Item>
         </Descriptions>
@@ -221,18 +224,20 @@ const BankHandOverChequeModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
-            <DropdownItem
-              title={Words.cheque}
-              dataSource={cheques}
-              keyColumn="ChequeID"
-              valueColumn="InfoTitle"
-              formConfig={formConfig}
-              required
-              autoFocus
-              onChange={handleChangeCheque}
-            />
-          </Col>
+          {selectedObject === null && (
+            <Col xs={24}>
+              <DropdownItem
+                title={Words.cheque}
+                dataSource={cheques}
+                keyColumn="ChequeID"
+                valueColumn="InfoTitle"
+                formConfig={formConfig}
+                required
+                autoFocus
+                onChange={handleChangeCheque}
+              />
+            </Col>
+          )}
 
           {record.ChequeID > 0 && (
             <Col xs={24}>{renderSelectedChequeInfo()}</Col>

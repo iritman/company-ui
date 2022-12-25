@@ -59,15 +59,11 @@ export const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.front_side,
       width: 200,
       align: "center",
-      // dataIndex: "Title",
-      sorter: getSorter("LastName"),
-      render: (record) => (
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(
-            record.FrontSideMemberID > 0
-              ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
-              : `${record.CompanyTitle}`
-          )}
+          {utils.farsiNum(FrontSideAccountTitle)}
         </Text>
       ),
     },
@@ -239,15 +235,11 @@ export const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.front_side,
       width: 200,
       align: "center",
-      // dataIndex: "Title",
-      sorter: getSorter("LastName"),
-      render: (record) => (
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(
-            record.FrontSideMemberID > 0
-              ? `${record.FrontSideFirstName} ${record.FrontSideLastName}`
-              : `${record.CompanyTitle}`
-          )}
+          {utils.farsiNum(FrontSideAccountTitle)}
         </Text>
       ),
     },

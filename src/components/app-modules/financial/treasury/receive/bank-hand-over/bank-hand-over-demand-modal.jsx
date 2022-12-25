@@ -35,6 +35,7 @@ const BankHandOverDemandModal = ({
   isOpen,
   selectedObject,
   currentDemands,
+  companyBankAccountID,
   onOk,
   onCancel,
   onSelectDemand,
@@ -71,7 +72,7 @@ const BankHandOverDemandModal = ({
     setProgress(true);
 
     try {
-      const data = await service.getDemands();
+      const data = await service.getDemands(companyBankAccountID);
 
       setDemands(
         data.Demands.filter(
@@ -102,10 +103,14 @@ const BankHandOverDemandModal = ({
 
   const renderSelectedDemandInfo = () => {
     let result = <></>;
+    let demand = null;
 
-    if (demands && demands.length > 0) {
-      const demand = demands.find((d) => d.DemandID === record.DemandID);
+    if (selectedObject !== null) demand = { ...selectedObject };
+    else if (demands && demands.length > 0) {
+      demand = demands.find((d) => d.DemandID === record.DemandID);
+    }
 
+    if (demand) {
       const {
         //   DemandID,
         DemandNo,
@@ -115,10 +120,9 @@ const BankHandOverDemandModal = ({
         DurationTypeTitle,
         //   FrontSideAccountID,
         //   FrontSideMemberID,
-        FrontSideFirstName,
-        FrontSideLastName,
-        CompanyID,
-        CompanyTitle,
+        FrontSideAccountTitle,
+        TafsilCode,
+        TafsilTypeTitle,
         //   InfoTitle,
       } = demand;
 
@@ -158,9 +162,9 @@ const BankHandOverDemandModal = ({
           </Descriptions.Item>
           <Descriptions.Item label={Words.front_side}>
             <Text style={{ color: valueColor }}>
-              {CompanyID > 0
-                ? CompanyTitle
-                : `${FrontSideFirstName} ${FrontSideLastName}`}
+              {utils.farsiNum(
+                `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`
+              )}
             </Text>
           </Descriptions.Item>
         </Descriptions>
@@ -196,18 +200,20 @@ const BankHandOverDemandModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
-            <DropdownItem
-              title={Words.demand}
-              dataSource={demands}
-              keyColumn="DemandID"
-              valueColumn="InfoTitle"
-              formConfig={formConfig}
-              required
-              autoFocus
-              onChange={handleChangeDemand}
-            />
-          </Col>
+          {selectedObject === null && (
+            <Col xs={24}>
+              <DropdownItem
+                title={Words.demand}
+                dataSource={demands}
+                keyColumn="DemandID"
+                valueColumn="InfoTitle"
+                formConfig={formConfig}
+                required
+                autoFocus
+                onChange={handleChangeDemand}
+              />
+            </Col>
+          )}
 
           {record.DemandID > 0 && (
             <Col xs={24}>{renderSelectedDemandInfo()}</Col>

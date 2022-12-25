@@ -57,14 +57,18 @@ export async function deleteItem(itemType, recordID) {
   return data;
 }
 
-export async function getCheques() {
-  const { data } = await http.get(`${apiEndpoint}/cheques`);
+export async function getCheques(company_bank_account_id) {
+  const { data } = await http.get(
+    `${apiEndpoint}/cheques/${company_bank_account_id}`
+  );
 
   return data;
 }
 
-export async function getDemands() {
-  const { data } = await http.get(`${apiEndpoint}/demands`);
+export async function getDemands(company_bank_account_id) {
+  const { data } = await http.get(
+    `${apiEndpoint}/demands/${company_bank_account_id}`
+  );
 
   return data;
 }

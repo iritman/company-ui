@@ -486,6 +486,9 @@ const BankHandOverModal = ({
                 formConfig={formConfig}
                 required
                 autoFocus
+                disabled={
+                  record?.Cheques?.length > 0 || record?.Demands?.length > 0
+                }
               />
             </Col>
             <Col xs={24} md={12}>
@@ -553,7 +556,7 @@ const BankHandOverModal = ({
               </Col>
             )}
 
-            {record?.ItemType > 0 && (
+            {record?.ItemType > 0 && record?.CompanyBankAccountID > 0 && (
               <>
                 <Col xs={24}>
                   <Form.Item>
@@ -623,6 +626,7 @@ const BankHandOverModal = ({
           isOpen={showChequeModal}
           selectedObject={selectedItem}
           currentCheques={record.Cheques}
+          companyBankAccountID={record?.CompanyBankAccountID}
           onSelectCheque={handleSelectCheque}
           onOk={handleSaveCheque}
           onCancel={handleCloseChequeModal}
@@ -634,6 +638,7 @@ const BankHandOverModal = ({
           isOpen={showDemandModal}
           selectedObject={selectedItem}
           currentDemands={record.Demands}
+          companyBankAccountID={record?.CompanyBankAccountID}
           onSelectDemand={handleSelectDemand}
           onOk={handleSaveDemand}
           onCancel={handleCloseDemandModal}
