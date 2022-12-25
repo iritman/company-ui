@@ -100,6 +100,7 @@ const UserGroupFeatureItemModal = ({
     switch (featureTypeID) {
       case 1:
         schema.TextValue = schema.TextValue.required();
+        schema.DateValue = schema.DateValue.allow("");
         break;
       case 2:
         schema.TextValue = schema.TextValue.allow("");
