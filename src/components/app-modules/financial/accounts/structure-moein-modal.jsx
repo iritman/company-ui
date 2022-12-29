@@ -34,7 +34,7 @@ const schema = {
     .required()
     .label(Words.title)
     .regex(utils.VALID_REGEX),
-  AccountTypeID: Joi.number().min(1).required(),
+  // AccountTypeID: Joi.number().min(1).required(),
   NatureID: Joi.number().min(1).required(),
   CurrencyID: Joi.number().required(),
   DetailsText: Joi.string()
@@ -54,7 +54,7 @@ const initRecord = {
   //   TotalID: 0,
   MoeinCode: 0,
   Title: "",
-  AccountTypeID: 0,
+  // AccountTypeID: 0,
   NatureID: 0,
   CurrencyID: 0,
   DetailsText: "",
@@ -85,7 +85,7 @@ const StructureMoeinModal = ({
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
-  const [accountTypes, setAccountTypes] = useState([]);
+  // const [accountTypes, setAccountTypes] = useState([]);
   const [natures, setNatures] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [controlTypes, setControlTypes] = useState([]);
@@ -106,7 +106,7 @@ const StructureMoeinModal = ({
   const clearRecord = () => {
     record.MoeinCode = 0;
     record.Title = "";
-    record.AccountTypeID = 0;
+    // record.AccountTypeID = 0;
     record.NatureID = 0;
     record.CurrencyID = 0;
     record.DetailsText = "";
@@ -147,10 +147,10 @@ const StructureMoeinModal = ({
     try {
       const data = await service.getParams();
 
-      let { AccountTypes, Natures, Currencies, ControlTypes, TafsilTypes } =
+      let { /*AccountTypes,*/ Natures, Currencies, ControlTypes, TafsilTypes } =
         data;
 
-      setAccountTypes(AccountTypes);
+      // setAccountTypes(AccountTypes);
       setNatures(Natures);
       setCurrencies(Currencies);
       setControlTypes(ControlTypes);
@@ -243,7 +243,7 @@ const StructureMoeinModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={750}
+      width={850}
     >
       <Form ref={formRef} name="dataForm">
         <Tabs type="card" defaultActiveKey="1">
@@ -271,7 +271,7 @@ const StructureMoeinModal = ({
                   autoFocus
                 />
               </Col>
-              <Col xs={24} md={12}>
+              {/* <Col xs={24} md={12}>
                 <DropdownItem
                   title={Words.account_type}
                   dataSource={accountTypes}
@@ -280,7 +280,7 @@ const StructureMoeinModal = ({
                   formConfig={formConfig}
                   required
                 />
-              </Col>
+              </Col> */}
               <Col xs={24} md={12}>
                 <DropdownItem
                   title={Words.nature}
@@ -310,18 +310,7 @@ const StructureMoeinModal = ({
                   formConfig={formConfig}
                 />
               </Col>
-              <Col xs={24}>
-                <InputItem
-                  title={Words.descriptions}
-                  fieldName="DetailsText"
-                  multiline
-                  rows={7}
-                  showCount
-                  maxLength={512}
-                  formConfig={formConfig}
-                />
-              </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} md={6}>
                 <SwitchItem
                   title={Words.is_convertable}
                   fieldName="IsConvertable"
@@ -332,13 +321,24 @@ const StructureMoeinModal = ({
                   onChange={handleIsConvertableSwitchChange}
                 />
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} md={6}>
                 <SwitchItem
                   title={Words.status}
                   fieldName="IsActive"
                   initialValue={true}
                   checkedTitle={Words.active}
                   unCheckedTitle={Words.inactive}
+                  formConfig={formConfig}
+                />
+              </Col>
+              <Col xs={24}>
+                <InputItem
+                  title={Words.descriptions}
+                  fieldName="DetailsText"
+                  multiline
+                  rows={7}
+                  showCount
+                  maxLength={512}
                   formConfig={formConfig}
                 />
               </Col>

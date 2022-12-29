@@ -16,7 +16,7 @@ const StructureMoeinDetails = ({ moein }) => {
     MoeinID,
     GeneralMoeinCode,
     Title,
-    AccountTypeTitle,
+    // AccountTypeTitle,
     NatureTitle,
     CurrencyTitle,
     DetailsText,
@@ -62,10 +62,10 @@ const StructureMoeinDetails = ({ moein }) => {
           <Text style={{ color: Colors.cyan[6] }}>
             {utils.farsiNum(`${Title}`)}
           </Text>
-        </Descriptions.Item>  */}
+        </Descriptions.Item>  
         <Descriptions.Item label={Words.account_type}>
           <Text style={{ color: valueColor }}>{AccountTypeTitle}</Text>
-        </Descriptions.Item>
+        </Descriptions.Item>*/}
         <Descriptions.Item label={Words.nature}>
           <Text style={{ color: valueColor }}>{NatureTitle}</Text>
         </Descriptions.Item>
