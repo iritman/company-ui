@@ -19,7 +19,7 @@ const StructureTotalDetails = ({ total }) => {
     TotalCode,
     Title,
     // AccounTypeID,
-    AccountTypeTitle,
+    // AccountTypeTitle,
     // NatureID,
     NatureTitle,
     DetailsText,
@@ -54,10 +54,10 @@ const StructureTotalDetails = ({ total }) => {
           <Text style={{ color: Colors.cyan[6] }}>
             {utils.farsiNum(`${Title}`)}
           </Text>
-        </Descriptions.Item>  */}
+        </Descriptions.Item>  
         <Descriptions.Item label={Words.account_type}>
           <Text style={{ color: valueColor }}>{AccountTypeTitle}</Text>
-        </Descriptions.Item>
+        </Descriptions.Item>*/}
         <Descriptions.Item label={Words.nature}>
           <Text style={{ color: valueColor }}>{NatureTitle}</Text>
         </Descriptions.Item>

@@ -32,7 +32,7 @@ const schema = {
     .required()
     .label(Words.title)
     .regex(utils.VALID_REGEX),
-  AccountTypeID: Joi.number().min(1).required(),
+  // AccountTypeID: Joi.number().min(1).required(),
   NatureID: Joi.number().min(1).required(),
   DetailsText: Joi.string()
     .min(5)
@@ -48,7 +48,7 @@ const initRecord = {
   //   GroupID: 0,
   TotalCode: 0,
   Title: "",
-  AccountTypeID: 0,
+  // AccountTypeID: 0,
   NatureID: 0,
   DetailsText: "",
   IsActive: true,
@@ -66,7 +66,7 @@ const StructureTotalModal = ({
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
-  const [accountTypes, setAccountTypes] = useState([]);
+  // const [accountTypes, setAccountTypes] = useState([]);
   const [natures, setNatures] = useState([]);
 
   const resetContext = useResetContext();
@@ -82,7 +82,7 @@ const StructureTotalModal = ({
   const clearRecord = () => {
     record.TotalCode = 0;
     record.Title = "";
-    record.AccountTypeID = 0;
+    // record.AccountTypeID = 0;
     record.NatureID = 0;
     record.DetailsText = "";
     record.IsActive = true;
@@ -106,9 +106,9 @@ const StructureTotalModal = ({
     try {
       const data = await service.getParams();
 
-      let { AccountTypes, Natures } = data;
+      let { /*AccountTypes,*/ Natures } = data;
 
-      setAccountTypes(AccountTypes);
+      // setAccountTypes(AccountTypes);
       setNatures(Natures);
 
       if (!selectedObject) {
@@ -179,7 +179,7 @@ const StructureTotalModal = ({
               autoFocus
             />
           </Col>
-          <Col xs={24} md={12}>
+          {/* <Col xs={24} md={12}>
             <DropdownItem
               title={Words.account_type}
               dataSource={accountTypes}
@@ -188,7 +188,7 @@ const StructureTotalModal = ({
               formConfig={formConfig}
               required
             />
-          </Col>
+          </Col> */}
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.nature}
@@ -199,6 +199,16 @@ const StructureTotalModal = ({
               required
             />
           </Col>
+          <Col xs={24} md={12}>
+            <SwitchItem
+              title={Words.status}
+              fieldName="IsActive"
+              initialValue={true}
+              checkedTitle={Words.active}
+              unCheckedTitle={Words.inactive}
+              formConfig={formConfig}
+            />
+          </Col>
           <Col xs={24}>
             <InputItem
               title={Words.descriptions}
@@ -207,16 +217,6 @@ const StructureTotalModal = ({
               rows={7}
               showCount
               maxLength={512}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24}>
-            <SwitchItem
-              title={Words.status}
-              fieldName="IsActive"
-              initialValue={true}
-              checkedTitle={Words.active}
-              unCheckedTitle={Words.inactive}
               formConfig={formConfig}
             />
           </Col>
