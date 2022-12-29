@@ -35,6 +35,11 @@ const schema = {
     .required()
     .regex(utils.VALID_REGEX)
     .label(Words.account_no),
+  AccountName: Joi.string()
+    .allow("")
+    .max(50)
+    .regex(utils.VALID_REGEX)
+    .label(Words.account_name),
   Credit: Joi.number().label(Words.credit),
   CurrencyID: Joi.number().min(1).required().label(Words.currency_type),
   ShebaID: Joi.string()
@@ -61,6 +66,7 @@ const initRecord = {
   BankID: 0,
   BranchID: 0,
   AccountNo: "",
+  AccountName: "",
   Credit: 0,
   CurrencyID: 0,
   ShebaID: "",
@@ -92,6 +98,7 @@ const CompanyBankAccountModal = ({
     record.BranchID = 0;
     record.BankID = 0;
     record.AccountNo = "";
+    record.AccountName = "";
     record.Credit = 0;
     record.CurrencyID = 0;
     record.ShebaID = "";
@@ -160,47 +167,51 @@ const CompanyBankAccountModal = ({
     let result = <></>;
 
     if (tafsilAccounts.length > 0 && record.TafsilAccountID > 0) {
-      const {
-        TafsilCode,
-        CurrencyTitle,
-        TafsilTypeTitle,
-        ParentTafsilTypeTitle,
-        // TafsilAccountID,
-        // Title,
-        // CurrencyID,
-        // TafsilTypeID,
-        // ParentTafsilTypeID,
-      } = tafsilAccounts.find(
+      const tafsil_account = tafsilAccounts.find(
         (acc) => acc.TafsilAccountID === record.TafsilAccountID
       );
 
-      result = (
-        <Descriptions
-          bordered
-          column={{
-            //   md: 2, sm: 2,
-            lg: 2,
-            md: 2,
-            xs: 1,
-          }}
-          size="middle"
-        >
-          <Descriptions.Item label={Words.tafsil_code}>
-            <Text style={{ color: Colors.red[6] }}>
-              {utils.farsiNum(`${TafsilCode}`)}
-            </Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.tafsil_type}>
-            <Text style={{ color: valueColor }}>{TafsilTypeTitle}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.parent_tafsil_type}>
-            <Text style={{ color: valueColor }}>{ParentTafsilTypeTitle}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.default_currency}>
-            <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
-          </Descriptions.Item>
-        </Descriptions>
-      );
+      if (tafsil_account) {
+        const {
+          TafsilCode,
+          CurrencyTitle,
+          TafsilTypeTitle,
+          ParentTafsilTypeTitle,
+          // TafsilAccountID,
+          // Title,
+          // CurrencyID,
+          // TafsilTypeID,
+          // ParentTafsilTypeID,
+        } = tafsil_account;
+
+        result = (
+          <Descriptions
+            bordered
+            column={{
+              //   md: 2, sm: 2,
+              lg: 2,
+              md: 2,
+              xs: 1,
+            }}
+            size="middle"
+          >
+            <Descriptions.Item label={Words.tafsil_code}>
+              <Text style={{ color: Colors.red[6] }}>
+                {utils.farsiNum(`${TafsilCode}`)}
+              </Text>
+            </Descriptions.Item>
+            <Descriptions.Item label={Words.tafsil_type}>
+              <Text style={{ color: valueColor }}>{TafsilTypeTitle}</Text>
+            </Descriptions.Item>
+            <Descriptions.Item label={Words.parent_tafsil_type}>
+              <Text style={{ color: valueColor }}>{ParentTafsilTypeTitle}</Text>
+            </Descriptions.Item>
+            <Descriptions.Item label={Words.default_currency}>
+              <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
+            </Descriptions.Item>
+          </Descriptions>
+        );
+      }
     }
 
     return result;
@@ -252,6 +263,14 @@ const CompanyBankAccountModal = ({
                   valueColumn="Title"
                   formConfig={formConfig}
                   required
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <InputItem
+                  title={Words.account_name}
+                  fieldName="AccountName"
+                  formConfig={formConfig}
+                  maxLength={50}
                 />
               </Col>
               <Col xs={24} md={12}>
