@@ -230,7 +230,7 @@ const TafsilAccountModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={750}
+      width={850}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 1]} style={{ marginLeft: 1 }}>
