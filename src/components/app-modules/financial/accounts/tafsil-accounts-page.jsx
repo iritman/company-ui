@@ -70,9 +70,11 @@ const baseColumns = [
     // sorter: getSorter("Title"),
     render: (record) => (
       <Text style={{ color: Colors.cyan[6] }}>
-        {record.BaseTableItemID === 0
-          ? record.Title
-          : record.BaseTableItemTitle}
+        {utils.farsiNum(
+          record.BaseTableItemID === 0
+            ? record.Title
+            : record.BaseTableItemTitle
+        )}
       </Text>
     ),
   },
@@ -83,7 +85,9 @@ const baseColumns = [
     dataIndex: "TafsilCode",
     sorter: getSorter("TafsilCode"),
     render: (TafsilCode) => (
-      <Text style={{ color: Colors.orange[6] }}>{TafsilCode}</Text>
+      <Text style={{ color: Colors.orange[6] }}>
+        {utils.farsiNum(TafsilCode)}
+      </Text>
     ),
   },
 ];
