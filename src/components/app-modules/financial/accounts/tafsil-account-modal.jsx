@@ -142,7 +142,10 @@ const TafsilAccountModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
         //------
 
-        const data_items = await service.getModuleItems(value);
+        const base_table_id = tafsilTypes.find(
+          (t) => t.TafsilTypeID === value
+        ).BaseTableID;
+        const data_items = await service.getModuleItems(base_table_id);
         const { ModuleItems } = data_items;
 
         ModuleItems.forEach((item) => {
