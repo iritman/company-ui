@@ -30,6 +30,7 @@ const getSheets = (records) => [
     data: records,
     columns: [
       { label: Words.id, value: "StoreID" },
+      { label: Words.storage_center, value: "StorageCenterTitle" },
       { label: Words.title, value: "Title" },
       {
         label: Words.store_manager,
@@ -69,6 +70,16 @@ const baseColumns = [
     dataIndex: "Title",
     sorter: getSorter("Title"),
     render: (Title) => <Text style={{ color: Colors.blue[7] }}>{Title}</Text>,
+  },
+  {
+    title: Words.storage_center,
+    width: 200,
+    align: "center",
+    dataIndex: "StorageCenterTitle",
+    sorter: getSorter("StorageCenterTitle"),
+    render: (StorageCenterTitle) => (
+      <Text style={{ color: Colors.orange[7] }}>{StorageCenterTitle}</Text>
+    ),
   },
   {
     title: Words.status,

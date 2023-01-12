@@ -11,7 +11,7 @@ import UserPricingTypesPage from "../../components/app-modules/financial/store-m
 import UserProductCategoriesPage from "../../components/app-modules/financial/store-management/user-product-categories-page";
 import UserFeaturesPage from "../../components/app-modules/financial/store-management/user-features-page";
 import UserInventoryControlAgentsPage from "../../components/app-modules/financial/store-management/user-inventory-control-agents-page";
-import UserProductsPage from "../../components/app-modules/financial/store-management/user-products-page";
+import UserProductsPage from "../../components/app-modules/financial/store-management/product/user-products-page";
 import UserBachPatternsPage from "../../components/app-modules/financial/store-management/user-bach-patterns-page";
 import UserBachesPage from "../../components/app-modules/financial/store-management/user-baches-page";
 import UserStorageCentersPage from "../../components/app-modules/financial/store-management/user-storage-centers-page";

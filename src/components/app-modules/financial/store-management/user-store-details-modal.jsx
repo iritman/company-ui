@@ -22,6 +22,18 @@ const { Text } = Typography;
 const UserStoreDetailsModal = ({ store, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
+  const {
+    StoreID,
+    // StorageCenterID,
+    StorageCenterTitle,
+    Title,
+    // ManagerMemberID,
+    ManagerFirstName,
+    ManagerLastName,
+    // ManagerPicFileName,
+    IsActive,
+  } = store;
+
   return (
     <Modal
       open={isOpen}
@@ -45,7 +57,7 @@ const UserStoreDetailsModal = ({ store, isOpen, onOk }) => {
           <Row gutter={[10, 10]}>
             <Col xs={24}>
               <Alert
-                message={utils.farsiNum(`${store.Title}`)}
+                message={utils.farsiNum(`${Title}`)}
                 type="info"
                 showIcon
               />
@@ -61,17 +73,24 @@ const UserStoreDetailsModal = ({ store, isOpen, onOk }) => {
                 }}
                 size="middle"
               >
-                {/* <Descriptions.Item label={Words.title} span={2}>
-                  <Text style={{ color: valueColor }}>{store.Title}</Text>
-                </Descriptions.Item> */}
+                <Descriptions.Item label={Words.id}>
+                  <Text style={{ color: valueColor }}>
+                    {utils.farsiNum(StoreID)}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.storage_center}>
+                  <Text style={{ color: Colors.orange[6] }}>
+                    {StorageCenterTitle}
+                  </Text>
+                </Descriptions.Item>
                 <Descriptions.Item label={Words.store_manager}>
                   <Text style={{ color: valueColor }}>
-                    {`${store.ManagerFirstName} ${store.ManagerLastName}`}
+                    {`${ManagerFirstName} ${ManagerLastName}`}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.status}>
                   <Space>
-                    {store.IsActive ? (
+                    {IsActive ? (
                       <CheckIcon style={{ color: Colors.green[6] }} />
                     ) : (
                       <LockIcon style={{ color: Colors.red[6] }} />
@@ -79,18 +98,12 @@ const UserStoreDetailsModal = ({ store, isOpen, onOk }) => {
 
                     <Text
                       style={{
-                        color: store.IsActive ? Colors.green[7] : Colors.red[7],
+                        color: IsActive ? Colors.green[7] : Colors.red[7],
                       }}
                     >
-                      {`${store.IsActive ? Words.active : Words.inactive} `}
+                      {`${IsActive ? Words.active : Words.inactive} `}
                     </Text>
                   </Space>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.tafsil_code}>
-                  <Text style={{ color: valueColor }}>{store.TafsilCode}</Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.tafsil_title}>
-                  <Text style={{ color: valueColor }}>{store.TafsilTitle}</Text>
                 </Descriptions.Item>
               </Descriptions>
             </Col>

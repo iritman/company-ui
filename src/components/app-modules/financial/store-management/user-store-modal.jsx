@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
@@ -23,6 +23,7 @@ import service from "../../../../services/financial/store-mgr/user-stores-servic
 
 const schema = {
   StoreID: Joi.number().required(),
+  StorageCenterID: Joi.number().required(),
   Title: Joi.string()
     .min(2)
     .max(50)
@@ -30,15 +31,14 @@ const schema = {
     .label(Words.title)
     .regex(utils.VALID_REGEX),
   ManagerMemberID: Joi.number().min(1).required().label(Words.store_manager),
-  TafsilID: Joi.number(),
   IsActive: Joi.boolean(),
 };
 
 const initRecord = {
   StoreID: 0,
+  StorageCenterID: 0,
   Title: "",
   ManagerMemberID: 0,
-  TafsilID: 0,
   IsActive: true,
 };
 
@@ -56,6 +56,8 @@ const UserStoreModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setErrors,
   } = useModalContext();
 
+  const [storageCenters, setStorageCenters] = useState([]);
+
   const resetContext = useResetContext();
 
   const formConfig = {
@@ -67,9 +69,9 @@ const UserStoreModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   };
 
   const clearRecord = () => {
+    record.StorageCenterID = 0;
     record.Title = "";
     record.ManagerMemberID = 0;
-    record.TafsilID = 0;
     record.IsActive = true;
 
     setRecord(record);
@@ -87,8 +89,9 @@ const UserStoreModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { Employees } = data;
+      const { StorageCenters, Employees } = data;
 
+      setStorageCenters(StorageCenters);
       setEmployees(Employees);
     } catch (ex) {
       handleError(ex);
@@ -118,11 +121,11 @@ const UserStoreModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={700}
+      width={750}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <InputItem
               title={Words.title}
               fieldName="Title"
@@ -130,6 +133,16 @@ const UserStoreModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               autoFocus
               maxLength={50}
               formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.storage_center}
+              dataSource={storageCenters}
+              keyColumn="StorageCenterID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
             />
           </Col>
           <Col xs={24} md={18}>
