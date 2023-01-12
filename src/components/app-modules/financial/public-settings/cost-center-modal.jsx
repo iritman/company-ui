@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Tabs } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -20,6 +20,7 @@ import {
   useModalContext,
   useResetContext,
 } from "./../../../contexts/modal-context";
+import TafsilInfoViewer from "../../../common/tafsil-info-viewer";
 
 const schema = {
   CostCenterID: Joi.number().required(),
@@ -102,18 +103,13 @@ const CostCenterModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     );
   };
 
-  return (
-    <ModalWindow
-      isOpen={isOpen}
-      isEdit={isEdit}
-      inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
-      onCancel={onCancel}
-      width={650}
-    >
-      <Form ref={formRef} name="dataForm">
+  //------
+
+  let items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <DropdownItem
@@ -146,6 +142,36 @@ const CostCenterModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             />
           </Col>
         </Row>
+      ),
+    },
+  ];
+
+  if (selectedObject !== null) {
+    const { TafsilInfo } = selectedObject;
+
+    items = [
+      ...items,
+      {
+        label: Words.tafsil_account,
+        key: "tafsil-account",
+        children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+      },
+    ];
+  }
+
+  return (
+    <ModalWindow
+      isOpen={isOpen}
+      isEdit={isEdit}
+      inProgress={progress}
+      disabled={validateForm({ record, schema }) && true}
+      onClear={clearRecord}
+      onSubmit={handleSubmit}
+      onCancel={onCancel}
+      width={650}
+    >
+      <Form ref={formRef} name="dataForm">
+        <Tabs defaultActiveKey="1" type="card" items={items} />
       </Form>
     </ModalWindow>
   );

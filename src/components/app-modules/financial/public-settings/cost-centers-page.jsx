@@ -15,10 +15,12 @@ import {
   getColumns,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
+import DetailsModal from "./cost-center-details-modal";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import CostCenterModal from "./cost-center-modal";
 import { usePageContext } from "../../../contexts/page-context";
+import DetailsButton from "../../../common/details-button";
 
 const { Text } = Typography;
 
@@ -92,7 +94,10 @@ const CostCentersPage = ({ pageName }) => {
     access,
     setAccess,
     selectedObject,
+    setSelectedObject,
     showModal,
+    showDetails,
+    setShowDetails,
   } = usePageContext();
 
   useMount(async () => {
@@ -114,8 +119,24 @@ const CostCentersPage = ({ pageName }) => {
     recordID,
   });
 
+  const getOperationalButtons = (record) => {
+    return (
+      <DetailsButton
+        record={record}
+        setSelectedObject={setSelectedObject}
+        setShowDetails={setShowDetails}
+      />
+    );
+  };
+
   const columns = access
-    ? getColumns(baseColumns, null, access, handleEdit, handleDelete)
+    ? getColumns(
+        baseColumns,
+        getOperationalButtons,
+        access,
+        handleEdit,
+        handleDelete
+      )
     : [];
 
   //------
@@ -150,6 +171,17 @@ const CostCentersPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
+        />
+      )}
+
+      {showDetails && (
+        <DetailsModal
+          isOpen={showDetails}
+          selectedObject={selectedObject}
+          onOk={() => {
+            setShowDetails(false);
+            setSelectedObject(null);
+          }}
         />
       )}
     </>
