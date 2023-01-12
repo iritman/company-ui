@@ -1,7 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
-import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import { Spin, Row, Col, Typography } from "antd";
 import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
@@ -22,6 +21,7 @@ import MemberDetailsModal from "./member-details-modal";
 import Colors from "../../../../resources/colors";
 import MemberProfileImage from "../../../common/member-profile-image";
 import { usePageContext } from "../../../contexts/page-context";
+import DetailsButton from "../../../common/details-button";
 
 const { Text } = Typography;
 
@@ -160,13 +160,10 @@ const MembersPage = ({ pageName }) => {
 
   const getOperationalButtons = (record) => {
     return (
-      <Button
-        type="link"
-        icon={<InfoIcon style={{ color: Colors.green[6] }} />}
-        onClick={() => {
-          setSelectedObject(record);
-          setShowDetails(true);
-        }}
+      <DetailsButton
+        record={record}
+        setSelectedObject={setSelectedObject}
+        setShowDetails={setShowDetails}
       />
     );
   };
