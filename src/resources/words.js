@@ -1047,6 +1047,7 @@ class Words extends Component {
       "رمز عبور جدید وارد شده مشابه رمز عبور فعلی می باشد",
     no_financial_year_selected: "سال مالی ثبت نشده است",
     financial_year_no_already_exists: "سال مالی قبلا ثبت شده است",
+    no_tafsil_account: "حساب تفصیلی تعریف نشده است",
   };
 
   static questions = {
