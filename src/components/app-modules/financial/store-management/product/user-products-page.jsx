@@ -1,23 +1,23 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
-import Words from "../../../../resources/words";
-import Colors from "../../../../resources/colors";
-import utils from "../../../../tools/utils";
-import service from "../../../../services/financial/store-mgr/user-products-service";
+import Words from "../../../../../resources/words";
+import Colors from "../../../../../resources/colors";
+import utils from "../../../../../tools/utils";
+import service from "../../../../../services/financial/store-mgr/user-products-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
-} from "../../../../tools/form-manager";
-import SimpleDataTable from "../../../common/simple-data-table";
-import SimpleDataPageHeader from "../../../common/simple-data-page-header";
+} from "../../../../../tools/form-manager";
+import SimpleDataTable from "../../../../common/simple-data-table";
+import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import ProductModal from "./user-product-modal";
 import DetailsModal from "./user-product-details-modal";
 import SearchModal from "./user-products-search-modal";
-import { usePageContext } from "../../../contexts/page-context";
-import DetailsButton from "./../../../common/details-button";
+import { usePageContext } from "../../../../contexts/page-context";
+import DetailsButton from "../../../../common/details-button";
 
 const { Text } = Typography;
 
@@ -57,17 +57,19 @@ const baseColumns = [
   },
   {
     title: Words.product_code,
-    width: 100,
+    width: 120,
     align: "center",
     dataIndex: "ProductCode",
     sorter: getSorter("ProductCode"),
     render: (ProductCode) => (
-      <Text style={{ color: Colors.volcano[6] }}>{ProductCode}</Text>
+      <Text style={{ color: Colors.volcano[6] }}>
+        {utils.farsiNum(ProductCode)}
+      </Text>
     ),
   },
   {
     title: Words.product_category,
-    width: 100,
+    width: 150,
     align: "center",
     dataIndex: "CategoryTitle",
     sorter: getSorter("CategoryTitle"),
@@ -77,7 +79,7 @@ const baseColumns = [
   },
   {
     title: Words.product_nature,
-    width: 100,
+    width: 150,
     align: "center",
     dataIndex: "NatureTitle",
     sorter: getSorter("NatureTitle"),
@@ -249,31 +251,51 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
-  const handleSaveStore = async (row) => {
-    const store = await service.saveStore(row);
+  const handleSaveStore = async (store) => {
+    const saved_store = await service.saveStore(store);
 
-    const so = { ...selectedObject };
-    if (so.Stores.find((s) => s.PSID === store.PSID))
-      so.Stores[so.Stores.findIndex((s) => s.PSID === store.PSID)] = store;
-    else so.Stores = [...so.Stores, store];
+    const rec = { ...selectedObject };
+    if (store.PSID === 0) {
+      rec.Stores = [...rec.Stores, saved_store];
+    } else {
+      const index = rec.Stores.findIndex((s) => s.PSID === store.PSID);
+      rec.Stores[index] = saved_store;
+    }
+    setSelectedObject(rec);
 
-    setSelectedObject(so);
+    //------
 
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
+    const index = records.findIndex(
+      (product) => product.ProductID === store.ProductID
+    );
+
+    records[index] = rec;
+
+    //------
+
+    setRecords([...records]);
+
+    return saved_store;
   };
 
   const handleDeleteStore = async (id) => {
     await service.deleteStore(id);
 
-    const so = { ...selectedObject };
-    so.Stores = so.Stores.filter((s) => s.PSID !== id);
-    setSelectedObject(so);
+    if (selectedObject) {
+      const rec = { ...selectedObject };
+      rec.Stores = rec.Stores.filter((s) => s.PSID !== id);
+      setSelectedObject(rec);
 
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
+      //------
+
+      const index = records.findIndex(
+        (product) => product.ProductID === rec.ProductID
+      );
+
+      records[index] = rec;
+
+      setRecords([...records]);
+    }
   };
 
   //------
