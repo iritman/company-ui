@@ -12,6 +12,7 @@ import {
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
+import TafsilInfoViewer from "../../../../common/tafsil-info-viewer";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -83,37 +84,7 @@ const BankDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           {TafsilInfo === null ? (
             <></>
           ) : (
-            <Descriptions
-              bordered
-              column={{
-                //   md: 2, sm: 2,
-                lg: 2,
-                md: 2,
-                xs: 1,
-              }}
-              size="middle"
-            >
-              <Descriptions.Item label={Words.tafsil_id}>
-                <Text style={{ color: Colors.red[6] }}>
-                  {utils.farsiNum(`${TafsilInfo.TafsilAccountID}`)}
-                </Text>
-              </Descriptions.Item>
-              <Descriptions.Item label={Words.tafsil_code}>
-                <Text style={{ color: Colors.cyan[6] }}>
-                  {utils.farsiNum(TafsilInfo.TafsilCode)}
-                </Text>
-              </Descriptions.Item>
-              <Descriptions.Item label={Words.tafsil_type}>
-                <Text style={{ color: valueColor }}>
-                  {TafsilInfo.TafsilTypeTitle}
-                </Text>
-              </Descriptions.Item>
-              <Descriptions.Item label={Words.title}>
-                <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(TafsilInfo.TafsilAccountTitle)}
-                </Text>
-              </Descriptions.Item>
-            </Descriptions>
+            <TafsilInfoViewer tafsilInfo={TafsilInfo} />
           )}
         </>
       ),
