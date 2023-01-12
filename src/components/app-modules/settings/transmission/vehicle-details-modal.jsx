@@ -1,8 +1,18 @@
 import React from "react";
-import { Button, Modal, Row, Col, Typography, Alert, Descriptions } from "antd";
+import {
+  Button,
+  Modal,
+  Row,
+  Col,
+  Typography,
+  Alert,
+  Descriptions,
+  Tabs,
+} from "antd";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
+import TafsilInfoViewer from "./../../../common/tafsil-info-viewer";
 
 const { Text } = Typography;
 
@@ -20,7 +30,67 @@ const VehicleDetailsModal = ({ vehicle, isOpen, onOk }) => {
     RegLastName,
     RegDate,
     RegTime,
+    TafsilInfo,
   } = vehicle;
+
+  const items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
+        <Descriptions
+          bordered
+          column={{
+            //   md: 2, sm: 2,
+            lg: 2,
+            md: 2,
+            xs: 1,
+          }}
+          size="middle"
+        >
+          <Descriptions.Item label={Words.pelak}>
+            <Text style={{ color: Colors.red[7] }}>
+              {utils.farsiNum(Pelak)}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.product_year}>
+            <Text style={{ color: Colors.green[7] }}>
+              {utils.farsiNum(ProductYear)}
+            </Text>
+          </Descriptions.Item>
+          {DetailsText.length > 0 && (
+            <Descriptions.Item label={Words.descriptions} span={2}>
+              <Text
+                style={{
+                  color: Colors.purple[7],
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {utils.farsiNum(DetailsText)}
+              </Text>
+            </Descriptions.Item>
+          )}
+          <Descriptions.Item label={Words.reg_member}>
+            <Text style={{ color: valueColor }}>
+              {`${RegFirstName} ${RegLastName}`}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.reg_date_time}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(
+                `${utils.slashDate(RegDate)} - ${utils.colonTime(RegTime)}`
+              )}
+            </Text>
+          </Descriptions.Item>
+        </Descriptions>
+      ),
+    },
+    {
+      label: Words.tafsil_account,
+      key: "tafsil-account",
+      children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+    },
+  ];
 
   return (
     <Modal
@@ -53,53 +123,7 @@ const VehicleDetailsModal = ({ vehicle, isOpen, onOk }) => {
               />
             </Col>
             <Col xs={24}>
-              <Descriptions
-                bordered
-                column={{
-                  //   md: 2, sm: 2,
-                  lg: 2,
-                  md: 2,
-                  xs: 1,
-                }}
-                size="middle"
-              >
-                <Descriptions.Item label={Words.pelak}>
-                  <Text style={{ color: Colors.red[7] }}>
-                    {utils.farsiNum(Pelak)}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.product_year}>
-                  <Text style={{ color: Colors.green[7] }}>
-                    {utils.farsiNum(ProductYear)}
-                  </Text>
-                </Descriptions.Item>
-                {DetailsText.length > 0 && (
-                  <Descriptions.Item label={Words.descriptions} span={2}>
-                    <Text
-                      style={{
-                        color: Colors.purple[7],
-                        whiteSpace: "pre-line",
-                      }}
-                    >
-                      {utils.farsiNum(DetailsText)}
-                    </Text>
-                  </Descriptions.Item>
-                )}
-                <Descriptions.Item label={Words.reg_member}>
-                  <Text style={{ color: valueColor }}>
-                    {`${RegFirstName} ${RegLastName}`}
-                  </Text>
-                </Descriptions.Item>
-                <Descriptions.Item label={Words.reg_date_time}>
-                  <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(
-                      `${utils.slashDate(RegDate)} - ${utils.colonTime(
-                        RegTime
-                      )}`
-                    )}
-                  </Text>
-                </Descriptions.Item>
-              </Descriptions>
+              <Tabs defaultActiveKey="1" type="card" items={items} />
             </Col>
           </Row>
         </article>

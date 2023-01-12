@@ -1,7 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
-import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import { Spin, Row, Col, Typography } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/settings/transmission/vehicles-service";
@@ -16,7 +15,8 @@ import SimpleDataPageHeader from "../../../common/simple-data-page-header";
 import { usePageContext } from "./../../../contexts/page-context";
 import Colors from "../../../../resources/colors";
 import VehicleModal from "./vehicle-modal";
-import VehicleDetailsModal from "./vehicle-details-modal";
+import DetailsModal from "./vehicle-details-modal";
+import DetailsButton from "./../../../common/details-button";
 
 const { Text } = Typography;
 
@@ -155,13 +155,18 @@ const VehiclesPage = ({ pageName }) => {
 
   const getOperationalButtons = (record) => {
     return (
-      <Button
-        type="link"
-        icon={<InfoIcon style={{ color: Colors.green[6] }} />}
-        onClick={() => {
-          setSelectedObject(record);
-          setShowDetails(true);
-        }}
+      // <Button
+      //   type="link"
+      //   icon={<InfoIcon style={{ color: Colors.green[6] }} />}
+      //   onClick={() => {
+      //     setSelectedObject(record);
+      //     setShowDetails(true);
+      //   }}
+      // />
+      <DetailsButton
+        record={record}
+        setSelectedObject={setSelectedObject}
+        setShowDetails={setShowDetails}
       />
     );
   };
@@ -212,7 +217,7 @@ const VehiclesPage = ({ pageName }) => {
       )}
 
       {showDetails && (
-        <VehicleDetailsModal
+        <DetailsModal
           onOk={() => {
             setShowDetails(false);
             setSelectedObject(null);

@@ -1,10 +1,11 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Tabs } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
+import utils from "../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -21,7 +22,7 @@ import TextItem from "./../../../form-controls/text-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import NumericInputItem from "./../../../form-controls/numeric-input-item";
 import service from "../../../../services/settings/transmission/vehicles-service";
-import utils from "../../../../tools/utils";
+import TafsilInfoViewer from "../../../common/tafsil-info-viewer";
 
 const schema = {
   VehicleID: Joi.number().required(),
@@ -139,18 +140,13 @@ const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const filteredModels = models.filter((m) => m.BrandID === record.BrandID);
 
-  return (
-    <ModalWindow
-      isOpen={isOpen}
-      isEdit={isEdit}
-      inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
-      onCancel={onCancel}
-      width={750}
-    >
-      <Form ref={formRef} name="dataForm">
+  //------
+
+  let items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <DropdownItem
@@ -241,6 +237,36 @@ const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
             </>
           )}
         </Row>
+      ),
+    },
+  ];
+
+  if (selectedObject !== null) {
+    const { TafsilInfo } = selectedObject;
+
+    items = [
+      ...items,
+      {
+        label: Words.tafsil_account,
+        key: "tafsil-account",
+        children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+      },
+    ];
+  }
+
+  return (
+    <ModalWindow
+      isOpen={isOpen}
+      isEdit={isEdit}
+      inProgress={progress}
+      disabled={validateForm({ record, schema }) && true}
+      onClear={clearRecord}
+      onSubmit={handleSubmit}
+      onCancel={onCancel}
+      width={750}
+    >
+      <Form ref={formRef} name="dataForm">
+        <Tabs defaultActiveKey="1" type="card" items={items} />
       </Form>
     </ModalWindow>
   );
