@@ -79,15 +79,7 @@ const BankDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     {
       label: Words.tafsil_account,
       key: "tafsil-account",
-      children: (
-        <>
-          {TafsilInfo === null ? (
-            <></>
-          ) : (
-            <TafsilInfoViewer tafsilInfo={TafsilInfo} />
-          )}
-        </>
-      ),
+      children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
     },
   ];
 
