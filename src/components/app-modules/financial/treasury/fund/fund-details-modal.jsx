@@ -17,6 +17,7 @@ import {
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
+import TafsilInfoViewer from "./../../../../common/tafsil-info-viewer";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -35,15 +36,86 @@ const FundDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     MaxInventory,
     // StandardDetailsID,
     DetailsText,
-    // TafsilAccountID,
-    TafsilAccountTitle,
-    TafsilCode,
-    // TafsilTypeID,
-    TafsilTypeTitle,
-    // ParentTafsilTypeID,
-    ParentTafsilTypeTitle,
     IsActive,
+    TafsilInfo,
   } = selectedObject;
+
+  const items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
+        <Descriptions
+          bordered
+          column={{
+            //   md: 2, sm: 2,
+            lg: 2,
+            md: 2,
+            xs: 1,
+          }}
+          size="middle"
+        >
+          <Descriptions.Item label={Words.funder_member}>
+            <Text style={{ color: valueColor }}>
+              {`${FunderFirstName} ${FunderLastName}`}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.establish_date}>
+            <Text style={{ color: Colors.green[6] }}>
+              {utils.farsiNum(utils.slashDate(EstablishDate))}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.currency}>
+            <Text style={{ color: Colors.magenta[6] }}>{CurrencyTitle}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.status}>
+            <Space>
+              {IsActive ? (
+                <CheckIcon style={{ color: Colors.green[6] }} />
+              ) : (
+                <LockIcon style={{ color: Colors.red[6] }} />
+              )}
+
+              <Text style={{ color: valueColor }}>
+                {`${IsActive ? Words.active : Words.inactive} `}
+              </Text>
+            </Space>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.initial_inventory}>
+            <Text style={{ color: Colors.orange[6] }}>
+              {`${utils.farsiNum(utils.moneyNumber(InitialInventory))} ${
+                Words.ryal
+              }`}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.max_inventory}>
+            <Text style={{ color: Colors.orange[6] }}>
+              {`${utils.farsiNum(utils.moneyNumber(MaxInventory))} ${
+                Words.ryal
+              }`}
+            </Text>
+          </Descriptions.Item>
+          {DetailsText.length > 0 && (
+            <Descriptions.Item label={Words.descriptions} span={2}>
+              <Text
+                style={{
+                  color: Colors.purple[7],
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {utils.farsiNum(DetailsText)}
+              </Text>
+            </Descriptions.Item>
+          )}
+        </Descriptions>
+      ),
+    },
+    {
+      label: Words.tafsil_account,
+      key: "tafsil-account",
+      children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+    },
+  ];
 
   return (
     <Modal
@@ -77,108 +149,7 @@ const FundDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               />
             </Col>
             <Col xs={24}>
-              <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab={Words.fund_info} key="cash_box_info">
-                  <Descriptions
-                    bordered
-                    column={{
-                      //   md: 2, sm: 2,
-                      lg: 2,
-                      md: 2,
-                      xs: 1,
-                    }}
-                    size="middle"
-                  >
-                    <Descriptions.Item label={Words.funder_member}>
-                      <Text style={{ color: valueColor }}>
-                        {`${FunderFirstName} ${FunderLastName}`}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.establish_date}>
-                      <Text style={{ color: Colors.green[6] }}>
-                        {utils.farsiNum(utils.slashDate(EstablishDate))}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.currency}>
-                      <Text style={{ color: Colors.magenta[6] }}>
-                        {CurrencyTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.status}>
-                      <Space>
-                        {IsActive ? (
-                          <CheckIcon style={{ color: Colors.green[6] }} />
-                        ) : (
-                          <LockIcon style={{ color: Colors.red[6] }} />
-                        )}
-
-                        <Text style={{ color: valueColor }}>
-                          {`${IsActive ? Words.active : Words.inactive} `}
-                        </Text>
-                      </Space>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.initial_inventory}>
-                      <Text style={{ color: Colors.orange[6] }}>
-                        {`${utils.farsiNum(
-                          utils.moneyNumber(InitialInventory)
-                        )} ${Words.ryal}`}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.max_inventory}>
-                      <Text style={{ color: Colors.orange[6] }}>
-                        {`${utils.farsiNum(utils.moneyNumber(MaxInventory))} ${
-                          Words.ryal
-                        }`}
-                      </Text>
-                    </Descriptions.Item>
-                    {DetailsText.length > 0 && (
-                      <Descriptions.Item label={Words.descriptions} span={2}>
-                        <Text
-                          style={{
-                            color: Colors.purple[7],
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {utils.farsiNum(DetailsText)}
-                        </Text>
-                      </Descriptions.Item>
-                    )}
-                  </Descriptions>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab={Words.tafsil_info} key="tafsil_info">
-                  <Descriptions
-                    bordered
-                    column={{
-                      //   md: 2, sm: 2,
-                      lg: 2,
-                      md: 2,
-                      xs: 1,
-                    }}
-                    size="middle"
-                  >
-                    <Descriptions.Item label={Words.tafsil_account}>
-                      <Text style={{ color: valueColor }}>
-                        {TafsilAccountTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.tafsil_code}>
-                      <Text style={{ color: Colors.red[6] }}>
-                        {utils.farsiNum(TafsilCode)}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.tafsil_type}>
-                      <Text style={{ color: valueColor }}>
-                        {TafsilTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.parent_tafsil_type}>
-                      <Text style={{ color: valueColor }}>
-                        {ParentTafsilTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Tabs.TabPane>
-              </Tabs>
+              <Tabs defaultActiveKey="1" type="card" items={items} />
             </Col>
           </Row>
         </article>
