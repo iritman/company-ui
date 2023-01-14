@@ -193,33 +193,6 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
-  const handleSaveMeasureUnit = async (row) => {
-    const measure_units = await service.saveMeasureUnit(row);
-
-    const so = { ...selectedObject };
-    so.MeasureUnits = measure_units;
-
-    setSelectedObject(so);
-
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
-  };
-
-  const handleDeleteMeasureUnit = async (id) => {
-    await service.deleteMeasureUnit(id);
-
-    const so = { ...selectedObject };
-    so.MeasureUnits = so.MeasureUnits.filter((f) => f.PMID !== id);
-    setSelectedObject(so);
-
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
-  };
-
-  //------
-
   const handleSaveMeasureConvert = async (row) => {
     const feature = await service.saveMeasureConvert(row);
 
@@ -284,6 +257,57 @@ const UserProductsPage = ({ pageName }) => {
     if (selectedObject) {
       const rec = { ...selectedObject };
       rec.Stores = rec.Stores.filter((s) => s.PSID !== id);
+      setSelectedObject(rec);
+
+      //------
+
+      const index = records.findIndex(
+        (product) => product.ProductID === rec.ProductID
+      );
+
+      records[index] = rec;
+
+      setRecords([...records]);
+    }
+  };
+
+  //------
+
+  const handleSaveMeasureUnit = async (measure_unit) => {
+    const saved_measure_unit = await service.saveMeasureUnit(measure_unit);
+
+    const rec = { ...selectedObject };
+    if (measure_unit.PMID === 0) {
+      rec.MeasureUnits = [...rec.MeasureUnits, saved_measure_unit];
+    } else {
+      const index = rec.MeasureUnits.findIndex(
+        (mu) => mu.PMID === measure_unit.PMID
+      );
+      rec.MeasureUnits[index] = saved_measure_unit;
+    }
+    setSelectedObject(rec);
+
+    //------
+
+    const index = records.findIndex(
+      (product) => product.ProductID === measure_unit.ProductID
+    );
+
+    records[index] = rec;
+
+    //------
+
+    setRecords([...records]);
+
+    return saved_measure_unit;
+  };
+
+  const handleDeleteMeasureUnit = async (id) => {
+    await service.deleteMeasureUnit(id);
+
+    if (selectedObject) {
+      const rec = { ...selectedObject };
+      rec.MeasureUnits = rec.MeasureUnits.filter((mu) => mu.PMID !== id);
       setSelectedObject(rec);
 
       //------

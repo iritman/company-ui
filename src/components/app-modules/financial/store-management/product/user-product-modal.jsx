@@ -40,7 +40,7 @@ import {
 import { schema, initRecord, getTabItems } from "./user-product-modal-code";
 // import DetailsTable from "./../../../../common/details-table";
 // import FeatureModal from "./user-product-feature-modal";
-// import MeasureUnitModal from "./user-product-measure-unit-modal";
+import MeasureUnitModal from "./user-product-measure-unit-modal";
 // import MeasureConvertModal from "./user-product-measure-convert-modal";
 import StoreModal from "./user-product-store-modal";
 // import InventoryControlAgentModal from "./user-product-inventory-control-agent-modal";
@@ -131,92 +131,6 @@ import { v4 as uuid } from "uuid";
 //               <Popconfirm
 //                 title={Words.questions.sure_to_delete_feature}
 //                 onConfirm={async () => await onDelete(record.PFID)}
-//                 okText={Words.yes}
-//                 cancelText={Words.no}
-//                 icon={<QuestionIcon style={{ color: "red" }} />}
-//               >
-//                 <Button type="link" icon={<DeleteIcon />} danger />
-//               </Popconfirm>
-//             )}
-//           </Space>
-//         ),
-//       },
-//     ];
-//   }
-
-//   return columns;
-// };
-
-// const getMeasureUnitsColumns = (access, onEdit, onDelete) => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "PMID",
-//       sorter: getSorter("PMID"),
-//       render: (PMID) => <Text>{utils.farsiNum(`${PMID}`)}</Text>,
-//     },
-//     {
-//       title: Words.measure_unit,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "MeasureUnitTitle",
-//       sorter: getSorter("MeasureUnitTitle"),
-//       render: (MeasureUnitTitle) => (
-//         <Text
-//           style={{
-//             color: Colors.red[7],
-//           }}
-//         >
-//           {MeasureUnitTitle}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.measure_type,
-//       width: 150,
-//       align: "center",
-//       dataIndex: "MeasureTypeTitle",
-//       sorter: getSorter("MeasureTypeTitle"),
-//       render: (MeasureTypeTitle) => (
-//         <Text style={{ color: Colors.green[7] }}>{MeasureTypeTitle}</Text>
-//       ),
-//     },
-//     {
-//       title: Words.default,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "IsDefault",
-//       sorter: getSorter("IsDefault"),
-//       render: (IsDefault) => (
-//         <>{IsDefault && <CheckIcon style={{ color: Colors.green[6] }} />}</>
-//       ),
-//     },
-//   ];
-
-//   if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
-//     columns = [
-//       ...columns,
-//       {
-//         title: "",
-//         fixed: "right",
-//         align: "center",
-//         width: 75,
-//         render: (record) => (
-//           <Space>
-//             {access.CanEdit && onEdit && (
-//               <Button
-//                 type="link"
-//                 icon={<EditIcon />}
-//                 onClick={() => onEdit(record)}
-//               />
-//             )}
-
-//             {access.CanDelete && onDelete && (
-//               <Popconfirm
-//                 title={Words.questions.sure_to_delete_measure_unit}
-//                 onConfirm={async () => await onDelete(record.PMID)}
 //                 okText={Words.yes}
 //                 cancelText={Words.no}
 //                 icon={<QuestionIcon style={{ color: "red" }} />}
@@ -496,12 +410,12 @@ const UserProductModal = ({
   onCancel,
   //   onSaveFeature,
   //   onDeleteFeature,
-  //   onSaveMeasureUnit,
-  //   onDeleteMeasureUnit,
   //   onSaveMeasureConvert,
   //   onDeleteMeasureConvert,
   onSaveStore,
   onDeleteStore,
+  onSaveMeasureUnit,
+  onDeleteMeasureUnit,
   //   onSaveInventoryControlAgent,
   //   onDeleteInventoryControlAgent,
 }) => {
@@ -510,9 +424,9 @@ const UserProductModal = ({
 
   const [categories, setCategories] = useState([]);
   const [natures, setNatures] = useState([]);
-  //   const [features, setFeatures] = useState([]);
-  //   const [measureUnits, setMeasureUnits] = useState([]);
   const [stores, setStores] = useState([]);
+  const [measureUnits, setMeasureUnits] = useState([]);
+  //   const [features, setFeatures] = useState([]);
   //   const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
   //   const [systemInventoryControlAgents, setSystemInventoryControlAgents] =
   //     useState([]);
@@ -520,15 +434,16 @@ const UserProductModal = ({
   //---
   //   const [showFeatureModal, setShowFeatureModal] = useState(false);
   //   const [selectedFeature, setSelectedFeature] = useState(null);
-  //---
-  //   const [showMeasureUnitModal, setShowMeasureUnitModal] = useState(false);
-  //   const [selectedMeasureUnit, setSelectedMeasureUnit] = useState(null);
+
   //---
   //   const [showMeasureConvertModal, setShowMeasureConvertModal] = useState(false);
   //   const [selectedMeasureConvert, setSelectedMeasureConvert] = useState(null);
   //---
   const [showStoreModal, setShowStoreModal] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  //---
+  const [showMeasureUnitModal, setShowMeasureUnitModal] = useState(false);
+  const [selectedMeasureUnit, setSelectedMeasureUnit] = useState(null);
   //---
   //   const [showInventoryControlAgentModal, setShowInventoryControlAgentModal] =
   //     useState(false);
@@ -579,9 +494,9 @@ const UserProductModal = ({
       const {
         Categories,
         Natures,
-        // Features,
-        // MeasureUnits,
         Stores,
+        MeasureUnits,
+        // Features,
         // InventoryControlAgents,
         // SystemInventoryControlAgents,
         BachPatterns,
@@ -589,9 +504,9 @@ const UserProductModal = ({
 
       setCategories(Categories);
       setNatures(Natures);
-      //   setFeatures(Features);
-      //   setMeasureUnits(MeasureUnits);
       setStores(Stores);
+      setMeasureUnits(MeasureUnits);
+      //   setFeatures(Features);
       //   setInventoryControlAgents(InventoryControlAgents);
       //   setSystemInventoryControlAgents(SystemInventoryControlAgents);
       setBachPatterns(BachPatterns);
@@ -630,23 +545,6 @@ const UserProductModal = ({
   //   const handleEditFeature = (feature) => {
   //     setSelectedFeature(feature);
   //     setShowFeatureModal(true);
-  //   };
-
-  //-----------------
-
-  //   const handleShowMeasureUnitModal = () => {
-  //     setSelectedMeasureUnit(null);
-  //     setShowMeasureUnitModal(true);
-  //   };
-
-  //   const handleHideMeasureUnitModal = () => {
-  //     setSelectedMeasureUnit(null);
-  //     setShowMeasureUnitModal(false);
-  //   };
-
-  //   const handleEditMeasureUnit = (measureUnit) => {
-  //     setSelectedMeasureUnit(measureUnit);
-  //     setShowMeasureUnitModal(true);
   //   };
 
   //-----------------
@@ -737,6 +635,121 @@ const UserProductModal = ({
 
   //-----------------
 
+  const handleShowMeasureUnitModal = () => {
+    setSelectedMeasureUnit(null);
+    setShowMeasureUnitModal(true);
+  };
+
+  const handleHideMeasureUnitModal = () => {
+    setSelectedMeasureUnit(null);
+    setShowMeasureUnitModal(false);
+  };
+
+  const handleEditMeasureUnit = (measure_unit) => {
+    setSelectedMeasureUnit(measure_unit);
+    setShowMeasureUnitModal(true);
+  };
+
+  const handleSaveMeasureUnit = async (measure_unit) => {
+    //--- Set IsDefault property and check previous reged measure units
+    //--- This process is independent of temporary or saved (in db) measure units
+
+    if (!measure_unit.IsDefault) {
+      if (record.MeasureUnits.length === 0) measure_unit.IsDefault = true;
+      else if (record.MeasureUnits.length > 1) {
+        // if uncheck default measure unit, first remain measure unit should be default
+        const next_measure_unit_id = record.MeasureUnits.filter(
+          (mu) => mu.MeasureUnitID !== measure_unit.MeasureUnitID
+        )[0].MeasureUnitID;
+
+        const index = record.MeasureUnits.findIndex(
+          (mu) => mu.MeasureUnitID === next_measure_unit_id
+        );
+
+        record.MeasureUnits[index].IsDefault = true;
+      }
+    } else {
+      if (record.MeasureUnits.length > 0) {
+        record.MeasureUnits.forEach((mu) => {
+          mu.IsDefault = false;
+        });
+      }
+    }
+
+    //---
+
+    if (measure_unit.ProductID === 0) {
+      const main_measure_unit_info = measureUnits.find(
+        (mu) => mu.MeasureUnitID === measure_unit.MeasureUnitID
+      );
+      const { Title, MeasureTypeTitle } = main_measure_unit_info;
+      measure_unit.MeasureUnitTitle = Title;
+      measure_unit.MeasureTypeTitle = MeasureTypeTitle;
+
+      //--- managing unique id (UID) for new items
+      if (measure_unit.PMID === 0 && selectedMeasureUnit === null) {
+        measure_unit.UID = uuid();
+        record.MeasureUnits = [...record.MeasureUnits, measure_unit];
+      } else if (measure_unit.PMID === 0 && selectedMeasureUnit !== null) {
+        const index = record.MeasureUnits.findIndex(
+          (s) => s.UID === selectedMeasureUnit.UID
+        );
+        record.MeasureUnits[index] = measure_unit;
+      }
+    } else {
+      const saved_measure_unit = await onSaveMeasureUnit(measure_unit);
+
+      const index = record.MeasureUnits.findIndex(
+        (mu) => mu.PMID === measure_unit.PMID
+      );
+
+      if (index === -1) {
+        record.MeasureUnits = [...record.MeasureUnits, saved_measure_unit];
+      } else {
+        record.MeasureUnits[index] = saved_measure_unit;
+      }
+    }
+
+    setRecord({ ...record });
+    setSelectedStore(null);
+  };
+
+  const handleDeleteMeasureUnit = async (measure_unit) => {
+    setProgress(true);
+
+    try {
+      if (measure_unit.PMID > 0) {
+        await onDeleteMeasureUnit(measure_unit.PMID);
+
+        record.MeasureUnits = record.MeasureUnits.filter(
+          (mu) => mu.PMID !== measure_unit.PMID
+        );
+      } else {
+        record.MeasureUnits = record.MeasureUnits.filter(
+          (mu) => mu.UID !== measure_unit.UID
+        );
+      }
+
+      //--- Checking default measure unit
+      if (
+        measure_unit.IsDefault &&
+        record.MeasureUnits.filter(
+          (mu) => mu.MeasureUnitID !== measure_unit.MeasureUnitID
+        ).length > 0
+      ) {
+        record.MeasureUnits[0].IsDefault = true;
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  //-----------------
+
   //   const handleShowInventoryControlAgentModal = () => {
   //     setSelectedInventoryControlAgent(null);
   //     setShowInventoryControlAgentModal(true);
@@ -766,6 +779,9 @@ const UserProductModal = ({
     handleShowStoreModal,
     handleEditStore,
     handleDeleteStore,
+    handleShowMeasureUnitModal,
+    handleEditMeasureUnit,
+    handleDeleteMeasureUnit,
   };
 
   return (
@@ -1092,6 +1108,23 @@ const UserProductModal = ({
         />
       )}
 
+      {showMeasureUnitModal && (
+        <MeasureUnitModal
+          isOpen={showMeasureUnitModal}
+          product={selectedObject}
+          selectedMeasureUnit={selectedMeasureUnit}
+          currentMeasureUnits={record.MeasureUnits}
+          measureUnits={measureUnits.filter(
+            (mu) =>
+              !record.MeasureUnits?.find(
+                (pmu) => pmu.MeasureUnitID === mu.MeasureUnitID
+              )
+          )}
+          onOk={handleSaveMeasureUnit}
+          onCancel={handleHideMeasureUnitModal}
+        />
+      )}
+
       {/* {showFeatureModal && (
         <FeatureModal
           isOpen={showFeatureModal}
@@ -1103,16 +1136,7 @@ const UserProductModal = ({
         />
       )}
 
-      {showMeasureUnitModal && (
-        <MeasureUnitModal
-          isOpen={showMeasureUnitModal}
-          product={selectedObject}
-          selectedMeasureUnit={selectedMeasureUnit}
-          measureUnits={measureUnits}
-          onOk={onSaveMeasureUnit}
-          onCancel={handleHideMeasureUnitModal}
-        />
-      )} */}
+       */}
 
       {/* {showMeasureConvertModal && (
         <MeasureConvertModal

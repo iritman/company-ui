@@ -1,12 +1,12 @@
 import React from "react";
 import Joi from "joi-browser";
-import { Typography, Space, Button, Popconfirm, Row, Col } from "antd";
+import { Typography, Space, Button, Popconfirm, Row, Col, Tabs } from "antd";
 import {
   PlusOutlined as PlusIcon,
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
   DeleteOutlined as DeleteIcon,
-  //   CheckOutlined as CheckIcon,
+  CheckOutlined as CheckIcon,
 } from "@ant-design/icons";
 import { getSorter } from "../../../../../tools/form-manager";
 import Words from "../../../../../resources/words";
@@ -18,6 +18,14 @@ import InputItem from "./../../../../form-controls/input-item";
 import DetailsTable from "./../../../../common/details-table";
 
 const { Text } = Typography;
+
+const AddButton = ({ title, onClick }) => {
+  return (
+    <Button type="primary" icon={<PlusIcon />} onClick={onClick}>
+      {title}
+    </Button>
+  );
+};
 
 export const schema = {
   ProductID: Joi.number().required(),
@@ -171,10 +179,132 @@ const getStoresColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getMeasureUnitsColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "MeasureUnitID",
+      sorter: getSorter("MeasureUnitID"),
+      render: (MeasureUnitID) => (
+        <Text>{utils.farsiNum(`${MeasureUnitID}`)}</Text>
+      ),
+    },
+    {
+      title: Words.measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "MeasureUnitTitle",
+      sorter: getSorter("MeasureUnitTitle"),
+      render: (MeasureUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {MeasureUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.measure_type,
+      width: 150,
+      align: "center",
+      dataIndex: "MeasureTypeTitle",
+      sorter: getSorter("MeasureTypeTitle"),
+      render: (MeasureTypeTitle) => (
+        <Text style={{ color: Colors.green[7] }}>{MeasureTypeTitle}</Text>
+      ),
+    },
+    {
+      title: Words.default,
+      width: 75,
+      align: "center",
+      dataIndex: "IsDefault",
+      sorter: getSorter("IsDefault"),
+      render: (IsDefault) => (
+        <>{IsDefault && <CheckIcon style={{ color: Colors.green[6] }} />}</>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_measure_unit}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
 export const getTabItems = (formConfig, props, events) => {
   const { categories, natures, bachPatterns, record, access } = props;
 
-  const { handleShowStoreModal, handleEditStore, handleDeleteStore } = events;
+  const {
+    handleShowStoreModal,
+    handleEditStore,
+    handleDeleteStore,
+    handleShowMeasureUnitModal,
+    handleEditMeasureUnit,
+    handleDeleteMeasureUnit,
+  } = events;
+
+  const infoTabItems = [
+    {
+      label: Words.measure_units,
+      key: "measure-units",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <AddButton
+              title={Words.new_measure_unit}
+              onClick={handleShowMeasureUnitModal}
+            />
+          </Col>
+          <Col xs={24}>
+            <DetailsTable
+              records={record.MeasureUnits}
+              columns={getMeasureUnitsColumns(
+                access,
+                handleEditMeasureUnit, // handle edit measure unit
+                handleDeleteMeasureUnit // handle delete measure unit
+              )}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+  ];
 
   return [
     {
@@ -271,6 +401,14 @@ export const getTabItems = (formConfig, props, events) => {
               formConfig={formConfig}
             />
           </Col>
+          <Col xs={24}>
+            <Tabs
+              defaultActiveKey="1"
+              type="card"
+              // onChange={handleTabChange}
+              items={infoTabItems}
+            />
+          </Col>
         </Row>
       ),
     },
@@ -317,13 +455,7 @@ export const getTabItems = (formConfig, props, events) => {
       children: (
         <Row gutter={[2, 5]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
-            <Button
-              type="primary"
-              icon={<PlusIcon />}
-              onClick={handleShowStoreModal}
-            >
-              {Words.new_store}
-            </Button>
+            <AddButton title={Words.new_store} onClick={handleShowStoreModal} />
           </Col>
           <Col xs={24}>
             <DetailsTable
