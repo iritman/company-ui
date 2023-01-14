@@ -76,7 +76,8 @@ const UserProductStoreModal = ({
       selectedStore,
       setProgress,
       onOk,
-      clearRecord
+      clearRecord,
+      false
     );
 
     onCancel();
