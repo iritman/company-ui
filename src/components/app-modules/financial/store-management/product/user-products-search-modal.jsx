@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "../../../common/modal-window";
-import Words from "../../../../resources/words";
-import utils from "../../../../tools/utils";
+import ModalWindow from "../../../../common/modal-window";
+import Words from "../../../../../resources/words";
+import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   handleError,
-} from "../../../../tools/form-manager";
+} from "../../../../../tools/form-manager";
 import {
   useModalContext,
   useResetContext,
-} from "../../../contexts/modal-context";
-import service from "../../../../services/financial/store-mgr/user-products-service";
-import InputItem from "./../../../form-controls/input-item";
-import DropdownItem from "./../../../form-controls/dropdown-item";
+} from "../../../../contexts/modal-context";
+import service from "../../../../../services/financial/store-mgr/user-products-service";
+import InputItem from "../../../../form-controls/input-item";
+import DropdownItem from "../../../../form-controls/dropdown-item";
 
 const schema = {
   SearchText: Joi.string()
