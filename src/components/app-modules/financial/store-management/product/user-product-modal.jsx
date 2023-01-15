@@ -1,23 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import {
-  Form,
-  Row,
-  Col,
-  Tabs,
-  Alert,
-  //   Button,
-  //   Space,
-  //   Typography,
-  //   Popconfirm,
-} from "antd";
-// import {
-// //   PlusOutlined as PlusIcon,
-//   //   EditOutlined as EditIcon,
-//   //   QuestionCircleOutlined as QuestionIcon,
-//   //   DeleteOutlined as DeleteIcon,
-//   //   CheckOutlined as CheckIcon,
-// } from "@ant-design/icons";
+import { Form, Row, Col, Tabs, Alert } from "antd";
 import ModalWindow from "../../../../common/modal-window";
 // import Words from "../../../../../resources/words";
 // import Colors from "../../../../../resources/colors";
@@ -41,10 +24,11 @@ import { schema, initRecord, getTabItems } from "./user-product-modal-code";
 // import DetailsTable from "./../../../../common/details-table";
 // import FeatureModal from "./user-product-feature-modal";
 import MeasureUnitModal from "./user-product-measure-unit-modal";
-// import MeasureConvertModal from "./user-product-measure-convert-modal";
+import MeasureConvertModal from "./user-product-measure-convert-modal";
 import StoreModal from "./user-product-store-modal";
 // import InventoryControlAgentModal from "./user-product-inventory-control-agent-modal";
 import { v4 as uuid } from "uuid";
+import Words from "./../../../../../resources/words";
 
 // const { Text } = Typography;
 
@@ -131,118 +115,6 @@ import { v4 as uuid } from "uuid";
 //               <Popconfirm
 //                 title={Words.questions.sure_to_delete_feature}
 //                 onConfirm={async () => await onDelete(record.PFID)}
-//                 okText={Words.yes}
-//                 cancelText={Words.no}
-//                 icon={<QuestionIcon style={{ color: "red" }} />}
-//               >
-//                 <Button type="link" icon={<DeleteIcon />} danger />
-//               </Popconfirm>
-//             )}
-//           </Space>
-//         ),
-//       },
-//     ];
-//   }
-
-//   return columns;
-// };
-
-// const getMeasureConvertsColumns = (access, onEdit, onDelete) => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "ConvertID",
-//       sorter: getSorter("ConvertID"),
-//       render: (ConvertID) => <Text>{utils.farsiNum(`${ConvertID}`)}</Text>,
-//     },
-//     {
-//       title: Words.from_measure_unit,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "FromUnitTitle",
-//       sorter: getSorter("FromUnitTitle"),
-//       render: (FromUnitTitle) => (
-//         <Text
-//           style={{
-//             color: Colors.red[7],
-//           }}
-//         >
-//           {FromUnitTitle}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.from_measure_value,
-//       width: 150,
-//       align: "center",
-//       dataIndex: "FromUnitValue",
-//       sorter: getSorter("FromUnitValue"),
-//       render: (FromUnitValue) => (
-//         <Text style={{ color: Colors.green[6] }}>{FromUnitValue}</Text>
-//       ),
-//     },
-//     {
-//       title: Words.to_measure_unit,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "ToUnitTitle",
-//       sorter: getSorter("ToUnitTitle"),
-//       render: (ToUnitTitle) => (
-//         <Text
-//           style={{
-//             color: Colors.red[7],
-//           }}
-//         >
-//           {ToUnitTitle}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.to_measure_value,
-//       width: 150,
-//       align: "center",
-//       dataIndex: "ToUnitValue",
-//       sorter: getSorter("ToUnitValue"),
-//       render: (ToUnitValue) => (
-//         <Text style={{ color: Colors.green[6] }}>{ToUnitValue}</Text>
-//       ),
-//     },
-//     {
-//       title: Words.tolerance,
-//       width: 100,
-//       align: "center",
-//       dataIndex: "TolerancePercent",
-//       sorter: getSorter("TolerancePercent"),
-//       render: (TolerancePercent) => (
-//         <Text style={{ color: Colors.orange[6] }}>{TolerancePercent}</Text>
-//       ),
-//     },
-//   ];
-
-//   if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
-//     columns = [
-//       ...columns,
-//       {
-//         title: "",
-//         fixed: "right",
-//         align: "center",
-//         width: 75,
-//         render: (record) => (
-//           <Space>
-//             {access.CanEdit && onEdit && (
-//               <Button
-//                 type="link"
-//                 icon={<EditIcon />}
-//                 onClick={() => onEdit(record)}
-//               />
-//             )}
-
-//             {access.CanDelete && onDelete && (
-//               <Popconfirm
-//                 title={Words.questions.sure_to_delete_measure_unit}
-//                 onConfirm={async () => await onDelete(record.ConvertID)}
 //                 okText={Words.yes}
 //                 cancelText={Words.no}
 //                 icon={<QuestionIcon style={{ color: "red" }} />}
@@ -410,12 +282,12 @@ const UserProductModal = ({
   onCancel,
   //   onSaveFeature,
   //   onDeleteFeature,
-  //   onSaveMeasureConvert,
-  //   onDeleteMeasureConvert,
   onSaveStore,
   onDeleteStore,
   onSaveMeasureUnit,
   onDeleteMeasureUnit,
+  onSaveMeasureConvert,
+  onDeleteMeasureConvert,
   //   onSaveInventoryControlAgent,
   //   onDeleteInventoryControlAgent,
 }) => {
@@ -436,14 +308,14 @@ const UserProductModal = ({
   //   const [selectedFeature, setSelectedFeature] = useState(null);
 
   //---
-  //   const [showMeasureConvertModal, setShowMeasureConvertModal] = useState(false);
-  //   const [selectedMeasureConvert, setSelectedMeasureConvert] = useState(null);
-  //---
   const [showStoreModal, setShowStoreModal] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
   //---
   const [showMeasureUnitModal, setShowMeasureUnitModal] = useState(false);
   const [selectedMeasureUnit, setSelectedMeasureUnit] = useState(null);
+  //---
+  const [showMeasureConvertModal, setShowMeasureConvertModal] = useState(false);
+  const [selectedMeasureConvert, setSelectedMeasureConvert] = useState(null);
   //---
   //   const [showInventoryControlAgentModal, setShowInventoryControlAgentModal] =
   //     useState(false);
@@ -545,23 +417,6 @@ const UserProductModal = ({
   //   const handleEditFeature = (feature) => {
   //     setSelectedFeature(feature);
   //     setShowFeatureModal(true);
-  //   };
-
-  //-----------------
-
-  //   const handleShowMeasureConvertModal = () => {
-  //     setSelectedMeasureConvert(null);
-  //     setShowMeasureConvertModal(true);
-  //   };
-
-  //   const handleHideMeasureConvertModal = () => {
-  //     setSelectedMeasureConvert(null);
-  //     setShowMeasureConvertModal(false);
-  //   };
-
-  //   const handleEditMeasureConvert = (measureConvert) => {
-  //     setSelectedMeasureConvert(measureConvert);
-  //     setShowMeasureConvertModal(true);
   //   };
 
   //-----------------
@@ -750,6 +605,110 @@ const UserProductModal = ({
 
   //-----------------
 
+  const handleShowMeasureConvertModal = () => {
+    setSelectedMeasureConvert(null);
+    setShowMeasureConvertModal(true);
+  };
+
+  const handleHideMeasureConvertModal = () => {
+    setSelectedMeasureConvert(null);
+    setShowMeasureConvertModal(false);
+  };
+
+  const handleEditMeasureConvert = (measure_convert) => {
+    setSelectedMeasureConvert(measure_convert);
+    setShowMeasureConvertModal(true);
+  };
+
+  const handleSaveMeasureConvert = async (convert) => {
+    // prevent adding duplicate converts
+    if (
+      record.MeasureConverts.find(
+        (mc) =>
+          ((mc.FromUnitID === convert.FromUnitID &&
+            mc.ToUnitID === convert.ToUnitID) ||
+            (mc.FromUnitID === convert.ToUnitID &&
+              mc.ToUnitID === convert.FromUnitID)) &&
+          selectedMeasureConvert === null
+      )
+    ) {
+      const error = {
+        response: {
+          status: 400,
+          data: {
+            Error: Words.messages.measure_convert_already_exists,
+          },
+        },
+      };
+
+      throw error;
+    }
+
+    //------
+
+    if (convert.ProductID === 0) {
+      convert.FromUnitTitle = measureUnits.find(
+        (mu) => mu.MeasureUnitID === convert.FromUnitID
+      )?.Title;
+
+      convert.ToUnitTitle = measureUnits.find(
+        (mu) => mu.MeasureUnitID === convert.ToUnitID
+      )?.Title;
+
+      //--- managing unique id (UID) for new items
+      if (convert.ConvertID === 0 && selectedMeasureConvert === null) {
+        convert.UID = uuid();
+        record.MeasureConverts = [...record.MeasureConverts, convert];
+      } else if (convert.ConvertID === 0 && selectedMeasureConvert !== null) {
+        const index = record.MeasureConverts.findIndex(
+          (mc) => mc.UID === selectedMeasureConvert.UID
+        );
+        record.MeasureConverts[index] = convert;
+      }
+    } else {
+      const saved_convert = await onSaveMeasureConvert(convert);
+
+      const index = record.MeasureConverts.findIndex(
+        (mc) => mc.ConvertID === convert.ConvertID
+      );
+
+      if (index === -1) {
+        record.MeasureConverts = [...record.MeasureConverts, saved_convert];
+      } else {
+        record.MeasureConverts[index] = saved_convert;
+      }
+    }
+
+    setRecord({ ...record });
+    setSelectedStore(null);
+  };
+
+  const handleDeleteMeasureConvert = async (convert) => {
+    setProgress(true);
+
+    try {
+      if (convert.ConvertID > 0) {
+        await onDeleteMeasureConvert(convert.ConvertID);
+
+        record.MeasureConverts = record.MeasureConverts.filter(
+          (mc) => mc.ConvertID !== convert.ConvertID
+        );
+      } else {
+        record.MeasureConverts = record.MeasureConverts.filter(
+          (mc) => mc.UID !== convert.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  //-----------------
+
   //   const handleShowInventoryControlAgentModal = () => {
   //     setSelectedInventoryControlAgent(null);
   //     setShowInventoryControlAgentModal(true);
@@ -782,6 +741,9 @@ const UserProductModal = ({
     handleShowMeasureUnitModal,
     handleEditMeasureUnit,
     handleDeleteMeasureUnit,
+    handleShowMeasureConvertModal,
+    handleEditMeasureConvert,
+    handleDeleteMeasureConvert,
   };
 
   return (
@@ -1125,6 +1087,17 @@ const UserProductModal = ({
         />
       )}
 
+      {showMeasureConvertModal && (
+        <MeasureConvertModal
+          isOpen={showMeasureConvertModal}
+          product={selectedObject}
+          selectedMeasureConvert={selectedMeasureConvert}
+          measureUnits={measureUnits}
+          onOk={handleSaveMeasureConvert}
+          onCancel={handleHideMeasureConvertModal}
+        />
+      )}
+
       {/* {showFeatureModal && (
         <FeatureModal
           isOpen={showFeatureModal}
@@ -1137,17 +1110,6 @@ const UserProductModal = ({
       )}
 
        */}
-
-      {/* {showMeasureConvertModal && (
-        <MeasureConvertModal
-          isOpen={showMeasureConvertModal}
-          product={selectedObject}
-          selectedMeasureConvert={selectedMeasureConvert}
-          measureUnits={measureUnits}
-          onOk={onSaveMeasureConvert}
-          onCancel={handleHideMeasureConvertModal}
-        />
-      )} */}
 
       {/* {showInventoryControlAgentModal && (
         <InventoryControlAgentModal

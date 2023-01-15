@@ -702,6 +702,9 @@ class Words extends Component {
   static code = "کد";
   static no_feature_item_value = "مقدار ثابتی ثبت نشده است";
 
+  static main_info = "اطلاعات اصلی";
+  static rate = "ضریب";
+
   static user_account = "حساب کاربری";
   static visit_user_account = "مشاهده حساب کاربری";
   static main_page = "صفحه اصلی";
@@ -1048,6 +1051,7 @@ class Words extends Component {
     no_financial_year_selected: "سال مالی ثبت نشده است",
     financial_year_no_already_exists: "سال مالی قبلا ثبت شده است",
     no_tafsil_account: "حساب تفصیلی تعریف نشده است",
+    measure_convert_already_exists: "ضریب تبدیل قبلا ثبت شده است",
   };
 
   static questions = {
@@ -1056,6 +1060,7 @@ class Words extends Component {
     sure_to_delete_image: "برای حذف تصویر اطمینان دارید؟",
     sure_to_delete_feature: "برای حذف ویژگی کالا اطمینان دارید؟",
     sure_to_delete_measure_unit: "برای حذف واحد سنجش کالا اطمینان دارید؟",
+    sure_to_delete_measure_convert: "برای حذف ضریب تبدیل کالا اطمینان دارید؟",
     sure_to_delete_store: "برای حذف انبار کالا اطمینان دارید؟",
     sure_to_delete_inventory_control_agent:
       "برای حذف عامل کنترل موجودی کالا اطمینان دارید؟",

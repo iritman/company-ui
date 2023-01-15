@@ -163,67 +163,6 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
-  const handleSaveFeature = async (row) => {
-    const feature = await service.saveFeature(row);
-
-    const so = { ...selectedObject };
-    if (so.Features.find((f) => f.PFID === feature.PFID))
-      so.Features[so.Features.findIndex((f) => f.PFID === feature.PFID)] =
-        feature;
-    else so.Features = [...so.Features, feature];
-
-    setSelectedObject(so);
-
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
-  };
-
-  const handleDeleteFeature = async (id) => {
-    await service.deleteFeature(id);
-
-    const so = { ...selectedObject };
-    so.Features = so.Features.filter((f) => f.PFID !== id);
-    setSelectedObject(so);
-
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
-  };
-
-  //------
-
-  const handleSaveMeasureConvert = async (row) => {
-    const feature = await service.saveMeasureConvert(row);
-
-    const so = { ...selectedObject };
-    if (so.MeasureConverts.find((c) => c.ConvertID === feature.ConvertID))
-      so.MeasureConverts[
-        so.MeasureConverts.findIndex((c) => c.ConvertID === feature.ConvertID)
-      ] = feature;
-    else so.MeasureConverts = [...so.MeasureConverts, feature];
-
-    setSelectedObject(so);
-
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
-  };
-
-  const handleDeleteMeasureConvert = async (id) => {
-    await service.deleteMeasureConvert(id);
-
-    const so = { ...selectedObject };
-    so.MeasureConverts = so.MeasureConverts.filter((c) => c.ConvertID !== id);
-    setSelectedObject(so);
-
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
-  };
-
-  //------
-
   const handleSaveStore = async (store) => {
     const saved_store = await service.saveStore(store);
 
@@ -320,6 +259,89 @@ const UserProductsPage = ({ pageName }) => {
 
       setRecords([...records]);
     }
+  };
+
+  //------
+
+  const handleSaveMeasureConvert = async (convert) => {
+    const saved_convert = await service.saveMeasureConvert(convert);
+
+    const rec = { ...selectedObject };
+    if (convert.ConvertID === 0) {
+      rec.MeasureConverts = [...rec.MeasureConverts, saved_convert];
+    } else {
+      const index = rec.MeasureConverts.findIndex(
+        (mc) => mc.ConvertID === convert.ConvertID
+      );
+      rec.MeasureConverts[index] = saved_convert;
+    }
+    setSelectedObject(rec);
+
+    //------
+
+    const index = records.findIndex(
+      (product) => product.ProductID === convert.ProductID
+    );
+
+    records[index] = rec;
+
+    //------
+
+    setRecords([...records]);
+
+    return saved_convert;
+  };
+
+  const handleDeleteMeasureConvert = async (id) => {
+    await service.deleteMeasureConvert(id);
+
+    if (selectedObject) {
+      const rec = { ...selectedObject };
+      rec.MeasureConverts = rec.MeasureConverts.filter(
+        (mc) => mc.ConvertID !== id
+      );
+      setSelectedObject(rec);
+
+      //------
+
+      const index = records.findIndex(
+        (product) => product.ProductID === rec.ProductID
+      );
+
+      records[index] = rec;
+
+      setRecords([...records]);
+    }
+  };
+
+  //------
+
+  const handleSaveFeature = async (row) => {
+    const feature = await service.saveFeature(row);
+
+    const so = { ...selectedObject };
+    if (so.Features.find((f) => f.PFID === feature.PFID))
+      so.Features[so.Features.findIndex((f) => f.PFID === feature.PFID)] =
+        feature;
+    else so.Features = [...so.Features, feature];
+
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
+  };
+
+  const handleDeleteFeature = async (id) => {
+    await service.deleteFeature(id);
+
+    const so = { ...selectedObject };
+    so.Features = so.Features.filter((f) => f.PFID !== id);
+    setSelectedObject(so);
+
+    const rec = [...records];
+    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    setRecords(rec);
   };
 
   //------

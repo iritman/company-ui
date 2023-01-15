@@ -267,6 +267,110 @@ const getMeasureUnitsColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getMeasureConvertsColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    // {
+    //   title: Words.id,
+    //   width: 75,
+    //   align: "center",
+    //   dataIndex: "ConvertID",
+    //   sorter: getSorter("ConvertID"),
+    //   render: (ConvertID) => <Text>{utils.farsiNum(`${ConvertID}`)}</Text>,
+    // },
+    {
+      title: Words.from_measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "FromUnitTitle",
+      sorter: getSorter("FromUnitTitle"),
+      render: (FromUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.green[7],
+          }}
+        >
+          {FromUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.to_measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "ToUnitTitle",
+      sorter: getSorter("ToUnitTitle"),
+      render: (ToUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.blue[5],
+          }}
+        >
+          {ToUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.rate,
+      width: 150,
+      align: "center",
+      dataIndex: "Rate",
+      sorter: getSorter("Rate"),
+      render: (Rate) => (
+        <Text style={{ color: Colors.orange[6] }}>{utils.farsiNum(Rate)}</Text>
+      ),
+    },
+    {
+      title: Words.tolerance,
+      width: 100,
+      align: "center",
+      dataIndex: "TolerancePercent",
+      sorter: getSorter("TolerancePercent"),
+      render: (TolerancePercent) => (
+        <Text style={{ color: Colors.purple[5] }}>
+          {utils.farsiNum(TolerancePercent)}
+        </Text>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_measure_convert}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
 export const getTabItems = (formConfig, props, events) => {
   const { categories, natures, bachPatterns, record, access } = props;
 
@@ -277,6 +381,9 @@ export const getTabItems = (formConfig, props, events) => {
     handleShowMeasureUnitModal,
     handleEditMeasureUnit,
     handleDeleteMeasureUnit,
+    handleShowMeasureConvertModal,
+    handleEditMeasureConvert,
+    handleDeleteMeasureConvert,
   } = events;
 
   const infoTabItems = [
@@ -298,6 +405,30 @@ export const getTabItems = (formConfig, props, events) => {
                 access,
                 handleEditMeasureUnit, // handle edit measure unit
                 handleDeleteMeasureUnit // handle delete measure unit
+              )}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: Words.measure_converts,
+      key: "measure-converts",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <AddButton
+              title={Words.new_measure_convert}
+              onClick={handleShowMeasureConvertModal}
+            />
+          </Col>
+          <Col xs={24}>
+            <DetailsTable
+              records={record.MeasureConverts}
+              columns={getMeasureConvertsColumns(
+                access,
+                handleEditMeasureConvert, // handle edit measure unit
+                handleDeleteMeasureConvert // handle delete measure unit
               )}
             />
           </Col>
