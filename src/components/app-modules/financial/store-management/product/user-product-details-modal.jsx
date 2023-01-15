@@ -10,6 +10,7 @@ import {
   Alert,
   Tabs,
 } from "antd";
+import { CheckOutlined as CheckIcon } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
@@ -81,7 +82,129 @@ const getStoresColumns = () => {
   return columns;
 };
 
-const UserProductDetailsModal = ({ product, isOpen, onOk, onSeen }) => {
+const getMeasureUnitsColumns = () => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "MeasureUnitID",
+      sorter: getSorter("MeasureUnitID"),
+      render: (MeasureUnitID) => (
+        <Text>{utils.farsiNum(`${MeasureUnitID}`)}</Text>
+      ),
+    },
+    {
+      title: Words.measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "MeasureUnitTitle",
+      sorter: getSorter("MeasureUnitTitle"),
+      render: (MeasureUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {MeasureUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.measure_type,
+      width: 150,
+      align: "center",
+      dataIndex: "MeasureTypeTitle",
+      sorter: getSorter("MeasureTypeTitle"),
+      render: (MeasureTypeTitle) => (
+        <Text style={{ color: Colors.green[7] }}>{MeasureTypeTitle}</Text>
+      ),
+    },
+    {
+      title: Words.default,
+      width: 75,
+      align: "center",
+      dataIndex: "IsDefault",
+      sorter: getSorter("IsDefault"),
+      render: (IsDefault) => (
+        <>{IsDefault && <CheckIcon style={{ color: Colors.green[6] }} />}</>
+      ),
+    },
+  ];
+
+  return columns;
+};
+
+const getMeasureConvertsColumns = () => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "ConvertID",
+      sorter: getSorter("ConvertID"),
+      render: (ConvertID) => <Text>{utils.farsiNum(`${ConvertID}`)}</Text>,
+    },
+    {
+      title: Words.from_measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "FromUnitTitle",
+      sorter: getSorter("FromUnitTitle"),
+      render: (FromUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.green[7],
+          }}
+        >
+          {FromUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.to_measure_unit,
+      width: 120,
+      align: "center",
+      dataIndex: "ToUnitTitle",
+      sorter: getSorter("ToUnitTitle"),
+      render: (ToUnitTitle) => (
+        <Text
+          style={{
+            color: Colors.blue[5],
+          }}
+        >
+          {ToUnitTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.rate,
+      width: 150,
+      align: "center",
+      dataIndex: "Rate",
+      sorter: getSorter("Rate"),
+      render: (Rate) => (
+        <Text style={{ color: Colors.orange[6] }}>{utils.farsiNum(Rate)}</Text>
+      ),
+    },
+    {
+      title: Words.tolerance,
+      width: 100,
+      align: "center",
+      dataIndex: "TolerancePercent",
+      sorter: getSorter("TolerancePercent"),
+      render: (TolerancePercent) => (
+        <Text style={{ color: Colors.purple[5] }}>
+          {utils.farsiNum(TolerancePercent)}
+        </Text>
+      ),
+    },
+  ];
+
+  return columns;
+};
+
+const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
   const {
@@ -98,70 +221,110 @@ const UserProductDetailsModal = ({ product, isOpen, onOk, onSeen }) => {
     DetailsText,
     BachPatternTitle,
     Stores,
+    MeasureUnits,
+    MeasureConverts,
   } = product;
+
+  const infoTabItems = [
+    {
+      label: Words.measure_units,
+      key: "measure-units",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <DetailsTable
+              records={MeasureUnits}
+              columns={getMeasureUnitsColumns()}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: Words.measure_converts,
+      key: "measure-converts",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <DetailsTable
+              records={MeasureConverts}
+              columns={getMeasureConvertsColumns()}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+  ];
 
   const items = [
     {
       label: Words.main_info,
       key: "main-info",
       children: (
-        <Descriptions
-          bordered
-          column={{
-            //   md: 2, sm: 2,
-            lg: 2,
-            md: 2,
-            xs: 1,
-          }}
-          size="middle"
-        >
-          <Descriptions.Item label={Words.id}>
-            <Text style={{ color: valueColor }}>
-              {utils.farsiNum(`${ProductID}`)}
-            </Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.product_code}>
-            <Text style={{ color: Colors.red[7] }}>
-              {utils.farsiNum(ProductCode)}
-            </Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.product_category}>
-            <Text style={{ color: Colors.green[6] }}>{CategoryTitle}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label={Words.product_nature}>
-            <Text style={{ color: Colors.blue[6] }}>{NatureTitle}</Text>
-          </Descriptions.Item>
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <Descriptions
+              bordered
+              column={{
+                //   md: 2, sm: 2,
+                lg: 2,
+                md: 2,
+                xs: 1,
+              }}
+              size="middle"
+            >
+              <Descriptions.Item label={Words.id}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(`${ProductID}`)}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.product_code}>
+                <Text style={{ color: Colors.red[7] }}>
+                  {utils.farsiNum(ProductCode)}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.product_category}>
+                <Text style={{ color: Colors.green[6] }}>{CategoryTitle}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.product_nature}>
+                <Text style={{ color: Colors.blue[6] }}>{NatureTitle}</Text>
+              </Descriptions.Item>
 
-          <Descriptions.Item label={Words.status}>
-            <Space direction="vertical">
-              {IsBuyable && (
-                <Text style={{ color: Colors.magenta[6] }}>
-                  {Words.is_buyable}
-                </Text>
-              )}
-              {IsSalable && (
-                <Text style={{ color: Colors.magenta[6] }}>
-                  {Words.is_salable}
-                </Text>
-              )}
-              {IsBuildable && (
-                <Text style={{ color: Colors.magenta[6] }}>
-                  {Words.is_buildable}
-                </Text>
-              )}
-              {IsFixProperty && (
-                <Text style={{ color: Colors.magenta[6] }}>
-                  {Words.fix_property}
-                </Text>
-              )}
-              {IsSparePart && (
-                <Text style={{ color: Colors.magenta[6] }}>
-                  {Words.spare_part}
-                </Text>
-              )}
-            </Space>
-          </Descriptions.Item>
-        </Descriptions>
+              <Descriptions.Item label={Words.status}>
+                <Space direction="vertical">
+                  {IsBuyable && (
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {Words.is_buyable}
+                    </Text>
+                  )}
+                  {IsSalable && (
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {Words.is_salable}
+                    </Text>
+                  )}
+                  {IsBuildable && (
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {Words.is_buildable}
+                    </Text>
+                  )}
+                  {IsFixProperty && (
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {Words.fix_property}
+                    </Text>
+                  )}
+                  {IsSparePart && (
+                    <Text style={{ color: Colors.magenta[6] }}>
+                      {Words.spare_part}
+                    </Text>
+                  )}
+                </Space>
+              </Descriptions.Item>
+            </Descriptions>
+          </Col>
+          <Col xs={24}>
+            <Tabs defaultActiveKey="1" type="card" items={infoTabItems} />
+          </Col>
+        </Row>
       ),
     },
     {
