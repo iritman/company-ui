@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Tabs, Alert } from "antd";
 import ModalWindow from "../../../../common/modal-window";
-// import Words from "../../../../../resources/words";
-// import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import service from "../../../../../services/financial/store-mgr/user-products-service";
 import {
@@ -12,124 +10,19 @@ import {
   initModal,
   saveModalChanges,
 } from "../../../../../tools/form-manager";
-// import InputItem from "../../../../form-controls/input-item";
-// import DropdownItem from "../../../../form-controls/dropdown-item";
-// import SwitchItem from "../../../../form-controls/switch-item";
 import { handleError } from "../../../../../tools/form-manager";
 import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
 import { schema, initRecord, getTabItems } from "./user-product-modal-code";
-// import DetailsTable from "./../../../../common/details-table";
-// import FeatureModal from "./user-product-feature-modal";
+import StoreModal from "./user-product-store-modal";
 import MeasureUnitModal from "./user-product-measure-unit-modal";
 import MeasureConvertModal from "./user-product-measure-convert-modal";
-import StoreModal from "./user-product-store-modal";
+import FeatureModal from "./user-product-feature-modal";
 // import InventoryControlAgentModal from "./user-product-inventory-control-agent-modal";
 import { v4 as uuid } from "uuid";
 import Words from "./../../../../../resources/words";
-
-// const { Text } = Typography;
-
-// const getFeatureValue = (record) => {
-//   let result = "";
-
-//   switch (record.ValueTypeID) {
-//     case 4:
-//       result = record.FeatureValue ? Words.yes : Words.no;
-//       break;
-//     case 5:
-//       result = utils.slashDate(record.FeatureValue);
-//       break;
-//     case 6:
-//       result = utils.colonTime(record.FeatureValue);
-//       break;
-//     default:
-//       result = record.FeatureValue;
-//       break;
-//   }
-
-//   return result;
-// };
-
-// const getFeaturesColumns = (access, onEdit, onDelete) => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "PFID",
-//       sorter: getSorter("PFID"),
-//       render: (PFID) => <Text>{utils.farsiNum(`${PFID}`)}</Text>,
-//     },
-//     {
-//       title: Words.feature,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "Title",
-//       sorter: getSorter("Title"),
-//       render: (Title) => (
-//         <Text
-//           style={{
-//             color: Colors.red[7],
-//           }}
-//         >
-//           {Title}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.value,
-//       width: 150,
-//       align: "center",
-//       // dataIndex: "FeatureValue",
-//       sorter: getSorter("FeatureValue"),
-//       render: (record) => (
-//         <Text style={{ color: Colors.green[7] }}>
-//           {getFeatureValue(record)}
-//         </Text>
-//       ),
-//     },
-//   ];
-
-//   if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
-//     columns = [
-//       ...columns,
-//       {
-//         title: "",
-//         fixed: "right",
-//         align: "center",
-//         width: 75,
-//         render: (record) => (
-//           <Space>
-//             {access.CanEdit && onEdit && (
-//               <Button
-//                 type="link"
-//                 icon={<EditIcon />}
-//                 onClick={() => onEdit(record)}
-//               />
-//             )}
-
-//             {access.CanDelete && onDelete && (
-//               <Popconfirm
-//                 title={Words.questions.sure_to_delete_feature}
-//                 onConfirm={async () => await onDelete(record.PFID)}
-//                 okText={Words.yes}
-//                 cancelText={Words.no}
-//                 icon={<QuestionIcon style={{ color: "red" }} />}
-//               >
-//                 <Button type="link" icon={<DeleteIcon />} danger />
-//               </Popconfirm>
-//             )}
-//           </Space>
-//         ),
-//       },
-//     ];
-//   }
-
-//   return columns;
-// };
 
 // const getInventoryControlAgentsColumns = (access, onEdit, onDelete) => {
 //   let columns = [
@@ -280,14 +173,14 @@ const UserProductModal = ({
   selectedObject,
   onOk,
   onCancel,
-  //   onSaveFeature,
-  //   onDeleteFeature,
   onSaveStore,
   onDeleteStore,
   onSaveMeasureUnit,
   onDeleteMeasureUnit,
   onSaveMeasureConvert,
   onDeleteMeasureConvert,
+  onSaveFeature,
+  onDeleteFeature,
   //   onSaveInventoryControlAgent,
   //   onDeleteInventoryControlAgent,
 }) => {
@@ -298,15 +191,11 @@ const UserProductModal = ({
   const [natures, setNatures] = useState([]);
   const [stores, setStores] = useState([]);
   const [measureUnits, setMeasureUnits] = useState([]);
-  //   const [features, setFeatures] = useState([]);
+  const [features, setFeatures] = useState([]);
   //   const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
   //   const [systemInventoryControlAgents, setSystemInventoryControlAgents] =
   //     useState([]);
   const [bachPatterns, setBachPatterns] = useState([]);
-  //---
-  //   const [showFeatureModal, setShowFeatureModal] = useState(false);
-  //   const [selectedFeature, setSelectedFeature] = useState(null);
-
   //---
   const [showStoreModal, setShowStoreModal] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
@@ -316,6 +205,9 @@ const UserProductModal = ({
   //---
   const [showMeasureConvertModal, setShowMeasureConvertModal] = useState(false);
   const [selectedMeasureConvert, setSelectedMeasureConvert] = useState(null);
+  //---
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState(null);
   //---
   //   const [showInventoryControlAgentModal, setShowInventoryControlAgentModal] =
   //     useState(false);
@@ -368,7 +260,7 @@ const UserProductModal = ({
         Natures,
         Stores,
         MeasureUnits,
-        // Features,
+        Features,
         // InventoryControlAgents,
         // SystemInventoryControlAgents,
         BachPatterns,
@@ -378,7 +270,7 @@ const UserProductModal = ({
       setNatures(Natures);
       setStores(Stores);
       setMeasureUnits(MeasureUnits);
-      //   setFeatures(Features);
+      setFeatures(Features);
       //   setInventoryControlAgents(InventoryControlAgents);
       //   setSystemInventoryControlAgents(SystemInventoryControlAgents);
       setBachPatterns(BachPatterns);
@@ -402,21 +294,6 @@ const UserProductModal = ({
 
   //   const handleTabChange = (key) => {
   //     console.log(key);
-  //   };
-
-  //   const handleShowFeatureModal = () => {
-  //     setSelectedFeature(null);
-  //     setShowFeatureModal(true);
-  //   };
-
-  //   const handleHideFeatureModal = () => {
-  //     setSelectedFeature(null);
-  //     setShowFeatureModal(false);
-  //   };
-
-  //   const handleEditFeature = (feature) => {
-  //     setSelectedFeature(feature);
-  //     setShowFeatureModal(true);
   //   };
 
   //-----------------
@@ -566,7 +443,7 @@ const UserProductModal = ({
     }
 
     setRecord({ ...record });
-    setSelectedStore(null);
+    setSelectedMeasureUnit(null);
   };
 
   const handleDeleteMeasureUnit = async (measure_unit) => {
@@ -680,7 +557,7 @@ const UserProductModal = ({
     }
 
     setRecord({ ...record });
-    setSelectedStore(null);
+    setSelectedMeasureConvert(null);
   };
 
   const handleDeleteMeasureConvert = async (convert) => {
@@ -697,6 +574,103 @@ const UserProductModal = ({
         record.MeasureConverts = record.MeasureConverts.filter(
           (mc) => mc.UID !== convert.UID
         );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  //-----------------
+
+  const handleShowFeatureModal = () => {
+    setSelectedFeature(null);
+    setShowFeatureModal(true);
+  };
+
+  const handleHideFeatureModal = () => {
+    setSelectedFeature(null);
+    setShowFeatureModal(false);
+  };
+
+  const handleEditFeature = (feature) => {
+    setSelectedFeature(feature);
+    setShowFeatureModal(true);
+  };
+
+  const handleSaveFeature = async (feature) => {
+    // prevent adding duplicate features
+    if (
+      selectedFeature === null &&
+      record.Features.find((f) => f.FeatureGroupID === feature.FeatureGroupID)
+    ) {
+      const error = {
+        response: {
+          status: 400,
+          data: {
+            Error: Words.messages.product_feature_already_exists,
+          },
+        },
+      };
+
+      throw error;
+    }
+
+    if (feature.ProductID === 0) {
+      const group_feature = features.find(
+        (f) => f.GroupFeatureID === feature.GroupFeatureID
+      );
+      const { Title, FeatureTypeID } = group_feature;
+      feature.GroupFeatureTitle = Title;
+      feature.FeatureTypeID = FeatureTypeID;
+
+      if (FeatureTypeID < 5) {
+        feature.ItemCode = group_feature.Items.find(
+          (i) => i.ItemID === feature.ValueItemID
+        )?.ItemCode;
+      }
+
+      if (feature.PFID === 0 && selectedFeature === null) {
+        //--- managing unique id (UID) for new items
+        feature.UID = uuid();
+        record.Features = [...record.Features, feature];
+      } else if (feature.PFID === 0 && selectedFeature !== null) {
+        const index = record.Features.findIndex(
+          (f) => f.UID === selectedFeature.UID
+        );
+        record.Features[index] = feature;
+      }
+    } else {
+      const saved_feature = await onSaveFeature(feature);
+
+      const index = record.Features.findIndex((f) => f.PFID === feature.PFID);
+
+      if (index === -1) {
+        record.Features = [...record.Features, saved_feature];
+      } else {
+        record.Features[index] = saved_feature;
+      }
+    }
+
+    setRecord({ ...record });
+    setSelectedFeature(null);
+  };
+
+  const handleDeleteFeature = async (feature) => {
+    setProgress(true);
+
+    try {
+      if (feature.PFID > 0) {
+        await onDeleteFeature(feature.PFID);
+
+        record.Features = record.Features.filter(
+          (f) => f.PFID !== feature.PFID
+        );
+      } else {
+        record.Features = record.Features.filter((f) => f.UID !== feature.UID);
       }
 
       setRecord({ ...record });
@@ -744,7 +718,12 @@ const UserProductModal = ({
     handleShowMeasureConvertModal,
     handleEditMeasureConvert,
     handleDeleteMeasureConvert,
+    handleShowFeatureModal,
+    handleEditFeature,
+    handleDeleteFeature,
   };
+
+  //------
 
   return (
     <>
@@ -775,213 +754,11 @@ const UserProductModal = ({
               <Tabs
                 defaultActiveKey="1"
                 type="card"
-                // onChange={handleTabChange}
                 items={getTabItems(formConfig, tab_props, tab_events)}
               >
-                {/* <TabPane tab={Words.main_info} key="main-info">
-                  <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-                    <Col xs={24} md={12}>
-                      <InputItem
-                        title={Words.title}
-                        fieldName="Title"
-                        maxLength={50}
-                        formConfig={formConfig}
-                        required
-                        autoFocus
-                      />
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <InputItem
-                        title={Words.product_code}
-                        fieldName="ProductCode"
-                        maxLength={50}
-                        formConfig={formConfig}
-                        required
-                      />
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <DropdownItem
-                        title={Words.product_category}
-                        dataSource={categories}
-                        keyColumn="CategoryID"
-                        valueColumn="Title"
-                        formConfig={formConfig}
-                        required
-                      />
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <DropdownItem
-                        title={Words.product_nature}
-                        dataSource={natures}
-                        keyColumn="NatureID"
-                        valueColumn="Title"
-                        formConfig={formConfig}
-                        required
-                      />
-                    </Col>
-                    <Col xs={24} md={8}>
-                      <SwitchItem
-                        title={Words.is_buyable}
-                        fieldName="IsBuyable"
-                        initialValue={false}
-                        checkedTitle={Words.yes}
-                        unCheckedTitle={Words.no}
-                        formConfig={formConfig}
-                      />
-                    </Col>
-                    <Col xs={24} md={8}>
-                      <SwitchItem
-                        title={Words.is_salable}
-                        fieldName="IsSalable"
-                        initialValue={false}
-                        checkedTitle={Words.yes}
-                        unCheckedTitle={Words.no}
-                        formConfig={formConfig}
-                      />
-                    </Col>
-                    <Col xs={24} md={8}>
-                      <SwitchItem
-                        title={Words.is_buildable}
-                        fieldName="IsBuildable"
-                        initialValue={false}
-                        checkedTitle={Words.yes}
-                        unCheckedTitle={Words.no}
-                        formConfig={formConfig}
-                      />
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <SwitchItem
-                        title={Words.spare_part}
-                        fieldName="IsSparePart"
-                        initialValue={false}
-                        checkedTitle={Words.yes}
-                        unCheckedTitle={Words.no}
-                        formConfig={formConfig}
-                      />
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <SwitchItem
-                        title={Words.fix_property}
-                        fieldName="IsFixProperty"
-                        initialValue={false}
-                        checkedTitle={Words.yes}
-                        unCheckedTitle={Words.no}
-                        formConfig={formConfig}
-                      />
-                    </Col>
-                  </Row>
-                </TabPane>
-                {selectedObject && (
+                {/* {selectedObject && (
                   <>
-                    <TabPane tab={Words.descriptions} key="tab-details-text">
-                      <Col xs={24}>
-                        <InputItem
-                          title={Words.descriptions}
-                          fieldName="DetailsText"
-                          multiline
-                          rows={7}
-                          showCount
-                          maxLength={512}
-                          formConfig={formConfig}
-                          autoFocus
-                        />
-                      </Col>
-                    </TabPane>
-                    <TabPane tab={Words.features} key="tab-features">
-                      <Row gutter={[2, 5]}>
-                        <Col xs={24}>
-                          <Button
-                            type="primary"
-                            icon={<PlusIcon />}
-                            onClick={handleShowFeatureModal}
-                          >
-                            {Words.new_feature}
-                          </Button>
-                        </Col>
-                        <Col xs={24}>
-                          <DetailsTable
-                            records={selectedObject.Features}
-                            columns={getFeaturesColumns(
-                              access,
-                              handleEditFeature, // handle edit feature
-                              onDeleteFeature // handle delete feature
-                            )}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
-                    <TabPane tab={Words.measure_units} key="tab-measure-units">
-                      <Row gutter={[2, 5]}>
-                        <Col xs={24}>
-                          <Button
-                            type="primary"
-                            icon={<PlusIcon />}
-                            onClick={handleShowMeasureUnitModal}
-                          >
-                            {Words.new_measure_unit}
-                          </Button>
-                        </Col>
-                        <Col xs={24}>
-                          <DetailsTable
-                            records={selectedObject.MeasureUnits}
-                            columns={getMeasureUnitsColumns(
-                              access,
-                              handleEditMeasureUnit, // handle edit measure unit
-                              onDeleteMeasureUnit // handle delete measure unit
-                            )}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
-                    <TabPane
-                      tab={Words.measure_converts}
-                      key="tab-measure-converts"
-                    >
-                      <Row gutter={[2, 5]}>
-                        <Col xs={24}>
-                          <Button
-                            type="primary"
-                            icon={<PlusIcon />}
-                            onClick={handleShowMeasureConvertModal}
-                          >
-                            {Words.new_measure_convert}
-                          </Button>
-                        </Col>
-                        <Col xs={24}>
-                          <DetailsTable
-                            records={selectedObject.MeasureConverts}
-                            columns={getMeasureConvertsColumns(
-                              access,
-                              handleEditMeasureConvert, // handle edit measure convert
-                              onDeleteMeasureConvert // handle delete measure convert
-                            )}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
-                    <TabPane tab={Words.stores} key="tab-stores">
-                      <Row gutter={[2, 5]}>
-                        <Col xs={24}>
-                          <Button
-                            type="primary"
-                            icon={<PlusIcon />}
-                            onClick={handleShowStoreModal}
-                          >
-                            {Words.new_store}
-                          </Button>
-                        </Col>
-                        <Col xs={24}>
-                          <DetailsTable
-                            records={selectedObject.Stores}
-                            columns={getStoresColumns(
-                              access,
-                              handleEditStore, // handle edit store
-                              onDeleteStore // handle delete store
-                            )}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
+                    
                     <TabPane
                       tab={Words.inventory_control_agent}
                       key="tab-inventory-control-agents"
@@ -1098,18 +875,16 @@ const UserProductModal = ({
         />
       )}
 
-      {/* {showFeatureModal && (
+      {showFeatureModal && (
         <FeatureModal
           isOpen={showFeatureModal}
           product={selectedObject}
           selectedFeature={selectedFeature}
           features={features}
-          onOk={onSaveFeature}
+          onOk={handleSaveFeature}
           onCancel={handleHideFeatureModal}
         />
       )}
-
-       */}
 
       {/* {showInventoryControlAgentModal && (
         <InventoryControlAgentModal

@@ -204,6 +204,67 @@ const getMeasureConvertsColumns = () => {
   return columns;
 };
 
+const getFeaturesColumns = () => {
+  const getFeatureValue = (record) => {
+    let result = "";
+
+    switch (record.FeatureTypeID) {
+      case 5:
+        result = record.StringValue;
+        break;
+      case 6:
+        result = record.BoolValue ? Words.yes : Words.no;
+        break;
+      default:
+        result = record.ItemCode;
+        break;
+    }
+
+    return result;
+  };
+
+  let columns = [
+    // {
+    //   title: Words.id,
+    //   width: 75,
+    //   align: "center",
+    //   dataIndex: "PFID",
+    //   sorter: getSorter("PFID"),
+    //   render: (PFID) => <Text>{utils.farsiNum(`${PFID}`)}</Text>,
+    // },
+    {
+      title: Words.feature,
+      width: 120,
+      align: "center",
+      dataIndex: "GroupFeatureTitle",
+      sorter: getSorter("GroupFeatureTitle"),
+      render: (GroupFeatureTitle) => (
+        <Text
+          style={{
+            color: Colors.green[7],
+          }}
+        >
+          {GroupFeatureTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.value,
+      width: 150,
+      align: "center",
+      // dataIndex: "FeatureValue",
+      sorter: getSorter("FeatureValue"),
+      render: (record) => (
+        <Text style={{ color: Colors.orange[7] }}>
+          {utils.farsiNum(getFeatureValue(record))}
+        </Text>
+      ),
+    },
+  ];
+
+  return columns;
+};
+
 const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
@@ -223,6 +284,7 @@ const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
     Stores,
     MeasureUnits,
     MeasureConverts,
+    Features,
   } = product;
 
   const infoTabItems = [
@@ -250,6 +312,17 @@ const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
               records={MeasureConverts}
               columns={getMeasureConvertsColumns()}
             />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: Words.features,
+      key: "features",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <DetailsTable records={Features} columns={getFeaturesColumns()} />
           </Col>
         </Row>
       ),

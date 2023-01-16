@@ -1052,6 +1052,7 @@ class Words extends Component {
     financial_year_no_already_exists: "سال مالی قبلا ثبت شده است",
     no_tafsil_account: "حساب تفصیلی تعریف نشده است",
     measure_convert_already_exists: "ضریب تبدیل قبلا ثبت شده است",
+    product_feature_already_exists: "ویژگی مورد نظر قبلا ثبت شده است",
   };
 
   static questions = {

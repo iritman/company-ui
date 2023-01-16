@@ -57,6 +57,7 @@ export const schema = {
   Stores: Joi.array(),
   MeasureUnits: Joi.array(),
   MeasureConverts: Joi.array(),
+  Features: Joi.array(),
   InventoryControlAgents: Joi.array(),
   AlternativeProducts: Joi.array(),
 };
@@ -77,6 +78,7 @@ export const initRecord = {
   Stores: [],
   MeasureUnits: [],
   MeasureConverts: [],
+  Features: [],
   InventoryControlAgents: [],
   AlternativeProducts: [],
 };
@@ -371,6 +373,102 @@ const getMeasureConvertsColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+const getFeaturesColumns = (access, onEdit, onDelete) => {
+  const getFeatureValue = (record) => {
+    let result = "";
+
+    switch (record.FeatureTypeID) {
+      case 5:
+        result = record.StringValue;
+        break;
+      case 6:
+        result = record.BoolValue ? Words.yes : Words.no;
+        break;
+      default:
+        result = record.ItemCode;
+        break;
+    }
+
+    return result;
+  };
+
+  let columns = [
+    // {
+    //   title: Words.id,
+    //   width: 75,
+    //   align: "center",
+    //   dataIndex: "PFID",
+    //   sorter: getSorter("PFID"),
+    //   render: (PFID) => <Text>{utils.farsiNum(`${PFID}`)}</Text>,
+    // },
+    {
+      title: Words.feature,
+      width: 120,
+      align: "center",
+      dataIndex: "GroupFeatureTitle",
+      sorter: getSorter("GroupFeatureTitle"),
+      render: (GroupFeatureTitle) => (
+        <Text
+          style={{
+            color: Colors.green[7],
+          }}
+        >
+          {GroupFeatureTitle}
+        </Text>
+      ),
+    },
+    {
+      title: Words.value,
+      width: 150,
+      align: "center",
+      // dataIndex: "FeatureValue",
+      sorter: getSorter("FeatureValue"),
+      render: (record) => (
+        <Text style={{ color: Colors.orange[7] }}>
+          {utils.farsiNum(getFeatureValue(record))}
+        </Text>
+      ),
+    },
+  ];
+
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_feature}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+};
+
 export const getTabItems = (formConfig, props, events) => {
   const { categories, natures, bachPatterns, record, access } = props;
 
@@ -384,6 +482,9 @@ export const getTabItems = (formConfig, props, events) => {
     handleShowMeasureConvertModal,
     handleEditMeasureConvert,
     handleDeleteMeasureConvert,
+    handleShowFeatureModal,
+    handleEditFeature,
+    handleDeleteFeature,
   } = events;
 
   const infoTabItems = [
@@ -403,8 +504,8 @@ export const getTabItems = (formConfig, props, events) => {
               records={record.MeasureUnits}
               columns={getMeasureUnitsColumns(
                 access,
-                handleEditMeasureUnit, // handle edit measure unit
-                handleDeleteMeasureUnit // handle delete measure unit
+                handleEditMeasureUnit,
+                handleDeleteMeasureUnit
               )}
             />
           </Col>
@@ -427,8 +528,32 @@ export const getTabItems = (formConfig, props, events) => {
               records={record.MeasureConverts}
               columns={getMeasureConvertsColumns(
                 access,
-                handleEditMeasureConvert, // handle edit measure unit
-                handleDeleteMeasureConvert // handle delete measure unit
+                handleEditMeasureConvert,
+                handleDeleteMeasureConvert
+              )}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: Words.features,
+      key: "features",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <AddButton
+              title={Words.new_feature}
+              onClick={handleShowFeatureModal}
+            />
+          </Col>
+          <Col xs={24}>
+            <DetailsTable
+              records={record.Features}
+              columns={getFeaturesColumns(
+                access,
+                handleEditFeature,
+                handleDeleteFeature
               )}
             />
           </Col>
@@ -533,12 +658,7 @@ export const getTabItems = (formConfig, props, events) => {
             />
           </Col>
           <Col xs={24}>
-            <Tabs
-              defaultActiveKey="1"
-              type="card"
-              // onChange={handleTabChange}
-              items={infoTabItems}
-            />
+            <Tabs defaultActiveKey="1" type="card" items={infoTabItems} />
           </Col>
         </Row>
       ),

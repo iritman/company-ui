@@ -316,32 +316,61 @@ const UserProductsPage = ({ pageName }) => {
 
   //------
 
-  const handleSaveFeature = async (row) => {
-    const feature = await service.saveFeature(row);
+  const handleSaveFeature = async (feature) => {
+    const saved_feature = await service.saveFeature(feature);
 
-    const so = { ...selectedObject };
-    if (so.Features.find((f) => f.PFID === feature.PFID))
-      so.Features[so.Features.findIndex((f) => f.PFID === feature.PFID)] =
-        feature;
-    else so.Features = [...so.Features, feature];
+    const rec = { ...selectedObject };
+    if (feature.PFID === 0) {
+      rec.Features = [...rec.Features, saved_feature];
+    } else {
+      const index = rec.Features.findIndex((f) => f.PFID === feature.PFID);
+      rec.Features[index] = saved_feature;
+    }
+    setSelectedObject(rec);
 
-    setSelectedObject(so);
+    //------
 
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
+    const index = records.findIndex(
+      (product) => product.ProductID === feature.ProductID
+    );
+
+    records[index] = rec;
+
+    //------
+
+    setRecords([...records]);
+
+    return saved_feature;
   };
 
   const handleDeleteFeature = async (id) => {
     await service.deleteFeature(id);
 
-    const so = { ...selectedObject };
-    so.Features = so.Features.filter((f) => f.PFID !== id);
-    setSelectedObject(so);
+    if (selectedObject) {
+      const rec = { ...selectedObject };
+      rec.Features = rec.Features.filter((f) => f.PFID !== id);
+      setSelectedObject(rec);
 
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
+      //------
+
+      const index = records.findIndex(
+        (product) => product.ProductID === rec.ProductID
+      );
+
+      records[index] = rec;
+
+      setRecords([...records]);
+    }
+
+    // await service.deleteFeature(id);
+
+    // const so = { ...selectedObject };
+    // so.Features = so.Features.filter((f) => f.PFID !== id);
+    // setSelectedObject(so);
+
+    // const rec = [...records];
+    // rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
+    // setRecords(rec);
   };
 
   //------
@@ -418,14 +447,14 @@ const UserProductsPage = ({ pageName }) => {
           selectedObject={selectedObject}
           onOk={handleSave}
           onCancel={handleCloseModal}
-          onSaveFeature={handleSaveFeature}
-          onDeleteFeature={handleDeleteFeature}
+          onSaveStore={handleSaveStore}
+          onDeleteStore={handleDeleteStore}
           onSaveMeasureUnit={handleSaveMeasureUnit}
           onDeleteMeasureUnit={handleDeleteMeasureUnit}
           onSaveMeasureConvert={handleSaveMeasureConvert}
           onDeleteMeasureConvert={handleDeleteMeasureConvert}
-          onSaveStore={handleSaveStore}
-          onDeleteStore={handleDeleteStore}
+          onSaveFeature={handleSaveFeature}
+          onDeleteFeature={handleDeleteFeature}
           onSaveInventoryControlAgent={handleSaveInventoryControlAgent}
           onDeleteInventoryControlAgent={handleDeleteInventoryControlAgent}
         />
