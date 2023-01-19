@@ -1,7 +1,16 @@
 import Words from "../../../../../../resources/words";
 import Colors from "../../../../../../resources/colors";
 import utils from "../../../../../../tools/utils";
-import { Button, Space, Typography, Popconfirm, Row, Col, Popover } from "antd";
+import {
+  Button,
+  Space,
+  Typography,
+  Popconfirm,
+  Row,
+  Col,
+  Popover,
+  Alert,
+} from "antd";
 import { getSorter, validateForm } from "../../../../../../tools/form-manager";
 import {
   PlusOutlined as AddIcon,
@@ -984,6 +993,7 @@ export const getTabPanes = (config, selectedTab) => {
     price,
     access,
     status_id,
+    cash_box_id,
     handleEditCheque,
     handleDeleteCheque,
     handleEditDemand,
@@ -1065,20 +1075,32 @@ export const getTabPanes = (config, selectedTab) => {
       key: "cashes",
       children: (
         <Row gutter={[0, 15]}>
-          <Col xs={24}>
-            <DetailsTable
-              records={record.Cashes}
-              columns={getCashColumns(
-                access,
-                status_id,
-                handleEditCash,
-                handleDeleteCash
-              )}
-            />
-          </Col>
-          <Col xs={24}>
-            <PriceViewer price={price.CashesAmount} />
-          </Col>
+          {cash_box_id > 0 ? (
+            <>
+              <Col xs={24}>
+                <DetailsTable
+                  records={record.Cashes}
+                  columns={getCashColumns(
+                    access,
+                    status_id,
+                    handleEditCash,
+                    handleDeleteCash
+                  )}
+                />
+              </Col>
+              <Col xs={24}>
+                <PriceViewer price={price.CashesAmount} />
+              </Col>
+            </>
+          ) : (
+            <Col xs={24}>
+              <Alert
+                message={Words.messages.no_selected_cash_box}
+                type="warning"
+                showIcon
+              />
+            </Col>
+          )}
         </Row>
       ),
     },

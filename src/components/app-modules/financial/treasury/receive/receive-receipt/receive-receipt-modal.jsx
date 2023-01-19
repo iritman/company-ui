@@ -895,6 +895,7 @@ const ReceiveReceiptModal = ({
     price,
     access,
     status_id,
+    cash_box_id: record.CashBoxID,
     handleEditCheque,
     handleDeleteCheque,
     handleEditDemand,
@@ -968,6 +969,7 @@ const ReceiveReceiptModal = ({
                 keyColumn="CashBoxID"
                 valueColumn="Title"
                 formConfig={formConfig}
+                disabled={record.Cashes.length > 0}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -1015,11 +1017,13 @@ const ReceiveReceiptModal = ({
               </Form.Item>
             </Col>
 
-            {status_id === 1 && (
-              <Col xs={24}>
-                <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
-              </Col>
-            )}
+            {status_id === 1 &&
+              (selectedTab !== "cashes" ||
+                (selectedTab === "cashes" && record.CashBoxID > 0)) && (
+                <Col xs={24}>
+                  <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
+                </Col>
+              )}
           </Row>
         </Form>
       </ModalWindow>
