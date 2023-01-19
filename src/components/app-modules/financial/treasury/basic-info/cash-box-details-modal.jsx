@@ -17,6 +17,7 @@ import {
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
+import TafsilInfoViewer from "../../../../common/tafsil-info-viewer";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -30,15 +31,71 @@ const CashBoxDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     CashierLastName,
     DetailsText,
     IsActive,
-    TafsilAccountTitle,
-    TafsilCode,
-    TafsilTypeTitle,
-    ParentTafsilTypeTitle,
-    // CashierMemberID,
-    // TafsilAccountID,
-    // TafsilTypeID,
-    // ParentTafsilTypeID,
+    TafsilInfo,
   } = selectedObject;
+
+  const items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
+        <Descriptions
+          bordered
+          column={{
+            //   md: 2, sm: 2,
+            lg: 2,
+            md: 2,
+            xs: 1,
+          }}
+          size="middle"
+        >
+          <Descriptions.Item label={Words.id}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(CashBoxID)}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.location}>
+            <Text style={{ color: valueColor }}>{Location}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.cashier}>
+            <Text
+              style={{ color: Colors.cyan[6] }}
+            >{`${CashierFirstName} ${CashierLastName}`}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.status}>
+            <Space>
+              {IsActive ? (
+                <CheckIcon style={{ color: Colors.green[6] }} />
+              ) : (
+                <LockIcon style={{ color: Colors.red[6] }} />
+              )}
+
+              <Text style={{ color: valueColor }}>
+                {`${IsActive ? Words.active : Words.inactive} `}
+              </Text>
+            </Space>
+          </Descriptions.Item>
+          {DetailsText.length > 0 && (
+            <Descriptions.Item label={Words.descriptions} span={2}>
+              <Text
+                style={{
+                  color: Colors.purple[7],
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {utils.farsiNum(DetailsText)}
+              </Text>
+            </Descriptions.Item>
+          )}
+        </Descriptions>
+      ),
+    },
+    {
+      label: Words.tafsil_account,
+      key: "tafsil-account",
+      children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+    },
+  ];
 
   return (
     <Modal
@@ -72,92 +129,7 @@ const CashBoxDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               />
             </Col>
             <Col xs={24}>
-              <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab={Words.cash_box_info} key="cash_box_info">
-                  <Descriptions
-                    bordered
-                    column={{
-                      //   md: 2, sm: 2,
-                      lg: 2,
-                      md: 2,
-                      xs: 1,
-                    }}
-                    size="middle"
-                  >
-                    <Descriptions.Item label={Words.id}>
-                      <Text style={{ color: valueColor }}>
-                        {utils.farsiNum(CashBoxID)}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.location}>
-                      <Text style={{ color: valueColor }}>{Location}</Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.cashier}>
-                      <Text
-                        style={{ color: Colors.cyan[6] }}
-                      >{`${CashierFirstName} ${CashierLastName}`}</Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.status}>
-                      <Space>
-                        {IsActive ? (
-                          <CheckIcon style={{ color: Colors.green[6] }} />
-                        ) : (
-                          <LockIcon style={{ color: Colors.red[6] }} />
-                        )}
-
-                        <Text style={{ color: valueColor }}>
-                          {`${IsActive ? Words.active : Words.inactive} `}
-                        </Text>
-                      </Space>
-                    </Descriptions.Item>
-                    {DetailsText.length > 0 && (
-                      <Descriptions.Item label={Words.descriptions} span={2}>
-                        <Text
-                          style={{
-                            color: Colors.purple[7],
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {utils.farsiNum(DetailsText)}
-                        </Text>
-                      </Descriptions.Item>
-                    )}
-                  </Descriptions>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab={Words.tafsil_info} key="tafsil_info">
-                  <Descriptions
-                    bordered
-                    column={{
-                      //   md: 2, sm: 2,
-                      lg: 2,
-                      md: 2,
-                      xs: 1,
-                    }}
-                    size="middle"
-                  >
-                    <Descriptions.Item label={Words.tafsil_account}>
-                      <Text style={{ color: valueColor }}>
-                        {TafsilAccountTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.tafsil_code}>
-                      <Text style={{ color: Colors.red[6] }}>
-                        {utils.farsiNum(TafsilCode)}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.tafsil_type}>
-                      <Text style={{ color: valueColor }}>
-                        {TafsilTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.parent_tafsil_type}>
-                      <Text style={{ color: valueColor }}>
-                        {ParentTafsilTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Tabs.TabPane>
-              </Tabs>
+              <Tabs defaultActiveKey="1" type="card" items={items} />
             </Col>
           </Row>
         </article>
