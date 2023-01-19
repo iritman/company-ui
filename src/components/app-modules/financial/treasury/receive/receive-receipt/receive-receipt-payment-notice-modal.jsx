@@ -129,7 +129,7 @@ const ReceiveReceiptPaymentNoticeModal = ({
       setOperations(
         Operations.filter((o) => o.ItemTypeID === 4 && o.OperationTypeID === 1)
       );
-      setCashFlows(CashFlows);
+      setCashFlows(CashFlows.filter((cf) => cf.ShowInReceiptOperation));
       setCompanyBankAccounts(CompanyBankAccounts);
       setStandardDetails(StandardDetails);
 

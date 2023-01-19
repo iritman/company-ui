@@ -152,7 +152,7 @@ const ReceiveReceiptChequeModal = ({
       setOperations(
         Operations.filter((o) => o.ItemTypeID === 1 && o.OperationTypeID === 1)
       );
-      setCashFlows(CashFlows);
+      setCashFlows(CashFlows.filter((cf) => cf.ShowInReceiptOperation));
       setBanks(Banks);
       setCities(Cities);
       setStandardDetails(StandardDetails);

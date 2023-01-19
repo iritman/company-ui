@@ -136,7 +136,7 @@ const ReceiveReceiptDemandModal = ({
       setOperations(
         Operations.filter((o) => o.ItemTypeID === 2 && o.OperationTypeID === 1)
       );
-      setCashFlows(CashFlows);
+      setCashFlows(CashFlows.filter((cf) => cf.ShowInReceiptOperation));
       setStandardDetails(StandardDetails);
 
       if (selectedObject !== null) {
