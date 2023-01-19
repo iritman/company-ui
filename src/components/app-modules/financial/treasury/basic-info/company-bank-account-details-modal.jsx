@@ -12,6 +12,7 @@ import {
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
+import TafsilInfoViewer from "../../../../common/tafsil-info-viewer";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
@@ -27,10 +28,6 @@ const CompanyBankAccountDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     Credit,
     CurrencyTitle,
     BankAccountTypeTitle,
-    TafsilAccountTitle,
-    TafsilCode,
-    TafsilTypeTitle,
-    ParentTafsilTypeTitle,
     DetailsText,
     // AccountID,
     // BranchID,
@@ -38,9 +35,72 @@ const CompanyBankAccountDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     // CityID,
     // CurrencyID,
     // BankAccountTypeID,
-    // TafsilAccountID,
-    // TafsilTypeID,
+    TafsilInfo,
   } = selectedObject;
+
+  const items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
+        <Descriptions
+          bordered
+          column={{
+            //   md: 2, sm: 2,
+            lg: 2,
+            md: 2,
+            xs: 1,
+          }}
+          size="middle"
+        >
+          <Descriptions.Item label={Words.bank_account_type}>
+            <Text style={{ color: valueColor }}>{BankAccountTypeTitle}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.bank}>
+            <Text style={{ color: Colors.cyan[6] }}>{BankTitle}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.bank_branch}>
+            <Text style={{ color: valueColor }}>
+              {utils.farsiNum(`${BankBranchTitle} (${BranchCode})`)}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.city}>
+            <Text style={{ color: Colors.purple[6] }}>{CityTitle}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.currency_type}>
+            <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.credit}>
+            <Text style={{ color: valueColor }}>
+              {Credit > 0 ? utils.farsiNum(utils.moneyNumber(Credit)) : ""}
+            </Text>
+          </Descriptions.Item>
+          <Descriptions.Item label={Words.sheba_no} span={2}>
+            <Text style={{ color: Colors.volcano[6] }}>
+              {ShebaID.length > 0 ? ShebaID : ""}
+            </Text>
+          </Descriptions.Item>
+          {DetailsText.length > 0 && (
+            <Descriptions.Item label={Words.descriptions} span={2}>
+              <Text
+                style={{
+                  color: Colors.purple[7],
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {utils.farsiNum(DetailsText)}
+              </Text>
+            </Descriptions.Item>
+          )}
+        </Descriptions>
+      ),
+    },
+    {
+      label: Words.tafsil_account,
+      key: "tafsil-account",
+      children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+    },
+  ];
 
   return (
     <Modal
@@ -74,102 +134,7 @@ const CompanyBankAccountDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               />
             </Col>
             <Col xs={24}>
-              <Tabs defaultActiveKey="1">
-                <Tabs.TabPane
-                  tab={Words.company_bank_account_info}
-                  key="general_info"
-                >
-                  <Descriptions
-                    bordered
-                    column={{
-                      //   md: 2, sm: 2,
-                      lg: 2,
-                      md: 2,
-                      xs: 1,
-                    }}
-                    size="middle"
-                  >
-                    <Descriptions.Item label={Words.bank_account_type}>
-                      <Text style={{ color: valueColor }}>
-                        {BankAccountTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.bank}>
-                      <Text style={{ color: Colors.cyan[6] }}>{BankTitle}</Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.bank_branch}>
-                      <Text style={{ color: valueColor }}>
-                        {utils.farsiNum(`${BankBranchTitle} (${BranchCode})`)}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.city}>
-                      <Text style={{ color: Colors.purple[6] }}>
-                        {CityTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.currency_type}>
-                      <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.credit}>
-                      <Text style={{ color: valueColor }}>
-                        {Credit > 0
-                          ? utils.farsiNum(utils.moneyNumber(Credit))
-                          : ""}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.sheba_no} span={2}>
-                      <Text style={{ color: Colors.volcano[6] }}>
-                        {ShebaID.length > 0 ? ShebaID : ""}
-                      </Text>
-                    </Descriptions.Item>
-                    {DetailsText.length > 0 && (
-                      <Descriptions.Item label={Words.descriptions} span={2}>
-                        <Text
-                          style={{
-                            color: Colors.purple[7],
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {utils.farsiNum(DetailsText)}
-                        </Text>
-                      </Descriptions.Item>
-                    )}
-                  </Descriptions>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab={Words.tafsil_info} key="tafsil_info">
-                  <Descriptions
-                    bordered
-                    column={{
-                      //   md: 2, sm: 2,
-                      lg: 2,
-                      md: 2,
-                      xs: 1,
-                    }}
-                    size="middle"
-                  >
-                    <Descriptions.Item label={Words.tafsil_account}>
-                      <Text style={{ color: valueColor }}>
-                        {TafsilAccountTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.tafsil_code}>
-                      <Text style={{ color: Colors.red[6] }}>
-                        {utils.farsiNum(TafsilCode)}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.tafsil_type}>
-                      <Text style={{ color: valueColor }}>
-                        {TafsilTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={Words.parent_tafsil_type}>
-                      <Text style={{ color: valueColor }}>
-                        {ParentTafsilTypeTitle}
-                      </Text>
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Tabs.TabPane>
-              </Tabs>
+              <Tabs defaultActiveKey="1" type="card" items={items} />
             </Col>
           </Row>
         </article>

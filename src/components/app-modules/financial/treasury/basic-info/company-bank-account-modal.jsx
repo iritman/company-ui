@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tabs, Descriptions, Typography } from "antd";
+import { Form, Row, Col, Tabs } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   validateForm,
@@ -21,9 +20,7 @@ import service from "../../../../../services/financial/treasury/basic-info/compa
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import InputItem from "../../../../form-controls/input-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
-
-const { Text } = Typography;
-const valueColor = Colors.blue[7];
+import TafsilInfoViewer from "../../../../common/tafsil-info-viewer";
 
 const schema = {
   AccountID: Joi.number().required(),
@@ -58,7 +55,6 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
-  TafsilAccountID: Joi.number().label(Words.tafsil_account),
 };
 
 const initRecord = {
@@ -72,7 +68,6 @@ const initRecord = {
   ShebaID: "",
   BankAccountTypeID: 0,
   DetailsText: "",
-  TafsilAccountID: 0,
 };
 
 const formRef = React.createRef();
@@ -87,7 +82,6 @@ const CompanyBankAccountModal = ({
   const [branches, setBranches] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [bankAccountTypes, setBankAccountTypes] = useState([]);
-  const [tafsilAccounts, setTafsilAccounts] = useState([]);
 
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -104,7 +98,6 @@ const CompanyBankAccountModal = ({
     record.ShebaID = "";
     record.BankAccountTypeID = 0;
     record.DetailsText = "";
-    record.TafsilAccountID = 0;
 
     setRecord(record);
     setErrors({});
@@ -133,14 +126,12 @@ const CompanyBankAccountModal = ({
     try {
       const data = await service.getParams();
 
-      const { Banks, Branches, Currencies, BankAccountTypes, TafsilAccounts } =
-        data;
+      const { Banks, Branches, Currencies, BankAccountTypes } = data;
 
       setBanks(Banks);
       setBranches(Branches);
       setCurrencies(Currencies);
       setBankAccountTypes(BankAccountTypes);
-      setTafsilAccounts(TafsilAccounts);
     } catch (err) {
       handleError(err);
     }
@@ -158,70 +149,123 @@ const CompanyBankAccountModal = ({
     );
   };
 
-  const handleChangeTafsilAccount = (value) => {
-    record.TafsilAccountID = value;
-    setRecord({ ...record });
-  };
-
-  const getTafsilAccountDescriptions = () => {
-    let result = <></>;
-
-    if (tafsilAccounts.length > 0 && record.TafsilAccountID > 0) {
-      const tafsil_account = tafsilAccounts.find(
-        (acc) => acc.TafsilAccountID === record.TafsilAccountID
-      );
-
-      if (tafsil_account) {
-        const {
-          TafsilCode,
-          CurrencyTitle,
-          TafsilTypeTitle,
-          ParentTafsilTypeTitle,
-          // TafsilAccountID,
-          // Title,
-          // CurrencyID,
-          // TafsilTypeID,
-          // ParentTafsilTypeID,
-        } = tafsil_account;
-
-        result = (
-          <Descriptions
-            bordered
-            column={{
-              //   md: 2, sm: 2,
-              lg: 2,
-              md: 2,
-              xs: 1,
-            }}
-            size="middle"
-          >
-            <Descriptions.Item label={Words.tafsil_code}>
-              <Text style={{ color: Colors.red[6] }}>
-                {utils.farsiNum(`${TafsilCode}`)}
-              </Text>
-            </Descriptions.Item>
-            <Descriptions.Item label={Words.tafsil_type}>
-              <Text style={{ color: valueColor }}>{TafsilTypeTitle}</Text>
-            </Descriptions.Item>
-            <Descriptions.Item label={Words.parent_tafsil_type}>
-              <Text style={{ color: valueColor }}>{ParentTafsilTypeTitle}</Text>
-            </Descriptions.Item>
-            <Descriptions.Item label={Words.default_currency}>
-              <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
-            </Descriptions.Item>
-          </Descriptions>
-        );
-      }
-    }
-
-    return result;
-  };
-
   const isEdit = selectedObject !== null;
 
   //------
 
   const filtered_branches = branches.filter((b) => b.BankID === record.BankID);
+
+  let items = [
+    {
+      label: Words.info,
+      key: "info",
+      children: (
+        <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.bank}
+              dataSource={banks}
+              keyColumn="BankID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
+              autoFocus
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.bank_branch}
+              dataSource={filtered_branches}
+              keyColumn="BranchID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.account_name}
+              fieldName="AccountName"
+              formConfig={formConfig}
+              maxLength={50}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.account_no}
+              fieldName="AccountNo"
+              formConfig={formConfig}
+              maxLength={50}
+              required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              title={Words.credit}
+              fieldName="Credit"
+              min={0}
+              max={999999999999}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.currency_type}
+              dataSource={currencies}
+              keyColumn="CurrencyID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <InputItem
+              title={Words.sheba_no}
+              fieldName="ShebaID"
+              formConfig={formConfig}
+              maxLength={50}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.bank_account_type}
+              dataSource={bankAccountTypes}
+              keyColumn="BankAccountTypeID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
+            />
+          </Col>
+          <Col xs={24}>
+            <InputItem
+              horizontal
+              title={Words.descriptions}
+              fieldName="DetailsText"
+              formConfig={formConfig}
+              multiline
+              rows={3}
+              maxLength={512}
+              showCount
+            />
+          </Col>
+        </Row>
+      ),
+    },
+  ];
+
+  if (selectedObject !== null) {
+    const { TafsilInfo } = selectedObject;
+
+    items = [
+      ...items,
+      {
+        label: Words.tafsil_account,
+        key: "tafsil-account",
+        children: <TafsilInfoViewer tafsilInfo={TafsilInfo} />,
+      },
+    ];
+  }
 
   return (
     <ModalWindow
@@ -238,119 +282,7 @@ const CompanyBankAccountModal = ({
       width={750}
     >
       <Form ref={formRef} name="dataForm">
-        <Tabs defaultActiveKey="1">
-          <Tabs.TabPane
-            tab={Words.company_bank_account_info}
-            key="general_info"
-          >
-            <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-              <Col xs={24} md={12}>
-                <DropdownItem
-                  title={Words.bank}
-                  dataSource={banks}
-                  keyColumn="BankID"
-                  valueColumn="Title"
-                  formConfig={formConfig}
-                  required
-                  autoFocus
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <DropdownItem
-                  title={Words.bank_branch}
-                  dataSource={filtered_branches}
-                  keyColumn="BranchID"
-                  valueColumn="Title"
-                  formConfig={formConfig}
-                  required
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <InputItem
-                  title={Words.account_name}
-                  fieldName="AccountName"
-                  formConfig={formConfig}
-                  maxLength={50}
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <InputItem
-                  title={Words.account_no}
-                  fieldName="AccountNo"
-                  formConfig={formConfig}
-                  maxLength={50}
-                  required
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <NumericInputItem
-                  horizontal
-                  title={Words.credit}
-                  fieldName="Credit"
-                  min={0}
-                  max={999999999999}
-                  formConfig={formConfig}
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <DropdownItem
-                  title={Words.currency_type}
-                  dataSource={currencies}
-                  keyColumn="CurrencyID"
-                  valueColumn="Title"
-                  formConfig={formConfig}
-                  required
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <InputItem
-                  title={Words.sheba_no}
-                  fieldName="ShebaID"
-                  formConfig={formConfig}
-                  maxLength={50}
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <DropdownItem
-                  title={Words.bank_account_type}
-                  dataSource={bankAccountTypes}
-                  keyColumn="BankAccountTypeID"
-                  valueColumn="Title"
-                  formConfig={formConfig}
-                  required
-                />
-              </Col>
-              <Col xs={24}>
-                <InputItem
-                  horizontal
-                  title={Words.descriptions}
-                  fieldName="DetailsText"
-                  formConfig={formConfig}
-                  multiline
-                  rows={3}
-                  maxLength={512}
-                  showCount
-                />
-              </Col>
-            </Row>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab={Words.tafsil_info} key="tafsil_info">
-            <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-              <Col xs={24}>
-                <DropdownItem
-                  title={Words.tafsil_account}
-                  dataSource={tafsilAccounts}
-                  keyColumn="TafsilAccountID"
-                  valueColumn="Title"
-                  formConfig={formConfig}
-                  autoFocus
-                  onChange={handleChangeTafsilAccount}
-                />
-              </Col>
-              <Col xs={24}>{getTafsilAccountDescriptions()}</Col>
-            </Row>
-          </Tabs.TabPane>
-        </Tabs>
+        <Tabs defaultActiveKey="1" type="card" items={items} />
       </Form>
     </ModalWindow>
   );
