@@ -192,16 +192,16 @@ const FinancialOperationModal = ({
 
   //------
 
-  const fix_sides_4 = [];
-  const fix_sides_5 = [];
-  const fix_sides_6 = [];
+  // const fix_sides_4 = [];
+  // const fix_sides_5 = [];
+  // const fix_sides_6 = [];
 
   //------
 
   const levels = getTafsilTypeLevels(record.MoeinID, tafsilTypes);
 
-  const getTafsilTypeDdlStatus = (levelID) =>
-    levels.filter((level) => level.LevelID === levelID).length === 0;
+  // const getTafsilTypeDdlStatus = (levelID) =>
+  //   levels.filter((level) => level.LevelID === levelID).length === 0;
 
   const getOperationItemTypes = () => {
     return operationItemTypes.filter(
@@ -297,12 +297,12 @@ const FinancialOperationModal = ({
               title={Words.status}
               fieldName="IsActive"
               initialValue={true}
-              checkedTitle={Words.yes}
-              unCheckedTitle={Words.no}
+              checkedTitle={Words.active}
+              unCheckedTitle={Words.inactive}
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
+          {/* <Col xs={24}>
             <Divider orientation="right">
               <Text>{Words.tafsil_levels}</Text>
             </Divider>
@@ -366,7 +366,7 @@ const FinancialOperationModal = ({
               formConfig={formConfig}
               disabled={fix_sides_6.length === 0}
             />
-          </Col>
+          </Col> */}
           {record.MoeinID > 0 && (
             <>
               <Col xs={24}>
