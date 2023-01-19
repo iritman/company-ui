@@ -75,18 +75,16 @@ const StructureMoeinDetails = ({ moein }) => {
         <Descriptions.Item label={Words.account_control_type}>
           <Text style={{ color: valueColor }}>{ControlTypeTitle}</Text>
         </Descriptions.Item>
-        {DetailsText.length > 0 && (
-          <Descriptions.Item label={Words.descriptions} span={2}>
-            <Text
-              style={{
-                color: Colors.purple[7],
-                whiteSpace: "pre-line",
-              }}
-            >
-              {utils.farsiNum(DetailsText)}
-            </Text>
-          </Descriptions.Item>
-        )}
+        <Descriptions.Item label={Words.descriptions} span={2}>
+          <Text
+            style={{
+              color: Colors.purple[7],
+              whiteSpace: "pre-line",
+            }}
+          >
+            {DetailsText.length > 0 ? utils.farsiNum(DetailsText) : "-"}
+          </Text>
+        </Descriptions.Item>
         <Descriptions.Item label={Words.is_convertable}>
           <Text
             style={{ color: IsConvertable ? Colors.green[6] : Colors.red[6] }}
