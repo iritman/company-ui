@@ -133,7 +133,9 @@ const ReceiveReceiptDemandModal = ({
       let { Currencies, Operations, CashFlows, StandardDetails } = data;
 
       setCurrencies(Currencies);
-      setOperations(Operations);
+      setOperations(
+        Operations.filter((o) => o.ItemTypeID === 2 && o.OperationTypeID === 1)
+      );
       setCashFlows(CashFlows);
       setStandardDetails(StandardDetails);
 

@@ -149,7 +149,9 @@ const ReceiveReceiptChequeModal = ({
       } = data;
 
       setCurrencies(Currencies);
-      setOperations(Operations);
+      setOperations(
+        Operations.filter((o) => o.ItemTypeID === 1 && o.OperationTypeID === 1)
+      );
       setCashFlows(CashFlows);
       setBanks(Banks);
       setCities(Cities);
@@ -176,6 +178,7 @@ const ReceiveReceiptChequeModal = ({
         ]);
       }
     } catch (ex) {
+      console.log(ex);
       handleError(ex);
     }
 
