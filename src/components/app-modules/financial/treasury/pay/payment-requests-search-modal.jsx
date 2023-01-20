@@ -21,7 +21,6 @@ import NumericInputItem from "../../../../form-controls/numeric-input-item";
 
 const schema = {
   RequestID: Joi.number().label(Words.id),
-  CostCenterID: Joi.number().label(Words.cost_center),
   CurrencyID: Joi.number(),
   PayTypeID: Joi.number(),
   FrontSideAccountID: Joi.number(),
@@ -32,7 +31,6 @@ const schema = {
 
 const initRecord = {
   RequestID: 0,
-  CostCenterID: 0,
   CurrencyID: 0,
   PayTypeID: 0,
   FrontSideAccountID: 0,
@@ -50,7 +48,6 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const [frontSideAccountSearchProgress, setFrontSideAccountSearchProgress] =
     useState(false);
   const [frontSideAccounts, setFrontSideAccounts] = useState([]);
-  const [costCenters, setCostCenters] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [payTypes, setPayTypes] = useState([]);
   const [statuses, setStatuses] = useState([]);
@@ -67,7 +64,6 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
   const clearRecord = () => {
     record.RequestID = 0;
-    record.CostCenterID = 0;
     record.CurrencyID = 0;
     record.PayTypeID = 0;
     record.FrontSideAccountID = 0;
@@ -91,9 +87,8 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      const { CostCenters, Currencies, PayTypes, Statuses } = data;
+      const { Currencies, PayTypes, Statuses } = data;
 
-      setCostCenters(CostCenters);
       setCurrencies(Currencies);
       setPayTypes(PayTypes);
       setStatuses(Statuses);
@@ -149,15 +144,6 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
           </Col>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.cost_center}
-              dataSource={costCenters}
-              keyColumn="CostCenterID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
               title={Words.currency}
               dataSource={currencies}
               keyColumn="CurrencyID"
@@ -188,16 +174,6 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
           </Col>
 
           <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.status}
-              dataSource={statuses}
-              keyColumn="StatusID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-
-          <Col xs={24} md={12}>
             <DateItem
               horizontal
               title={Words.from_request_date}
@@ -210,6 +186,16 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
               horizontal
               title={Words.to_request_date}
               fieldName="ToRequestDate"
+              formConfig={formConfig}
+            />
+          </Col>
+
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.status}
+              dataSource={statuses}
+              keyColumn="StatusID"
+              valueColumn="Title"
               formConfig={formConfig}
             />
           </Col>

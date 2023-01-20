@@ -48,7 +48,6 @@ const { Text } = Typography;
 
 const schema = {
   RequestID: Joi.number().required().label(Words.id),
-  CostCenterID: Joi.number().min(1).required().label(Words.cost_center),
   CurrencyID: Joi.number().min(1).required().label(Words.currency),
   PayTypeID: Joi.number().min(1).required().label(Words.pay_type),
   FrontSideAccountID: Joi.number()
@@ -69,7 +68,6 @@ const schema = {
 
 const initRecord = {
   RequestID: 0,
-  CostCenterID: 0,
   CurrencyID: 0,
   PayTypeID: 0,
   FrontSideAccountID: 0,
@@ -235,7 +233,6 @@ const PaymentRequestModal = ({
   const [frontSideAccountSearchProgress, setFrontSideAccountSearchProgress] =
     useState(false);
   const [frontSideAccounts, setFrontSideAccounts] = useState([]);
-  const [costCenters, setCostCenters] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [standardDetails, setStandardDetails] = useState([]);
   const [payTypes, setPayTypes] = useState([]);
@@ -259,7 +256,6 @@ const PaymentRequestModal = ({
   };
 
   const clearRecord = () => {
-    record.CostCenterID = 0;
     record.CurrencyID = 0;
     record.PayTypeID = 0;
     record.FrontSideAccountID = 0;
@@ -289,7 +285,6 @@ const PaymentRequestModal = ({
       const data = await service.getParams();
 
       let {
-        CostCenters,
         Currencies,
         PayTypes,
         StandardDetails,
@@ -298,7 +293,6 @@ const PaymentRequestModal = ({
         HasRejectAccess,
       } = data;
 
-      setCostCenters(CostCenters);
       setCurrencies(Currencies);
       setPayTypes(PayTypes);
       setStandardDetails(StandardDetails);
@@ -590,17 +584,6 @@ const PaymentRequestModal = ({
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.cost_center}
-                dataSource={costCenters}
-                keyColumn="CostCenterID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                required
-                autoFocus
-              />
-            </Col>
             <Col xs={24} md={12}>
               <DropdownItem
                 title={Words.currencies}

@@ -33,7 +33,6 @@ const getSheets = (records) => [
       { label: Words.first_name, value: "FirstName" },
       { label: Words.last_name, value: "LastName" },
       { label: Words.company, value: "CompanyTitle" },
-      { label: Words.cost_center, value: "CostCenterTitle" },
       { label: Words.currency, value: "CurrencyTitle" },
       { label: Words.pay_type, value: "PayTypeTitle" },
       {
