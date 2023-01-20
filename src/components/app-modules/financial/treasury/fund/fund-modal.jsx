@@ -4,7 +4,7 @@ import { Form, Row, Col, Tabs } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
-import utils from "../../../../../tools/utils";
+// import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -18,7 +18,7 @@ import {
 } from "./../../../../contexts/modal-context";
 import service from "../../../../../services/financial/treasury/fund/funds-service";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
-import InputItem from "../../../../form-controls/input-item";
+// import InputItem from "../../../../form-controls/input-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import SwitchItem from "./../../../../form-controls/switch-item";
 import DateItem from "./../../../../form-controls/date-item";
@@ -26,12 +26,12 @@ import TafsilInfoViewer from "../../../../common/tafsil-info-viewer";
 
 const schema = {
   FundID: Joi.number().required(),
-  Title: Joi.string()
-    .min(2)
-    .max(50)
-    .required()
-    .regex(utils.VALID_REGEX)
-    .label(Words.title),
+  // Title: Joi.string()
+  //   .min(2)
+  //   .max(50)
+  //   .required()
+  //   .regex(utils.VALID_REGEX)
+  //   .label(Words.title),
   FunderMemberID: Joi.number().min(1).required().label(Words.funder_member),
   EstablishDate: Joi.string().required().label(Words.establish_date),
   CurrencyID: Joi.number().min(1).required().label(Words.currency),
@@ -43,7 +43,7 @@ const schema = {
 
 const initRecord = {
   FundID: 0,
-  Title: "",
+  // Title: "",
   FunderMemberID: 0,
   EstablishDate: "",
   CurrencyID: 0,
@@ -66,7 +66,7 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const resetContext = useResetContext();
 
   const clearRecord = () => {
-    record.Title = "";
+    // record.Title = "";
     record.FunderMemberID = 0;
     record.EstablishDate = "";
     record.CurrencyID = 0;
@@ -134,7 +134,7 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       key: "info",
       children: (
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
+          {/* <Col xs={24} md={12}>
             <InputItem
               title={Words.title}
               fieldName="Title"
@@ -143,8 +143,8 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               required
               autoFocus
             />
-          </Col>
-          <Col xs={24} md={12}>
+          </Col> */}
+          <Col xs={24}>
             <DropdownItem
               title={Words.funder_member}
               dataSource={employees}

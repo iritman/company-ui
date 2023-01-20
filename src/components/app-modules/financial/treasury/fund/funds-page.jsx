@@ -26,7 +26,7 @@ const getSheets = (records) => [
     data: records,
     columns: [
       { label: Words.id, value: "FundID" },
-      { label: Words.title, value: "Title" },
+      // { label: Words.title, value: "Title" },
       {
         label: Words.funder_member,
         value: (record) => `${record.FunderFirstName} ${record.FunderLastName}`,
@@ -58,16 +58,16 @@ const baseColumns = [
     sorter: getSorter("FundID"),
     render: (FundID) => <Text>{utils.farsiNum(`${FundID}`)}</Text>,
   },
-  {
-    title: Words.title,
-    width: 200,
-    align: "center",
-    dataIndex: "Title",
-    sorter: getSorter("Title"),
-    render: (Title) => (
-      <Text style={{ color: Colors.blue[6] }}>{utils.farsiNum(Title)}</Text>
-    ),
-  },
+  // {
+  //   title: Words.title,
+  //   width: 200,
+  //   align: "center",
+  //   dataIndex: "Title",
+  //   sorter: getSorter("Title"),
+  //   render: (Title) => (
+  //     <Text style={{ color: Colors.blue[6] }}>{utils.farsiNum(Title)}</Text>
+  //   ),
+  // },
   {
     title: Words.funder_member,
     width: 200,

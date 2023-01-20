@@ -25,7 +25,7 @@ const valueColor = Colors.blue[7];
 const FundDetailsModal = ({ selectedObject, isOpen, onOk }) => {
   const {
     FundID,
-    Title,
+    // Title,
     // FunderMemberID,
     FunderFirstName,
     FunderLastName,
@@ -56,7 +56,7 @@ const FundDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           size="middle"
         >
           <Descriptions.Item label={Words.funder_member}>
-            <Text style={{ color: valueColor }}>
+            <Text style={{ color: Colors.cyan[6] }}>
               {`${FunderFirstName} ${FunderLastName}`}
             </Text>
           </Descriptions.Item>
@@ -142,7 +142,9 @@ const FundDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               <Alert
                 message={
                   <Text style={{ fontSize: 14 }}>
-                    {utils.farsiNum(`#${FundID} - ${Title}`)}
+                    {utils.farsiNum(
+                      `#${FundID} - ${FunderFirstName} ${FunderLastName}`
+                    )}
                   </Text>
                 }
                 type="info"
