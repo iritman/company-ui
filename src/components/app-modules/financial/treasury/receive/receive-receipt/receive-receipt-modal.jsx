@@ -947,8 +947,6 @@ const ReceiveReceiptModal = ({
                 keyColumn="DeliveryMemberID"
                 valueColumn="FullName"
                 formConfig={formConfig}
-                required
-                autoFocus
                 loading={deliveryMemberSearchProgress}
                 onSearch={handleSearchDeliveryMember}
               />
@@ -969,7 +967,7 @@ const ReceiveReceiptModal = ({
                 keyColumn="CashBoxID"
                 valueColumn="Title"
                 formConfig={formConfig}
-                disabled={record.Cashes.length > 0}
+                disabled={record.Cashes?.length > 0}
               />
             </Col>
             <Col xs={24} md={12}>
