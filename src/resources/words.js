@@ -690,6 +690,7 @@ class Words extends Component {
   static new_inventory_control_agent = "عامل کنترل موجودی جدید";
   static spare_part = "قابل استفاده به عنوان قطعه یدکی";
   static fix_property = "قابل استفاده در دارایی ثابت";
+  static order_point = "نقطه سفارش";
   static bach_patterns = "الگوهای بچ";
   static bach_pattern = "الگوی بچ";
   static select = "انتخاب";
@@ -1053,6 +1054,7 @@ class Words extends Component {
     no_tafsil_account: "حساب تفصیلی تعریف نشده است",
     measure_convert_already_exists: "ضریب تبدیل قبلا ثبت شده است",
     product_feature_already_exists: "ویژگی مورد نظر قبلا ثبت شده است",
+    no_selected_cash_box: "صندوق انتخاب نشده است",
   };
 
   static questions = {

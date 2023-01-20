@@ -445,8 +445,12 @@ const BankHandOverModal = ({
   const handleChangeItemType = (value) => {
     const rec = { ...record };
     rec.ItemType = value || 0;
+    if (value === 0) rec.OperationID = 0;
     setRecord(rec);
     setSelectedTab(value === 1 ? "cheques" : "demands");
+
+    //-- Reset selected financial operation while changing item type (cheque/demand)
+    loadFieldsValue(formRef, rec);
   };
 
   //------
@@ -518,11 +522,14 @@ const BankHandOverModal = ({
             <Col xs={24} md={12}>
               <DropdownItem
                 title={Words.financial_operation}
-                dataSource={operations}
+                dataSource={operations.filter(
+                  (o) => o.ItemTypeID === record.ItemType
+                )}
                 keyColumn="OperationID"
                 valueColumn="Title"
                 formConfig={formConfig}
                 required
+                disabled={record.ItemType === 0}
               />
             </Col>
             <Col xs={24} md={12}>
