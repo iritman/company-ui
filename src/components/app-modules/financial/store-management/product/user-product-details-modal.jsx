@@ -274,6 +274,7 @@ const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
     CategoryTitle,
     NatureTitle,
     Title,
+    OrderPoint,
     IsBuyable,
     IsSalable,
     IsBuildable,
@@ -361,6 +362,11 @@ const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
               </Descriptions.Item>
               <Descriptions.Item label={Words.product_nature}>
                 <Text style={{ color: Colors.blue[6] }}>{NatureTitle}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.order_point}>
+                <Text style={{ color: Colors.red[6] }}>
+                  {utils.farsiNum(OrderPoint)}
+                </Text>
               </Descriptions.Item>
 
               <Descriptions.Item label={Words.status}>

@@ -31,9 +31,28 @@ const getSheets = (records) => [
       { label: Words.product_code, value: "ProductCode" },
       { label: Words.product_category, value: "CategoryTitle" },
       { label: Words.product_nature, value: "NatureTitle" },
-      { label: Words.is_buyable, value: "IsBuyable" },
-      { label: Words.is_salable, value: "IsSalable" },
-      { label: Words.is_buildable, value: "IsBuildable" },
+      { label: Words.order_point, value: "OrderPoint" },
+      {
+        label: Words.is_buyable,
+        value: (record) => (record.IsBuyable ? Words.yes : Words.no),
+      },
+      {
+        label: Words.is_salable,
+        value: (record) => (record.IsSalable ? Words.yes : Words.no),
+      },
+      {
+        label: Words.is_buildable,
+        value: (record) => (record.IsBuildable ? Words.yes : Words.no),
+      },
+      {
+        label: Words.fix_property,
+        value: (record) => (record.IsFixProperty ? Words.yes : Words.no),
+      },
+      {
+        label: Words.spare_part,
+        value: (record) => (record.IsSparePart ? Words.yes : Words.no),
+      },
+      { label: Words.descriptions, value: "DetailsText" },
     ],
   },
 ];

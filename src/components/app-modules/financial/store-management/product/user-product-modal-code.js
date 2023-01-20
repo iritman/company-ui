@@ -15,6 +15,7 @@ import utils from "../../../../../tools/utils";
 import SwitchItem from "./../../../../form-controls/switch-item";
 import DropdownItem from "./../../../../form-controls/dropdown-item";
 import InputItem from "./../../../../form-controls/input-item";
+import NumericInputItem from "./../../../../form-controls/numeric-input-item";
 import DetailsTable from "./../../../../common/details-table";
 
 const { Text } = Typography;
@@ -44,6 +45,7 @@ export const schema = {
     .label(Words.title)
     .regex(utils.VALID_REGEX),
   BachPatternID: Joi.number().label(Words.bach_pattern),
+  OrderPoint: Joi.number().label(Words.order_point),
   IsBuyable: Joi.boolean(),
   IsSalable: Joi.boolean(),
   IsBuildable: Joi.boolean(),
@@ -69,6 +71,7 @@ export const initRecord = {
   ProductCode: "",
   Title: "",
   BachPatternID: 0,
+  OrderPoint: 0,
   IsBuyable: false,
   IsSalable: false,
   IsBuildable: false,
@@ -469,6 +472,112 @@ const getFeaturesColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
+// const getInventoryControlAgentsColumns = () => {
+//   let columns = [
+//     {
+//       title: Words.id,
+//       width: 75,
+//       align: "center",
+//       dataIndex: "PAID",
+//       sorter: getSorter("PAID"),
+//       render: (PAID) => <Text>{utils.farsiNum(`${PAID}`)}</Text>,
+//     },
+//     {
+//       title: Words.title,
+//       width: 120,
+//       align: "center",
+//       dataIndex: "Title",
+//       sorter: getSorter("Title"),
+//       render: (Title) => (
+//         <Text
+//           style={{
+//             color: Colors.red[7],
+//           }}
+//         >
+//           {Title}
+//         </Text>
+//       ),
+//     },
+//     {
+//       title: Words.effective_in_pricing,
+//       width: 75,
+//       align: "center",
+//       dataIndex: "EffectiveInPricing",
+//       sorter: getSorter("EffectiveInPricing"),
+//       render: (EffectiveInPricing) => (
+//         <>
+//           {EffectiveInPricing && (
+//             <CheckIcon style={{ color: Colors.green[6] }} />
+//           )}
+//         </>
+//       ),
+//     },
+//     {
+//       title: Words.effective_in_warehousing,
+//       width: 75,
+//       align: "center",
+//       dataIndex: "EffectiveInWarehousing",
+//       sorter: getSorter("EffectiveInWarehousing"),
+//       render: (EffectiveInWarehousing) => (
+//         <>
+//           {EffectiveInWarehousing && (
+//             <CheckIcon style={{ color: Colors.green[6] }} />
+//           )}
+//         </>
+//       ),
+//     },
+//   ];
+
+//   return columns;
+// };
+
+// const getBachPatternFeaturesColumns = () => {
+//   let columns = [
+//     {
+//       title: Words.id,
+//       width: 75,
+//       align: "center",
+//       dataIndex: "FeatureID",
+//       sorter: getSorter("FeatureID"),
+//       render: (FeatureID) => <Text>{utils.farsiNum(`${FeatureID}`)}</Text>,
+//     },
+//     {
+//       title: Words.title,
+//       width: 120,
+//       align: "center",
+//       dataIndex: "Title",
+//       sorter: getSorter("Title"),
+//       render: (Title) => (
+//         <Text
+//           style={{
+//             color: Colors.green[6],
+//           }}
+//         >
+//           {Title}
+//         </Text>
+//       ),
+//     },
+//     {
+//       title: Words.value_type,
+//       width: 100,
+//       align: "center",
+//       dataIndex: "ValueTypeTitle",
+//       sorter: getSorter("ValueTypeTitle"),
+//       render: (ValueTypeTitle) => (
+//         <Text
+//           style={{
+//             color: Colors.orange[6],
+//           }}
+//         >
+//           {ValueTypeTitle}
+//         </Text>
+//       ),
+//     },
+//   ];
+
+//   return columns;
+// };
+
 export const getTabItems = (formConfig, props, events) => {
   const { categories, natures, bachPatterns, record, access } = props;
 
@@ -605,6 +714,17 @@ export const getTabItems = (formConfig, props, events) => {
               valueColumn="Title"
               formConfig={formConfig}
               required
+            />
+          </Col>
+          <Col xs={24} md={24}>
+            <NumericInputItem
+              horizontal
+              title={Words.order_point}
+              fieldName="OrderPoint"
+              // addonAfter={group.GroupCode}
+              min={0}
+              max={999999999}
+              formConfig={formConfig}
             />
           </Col>
           <Col xs={24} md={8}>

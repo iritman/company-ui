@@ -24,147 +24,6 @@ import FeatureModal from "./user-product-feature-modal";
 import { v4 as uuid } from "uuid";
 import Words from "./../../../../../resources/words";
 
-// const getInventoryControlAgentsColumns = (access, onEdit, onDelete) => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "PAID",
-//       sorter: getSorter("PAID"),
-//       render: (PAID) => <Text>{utils.farsiNum(`${PAID}`)}</Text>,
-//     },
-//     {
-//       title: Words.title,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "Title",
-//       sorter: getSorter("Title"),
-//       render: (Title) => (
-//         <Text
-//           style={{
-//             color: Colors.red[7],
-//           }}
-//         >
-//           {Title}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.effective_in_pricing,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "EffectiveInPricing",
-//       sorter: getSorter("EffectiveInPricing"),
-//       render: (EffectiveInPricing) => (
-//         <>
-//           {EffectiveInPricing && (
-//             <CheckIcon style={{ color: Colors.green[6] }} />
-//           )}
-//         </>
-//       ),
-//     },
-//     {
-//       title: Words.effective_in_warehousing,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "EffectiveInWarehousing",
-//       sorter: getSorter("EffectiveInWarehousing"),
-//       render: (EffectiveInWarehousing) => (
-//         <>
-//           {EffectiveInWarehousing && (
-//             <CheckIcon style={{ color: Colors.green[6] }} />
-//           )}
-//         </>
-//       ),
-//     },
-//   ];
-
-//   if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
-//     columns = [
-//       ...columns,
-//       {
-//         title: "",
-//         fixed: "right",
-//         align: "center",
-//         width: 75,
-//         render: (record) => (
-//           <Space>
-//             {access.CanEdit && onEdit && (
-//               <Button
-//                 type="link"
-//                 icon={<EditIcon />}
-//                 onClick={() => onEdit(record)}
-//               />
-//             )}
-
-//             {access.CanDelete && onDelete && (
-//               <Popconfirm
-//                 title={Words.questions.sure_to_delete_inventory_control_agent}
-//                 onConfirm={async () => await onDelete(record.PAID)}
-//                 okText={Words.yes}
-//                 cancelText={Words.no}
-//                 icon={<QuestionIcon style={{ color: "red" }} />}
-//               >
-//                 <Button type="link" icon={<DeleteIcon />} danger />
-//               </Popconfirm>
-//             )}
-//           </Space>
-//         ),
-//       },
-//     ];
-//   }
-
-//   return columns;
-// };
-
-// const getBachPatternFeaturesColumns = () => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "FeatureID",
-//       sorter: getSorter("FeatureID"),
-//       render: (FeatureID) => <Text>{utils.farsiNum(`${FeatureID}`)}</Text>,
-//     },
-//     {
-//       title: Words.title,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "Title",
-//       sorter: getSorter("Title"),
-//       render: (Title) => (
-//         <Text
-//           style={{
-//             color: Colors.green[6],
-//           }}
-//         >
-//           {Title}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.value_type,
-//       width: 100,
-//       align: "center",
-//       dataIndex: "ValueTypeTitle",
-//       sorter: getSorter("ValueTypeTitle"),
-//       render: (ValueTypeTitle) => (
-//         <Text
-//           style={{
-//             color: Colors.orange[6],
-//           }}
-//         >
-//           {ValueTypeTitle}
-//         </Text>
-//       ),
-//     },
-//   ];
-
-//   return columns;
-// };
-
 const formRef = React.createRef();
 
 const UserProductModal = ({
@@ -231,6 +90,7 @@ const UserProductModal = ({
     record.ProductCode = "";
     record.Title = "";
     record.BachPatternID = 0;
+    record.OrderPoint = 0;
     record.IsBuyable = false;
     record.IsSalable = false;
     record.IsBuildable = false;
@@ -781,47 +641,6 @@ const UserProductModal = ({
                               handleEditInventoryControlAgent, // handle edit inventory control agent
                               onDeleteInventoryControlAgent // handle delete inventory control agent
                             )}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
-                    <TabPane tab={Words.bach_pattern} key="tab-bach-pattern">
-                      
-                      <Row gutter={[2, 5]}>
-                        <Col xs={24}>
-                          <Col xs={24}>
-                            {selectedObject === null ||
-                            selectedObject.ChangableBachPatternID ? (
-                              <DropdownItem
-                                title={Words.bach_pattern}
-                                dataSource={bachPatterns}
-                                keyColumn="BachPatternID"
-                                valueColumn="Title"
-                                formConfig={formConfig}
-                              />
-                            ) : (
-                              <Alert
-                                type="success"
-                                showIcon
-                                message={
-                                  <Text>{`${
-                                    Words.bach_pattern
-                                  }: ${utils.farsiNum(
-                                    record.BachPatternTitle
-                                  )}`}</Text>
-                                }
-                              />
-                            )}
-                          </Col>
-                        </Col>
-                        <Col xs={24}>
-                          <DetailsTable
-                            records={
-                              bachPatterns.find(
-                                (p) => p.BachPatternID === record.BachPatternID
-                              )?.Features || []
-                            }
-                            columns={getBachPatternFeaturesColumns()}
                           />
                         </Col>
                       </Row>
