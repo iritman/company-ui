@@ -170,16 +170,6 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.title}
-              fieldName="Title"
-              required
-              autoFocus
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
           <Col xs={24} md={12}>
             <TextItem
               title={Words.latest_tafsil_type_first_pre_code}
@@ -201,7 +191,7 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.start_code}
               fieldName="StartCode"
               min={1}
-              max={9999}
+              max={999999}
               formConfig={formConfig}
             />
           </Col>
@@ -212,7 +202,7 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               title={Words.code_length}
               fieldName="CodeLength"
               min={1}
-              max={9 - `${record.StartCode}`.length}
+              max={6}
               formConfig={formConfig}
             />
           </Col>
