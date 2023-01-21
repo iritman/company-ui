@@ -164,21 +164,21 @@ const ReceiveReceiptChequeModal = ({
 
         const {
           FrontSideAccountID,
-          FrontSideAccountTitle,
-          TafsilCode,
+          // FrontSideAccountTitle,
+          // TafsilCode,
           // TafsilTypeID,
-          TafsilTypeTitle,
+          // TafsilTypeTitle,
+          Title,
         } = front_side_account;
 
         setFrontSideAccounts([
           {
             FrontSideAccountID,
-            Title: `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`,
+            Title,
           },
         ]);
       }
     } catch (ex) {
-      console.log(ex);
       handleError(ex);
     }
 
@@ -232,7 +232,7 @@ const ReceiveReceiptChequeModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       title={Words.reg_cheque}
-      width={1050}
+      width={1250}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
@@ -369,6 +369,15 @@ const ReceiveReceiptChequeModal = ({
             />
           </Col>
           <Col xs={24} md={12} lg={8}>
+            <DropdownItem
+              title={Words.standard_details_text}
+              dataSource={standardDetails}
+              keyColumn="StandardDetailsID"
+              valueColumn="DetailsText"
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
             <DateItem
               horizontal
               required
@@ -383,15 +392,6 @@ const ReceiveReceiptChequeModal = ({
               required
               title={Words.agreed_date}
               fieldName="AgreedDate"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <DropdownItem
-              title={Words.standard_details_text}
-              dataSource={standardDetails}
-              keyColumn="StandardDetailsID"
-              valueColumn="DetailsText"
               formConfig={formConfig}
             />
           </Col>

@@ -91,7 +91,7 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.front_side,
-      width: 200,
+      width: 250,
       align: "center",
       dataIndex: "FrontSideAccountTitle",
       sorter: getSorter("FrontSideAccountTitle"),
@@ -391,7 +391,7 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.front_side,
-      width: 200,
+      width: 250,
       align: "center",
       dataIndex: "FrontSideAccountTitle",
       sorter: getSorter("FrontSideAccountTitle"),
@@ -599,7 +599,7 @@ const getCashColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.front_side,
-      width: 200,
+      width: 250,
       align: "center",
       dataIndex: "FrontSideAccountTitle",
       sorter: getSorter("FrontSideAccountTitle"),
@@ -769,7 +769,7 @@ const getPaymentNoticeColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.front_side,
-      width: 200,
+      width: 250,
       align: "center",
       dataIndex: "FrontSideAccountTitle",
       sorter: getSorter("FrontSideAccountTitle"),

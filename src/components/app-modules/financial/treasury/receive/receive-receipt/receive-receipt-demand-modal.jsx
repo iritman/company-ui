@@ -146,16 +146,17 @@ const ReceiveReceiptDemandModal = ({
 
         const {
           FrontSideAccountID,
-          FrontSideAccountTitle,
-          TafsilCode,
+          // FrontSideAccountTitle,
+          // TafsilCode,
           // TafsilTypeID,
-          TafsilTypeTitle,
+          // TafsilTypeTitle,
+          Title,
         } = front_side_account;
 
         setFrontSideAccounts([
           {
             FrontSideAccountID,
-            Title: `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`,
+            Title,
           },
         ]);
       }

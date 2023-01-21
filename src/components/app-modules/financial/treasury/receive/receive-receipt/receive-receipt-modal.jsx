@@ -263,13 +263,14 @@ const ReceiveReceiptModal = ({
       );
 
       const {
-        FrontSideAccountTitle,
+        // FrontSideAccountTitle,
         TafsilCode,
         TafsilTypeID,
         TafsilTypeTitle,
+        Title,
       } = front_side_account;
 
-      cheque_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      cheque_to_save.FrontSideAccountTitle = Title;
       cheque_to_save.TafsilCode = TafsilCode;
       cheque_to_save.TafsilTypeID = TafsilTypeID;
       cheque_to_save.TafsilTypeTitle = TafsilTypeTitle;

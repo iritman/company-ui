@@ -23,7 +23,7 @@ const cheque_columns = [
   },
   {
     title: Words.front_side,
-    width: 200,
+    width: 250,
     align: "center",
     dataIndex: "FrontSideAccountTitle",
     sorter: getSorter("FrontSideAccountTitle"),
@@ -276,7 +276,7 @@ const demand_columns = [
   },
   {
     title: Words.front_side,
-    width: 200,
+    width: 250,
     align: "center",
     dataIndex: "FrontSideAccountTitle",
     sorter: getSorter("FrontSideAccountTitle"),
@@ -437,7 +437,7 @@ const cash_columns = [
   },
   {
     title: Words.front_side,
-    width: 200,
+    width: 250,
     align: "center",
     dataIndex: "FrontSideAccountTitle",
     sorter: getSorter("FrontSideAccountTitle"),
@@ -560,7 +560,7 @@ const payment_notice_columns = [
   },
   {
     title: Words.front_side,
-    width: 200,
+    width: 250,
     align: "center",
     dataIndex: "FrontSideAccountTitle",
     sorter: getSorter("FrontSideAccountTitle"),
