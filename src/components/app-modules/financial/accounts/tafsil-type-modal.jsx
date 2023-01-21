@@ -4,6 +4,7 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
+import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import {
   validateForm,
@@ -16,6 +17,7 @@ import service from "../../../../services/financial/accounts/tafsil-types-servic
 import InputItem from "./../../../form-controls/input-item";
 import NumericInputItem from "./../../../form-controls/numeric-input-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
+import TextItem from "./../../../form-controls/text-item";
 import {
   useModalContext,
   useResetContext,
@@ -45,8 +47,8 @@ const initRecord = {
   TafsilTypeID: 0,
   ParentTafsilTypeID: 0,
   BaseTableID: 0,
-  StartCode: 1,
-  CodeLength: 4,
+  StartCode: 0,
+  CodeLength: 6,
   Title: "",
   DetailsText: "",
 };
@@ -59,6 +61,9 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   const [tafsilTypes, setTafsilTypes] = useState([]);
   const [baseTables, setBaseTables] = useState([]);
+  const [latestTafsilCode, setLatestTafsilCode] = useState(0);
+  const [latestTafsilTypeFirstPreCode, setLatestTafsilTypeFirstPreCode] =
+    useState(0);
 
   const resetContext = useResetContext();
 
@@ -73,8 +78,8 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const clearRecord = () => {
     record.ParentTafsilTypeID = 0;
     record.BaseTableID = 0;
-    record.StartCode = 1;
-    record.CodeLength = 4;
+    record.StartCode = 0;
+    record.CodeLength = 6;
     record.Title = "";
     record.DetailsText = "";
 
@@ -96,7 +101,12 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     try {
       const data = await service.getParams();
 
-      let { TafsilTypes, BaseTables } = data;
+      let {
+        TafsilTypes,
+        BaseTables,
+        LatestTafsilCode,
+        LatestTafsilTypeFirstPreCode,
+      } = data;
 
       TafsilTypes.forEach((type) => {
         type.ParentTafsilTypeID = type.TafsilTypeID;
@@ -114,6 +124,8 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
       setTafsilTypes(TafsilTypes);
       setBaseTables(BaseTables);
+      setLatestTafsilCode(LatestTafsilCode);
+      setLatestTafsilTypeFirstPreCode(LatestTafsilTypeFirstPreCode);
     } catch (ex) {
       handleError(ex);
     }
@@ -156,6 +168,30 @@ const TafsilTypeModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               autoFocus
               maxLength={50}
               formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <InputItem
+              title={Words.title}
+              fieldName="Title"
+              required
+              autoFocus
+              maxLength={50}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <TextItem
+              title={Words.latest_tafsil_type_first_pre_code}
+              value={utils.farsiNum(latestTafsilTypeFirstPreCode)}
+              valueColor={Colors.magenta[6]}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <TextItem
+              title={Words.latest_tafsil_code}
+              value={utils.farsiNum(latestTafsilCode)}
+              valueColor={Colors.magenta[6]}
             />
           </Col>
           <Col xs={24} md={12}>

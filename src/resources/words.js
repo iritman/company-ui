@@ -402,6 +402,8 @@ class Words extends Component {
   static level_6 = "سطح شش";
   static level_7 = "سطح هفت";
   static level_8 = "سطح هشت";
+  static latest_tafsil_code = "آخرین کد تفصیل صادر شده";
+  static latest_tafsil_type_first_pre_code = "آخرین کد شروع ثبت شده";
 
   static company_bank_accounts = "حساب های بانکی شرکت";
   static credit = "اعتبار حساب";
