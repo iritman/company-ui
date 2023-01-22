@@ -44,6 +44,7 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     // ReturnFromOthers,
     // ReturnPayableCheques,
     // ReturnPayableDemands,
+    RequestInfo,
   } = selectedObject;
 
   return (
@@ -74,6 +75,19 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
             <Descriptions.Item label={Words.id}>
               <Text style={{ color: valueColor }}>
                 {utils.farsiNum(`${ReceiveID}`)}
+              </Text>
+            </Descriptions.Item>
+            <Descriptions.Item label={Words.receive_base}>
+              <Text style={{ color: valueColor }}>
+                {RequestInfo.RequestID
+                  ? utils.farsiNum(
+                      `#${RequestInfo.RequestID} - ${
+                        RequestInfo.FrontSideAccountTitle
+                      } - ${utils.moneyNumber(RequestInfo.TotalPrice)} ${
+                        Words.ryal
+                      }`
+                    )
+                  : "-"}
               </Text>
             </Descriptions.Item>
             <Descriptions.Item label={Words.receive_type}>

@@ -32,6 +32,7 @@ export const schema = {
     .min(1)
     .required()
     .label(Words.receipt_receive_type),
+  RequestID: Joi.number().label(Words.receive_request),
   DeliveryMemberID: Joi.number().label(Words.delivery_member),
   DeliveryMember: Joi.string()
     .allow("")
@@ -60,6 +61,7 @@ export const schema = {
 export const initRecord = {
   ReceiveID: 0,
   ReceiveTypeID: 0,
+  RequestID: 0,
   DeliveryMemberID: 0,
   DeliveryMember: "",
   ReceiveDate: "",

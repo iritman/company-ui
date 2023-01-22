@@ -475,8 +475,10 @@ class Words extends Component {
   static base_doc_date = "تاریخ سند مبنا";
   static base_doc_id = "شناسه سند مبنا";
   static base_doc_price = "مبلغ سند مبنا";
+  static withou_base = "بدون مبنا";
   static receive_date = "تاریخ دریافت";
   static receive_type = "قلم دریافتی";
+  static select_receive_base = "انتخاب مبنای دریافت";
   static delivery_member = "";
   static receive_date = "";
   static front_side_account_id = "شناسه حساب طرف مقابل";

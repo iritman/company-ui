@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tabs } from "antd";
+import { Form, Row, Col, Tabs, Checkbox } from "antd";
 import ModalWindow from "../../../../../common/modal-window";
 import Words from "../../../../../../resources/words";
 import Colors from "../../../../../../resources/colors";
@@ -35,6 +35,7 @@ import {
   calculatePrice,
   findTitle,
 } from "./receive-receipt-modal-code";
+import Joi from "joi-browser";
 
 const formRef = React.createRef();
 
@@ -62,6 +63,8 @@ const ReceiveReceiptModal = ({
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
 
+  const [checkReceiveBase, setCheckReceiveBase] = useState(false);
+  const [receiveRequests, setReceiveRequests] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [operations, setOperations] = useState([]);
   const [cashFlows, setCashFlows] = useState([]);
@@ -95,6 +98,7 @@ const ReceiveReceiptModal = ({
 
   const clearRecord = () => {
     record.ReceiveTypeID = 0;
+    record.RequestID = 0;
     record.DeliveryMemberID = 0;
     record.DeliveryMember = "";
     record.ReceiveDate = "";
@@ -133,6 +137,7 @@ const ReceiveReceiptModal = ({
 
       let {
         ReceiveTypes,
+        ReceiveRequests,
         CashBoxes,
         Regards,
         StandardDetails,
@@ -140,7 +145,17 @@ const ReceiveReceiptModal = ({
         HasRejectAccess,
       } = data;
 
+      ReceiveRequests.forEach(
+        (rq) =>
+          (rq.Title = utils.farsiNum(
+            `#${rq.RequestID} - ${
+              rq.FrontSideAccountTitle
+            } - ${utils.moneyNumber(rq.TotalPrice)} ${Words.ryal}`
+          ))
+      );
+
       setReceiveTypes(ReceiveTypes);
+      setReceiveRequests(ReceiveRequests);
       setCashBoxes(CashBoxes);
       setRegards(Regards);
       setStandardDetails(StandardDetails);
@@ -907,6 +922,21 @@ const ReceiveReceiptModal = ({
     handleDeletePaymentNotice,
   };
 
+  const handleReceiveBaseChange = (e) => {
+    const { checked } = e.target;
+    setCheckReceiveBase(checked);
+
+    if (checked) {
+      schema.RequestID = Joi.number().min(1).label(Words.receive_request);
+    } else {
+      schema.RequestID = Joi.number().label(Words.receive_request);
+      const rec = { ...record };
+      rec.RequestID = 0;
+      setRecord(rec);
+      loadFieldsValue(formRef, rec);
+    }
+  };
+
   //------
 
   return (
@@ -932,6 +962,28 @@ const ReceiveReceiptModal = ({
                 required
               />
             </Col>
+            <Col xs={24} md={12}>
+              <Form.Item>
+                <Checkbox
+                  checked={checkReceiveBase}
+                  onChange={handleReceiveBaseChange}
+                >
+                  {Words.select_receive_base}
+                </Checkbox>
+              </Form.Item>
+            </Col>
+            {checkReceiveBase && (
+              <Col xs={24}>
+                <DropdownItem
+                  title={Words.receive_request}
+                  dataSource={receiveRequests}
+                  keyColumn="RequestID"
+                  valueColumn="Title"
+                  formConfig={formConfig}
+                  required
+                />
+              </Col>
+            )}
             <Col xs={24} md={12}>
               <DateItem
                 horizontal
@@ -971,7 +1023,7 @@ const ReceiveReceiptModal = ({
                 disabled={record.Cashes?.length > 0}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24}>
               <DropdownItem
                 title={Words.standard_details_text}
                 dataSource={standardDetails}
