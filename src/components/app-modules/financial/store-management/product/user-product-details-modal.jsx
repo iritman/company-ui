@@ -265,6 +265,53 @@ const getFeaturesColumns = () => {
   return columns;
 };
 
+const getInventoryControlAgentsColumns = () => {
+  let columns = [
+    // {
+    //   title: Words.id,
+    //   width: 75,
+    //   align: "center",
+    //   dataIndex: "PAID",
+    //   sorter: getSorter("PAID"),
+    //   render: (PAID) => <Text>{utils.farsiNum(`${PAID}`)}</Text>,
+    // },
+    {
+      title: Words.title,
+      width: 120,
+      align: "center",
+      dataIndex: "Title",
+      sorter: getSorter("Title"),
+      render: (Title) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {Title}
+        </Text>
+      ),
+    },
+    {
+      title: Words.value_type,
+      width: 75,
+      align: "center",
+      dataIndex: "FeatureTypeTitle",
+      sorter: getSorter("FeatureTypeTitle"),
+      render: (FeatureTypeTitle) => (
+        <Text
+          style={{
+            color: Colors.cyan[7],
+          }}
+        >
+          {FeatureTypeTitle}
+        </Text>
+      ),
+    },
+  ];
+
+  return columns;
+};
+
 const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
   const valueColor = Colors.blue[7];
 
@@ -286,6 +333,7 @@ const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
     MeasureUnits,
     MeasureConverts,
     Features,
+    InventoryControlAgents,
   } = product;
 
   const infoTabItems = [
@@ -324,6 +372,20 @@ const UserProductDetailsModal = ({ product, isOpen, onOk }) => {
         <Row gutter={[2, 5]}>
           <Col xs={24}>
             <DetailsTable records={Features} columns={getFeaturesColumns()} />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: Words.inventory_control_agent,
+      key: "inventory-control-agents",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <DetailsTable
+              records={InventoryControlAgents}
+              columns={getInventoryControlAgentsColumns()}
+            />
           </Col>
         </Row>
       ),

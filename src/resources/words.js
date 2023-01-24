@@ -1058,6 +1058,8 @@ class Words extends Component {
     no_tafsil_account: "حساب تفصیلی تعریف نشده است",
     measure_convert_already_exists: "ضریب تبدیل قبلا ثبت شده است",
     product_feature_already_exists: "ویژگی مورد نظر قبلا ثبت شده است",
+    product_inventory_control_agent_already_exists:
+      "عامل کنترل موجودی مورد نظر قبلا ثبت شده است",
     no_selected_cash_box: "صندوق انتخاب نشده است",
   };
 

@@ -61,7 +61,6 @@ export const schema = {
   MeasureConverts: Joi.array(),
   Features: Joi.array(),
   InventoryControlAgents: Joi.array(),
-  AlternativeProducts: Joi.array(),
 };
 
 export const initRecord = {
@@ -83,7 +82,6 @@ export const initRecord = {
   MeasureConverts: [],
   Features: [],
   InventoryControlAgents: [],
-  AlternativeProducts: [],
 };
 
 const getStoresColumns = (access, onEdit, onDelete) => {
@@ -472,111 +470,87 @@ const getFeaturesColumns = (access, onEdit, onDelete) => {
   return columns;
 };
 
-// const getInventoryControlAgentsColumns = () => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "PAID",
-//       sorter: getSorter("PAID"),
-//       render: (PAID) => <Text>{utils.farsiNum(`${PAID}`)}</Text>,
-//     },
-//     {
-//       title: Words.title,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "Title",
-//       sorter: getSorter("Title"),
-//       render: (Title) => (
-//         <Text
-//           style={{
-//             color: Colors.red[7],
-//           }}
-//         >
-//           {Title}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.effective_in_pricing,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "EffectiveInPricing",
-//       sorter: getSorter("EffectiveInPricing"),
-//       render: (EffectiveInPricing) => (
-//         <>
-//           {EffectiveInPricing && (
-//             <CheckIcon style={{ color: Colors.green[6] }} />
-//           )}
-//         </>
-//       ),
-//     },
-//     {
-//       title: Words.effective_in_warehousing,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "EffectiveInWarehousing",
-//       sorter: getSorter("EffectiveInWarehousing"),
-//       render: (EffectiveInWarehousing) => (
-//         <>
-//           {EffectiveInWarehousing && (
-//             <CheckIcon style={{ color: Colors.green[6] }} />
-//           )}
-//         </>
-//       ),
-//     },
-//   ];
+const getInventoryControlAgentsColumns = (access, onEdit, onDelete) => {
+  let columns = [
+    // {
+    //   title: Words.id,
+    //   width: 75,
+    //   align: "center",
+    //   dataIndex: "PAID",
+    //   sorter: getSorter("PAID"),
+    //   render: (PAID) => <Text>{utils.farsiNum(`${PAID}`)}</Text>,
+    // },
+    {
+      title: Words.title,
+      width: 120,
+      align: "center",
+      dataIndex: "Title",
+      sorter: getSorter("Title"),
+      render: (Title) => (
+        <Text
+          style={{
+            color: Colors.red[7],
+          }}
+        >
+          {Title}
+        </Text>
+      ),
+    },
+    {
+      title: Words.value_type,
+      width: 75,
+      align: "center",
+      dataIndex: "FeatureTypeTitle",
+      sorter: getSorter("FeatureTypeTitle"),
+      render: (FeatureTypeTitle) => (
+        <Text
+          style={{
+            color: Colors.cyan[7],
+          }}
+        >
+          {FeatureTypeTitle}
+        </Text>
+      ),
+    },
+  ];
 
-//   return columns;
-// };
+  if ((access.CanEdit && onEdit) || (access.CanDelete && onDelete)) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
 
-// const getBachPatternFeaturesColumns = () => {
-//   let columns = [
-//     {
-//       title: Words.id,
-//       width: 75,
-//       align: "center",
-//       dataIndex: "FeatureID",
-//       sorter: getSorter("FeatureID"),
-//       render: (FeatureID) => <Text>{utils.farsiNum(`${FeatureID}`)}</Text>,
-//     },
-//     {
-//       title: Words.title,
-//       width: 120,
-//       align: "center",
-//       dataIndex: "Title",
-//       sorter: getSorter("Title"),
-//       render: (Title) => (
-//         <Text
-//           style={{
-//             color: Colors.green[6],
-//           }}
-//         >
-//           {Title}
-//         </Text>
-//       ),
-//     },
-//     {
-//       title: Words.value_type,
-//       width: 100,
-//       align: "center",
-//       dataIndex: "ValueTypeTitle",
-//       sorter: getSorter("ValueTypeTitle"),
-//       render: (ValueTypeTitle) => (
-//         <Text
-//           style={{
-//             color: Colors.orange[6],
-//           }}
-//         >
-//           {ValueTypeTitle}
-//         </Text>
-//       ),
-//     },
-//   ];
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_inventory_control_agent}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
 
-//   return columns;
-// };
+  return columns;
+};
 
 export const getTabItems = (formConfig, props, events) => {
   const { categories, natures, bachPatterns, record, access } = props;
@@ -594,6 +568,9 @@ export const getTabItems = (formConfig, props, events) => {
     handleShowFeatureModal,
     handleEditFeature,
     handleDeleteFeature,
+    handleShowInventoryControlAgentModal,
+    handleEditInventoryControlAgent,
+    handleDeleteInventoryControlAgent,
   } = events;
 
   const infoTabItems = [
@@ -669,6 +646,30 @@ export const getTabItems = (formConfig, props, events) => {
         </Row>
       ),
     },
+    {
+      label: Words.inventory_control_agent,
+      key: "inventory-control-agents",
+      children: (
+        <Row gutter={[2, 5]}>
+          <Col xs={24}>
+            <AddButton
+              title={Words.new_inventory_control_agent}
+              onClick={handleShowInventoryControlAgentModal}
+            />
+          </Col>
+          <Col xs={24}>
+            <DetailsTable
+              records={record.InventoryControlAgents}
+              columns={getInventoryControlAgentsColumns(
+                access,
+                handleEditInventoryControlAgent,
+                handleDeleteInventoryControlAgent
+              )}
+            />
+          </Col>
+        </Row>
+      ),
+    },
   ];
 
   return [
@@ -721,7 +722,6 @@ export const getTabItems = (formConfig, props, events) => {
               horizontal
               title={Words.order_point}
               fieldName="OrderPoint"
-              // addonAfter={group.GroupCode}
               min={0}
               max={999999999}
               formConfig={formConfig}

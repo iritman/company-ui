@@ -380,61 +380,59 @@ const UserProductsPage = ({ pageName }) => {
 
       setRecords([...records]);
     }
-
-    // await service.deleteFeature(id);
-
-    // const so = { ...selectedObject };
-    // so.Features = so.Features.filter((f) => f.PFID !== id);
-    // setSelectedObject(so);
-
-    // const rec = [...records];
-    // rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    // setRecords(rec);
   };
 
   //------
 
-  const handleSaveInventoryControlAgent = async (row) => {
-    const inventory_control_agent = await service.saveInventoryControlAgent(
-      row
+  const handleSaveInventoryControlAgent = async (agent) => {
+    const saved_agent = await service.saveInventoryControlAgent(agent);
+
+    const rec = { ...selectedObject };
+    if (agent.PAID === 0) {
+      rec.InventoryControlAgents = [...rec.InventoryControlAgents, saved_agent];
+    } else {
+      const index = rec.InventoryControlAgents.findIndex(
+        (f) => f.PAID === agent.PAID
+      );
+      rec.InventoryControlAgents[index] = saved_agent;
+    }
+    setSelectedObject(rec);
+
+    //------
+
+    const index = records.findIndex(
+      (product) => product.ProductID === agent.ProductID
     );
 
-    const so = { ...selectedObject };
-    if (
-      so.InventoryControlAgents.find(
-        (s) => s.PAID === inventory_control_agent.PAID
-      )
-    )
-      so.InventoryControlAgents[
-        so.InventoryControlAgents.findIndex(
-          (s) => s.PAID === inventory_control_agent.PAID
-        )
-      ] = inventory_control_agent;
-    else
-      so.InventoryControlAgents = [
-        ...so.InventoryControlAgents,
-        inventory_control_agent,
-      ];
+    records[index] = rec;
 
-    setSelectedObject(so);
+    //------
 
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
+    setRecords([...records]);
+
+    return saved_agent;
   };
 
   const handleDeleteInventoryControlAgent = async (id) => {
     await service.deleteInventoryControlAgent(id);
 
-    const so = { ...selectedObject };
-    so.InventoryControlAgents = so.InventoryControlAgents.filter(
-      (s) => s.PAID !== id
-    );
-    setSelectedObject(so);
+    if (selectedObject) {
+      const rec = { ...selectedObject };
+      rec.InventoryControlAgents = rec.InventoryControlAgents.filter(
+        (ag) => ag.PAID !== id
+      );
+      setSelectedObject(rec);
 
-    const rec = [...records];
-    rec[rec.findIndex((r) => r.ProductID === so.ProductID)] = so;
-    setRecords(rec);
+      //------
+
+      const index = records.findIndex(
+        (product) => product.ProductID === rec.ProductID
+      );
+
+      records[index] = rec;
+
+      setRecords([...records]);
+    }
   };
 
   //------

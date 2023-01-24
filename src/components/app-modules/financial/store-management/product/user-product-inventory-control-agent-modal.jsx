@@ -11,31 +11,26 @@ import {
   initModal,
   saveModalChanges,
   getSorter,
-  handleError,
 } from "../../../../../tools/form-manager";
-import {
-  useModalContext,
-  useResetContext,
-} from "../../../../contexts/modal-context";
-import service from "../../../../../services/financial/store-mgr/user-inventory-control-agents-service";
-import DropdownItem from "./../../../../form-controls/dropdown-item";
-import SwitchItem from "../../../../form-controls/switch-item";
-import TextItem from "./../../../../form-controls/text-item";
-import DetailsTable from "../../../../common/details-table";
+import DropdownItem from "../../../../form-controls/dropdown-item";
+import TextItem from "../../../../form-controls/text-item";
+import DetailsTable from "./../../../../common/details-table";
 import { getFieldValue } from "../user-group-feature-item-columns-code";
 
 const { Text } = Typography;
 
 const schema = {
-  AgentID: Joi.number().required(),
-  GroupFeatureID: Joi.number().min(1).required().label(Words.product_feature),
-  IsActive: Joi.boolean(),
+  PAID: Joi.number().required(),
+  ProductID: Joi.number().required(),
+  AgentID: Joi.number().min(1).required(),
 };
 
-const initRecord = {
-  AgentID: 0,
-  GroupFeatureID: 0,
-  IsActive: true,
+const initRecord = (productID) => {
+  return {
+    PAID: 0,
+    ProductID: productID,
+    AgentID: 0,
+  };
 };
 
 const formRef = React.createRef();
@@ -88,18 +83,17 @@ const getItemColumns = (featureTypeID) => {
   return columns;
 };
 
-const UserInventoryControlAgentModal = ({
+const UserProductInventoryControlAgentModal = ({
   isOpen,
-  selectedObject,
+  product,
+  selectedInventoryControlAgent,
+  inventoryControlAgents,
   onOk,
   onCancel,
 }) => {
-  const { progress, setProgress, record, setRecord, errors, setErrors } =
-    useModalContext();
-
-  const [groupFeatures, setGroupFeatures] = useState([]);
-
-  const resetContext = useResetContext();
+  const [progress, setProgress] = useState(false);
+  const [record, setRecord] = useState({});
+  const [errors, setErrors] = useState({});
 
   const formConfig = {
     schema,
@@ -110,8 +104,7 @@ const UserInventoryControlAgentModal = ({
   };
 
   const clearRecord = () => {
-    record.GroupFeatureID = 0;
-    record.IsActive = true;
+    record.AgentID = 0;
 
     setRecord(record);
     setErrors({});
@@ -119,100 +112,103 @@ const UserInventoryControlAgentModal = ({
   };
 
   useMount(async () => {
-    resetContext();
-    setRecord(initRecord);
-    initModal(formRef, selectedObject, setRecord);
+    setRecord(initRecord(product ? product.ProductID : 0));
+    initModal(formRef, selectedInventoryControlAgent, setRecord);
 
-    setProgress(true);
-    try {
-      const data = await service.getParams();
+    // if (selectedInventoryControlAgent !== null) {
+    //   setValueTypeID(selectedInventoryControlAgent.ValueTypeID);
 
-      const { GroupFeatures } = data;
+    //   const completePropsFeature = { ...selectedInventoryControlAgent };
+    //   completePropsFeature.ProductID = product.ProductID;
+    //   completePropsFeature.FeatureIntValue =
+    //     completePropsFeature.ValueTypeID === 1
+    //       ? parseInt(completePropsFeature.FeatureValue)
+    //       : 0;
+    //   completePropsFeature.FeatureDecimalValue =
+    //     completePropsFeature.ValueTypeID === 2
+    //       ? parseFloat(completePropsFeature.FeatureValue)
+    //       : 0;
+    //   completePropsFeature.EffectiveInPricing =
+    //     completePropsFeature.EffectiveInPricing =
+    //       completePropsFeature.ValueTypeID === 4
+    //         ? completePropsFeature.FeatureValue === "1"
+    //         : false;
 
-      setGroupFeatures(GroupFeatures);
-    } catch (ex) {
-      handleError(ex);
-    }
-    setProgress(false);
+    //   initModal(formRef, completePropsFeature, setRecord);
+    // }
   });
 
-  const isEdit = selectedObject !== null;
+  const isEdit = selectedInventoryControlAgent !== null;
 
   const handleSubmit = async () => {
-    saveModalChanges(
+    await saveModalChanges(
       formConfig,
-      selectedObject,
+      selectedInventoryControlAgent,
       setProgress,
       onOk,
-      clearRecord
+      clearRecord,
+      false
     );
+
+    onCancel();
   };
 
-  const selected_feature = groupFeatures.find(
-    (gf) => gf.GroupFeatureID === record.GroupFeatureID
+  const selected_agent = inventoryControlAgents.find(
+    (ag) => ag.AgentID === record.AgentID
   );
 
-  //------
+  //-----------------
 
   return (
     <ModalWindow
       isOpen={isOpen}
       isEdit={isEdit}
+      title={Words.inventory_control_agents}
       inProgress={progress}
       disabled={validateForm({ record, schema }) && true}
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={650}
+      width={750}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24}>
             <DropdownItem
-              title={Words.product_feature}
-              dataSource={groupFeatures}
-              keyColumn="GroupFeatureID"
+              title={Words.inventory_control_agent}
+              dataSource={inventoryControlAgents}
+              keyColumn="AgentID"
               valueColumn="Title"
               formConfig={formConfig}
               required
+              autoFocus
             />
           </Col>
-          <Col xs={24}>
-            <SwitchItem
-              title={Words.status}
-              fieldName="IsActive"
-              initialValue={true}
-              checkedTitle={Words.active}
-              unCheckedTitle={Words.inactive}
-              formConfig={formConfig}
-            />
-          </Col>
-          {record.GroupFeatureID > 0 && (
+          {record.AgentID > 0 && (
             <>
               <Col xs={24}>
                 <Divider orientation="right" plain>
                   <Text>{Words.fixed_values}</Text>
                 </Divider>
               </Col>
-              {selected_feature && (
+              {selected_agent && (
                 <Col xs={24}>
                   <TextItem
                     title={Words.value_type}
-                    value={`${selected_feature.FeatureTypeTitle}`}
+                    value={`${selected_agent.FeatureTypeTitle}`}
                     valueColor={Colors.orange[6]}
                   />
                 </Col>
               )}
-              {selected_feature?.FeatureTypeID < 5 &&
-                selected_feature?.Items && (
-                  <Col xs={24}>
-                    <DetailsTable
-                      records={selected_feature?.Items}
-                      columns={getItemColumns(selected_feature?.FeatureTypeID)}
-                      emptyDataMessage={Words.no_feature_item_value}
-                    />
-                  </Col>
-                )}
+              {selected_agent?.FeatureTypeID < 5 && selected_agent?.Items && (
+                <Col xs={24}>
+                  <DetailsTable
+                    records={selected_agent?.Items}
+                    columns={getItemColumns(selected_agent?.FeatureTypeID)}
+                    emptyDataMessage={Words.no_feature_item_value}
+                  />
+                </Col>
+              )}
             </>
           )}
         </Row>
@@ -221,4 +217,4 @@ const UserInventoryControlAgentModal = ({
   );
 };
 
-export default UserInventoryControlAgentModal;
+export default UserProductInventoryControlAgentModal;

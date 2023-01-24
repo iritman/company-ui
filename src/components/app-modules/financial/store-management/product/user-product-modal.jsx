@@ -20,7 +20,7 @@ import StoreModal from "./user-product-store-modal";
 import MeasureUnitModal from "./user-product-measure-unit-modal";
 import MeasureConvertModal from "./user-product-measure-convert-modal";
 import FeatureModal from "./user-product-feature-modal";
-// import InventoryControlAgentModal from "./user-product-inventory-control-agent-modal";
+import InventoryControlAgentModal from "./user-product-inventory-control-agent-modal";
 import { v4 as uuid } from "uuid";
 import Words from "./../../../../../resources/words";
 
@@ -40,8 +40,8 @@ const UserProductModal = ({
   onDeleteMeasureConvert,
   onSaveFeature,
   onDeleteFeature,
-  //   onSaveInventoryControlAgent,
-  //   onDeleteInventoryControlAgent,
+  onSaveInventoryControlAgent,
+  onDeleteInventoryControlAgent,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -51,9 +51,7 @@ const UserProductModal = ({
   const [stores, setStores] = useState([]);
   const [measureUnits, setMeasureUnits] = useState([]);
   const [features, setFeatures] = useState([]);
-  //   const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
-  //   const [systemInventoryControlAgents, setSystemInventoryControlAgents] =
-  //     useState([]);
+  const [inventoryControlAgents, setInventoryControlAgents] = useState([]);
   const [bachPatterns, setBachPatterns] = useState([]);
   //---
   const [showStoreModal, setShowStoreModal] = useState(false);
@@ -68,10 +66,10 @@ const UserProductModal = ({
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
   //---
-  //   const [showInventoryControlAgentModal, setShowInventoryControlAgentModal] =
-  //     useState(false);
-  //   const [selectedInventoryControlAgent, setSelectedInventoryControlAgent] =
-  //     useState(null);
+  const [showInventoryControlAgentModal, setShowInventoryControlAgentModal] =
+    useState(false);
+  const [selectedInventoryControlAgent, setSelectedInventoryControlAgent] =
+    useState(null);
   //---
 
   const resetContext = useResetContext();
@@ -99,7 +97,6 @@ const UserProductModal = ({
     record.MeasureUnits = [];
     record.MeasureConverts = [];
     record.InventoryControlAgents = [];
-    record.AlternativeProducts = [];
 
     setRecord(record);
     setErrors({});
@@ -121,8 +118,7 @@ const UserProductModal = ({
         Stores,
         MeasureUnits,
         Features,
-        // InventoryControlAgents,
-        // SystemInventoryControlAgents,
+        InventoryControlAgents,
         BachPatterns,
       } = data;
 
@@ -131,8 +127,7 @@ const UserProductModal = ({
       setStores(Stores);
       setMeasureUnits(MeasureUnits);
       setFeatures(Features);
-      //   setInventoryControlAgents(InventoryControlAgents);
-      //   setSystemInventoryControlAgents(SystemInventoryControlAgents);
+      setInventoryControlAgents(InventoryControlAgents);
       setBachPatterns(BachPatterns);
     } catch (ex) {
       handleError(ex);
@@ -543,20 +538,112 @@ const UserProductModal = ({
 
   //-----------------
 
-  //   const handleShowInventoryControlAgentModal = () => {
-  //     setSelectedInventoryControlAgent(null);
-  //     setShowInventoryControlAgentModal(true);
-  //   };
+  const handleShowInventoryControlAgentModal = () => {
+    setSelectedInventoryControlAgent(null);
+    setShowInventoryControlAgentModal(true);
+  };
 
-  //   const handleHideInventoryControlAgentModal = () => {
-  //     setSelectedInventoryControlAgent(null);
-  //     setShowInventoryControlAgentModal(false);
-  //   };
+  const handleHideInventoryControlAgentModal = () => {
+    setSelectedInventoryControlAgent(null);
+    setShowInventoryControlAgentModal(false);
+  };
 
-  //   const handleEditInventoryControlAgent = (store) => {
-  //     setSelectedInventoryControlAgent(store);
-  //     setShowInventoryControlAgentModal(true);
-  //   };
+  const handleEditInventoryControlAgent = (agent) => {
+    setSelectedInventoryControlAgent(agent);
+    setShowInventoryControlAgentModal(true);
+  };
+
+  const handleSaveInventoryControlAgent = async (agent) => {
+    // prevent adding duplicate inventory control agent
+    if (
+      selectedInventoryControlAgent === null &&
+      record.InventoryControlAgents.find((ag) => ag.AgentID === agent.AgentID)
+    ) {
+      const error = {
+        response: {
+          status: 400,
+          data: {
+            Error:
+              Words.messages.product_inventory_control_agent_already_exists,
+          },
+        },
+      };
+
+      throw error;
+    }
+
+    if (agent.ProductID === 0) {
+      const group_feature = inventoryControlAgents.find(
+        (ag) => ag.AgentID === agent.AgentID
+      );
+      const { Title, FeatureTypeID, FeatureTypeTitle } = group_feature;
+      agent.Title = Title;
+      agent.FeatureTypeID = FeatureTypeID;
+      agent.FeatureTypeTitle = FeatureTypeTitle;
+
+      // if (FeatureTypeID < 5) {
+      //   feature.ItemCode = group_feature.Items.find(
+      //     (i) => i.ItemID === feature.ValueItemID
+      //   )?.ItemCode;
+      // }
+
+      if (agent.PAID === 0 && selectedInventoryControlAgent === null) {
+        //--- managing unique id (UID) for new items
+        agent.UID = uuid();
+        record.InventoryControlAgents = [
+          ...record.InventoryControlAgents,
+          agent,
+        ];
+      } else if (agent.PAID === 0 && selectedInventoryControlAgent !== null) {
+        const index = record.InventoryControlAgents.findIndex(
+          (f) => f.UID === selectedInventoryControlAgent.UID
+        );
+        record.InventoryControlAgents[index] = agent;
+      }
+    } else {
+      const saved_agent = await onSaveInventoryControlAgent(agent);
+
+      const index = record.InventoryControlAgents.findIndex(
+        (ag) => ag.PAID === agent.PAID
+      );
+
+      if (index === -1) {
+        record.InventoryControlAgents = [
+          ...record.InventoryControlAgents,
+          saved_agent,
+        ];
+      } else {
+        record.InventoryControlAgents[index] = saved_agent;
+      }
+    }
+
+    setRecord({ ...record });
+    setSelectedFeature(null);
+  };
+
+  const handleDeleteInventoryControlAgent = async (agent) => {
+    setProgress(true);
+
+    try {
+      if (agent.PAID > 0) {
+        await onDeleteInventoryControlAgent(agent.PAID);
+
+        record.InventoryControlAgents = record.InventoryControlAgents.filter(
+          (ag) => ag.PAID !== agent.PAID
+        );
+      } else {
+        record.InventoryControlAgents = record.InventoryControlAgents.filter(
+          (ag) => ag.UID !== agent.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
 
   //-----------------
 
@@ -581,6 +668,9 @@ const UserProductModal = ({
     handleShowFeatureModal,
     handleEditFeature,
     handleDeleteFeature,
+    handleShowInventoryControlAgentModal,
+    handleEditInventoryControlAgent,
+    handleDeleteInventoryControlAgent,
   };
 
   //------
@@ -615,39 +705,7 @@ const UserProductModal = ({
                 defaultActiveKey="1"
                 type="card"
                 items={getTabItems(formConfig, tab_props, tab_events)}
-              >
-                {/* {selectedObject && (
-                  <>
-                    
-                    <TabPane
-                      tab={Words.inventory_control_agent}
-                      key="tab-inventory-control-agents"
-                    >
-                      <Row gutter={[2, 5]}>
-                        <Col xs={24}>
-                          <Button
-                            type="primary"
-                            icon={<PlusIcon />}
-                            onClick={handleShowInventoryControlAgentModal}
-                          >
-                            {Words.new_inventory_control_agent}
-                          </Button>
-                        </Col>
-                        <Col xs={24}>
-                          <DetailsTable
-                            records={selectedObject.InventoryControlAgents}
-                            columns={getInventoryControlAgentsColumns(
-                              access,
-                              handleEditInventoryControlAgent, // handle edit inventory control agent
-                              onDeleteInventoryControlAgent // handle delete inventory control agent
-                            )}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
-                  </>
-                )} */}
-              </Tabs>
+              />
             </Form>
           </Col>
         </Row>
@@ -705,17 +763,16 @@ const UserProductModal = ({
         />
       )}
 
-      {/* {showInventoryControlAgentModal && (
+      {showInventoryControlAgentModal && (
         <InventoryControlAgentModal
           isOpen={showInventoryControlAgentModal}
           product={selectedObject}
           selectedInventoryControlAgent={selectedInventoryControlAgent}
           inventoryControlAgents={inventoryControlAgents}
-          systemInventoryControlAgents={systemInventoryControlAgents}
-          onOk={onSaveInventoryControlAgent}
+          onOk={handleSaveInventoryControlAgent}
           onCancel={handleHideInventoryControlAgentModal}
         />
-      )} */}
+      )}
     </>
   );
 };
