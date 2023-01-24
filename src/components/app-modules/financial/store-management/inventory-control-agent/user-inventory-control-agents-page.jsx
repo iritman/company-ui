@@ -5,20 +5,20 @@ import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
 } from "react-icons/ai";
-import Words from "../../../../resources/words";
-import Colors from "../../../../resources/colors";
-import utils from "../../../../tools/utils";
-import service from "../../../../services/financial/store-mgr/user-inventory-control-agents-service";
+import Words from "../../../../../resources/words";
+import Colors from "../../../../../resources/colors";
+import utils from "../../../../../tools/utils";
+import service from "../../../../../services/financial/store-mgr/user-inventory-control-agents-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
-} from "../../../../tools/form-manager";
-import SimpleDataTable from "../../../common/simple-data-table";
-import SimpleDataPageHeader from "../../../common/simple-data-page-header";
+} from "../../../../../tools/form-manager";
+import SimpleDataTable from "../../../../common/simple-data-table";
+import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
 import InventoryControlAgentModal from "./user-inventory-control-agent-modal";
-import { usePageContext } from "../../../contexts/page-context";
+import { usePageContext } from "../../../../contexts/page-context";
 
 const { Text } = Typography;
 
@@ -28,8 +28,7 @@ const getSheets = (records) => [
     data: records,
     columns: [
       { label: Words.id, value: "AgentID" },
-      //   { label: Words.measure_type, value: "AgentTypeID" },
-      { label: Words.title, value: "Title" },
+      { label: Words.title, value: "FeatureTypeTitle" },
       {
         label: Words.status,
         value: (record) => (record.IsActive ? Words.active : Words.inactive),
@@ -53,18 +52,18 @@ const baseColumns = [
     align: "center",
     dataIndex: "Title",
     sorter: getSorter("Title"),
-    render: (Title) => <Text style={{ color: Colors.blue[7] }}>{Title}</Text>,
+    render: (Title) => <Text style={{ color: Colors.cyan[7] }}>{Title}</Text>,
   },
-  //   {
-  //     title: Words.measure_type,
-  //     width: 150,
-  //     align: "center",
-  //     dataIndex: "AgentTypeID",
-  //     sorter: getSorter("AgentTypeID"),
-  //     render: (AgentTypeID) => (
-  //       <Text style={{ color: Colors.orange[7] }}>{AgentTypeID}</Text>
-  //     ),
-  //   },
+  {
+    title: Words.title,
+    width: 150,
+    align: "center",
+    dataIndex: "FeatureTypeTitle",
+    sorter: getSorter("FeatureTypeTitle"),
+    render: (FeatureTypeTitle) => (
+      <Text style={{ color: Colors.blue[7] }}>{FeatureTypeTitle}</Text>
+    ),
+  },
   {
     title: Words.status,
     width: 75,

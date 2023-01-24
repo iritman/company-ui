@@ -4,11 +4,11 @@ import { apiUrl } from "../../../config.json";
 const apiEndpoint =
   apiUrl + "/financial/store-mgr/user-inventory-control-agents";
 
-// export async function getParams() {
-//   const { data } = await http.get(`${apiEndpoint}/params`);
+export async function getParams() {
+  const { data } = await http.get(`${apiEndpoint}/params`);
 
-//   return data;
-// }
+  return data;
+}
 
 export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
@@ -35,7 +35,7 @@ export async function deleteData(recordID) {
 }
 
 const service = {
-  //   getParams,
+  getParams,
   getAllData,
   searchData,
   saveData,
