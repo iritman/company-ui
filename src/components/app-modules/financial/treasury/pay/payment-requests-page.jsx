@@ -37,7 +37,7 @@ const getSheets = (records) => [
       { label: Words.pay_type, value: "PayTypeTitle" },
       {
         label: Words.request_date,
-        value: (record) => utils.slashDate(record.RequestDate),
+        value: (record) => utils.slashDate(record.PayDate),
       },
       { label: Words.price, value: "TotalPrice" },
       { label: Words.standard_descriptions, value: "StandardDetailsText" },
@@ -60,15 +60,11 @@ const baseColumns = [
     title: Words.front_side,
     width: 200,
     align: "center",
-    // dataIndex: "Title",
-    sorter: getSorter("LastName"),
-    render: (record) => (
+    dataIndex: "FrontSideAccountTitle",
+    sorter: getSorter("FrontSideAccountTitle"),
+    render: (FrontSideAccountTitle) => (
       <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(
-          record.MemberID > 0
-            ? `${record.FirstName} ${record.LastName} - ${record.AccountNo}`
-            : `${record.CompanyTitle} - ${record.AccountNo}`
-        )}
+        {utils.farsiNum(FrontSideAccountTitle)}
       </Text>
     ),
   },
@@ -76,11 +72,11 @@ const baseColumns = [
     title: Words.request_date,
     width: 150,
     align: "center",
-    dataIndex: "RequestDate",
-    sorter: getSorter("RequestDate"),
-    render: (RequestDate) => (
+    dataIndex: "PayDate",
+    sorter: getSorter("PayDate"),
+    render: (PayDate) => (
       <Text style={{ color: Colors.blue[6] }}>
-        {utils.farsiNum(utils.slashDate(RequestDate))}
+        {utils.farsiNum(utils.slashDate(PayDate))}
       </Text>
     ),
   },

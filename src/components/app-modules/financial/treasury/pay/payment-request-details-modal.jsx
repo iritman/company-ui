@@ -16,6 +16,7 @@ import { getSorter } from "./../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "./../../../../common/modal-window";
 import PriceViewer from "../../../../common/price-viewer";
+import { calculateTotalPrice } from "./payment-request-modal-code";
 
 const { Text } = Typography;
 
@@ -90,7 +91,7 @@ const columns = [
     align: "center",
     render: (record) => (
       <>
-        {record.StandardDetailsID > 0 && (
+        {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
           <Popover
             content={
               <Text>{`${record.StandardDetailsText}${
@@ -124,20 +125,13 @@ const PaymentRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
 
   const {
     RequestID,
-    FrontSideAccountID,
-    AccountNo,
-    MemberID,
-    FirstName,
-    LastName,
-    // CompanyID,
-    CompanyTitle,
-    // CostCenterID,
-    CostCenterTitle,
+    // FrontSideAccountID,
+    FrontSideAccountTitle,
     // CurrencyID,
     CurrencyTitle,
     // PayTypeID,
     PayTypeTitle,
-    RequestDate,
+    PayDate,
     // StandardDetailsID,
     StandardDetailsText,
     DetailsText,
@@ -145,20 +139,6 @@ const PaymentRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     StatusTitle,
     Items,
   } = selectedObject;
-
-  const calculateTotalPrice = () => {
-    let sum = 0;
-
-    Items?.forEach((item) => {
-      sum += item.Price;
-    });
-
-    return sum;
-  };
-
-  let account_title = `${
-    MemberID > 0 ? `${FirstName} ${LastName}` : CompanyTitle
-  }  - ${AccountNo}`;
 
   return (
     <ModalWindow
@@ -184,9 +164,7 @@ const PaymentRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               <Alert
                 message={
                   <Text style={{ fontSize: 14 }}>
-                    {utils.farsiNum(
-                      `#${FrontSideAccountID} - ${account_title}`
-                    )}
+                    {utils.farsiNum(FrontSideAccountTitle)}
                   </Text>
                 }
                 type="info"
@@ -208,9 +186,6 @@ const PaymentRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                     {utils.farsiNum(`${RequestID}`)}
                   </Text>
                 </Descriptions.Item>
-                <Descriptions.Item label={Words.cost_center}>
-                  <Text style={{ color: valueColor }}>{CostCenterTitle}</Text>
-                </Descriptions.Item>
                 <Descriptions.Item label={Words.currency}>
                   <Text style={{ color: valueColor }}>{CurrencyTitle}</Text>
                 </Descriptions.Item>
@@ -219,7 +194,7 @@ const PaymentRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.request_date}>
                   <Text style={{ color: valueColor }}>
-                    {utils.farsiNum(utils.slashDate(RequestDate))}
+                    {utils.farsiNum(utils.slashDate(PayDate))}
                   </Text>
                 </Descriptions.Item>
                 <Descriptions.Item label={Words.status}>
@@ -276,7 +251,7 @@ const PaymentRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               />
             </Col>
             <Col xs={24}>
-              <PriceViewer price={calculateTotalPrice()} />
+              <PriceViewer price={calculateTotalPrice(Items)} />
             </Col>
           </Row>
         </article>

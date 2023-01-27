@@ -24,8 +24,8 @@ const schema = {
   CurrencyID: Joi.number(),
   PayTypeID: Joi.number(),
   FrontSideAccountID: Joi.number(),
-  FromRequestDate: Joi.string().allow(""),
-  ToRequestDate: Joi.string().allow(""),
+  FromPayDate: Joi.string().allow(""),
+  ToPayDate: Joi.string().allow(""),
   StatusID: Joi.number(),
 };
 
@@ -34,8 +34,8 @@ const initRecord = {
   CurrencyID: 0,
   PayTypeID: 0,
   FrontSideAccountID: 0,
-  FromRequestDate: "",
-  ToRequestDate: "",
+  FromPayDate: "",
+  ToPayDate: "",
   StatusID: 0,
 };
 
@@ -67,8 +67,8 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     record.CurrencyID = 0;
     record.PayTypeID = 0;
     record.FrontSideAccountID = 0;
-    record.FromRequestDate = "";
-    record.ToRequestDate = "";
+    record.FromPayDate = "";
+    record.ToPayDate = "";
     record.StatusID = 0;
 
     setRecord(record);
@@ -117,6 +117,8 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
     setFrontSideAccountSearchProgress(false);
   };
+
+  // ------
 
   return (
     <ModalWindow
@@ -177,7 +179,7 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
             <DateItem
               horizontal
               title={Words.from_request_date}
-              fieldName="FromRequestDate"
+              fieldName="FromPayDate"
               formConfig={formConfig}
             />
           </Col>
@@ -185,7 +187,7 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
             <DateItem
               horizontal
               title={Words.to_request_date}
-              fieldName="ToRequestDate"
+              fieldName="ToPayDate"
               formConfig={formConfig}
             />
           </Col>

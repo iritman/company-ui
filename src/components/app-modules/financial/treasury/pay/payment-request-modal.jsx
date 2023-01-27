@@ -1,35 +1,16 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import {
-  Form,
-  Row,
-  Col,
-  Divider,
-  Typography,
-  Space,
-  Popconfirm,
-  Button,
-  Popover,
-} from "antd";
-import {
-  PlusOutlined as AddIcon,
-  DeleteOutlined as DeleteIcon,
-  EditOutlined as EditIcon,
-  QuestionCircleOutlined as QuestionIcon,
-} from "@ant-design/icons";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
-import Joi from "joi-browser";
+import { Form, Row, Col, Divider, Typography } from "antd";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
 import Colors from "./../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import { v4 as uuid } from "uuid";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-  getSorter,
 } from "../../../../../tools/form-manager";
 import service from "../../../../../services/financial/treasury/pay/payment-requests-service";
 import InputItem from "../../../../form-controls/input-item";
@@ -42,177 +23,16 @@ import {
 import DetailsTable from "../../../../common/details-table";
 import PriceViewer from "../../../../common/price-viewer";
 import PaymentRequestItemModal from "./payment-request-item-modal";
-import { v4 as uuid } from "uuid";
+import {
+  schema,
+  initRecord,
+  getPaymentRequestItemsColumns,
+  getNewPaymentRequestItemButton,
+  calculateTotalPrice,
+  getFooterButtons,
+} from "./payment-request-modal-code";
 
 const { Text } = Typography;
-
-const schema = {
-  RequestID: Joi.number().required().label(Words.id),
-  CurrencyID: Joi.number().min(1).required().label(Words.currency),
-  PayTypeID: Joi.number().min(1).required().label(Words.pay_type),
-  FrontSideAccountID: Joi.number()
-    .min(1)
-    .required()
-    .label(Words.front_side_account),
-  RequestDate: Joi.string().required().label(Words.request_date),
-  StandardDetailsID: Joi.number().label(Words.standard_description),
-  DetailsText: Joi.string()
-    .min(5)
-    .max(250)
-    .allow("")
-    .regex(utils.VALID_REGEX)
-    .label(Words.standard_description),
-  StatusID: Joi.number(),
-  Items: Joi.array(),
-};
-
-const initRecord = {
-  RequestID: 0,
-  CurrencyID: 0,
-  PayTypeID: 0,
-  FrontSideAccountID: 0,
-  RequestDate: "",
-  StandardDetailsID: 0,
-  DetailsText: "",
-  StatusID: 1,
-  Items: [],
-};
-
-const getPaymentRequestItemsColumns = (access, statusID, onEdit, onDelete) => {
-  let columns = [
-    {
-      title: Words.id,
-      width: 75,
-      align: "center",
-      dataIndex: "ItemID",
-      sorter: getSorter("ItemID"),
-      render: (ItemID) => (
-        <Text>{ItemID > 0 ? utils.farsiNum(`${ItemID}`) : ""}</Text>
-      ),
-    },
-    {
-      title: Words.receive_type,
-      width: 120,
-      align: "center",
-      dataIndex: "ItemTypeTitle",
-      sorter: getSorter("ItemTypeTitle"),
-      render: (ItemTypeTitle) => (
-        <Text style={{ color: Colors.magenta[6] }}> {ItemTypeTitle}</Text>
-      ),
-    },
-    {
-      title: Words.price,
-      width: 150,
-      align: "center",
-      dataIndex: "Price",
-      sorter: getSorter("Price"),
-      render: (Price) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(utils.moneyNumber(Price))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.payment_date,
-      width: 100,
-      align: "center",
-      dataIndex: "PaymentDate",
-      sorter: getSorter("PaymentDate"),
-      render: (PaymentDate) => (
-        <Text
-          style={{
-            color: Colors.orange[6],
-          }}
-        >
-          {utils.farsiNum(utils.slashDate(PaymentDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.due_date,
-      width: 100,
-      align: "center",
-      dataIndex: "DueDate",
-      sorter: getSorter("DueDate"),
-      render: (DueDate) => (
-        <Text
-          style={{
-            color: Colors.orange[6],
-          }}
-        >
-          {utils.farsiNum(utils.slashDate(DueDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.standard_description,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.StandardDetailsID > 0 && (
-            <Popover
-              content={
-                <Text>{`${record.StandardDetailsText}${
-                  record.DetailsText.length > 0 ? `\r\n` : ""
-                }${record.DetailsText}`}</Text>
-              }
-            >
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
-      ),
-    },
-  ];
-
-  // StatusID : 1 => Not Approve, Not Reject! Just Save...
-  if (
-    statusID === 1 &&
-    ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
-  ) {
-    columns = [
-      ...columns,
-      {
-        title: "",
-        fixed: "right",
-        align: "center",
-        width: 75,
-        render: (record) => (
-          <Space>
-            {access.CanDelete && onDelete && (
-              <Popconfirm
-                title={Words.questions.sure_to_delete_selected_item}
-                onConfirm={async () => await onDelete(record)}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-              >
-                <Button type="link" icon={<DeleteIcon />} danger />
-              </Popconfirm>
-            )}
-
-            {access.CanEdit && onEdit && (
-              <Button
-                type="link"
-                icon={<EditIcon />}
-                onClick={() => onEdit(record)}
-              />
-            )}
-          </Space>
-        ),
-      },
-    ];
-  }
-
-  return columns;
-};
 
 const formRef = React.createRef();
 
@@ -259,7 +79,7 @@ const PaymentRequestModal = ({
     record.CurrencyID = 0;
     record.PayTypeID = 0;
     record.FrontSideAccountID = 0;
-    record.RequestDate = "";
+    record.PayDate = "";
     record.StandardDetailsID = 0;
     record.DetailsText = "";
     record.StatusID = 1;
@@ -301,20 +121,11 @@ const PaymentRequestModal = ({
       setHasRejectAccess(HasRejectAccess);
 
       if (selectedObject) {
-        const {
-          FrontSideAccountID,
-          AccountNo,
-          MemberID,
-          FirstName,
-          LastName,
-          CompanyTitle,
-        } = selectedObject;
+        const { FrontSideAccountID, FrontSideAccountTitle } = selectedObject;
 
-        let account_title = `${
-          MemberID > 0 ? `${FirstName} ${LastName}` : CompanyTitle
-        }  - ${AccountNo}`;
-
-        setFrontSideAccounts([{ FrontSideAccountID, Title: account_title }]);
+        setFrontSideAccounts([
+          { FrontSideAccountID, Title: FrontSideAccountTitle },
+        ]);
       }
     } catch (ex) {
       handleError(ex);
@@ -448,119 +259,9 @@ const PaymentRequestModal = ({
     setShowPaymentRequestItemModal(true);
   };
 
-  const getNewPaymentRequestItemButton = () => {
-    return (
-      <Button
-        type="primary"
-        onClick={() => {
-          setSelectedPaymentRequestItem(null);
-          setShowPaymentRequestItemModal(true);
-        }}
-        icon={<AddIcon />}
-      >
-        {Words.new}
-      </Button>
-    );
-  };
-
-  //------
-
-  const getFooterButtons = (is_disable) => {
-    return (
-      <Space>
-        {selectedObject === null && (
-          <>
-            <Button
-              key="submit-button"
-              type="primary"
-              onClick={handleSubmit}
-              loading={progress}
-              disabled={is_disable}
-            >
-              {Words.submit}
-            </Button>
-
-            {hasSaveApproveAccess && (
-              <Popconfirm
-                title={Words.questions.sure_to_submit_approve_request}
-                onConfirm={handleSubmitAndApprove}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-                key="submit-approve-button"
-                disabled={is_disable || progress}
-              >
-                <Button
-                  key="submit-approve-button"
-                  type="primary"
-                  disabled={is_disable || progress}
-                >
-                  {Words.submit_and_approve}
-                </Button>
-              </Popconfirm>
-            )}
-
-            <Button key="clear-button" onClick={clearRecord}>
-              {Words.clear}
-            </Button>
-          </>
-        )}
-
-        {selectedObject !== null && selectedObject.StatusID === 1 && (
-          <>
-            {hasSaveApproveAccess && (
-              <Popconfirm
-                title={Words.questions.sure_to_submit_approve_request}
-                onConfirm={onApprove}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-                key="submit-approve-button"
-                disabled={is_disable || progress}
-              >
-                <Button
-                  key="submit-approve-button"
-                  type="primary"
-                  disabled={is_disable || progress}
-                >
-                  {Words.submit_and_approve}
-                </Button>
-              </Popconfirm>
-            )}
-
-            {hasRejectAccess && (
-              <Popconfirm
-                title={Words.questions.sure_to_reject_request}
-                onConfirm={onReject}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-                key="reject-confirm"
-                disabled={progress}
-              >
-                <Button key="reject-button" type="primary" danger>
-                  {Words.reject_request}
-                </Button>
-              </Popconfirm>
-            )}
-          </>
-        )}
-
-        <Button key="close-button" onClick={onCancel}>
-          {Words.close}
-        </Button>
-      </Space>
-    );
-  };
-
-  const calculateTotalPrice = () => {
-    let sum = 0;
-
-    record?.Items?.forEach((item) => {
-      sum += item.Price;
-    });
-
-    return sum;
+  const handleNewItemClick = () => {
+    setSelectedPaymentRequestItem(null);
+    setShowPaymentRequestItemModal(true);
   };
 
   //------
@@ -571,6 +272,20 @@ const PaymentRequestModal = ({
   const status_id =
     selectedObject === null ? record.StatusID : selectedObject.StatusID;
 
+  const footer_config = {
+    is_disable,
+    progress,
+    hasSaveApproveAccess,
+    selectedObject,
+    handleSubmit,
+    handleSubmitAndApprove,
+    hasRejectAccess,
+    clearRecord,
+    onApprove,
+    onReject,
+    onCancel,
+  };
+
   return (
     <>
       <ModalWindow
@@ -579,7 +294,7 @@ const PaymentRequestModal = ({
         inProgress={progress}
         disabled={is_disable}
         width={1050}
-        footer={getFooterButtons(is_disable)}
+        footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
       >
         <Form ref={formRef} name="dataForm">
@@ -606,7 +321,7 @@ const PaymentRequestModal = ({
             </Col>
             <Col xs={24} md={12}>
               <DropdownItem
-                title={Words.front_side_account}
+                title={Words.front_side}
                 dataSource={frontSideAccounts}
                 keyColumn="FrontSideAccountID"
                 valueColumn="Title"
@@ -622,7 +337,7 @@ const PaymentRequestModal = ({
                 horizontal
                 required
                 title={Words.request_date}
-                fieldName="RequestDate"
+                fieldName="PayDate"
                 formConfig={formConfig}
               />
             </Col>
@@ -646,23 +361,6 @@ const PaymentRequestModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            {/* <Col xs={24}>
-              <Divider orientation="right">
-                <Text style={{ fontSize: 14, color: Colors.green[6] }}>
-                  {Words.base_specifications}
-                </Text>
-              </Divider>
-            </Col>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.receive_base}
-                dataSource={baseTypes}
-                keyColumn="BaseTypeID"
-                valueColumn="Title"
-                formConfig={formConfig}
-              />
-            </Col> */}
-
             {/* ToDo: Implement base_doc_id field based on the selected base type */}
             <Col xs={24}>
               <Divider orientation="right">
@@ -689,7 +387,9 @@ const PaymentRequestModal = ({
                         />
                       </Col>
                       <Col xs={24}>
-                        <PriceViewer price={calculateTotalPrice()} />
+                        <PriceViewer
+                          price={calculateTotalPrice(record?.Items)}
+                        />
                       </Col>
                     </Row>
                   </Form.Item>
@@ -699,7 +399,9 @@ const PaymentRequestModal = ({
 
             {status_id === 1 && (
               <Col xs={24}>
-                <Form.Item>{getNewPaymentRequestItemButton()}</Form.Item>
+                <Form.Item>
+                  {getNewPaymentRequestItemButton(handleNewItemClick)}
+                </Form.Item>
               </Col>
             )}
           </Row>

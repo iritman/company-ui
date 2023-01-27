@@ -591,7 +591,7 @@ const ReceiveRequestModal = ({
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
             <Col xs={24} md={12}>
               <DropdownItem
-                title={Words.front_side_account}
+                title={Words.front_side}
                 dataSource={frontSideAccounts}
                 keyColumn="FrontSideAccountID"
                 valueColumn="Title"
