@@ -3,7 +3,7 @@ import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import TreasuryPaymentDashboard from "../../components/app-modules/financial/treasury/pay/treasury-payment-dashboard";
-import PaymentRequestsPage from "../../components/app-modules/financial/treasury/pay/payment-requests-page";
+import PaymentRequestsPage from "../../components/app-modules/financial/treasury/pay/payment-request/payment-requests-page";
 //---
 
 const modulePath = "financial/treasury/pay";

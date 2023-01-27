@@ -8,10 +8,10 @@ import {
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
-import { getSorter } from "../../../../../tools/form-manager";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import { getSorter } from "../../../../../../tools/form-manager";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 
 const { Text } = Typography;
 

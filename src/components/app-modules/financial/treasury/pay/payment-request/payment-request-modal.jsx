@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Divider, Typography } from "antd";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "./../../../../../resources/colors";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
 import { v4 as uuid } from "uuid";
 import {
   validateForm,
@@ -11,17 +11,17 @@ import {
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/pay/payment-requests-service";
-import InputItem from "../../../../form-controls/input-item";
-import DateItem from "../../../../form-controls/date-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/pay/payment-requests-service";
+import InputItem from "../../../../../form-controls/input-item";
+import DateItem from "../../../../../form-controls/date-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
-import DetailsTable from "../../../../common/details-table";
-import PriceViewer from "../../../../common/price-viewer";
+} from "../../../../../contexts/modal-context";
+import DetailsTable from "../../../../../common/details-table";
+import PriceViewer from "../../../../../common/price-viewer";
 import PaymentRequestItemModal from "./payment-request-item-modal";
 import {
   schema,
