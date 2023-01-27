@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   MdNorthEast as PaymentIcon,
-  //   MdReceiptLong as ReceiptIcon,
+  MdReceiptLong as ReceiptIcon,
 } from "react-icons/md";
 // import { TbTransferIn as HandOverIcon } from "react-icons/tb";
 // import { GiReceiveMoney as CollectionRejectionIcon } from "react-icons/gi";
@@ -26,10 +26,10 @@ const mapper = (pageID) => {
       );
       break;
 
-    // case 242:
-    //   link = "payment-receipts";
-    //   icon = <ReceiptIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
-    //   break;
+    case 271:
+      link = "payment-orders";
+      icon = <ReceiptIcon style={{ color: Colors.cyan[6] }} size={iconSize} />;
+      break;
 
     // case 243:
     //   link = "bank-hand-overs";

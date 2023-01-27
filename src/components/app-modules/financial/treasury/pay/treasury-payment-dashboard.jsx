@@ -4,7 +4,7 @@ import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
 import {
   MdNorthEast as PaymentIcon,
-  //   MdReceiptLong as ReceiptIcon,
+  MdReceiptLong as ReceiptIcon,
 } from "react-icons/md";
 // import { TbTransferIn as HandOverIcon } from "react-icons/tb";
 // import { GiReceiveMoney as CollectionRejectionIcon } from "react-icons/gi";
@@ -28,11 +28,11 @@ const mapper = (pageID) => {
       backColor = Colors.orange[3];
       break;
 
-    // case 242:
-    //   link = "receive-receipts";
-    //   icon = <ReceiptIcon {...iconProps} />;
-    //   backColor = Colors.cyan[3];
-    //   break;
+    case 271:
+      link = "payment-orders";
+      icon = <ReceiptIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
+      break;
 
     // case 243:
     //   link = "bank-hand-overs";

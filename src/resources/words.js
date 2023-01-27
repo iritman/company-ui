@@ -514,6 +514,13 @@ class Words extends Component {
   static payment_items = "اقلام پرداختنی";
   static no_payment_item = "قلم پرداختی ثبت نشده است";
   static payment_date = "تاریخ پرداخت";
+  static payment_orders = "دستور پرداخت";
+  static from_order_date = "تاریخ دستور از";
+  static to_order_date = "تاریخ دستور تا";
+  static payment_order_date = "تاریخ دستور";
+  static select_payment_base = "انتخاب مبنای پرداخت";
+  static payment_base = "مبنای پرداخت";
+  static request_with_id = "شناسه درخواست";
 
   static payment_request_status_1 = "ثبت شده";
   static payment_request_status_2 = "تایید شده";
