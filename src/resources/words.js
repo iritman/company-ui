@@ -453,6 +453,7 @@ class Words extends Component {
   static reg_demand = "ثبت سفته";
   static reg_cash = "ثبت وجه نقد";
   static reg_payment_notice = "ثبت اعلامیه واریز";
+  static reg_receive_notice = "ثبت اعلامیه برداشت";
 
   static financial_operations = "عملیات حسابداری";
   static financial_operation = "عملیات حسابداری";
@@ -540,6 +541,7 @@ class Words extends Component {
   static demand = "سفته";
   static cash = "وجه نقد";
   static payment_notice = "اعلامیه واریز";
+  static receive_notice = "اعلامیه برداشت";
   static payment_notice_no = "شماره اعلامیه واریز";
   static payment_notice_date = "تاریخ اعلامیه واریز";
   static account_name = "عنوان حساب";

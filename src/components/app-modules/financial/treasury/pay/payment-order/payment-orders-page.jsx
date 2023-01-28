@@ -241,8 +241,8 @@ const PaymentOrdersPage = ({ pageName }) => {
       case "cash":
         collection = "Cashes";
         break;
-      case "payment-notice":
-        collection = "PaymentNotices";
+      case "receive-notice":
+        collection = "ReceiveNotices";
         break;
       case "return-from-other":
         collection = "ReturnFromOthers";

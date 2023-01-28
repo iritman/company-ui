@@ -433,7 +433,7 @@ const cash_columns = [
   },
 ];
 
-const payment_notice_columns = [
+const receive_notice_columns = [
   {
     title: Words.id,
     width: 75,
@@ -445,20 +445,22 @@ const payment_notice_columns = [
     ),
   },
   {
-    title: Words.front_side,
-    width: 250,
+    title: Words.payment_base,
+    width: 150,
     align: "center",
-    dataIndex: "FrontSideAccountTitle",
-    sorter: getSorter("FrontSideAccountTitle"),
-    render: (FrontSideAccountTitle) => (
-      <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(FrontSideAccountTitle)}
+    //   dataIndex: "ChequeID",
+    //   sorter: getSorter("ChequeID"),
+    render: (record) => (
+      <Text style={{ color: Colors.red[5] }}>
+        {record.RequestID > 0
+          ? utils.farsiNum(`${Words.request_with_id}: ${record.RequestID}`)
+          : Words.withou_base}
       </Text>
     ),
   },
   {
     title: Words.financial_operation,
-    width: 150,
+    width: 200,
     align: "center",
     //   dataIndex: "Price",
     sorter: getSorter("OperationTitle"),
@@ -490,7 +492,7 @@ const payment_notice_columns = [
   },
   {
     title: Words.cash_flow,
-    width: 150,
+    width: 200,
     align: "center",
     dataIndex: "CashFlowTitle",
     sorter: getSorter("CashFlowTitle"),
@@ -499,68 +501,8 @@ const payment_notice_columns = [
     ),
   },
   {
-    title: Words.payment_notice_no,
-    width: 150,
-    align: "center",
-    dataIndex: "NoticeNo",
-    sorter: getSorter("NoticeNo"),
-    render: (NoticeNo) => (
-      <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(NoticeNo)}</Text>
-    ),
-  },
-  {
-    title: Words.payment_notice_date,
-    width: 150,
-    align: "center",
-    dataIndex: "NoticeDate",
-    sorter: getSorter("NoticeDate"),
-    render: (NoticeDate) => (
-      <Text
-        style={{
-          color: Colors.geekblue[6],
-        }}
-      >
-        {utils.farsiNum(utils.slashDate(NoticeDate))}
-      </Text>
-    ),
-  },
-  {
-    title: Words.bank_account,
-    width: 150,
-    align: "center",
-    dataIndex: "AccountNo",
-    sorter: getSorter("AccountNo"),
-    render: (AccountNo) => (
-      <Text style={{ color: Colors.purple[6] }}>
-        {utils.farsiNum(AccountNo)}
-      </Text>
-    ),
-  },
-  {
-    title: Words.account_name,
-    width: 185,
-    align: "center",
-    dataIndex: "AccountName",
-    sorter: getSorter("AccountName"),
-    render: (AccountName) => (
-      <Text style={{ color: Colors.grey[6] }}>
-        {utils.farsiNum(AccountName)}
-      </Text>
-    ),
-  },
-  {
-    title: Words.bank,
-    width: 150,
-    align: "center",
-    dataIndex: "BankTitle",
-    sorter: getSorter("BankTitle"),
-    render: (BankTitle) => (
-      <Text style={{ color: Colors.blue[6] }}>{utils.farsiNum(BankTitle)}</Text>
-    ),
-  },
-  {
     title: Words.currency,
-    width: 120,
+    width: 150,
     align: "center",
     dataIndex: "CurrencyTitle",
     sorter: getSorter("CurrencyTitle"),
@@ -638,10 +580,10 @@ const calculatePrice = (receive_receipt) => {
   price.CashesAmount = sum;
   sum = 0;
 
-  receive_receipt.PaymentNotices?.forEach((i) => {
+  receive_receipt.ReceiveNotices?.forEach((i) => {
     sum += i.Amount;
   });
-  price.PaymentNoticesAmount = sum;
+  price.ReceiveNoticesAmount = sum;
   sum = 0;
 
   receive_receipt.ReturnFromOthers?.forEach((i) => {
@@ -677,7 +619,7 @@ export const getTabPanes = (receive_receipt, selectedTab) => {
     Cheques,
     Demands,
     Cashes,
-    PaymentNotices,
+    ReceiveNotices,
     ReturnFromOthers,
     ReturnPayableCheques,
     ReturnPayableDemands,
@@ -751,22 +693,22 @@ export const getTabPanes = (receive_receipt, selectedTab) => {
       label: (
         <BadgedTabTitle
           selectedTab={selectedTab}
-          selectionTitle="payment-notices"
-          title={Words.payment_notice}
-          items={PaymentNotices}
+          selectionTitle="receive-notices"
+          title={Words.receive_notice}
+          items={ReceiveNotices}
         />
       ),
-      key: "payment-notices",
+      key: "receive-notices",
       children: (
         <Row gutter={[0, 15]}>
           <Col xs={24}>
             <DetailsTable
-              records={PaymentNotices}
-              columns={payment_notice_columns}
+              records={ReceiveNotices}
+              columns={receive_notice_columns}
             />
           </Col>
           <Col xs={24}>
-            <PriceViewer price={price.PaymentNoticesAmount} />
+            <PriceViewer price={price.ReceiveNoticesAmount} />
           </Col>
         </Row>
       ),
