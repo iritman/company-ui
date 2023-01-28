@@ -263,7 +263,7 @@ const PaymentOrdersPage = ({ pageName }) => {
   const handleSavePaymentOrderItem = async (
     item_type,
     key_field,
-    receive_item
+    payment_item
   ) => {
     //--- specify collection
 
@@ -273,19 +273,19 @@ const PaymentOrdersPage = ({ pageName }) => {
 
     let diff_price = 0;
 
-    if (receive_item[key_field] === 0) {
-      diff_price = receive_item.Amount;
+    if (payment_item[key_field] === 0) {
+      diff_price = payment_item.Amount;
     } else {
       diff_price =
-        receive_item.Amount -
+        payment_item.Amount -
         selectedObject[collection].find(
-          (c) => c[key_field] === receive_item[key_field]
+          (c) => c[key_field] === payment_item[key_field]
         ).Amount;
     }
 
     //---
 
-    const saved_receipt_item = await service.saveItem(item_type, receive_item);
+    const saved_pay_item = await service.saveItem(item_type, payment_item);
 
     const rec = { ...selectedObject };
     // update price
@@ -293,31 +293,31 @@ const PaymentOrdersPage = ({ pageName }) => {
 
     //------
 
-    if (receive_item[key_field] === 0)
-      rec[collection] = [...rec[collection], saved_receipt_item];
+    if (payment_item[key_field] === 0)
+      rec[collection] = [...rec[collection], saved_pay_item];
     else {
       const index = rec[collection].findIndex(
-        (i) => i[key_field] === receive_item[key_field]
+        (i) => i[key_field] === payment_item[key_field]
       );
 
-      rec[collection][index] = saved_receipt_item;
+      rec[collection][index] = saved_pay_item;
     }
 
     setSelectedObject(rec);
 
     //------
 
-    const receipt_index = records.findIndex(
-      (receipt) => receipt.OrderID === receive_item.OrderID
+    const pay_index = records.findIndex(
+      (pay) => pay.OrderID === payment_item.OrderID
     );
 
-    records[receipt_index] = rec;
+    records[pay_index] = rec;
 
     //------
 
     setRecords([...records]);
 
-    return saved_receipt_item;
+    return saved_pay_item;
   };
 
   const handleDeletePaymentOrderItem = async (
