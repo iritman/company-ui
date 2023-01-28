@@ -39,16 +39,6 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.standard_description),
-
-  //   AccountNo: Joi.string().max(50).required().label(Words.account_no),
-  //   BranchCode: Joi.string().max(50).required().label(Words.branch_code),
-  //   BranchName: Joi.string().max(50).required().label(Words.branch_name),
-  //   BankID: Joi.number().min(1).required().label(Words.bank),
-  //   CityID: Joi.number().label(Words.branch_city),
-  //   ShebaID: Joi.string().max(50).allow("").label(Words.sheba_no),
-  //   ChequeNo: Joi.string().max(50).required().label(Words.cheque_no),
-  //   SayadNo: Joi.string().max(50).allow("").label(Words.sayad_no),
-  //   ChequeSeries: Joi.string().max(50).allow("").label(Words.cheque_series),
 };
 
 const initRecord = {
@@ -64,16 +54,6 @@ const initRecord = {
   AgreedDate: "",
   StandardDetailsID: 0,
   DetailsText: "",
-
-  //   AccountNo: "",
-  //   BranchCode: "",
-  //   BranchName: "",
-  //   BankID: 0,
-  //   CityID: 0,
-  //   ShebaID: "",
-  //   ChequeNo: "",
-  //   SayadNo: "",
-  //   ChequeSeries: "",
 };
 
 const formRef = React.createRef();
@@ -95,8 +75,6 @@ const PaymentOrderChequeModal = ({
   const [operations, setOperations] = useState([]);
   const [cashFlows, setCashFlows] = useState([]);
   const [standardDetails, setStandardDetails] = useState([]);
-  //   const [banks, setBanks] = useState([]);
-  //   const [cities, setCities] = useState([]);
 
   const formConfig = {
     schema,
@@ -118,28 +96,6 @@ const PaymentOrderChequeModal = ({
     record.AgreedDate = "";
     record.StandardDetailsID = 0;
     record.DetailsText = "";
-
-    // record.OrderID = 0;
-    // record.RequestID = 1;
-    // record.CurrencyID = 6;
-    // record.OperationID = 11;
-    // record.CashFlowID = 5;
-    // record.CompanyBankAccountID = 1;
-    // record.Amount = 250000;
-    // record.DueDate = "14011107";
-    // record.AgreedDate = "14011108";
-    // record.StandardDetailsID = 1;
-    // record.DetailsText = "wwww\neeeee";
-
-    // record.AccountNo = "";
-    // record.BranchCode = "";
-    // record.BranchName = "";
-    // record.BankID = 0;
-    // record.CityID = 0;
-    // record.ShebaID = "";
-    // record.ChequeNo = "";
-    // record.SayadNo = "";
-    // record.ChequeSeries = "";
 
     setRecord(record);
     setErrors({});
@@ -165,8 +121,6 @@ const PaymentOrderChequeModal = ({
         CashFlows,
         StandardDetails,
         PaymentRequests,
-        //   Banks,
-        //   Cities,
       } = data;
 
       setCompanyBankAccounts(CompanyBankAccounts);
@@ -186,9 +140,6 @@ const PaymentOrderChequeModal = ({
           ))
       );
       setPaymentRequests(PaymentRequests);
-
-      //   setBanks(Banks);
-      //   setCities(Cities);
 
       if (selectedObject) {
         if (selectedObject.RequestID > 0) {
@@ -315,85 +266,6 @@ const PaymentOrderChequeModal = ({
               formConfig={formConfig}
             />
           </Col>
-          {/* <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.account_no}
-              fieldName="AccountNo"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.branch_code}
-              fieldName="BranchCode"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.branch_name}
-              fieldName="BranchName"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <DropdownItem
-              title={Words.bank}
-              dataSource={banks}
-              keyColumn="BankID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <DropdownItem
-              title={Words.branch_city}
-              dataSource={cities}
-              keyColumn="CityID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.sheba_no}
-              fieldName="ShebaID"
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.cheque_no}
-              fieldName="ChequeNo"
-              maxLength={50}
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.sayad_no}
-              fieldName="SayadNo"
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <InputItem
-              title={Words.cheque_series}
-              fieldName="ChequeSeries"
-              maxLength={50}
-              formConfig={formConfig}
-            />
-          </Col> */}
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.bank_account}

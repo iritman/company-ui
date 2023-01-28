@@ -382,20 +382,22 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       ),
     },
     {
-      title: Words.front_side,
-      width: 250,
+      title: Words.payment_base,
+      width: 150,
       align: "center",
-      dataIndex: "FrontSideAccountTitle",
-      sorter: getSorter("FrontSideAccountTitle"),
-      render: (FrontSideAccountTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(FrontSideAccountTitle)}
+      //   dataIndex: "ChequeID",
+      //   sorter: getSorter("ChequeID"),
+      render: (record) => (
+        <Text style={{ color: Colors.red[5] }}>
+          {record.RequestID > 0
+            ? utils.farsiNum(`${Words.request_with_id}: ${record.RequestID}`)
+            : Words.withou_base}
         </Text>
       ),
     },
     {
       title: Words.financial_operation,
-      width: 150,
+      width: 200,
       align: "center",
       //   dataIndex: "Price",
       sorter: getSorter("OperationTitle"),
@@ -427,7 +429,7 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.cash_flow,
-      width: 150,
+      width: 200,
       align: "center",
       dataIndex: "CashFlowTitle",
       sorter: getSorter("CashFlowTitle"),
@@ -435,31 +437,31 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
         <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
       ),
     },
-    {
-      title: Words.demand_no,
-      width: 150,
-      align: "center",
-      dataIndex: "DemandNo",
-      sorter: getSorter("DemandNo"),
-      render: (DemandNo) => (
-        <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(DemandNo)}</Text>
-      ),
-    },
-    {
-      title: Words.demand_series,
-      width: 150,
-      align: "center",
-      dataIndex: "DemandSeries",
-      sorter: getSorter("DemandSeries"),
-      render: (ChequeSeries) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(ChequeSeries)}
-        </Text>
-      ),
-    },
+    // {
+    //   title: Words.demand_no,
+    //   width: 150,
+    //   align: "center",
+    //   dataIndex: "DemandNo",
+    //   sorter: getSorter("DemandNo"),
+    //   render: (DemandNo) => (
+    //     <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(DemandNo)}</Text>
+    //   ),
+    // },
+    // {
+    //   title: Words.demand_series,
+    //   width: 150,
+    //   align: "center",
+    //   dataIndex: "DemandSeries",
+    //   sorter: getSorter("DemandSeries"),
+    //   render: (ChequeSeries) => (
+    //     <Text style={{ color: Colors.grey[6] }}>
+    //       {utils.farsiNum(ChequeSeries)}
+    //     </Text>
+    //   ),
+    // },
     {
       title: Words.currency,
-      width: 200,
+      width: 150,
       align: "center",
       dataIndex: "CurrencyTitle",
       sorter: getSorter("CurrencyTitle"),

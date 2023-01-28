@@ -21,7 +21,7 @@ import {
   useResetContext,
 } from "../../../../../contexts/modal-context";
 import ChequeModal from "./payment-order-cheque-modal";
-// import DemandModal from "./payment-order-demand-modal";
+import DemandModal from "./payment-order-demand-modal";
 // import CashModal from "./payment-order-cash-modal";
 // import ReceiveNoticeModal from "./payment-order-receive-notice-modal";
 import { v4 as uuid } from "uuid";
@@ -339,7 +339,7 @@ const PaymentOrderModal = ({
 
   const handleSaveDemand = async (demand_to_save) => {
     if (selectedObject !== null) {
-      demand_to_save.ReceiveID = selectedObject.ReceiveID;
+      demand_to_save.OrderID = selectedObject.OrderID;
 
       const saved_demand = await onSavePaymentOrderItem(
         "demand",
@@ -359,22 +359,6 @@ const PaymentOrderModal = ({
     } else {
       //While adding items temporarily, we have no join operation in database
       //So, we need to select titles manually
-
-      const front_side_account = await service.searchFronSideAccountByID(
-        demand_to_save.FrontSideAccountID
-      );
-
-      const {
-        FrontSideAccountTitle,
-        TafsilCode,
-        TafsilTypeID,
-        TafsilTypeTitle,
-      } = front_side_account;
-
-      demand_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
-      demand_to_save.TafsilCode = TafsilCode;
-      demand_to_save.TafsilTypeID = TafsilTypeID;
-      demand_to_save.TafsilTypeTitle = TafsilTypeTitle;
 
       demand_to_save.OperationTitle = findTitle(
         operations,
@@ -974,14 +958,14 @@ const PaymentOrderModal = ({
         />
       )}
 
-      {/* {showDemandModal && (
+      {showDemandModal && (
         <DemandModal
           isOpen={showDemandModal}
           selectedObject={selectedItem}
           onOk={handleSaveDemand}
           onCancel={handleCloseDemandModal}
         />
-      )} */}
+      )}
 
       {/* {showCashModal && (
         <CashModal
