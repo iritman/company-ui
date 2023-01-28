@@ -320,20 +320,22 @@ const cash_columns = [
     ),
   },
   {
-    title: Words.front_side,
-    width: 250,
+    title: Words.payment_base,
+    width: 150,
     align: "center",
-    dataIndex: "FrontSideAccountTitle",
-    sorter: getSorter("FrontSideAccountTitle"),
-    render: (FrontSideAccountTitle) => (
-      <Text style={{ color: Colors.cyan[6] }}>
-        {utils.farsiNum(FrontSideAccountTitle)}
+    //   dataIndex: "ChequeID",
+    //   sorter: getSorter("ChequeID"),
+    render: (record) => (
+      <Text style={{ color: Colors.red[5] }}>
+        {record.RequestID > 0
+          ? utils.farsiNum(`${Words.request_with_id}: ${record.RequestID}`)
+          : Words.withou_base}
       </Text>
     ),
   },
   {
     title: Words.financial_operation,
-    width: 150,
+    width: 200,
     align: "center",
     //   dataIndex: "Price",
     sorter: getSorter("OperationTitle"),
@@ -365,7 +367,7 @@ const cash_columns = [
   },
   {
     title: Words.cash_flow,
-    width: 150,
+    width: 200,
     align: "center",
     dataIndex: "CashFlowTitle",
     sorter: getSorter("CashFlowTitle"),
@@ -375,7 +377,7 @@ const cash_columns = [
   },
   {
     title: Words.currency,
-    width: 120,
+    width: 150,
     align: "center",
     dataIndex: "CurrencyTitle",
     sorter: getSorter("CurrencyTitle"),
