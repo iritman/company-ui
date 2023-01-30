@@ -24,6 +24,7 @@ import ChequeModal from "./payment-order-cheque-modal";
 import DemandModal from "./payment-order-demand-modal";
 import CashModal from "./payment-order-cash-modal";
 import ReceiveNoticeModal from "./payment-order-receive-notice-modal";
+import PayToOtherModal from "./payment-order-pay-to-other-modal";
 import { v4 as uuid } from "uuid";
 import {
   schema,
@@ -70,8 +71,7 @@ const PaymentOrderModal = ({
   const [showDemandModal, setShowDemandModal] = useState(false);
   const [showCashModal, setShowCashModal] = useState(false);
   const [showReceiveNoticeModal, setShowReceiveNoticeModal] = useState(false);
-  const [showReturnFromOtherModal, setShowReturnFromOtherModal] =
-    useState(false);
+  const [showPayToOtherModal, setShowPayToOtherModal] = useState(false);
   const [showReturnGetableChequeModal, setShowReturnGetableChequeModal] =
     useState(false);
   const [showReturnGetableDemandModal, setShowReturnGetableDemandModal] =
@@ -100,7 +100,7 @@ const PaymentOrderModal = ({
     record.Demands = [];
     record.Cashes = [];
     record.ReceiveNotices = [];
-    record.ReturnFromOthers = [];
+    record.PayToOthers = [];
     record.ReturnGetableCheques = [];
     record.ReturnGetableDemands = [];
 
@@ -702,6 +702,129 @@ const PaymentOrderModal = ({
 
   //------
 
+  const handleSavePayToOther = async (pay_to_other_to_save) => {
+    if (selectedObject !== null) {
+      pay_to_other_to_save.OrderID = selectedObject.OrderID;
+
+      const saved_receive_notice = await onSavePaymentOrderItem(
+        "pay-to-other",
+        "PayID",
+        pay_to_other_to_save
+      );
+
+      const index = record.PayToOthers.findIndex(
+        (item) => item.PayID === pay_to_other_to_save.PayID
+      );
+
+      if (index === -1) {
+        record.PayToOthers = [...record.PayToOthers, saved_receive_notice];
+      } else {
+        record.PayToOthers[index] = saved_receive_notice;
+      }
+    } else {
+      //While adding items temporarily, we have no join operation in database
+      //So, we need to select titles manually
+
+      pay_to_other_to_save.OperationTitle = findTitle(
+        operations,
+        "OperationID",
+        "Title",
+        pay_to_other_to_save.OperationID
+      );
+
+      pay_to_other_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        pay_to_other_to_save.OperationID
+      );
+
+      pay_to_other_to_save.DurationTypeTitle = findTitle(
+        operations,
+        "OperationID",
+        "DurationTypeTitle",
+        pay_to_other_to_save.OperationID
+      );
+
+      pay_to_other_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        pay_to_other_to_save.CashFlowID
+      );
+
+      pay_to_other_to_save.CurrencyTitle = findTitle(
+        currencies,
+        "CurrencyID",
+        "Title",
+        pay_to_other_to_save.CurrencyID
+      );
+
+      pay_to_other_to_save.StandardDetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        pay_to_other_to_save.StandardDetailsID
+      );
+
+      //--- managing unique id (UID) for new items
+      if (pay_to_other_to_save.PayID === 0 && selectedItem === null) {
+        pay_to_other_to_save.UID = uuid();
+        record.PayToOthers = [...record.PayToOthers, pay_to_other_to_save];
+      } else if (pay_to_other_to_save.PayID === 0 && selectedItem !== null) {
+        const index = record.PayToOthers.findIndex(
+          (item) => item.UID === selectedItem.UID
+        );
+        record.PayToOthers[index] = pay_to_other_to_save;
+      }
+    }
+
+    //------
+
+    setRecord({ ...record });
+    setSelectedItem(null);
+  };
+
+  const handleDeletePayToOther = async (pay_to_other_to_delete) => {
+    setProgress(true);
+
+    try {
+      if (pay_to_other_to_delete.PayID > 0) {
+        await onDeletePaymentOrderItem(
+          "pay-to-other",
+          "PayID",
+          pay_to_other_to_delete.PayID
+        );
+
+        record.PayToOthers = record.PayToOthers.filter(
+          (i) => i.PayID !== pay_to_other_to_delete.PayID
+        );
+      } else {
+        record.PayToOthers = record.PayToOthers.filter(
+          (i) => i.UID !== pay_to_other_to_delete.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleClosePayToOtherModal = () => {
+    setSelectedItem(null);
+    setShowPayToOtherModal(false);
+  };
+
+  const handleEditPayToOther = (data) => {
+    setSelectedItem(data);
+    setShowPayToOtherModal(true);
+  };
+
+  //------
+
   const handleShowNewModal = () => {
     switch (selectedTab) {
       case "cheques":
@@ -716,8 +839,8 @@ const PaymentOrderModal = ({
       case "payment-notices":
         setShowReceiveNoticeModal(true);
         break;
-      case "return-from-others":
-        setShowReturnFromOtherModal(true);
+      case "pay-to-others":
+        setShowPayToOtherModal(true);
         break;
       case "return-payable-cheques":
         setShowReturnGetableChequeModal(true);
@@ -769,6 +892,8 @@ const PaymentOrderModal = ({
     handleDeleteCash,
     handleEditReceiveNotice,
     handleDeleteReceiveNotice,
+    handleEditPayToOther,
+    handleDeletePayToOther,
   };
 
   const isEdit = selectedObject !== null;
@@ -921,7 +1046,14 @@ const PaymentOrderModal = ({
         />
       )}
 
-      {showReturnFromOtherModal && <></>}
+      {showPayToOtherModal && (
+        <PayToOtherModal
+          isOpen={showPayToOtherModal}
+          selectedObject={selectedItem}
+          onOk={handleSavePayToOther}
+          onCancel={handleClosePayToOtherModal}
+        />
+      )}
       {showReturnGetableChequeModal && <></>}
       {showReturnGetableDemandModal && <></>}
     </>

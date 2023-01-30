@@ -38,14 +38,6 @@ const PaymentOrderDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     StatusID,
     StatusTitle,
     Price,
-    // Cheques,
-    // Demands,
-    // Cashes,
-    // PaymentNotices,
-    // ReturnFromOthers,
-    // ReturnPayableCheques,
-    // ReturnPayableDemands,
-    // RequestInfo,
   } = selectedObject;
 
   return (

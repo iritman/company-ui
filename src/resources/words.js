@@ -454,6 +454,7 @@ class Words extends Component {
   static reg_cash = "ثبت وجه نقد";
   static reg_payment_notice = "ثبت اعلامیه واریز";
   static reg_receive_notice = "ثبت اعلامیه برداشت";
+  static reg_pay_to_other = "ثبت واگذار به غیر";
 
   static financial_operations = "عملیات حسابداری";
   static financial_operation = "عملیات حسابداری";
@@ -546,6 +547,7 @@ class Words extends Component {
   static payment_notice_date = "تاریخ اعلامیه واریز";
   static account_name = "عنوان حساب";
   static return_from_other = "برگشت از واگذاری به غیر";
+  static pay_to_other = "واگذار به غیر";
   static return_payable_cheque = "استرداد چک پرداختنی";
   static return_payable_demand = "استرداد سفته پرداختنی";
   static receipt_receive_type = "نوع دریافت";

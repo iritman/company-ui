@@ -558,6 +558,131 @@ const receive_notice_columns = [
   },
 ];
 
+const pay_to_other_columns = [
+  {
+    title: Words.id,
+    width: 75,
+    align: "center",
+    dataIndex: "PayID",
+    sorter: getSorter("PayID"),
+    render: (PayID) => (
+      <Text>{PayID > 0 ? utils.farsiNum(`${PayID}`) : ""}</Text>
+    ),
+  },
+  {
+    title: Words.payment_base,
+    width: 150,
+    align: "center",
+    //   dataIndex: "ChequeID",
+    //   sorter: getSorter("ChequeID"),
+    render: (record) => (
+      <Text style={{ color: Colors.red[5] }}>
+        {record.RequestID > 0
+          ? utils.farsiNum(`${Words.request_with_id}: ${record.RequestID}`)
+          : Words.withou_base}
+      </Text>
+    ),
+  },
+  {
+    title: Words.financial_operation,
+    width: 200,
+    align: "center",
+    //   dataIndex: "Price",
+    sorter: getSorter("OperationTitle"),
+    render: (record) => (
+      <Text style={{ color: Colors.blue[6] }}>
+        {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
+      </Text>
+    ),
+  },
+  {
+    title: Words.nature,
+    width: 100,
+    align: "center",
+    dataIndex: "PaperNatureTitle",
+    sorter: getSorter("PaperNatureTitle"),
+    render: (PaperNatureTitle) => (
+      <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
+    ),
+  },
+  {
+    title: Words.duration,
+    width: 100,
+    align: "center",
+    dataIndex: "DurationTypeTitle",
+    sorter: getSorter("DurationTypeTitle"),
+    render: (DurationTypeTitle) => (
+      <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
+    ),
+  },
+  {
+    title: Words.cash_flow,
+    width: 200,
+    align: "center",
+    dataIndex: "CashFlowTitle",
+    sorter: getSorter("CashFlowTitle"),
+    render: (CashFlowTitle) => (
+      <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
+    ),
+  },
+  {
+    title: Words.currency,
+    width: 150,
+    align: "center",
+    dataIndex: "CurrencyTitle",
+    sorter: getSorter("CurrencyTitle"),
+    render: (CurrencyTitle) => (
+      <Text style={{ color: Colors.grey[6] }}>{CurrencyTitle}</Text>
+    ),
+  },
+  {
+    title: Words.price,
+    width: 200,
+    align: "center",
+    dataIndex: "Amount",
+    sorter: getSorter("Amount"),
+    render: (Amount) => (
+      <Text style={{ color: Colors.green[6] }}>
+        {utils.farsiNum(utils.moneyNumber(Amount))}
+      </Text>
+    ),
+  },
+  {
+    title: Words.standard_description,
+    width: 100,
+    align: "center",
+    render: (record) => (
+      <>
+        {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+          <Popover
+            content={
+              <Text>{`${utils.getDescription(
+                record.StandardDetailsText,
+                record.DetailsText
+              )}`}</Text>
+            }
+          >
+            <InfoIcon
+              style={{
+                color: Colors.green[6],
+                fontSize: 19,
+                cursor: "pointer",
+              }}
+            />
+          </Popover>
+        )}
+      </>
+    ),
+  },
+  {
+    title: "",
+    fixed: "right",
+    align: "center",
+    width: 1,
+    render: () => <></>,
+  },
+];
+
 const calculatePrice = (receive_receipt) => {
   const price = {};
   let sum = 0;
@@ -586,10 +711,10 @@ const calculatePrice = (receive_receipt) => {
   price.ReceiveNoticesAmount = sum;
   sum = 0;
 
-  receive_receipt.ReturnFromOthers?.forEach((i) => {
+  receive_receipt.PayToOthers?.forEach((i) => {
     sum += i.Amount;
   });
-  price.ReturnFromOthersAmount = sum;
+  price.PayToOthersAmount = sum;
   sum = 0;
 
   receive_receipt.ReturnPayableCheques?.forEach((i) => {
@@ -612,18 +737,18 @@ const calculatePrice = (receive_receipt) => {
   return price;
 };
 
-export const getTabPanes = (receive_receipt, selectedTab) => {
-  const price = calculatePrice(receive_receipt);
+export const getTabPanes = (payment_order, selectedTab) => {
+  const price = calculatePrice(payment_order);
 
   const {
     Cheques,
     Demands,
     Cashes,
     ReceiveNotices,
-    ReturnFromOthers,
+    PayToOthers,
     ReturnPayableCheques,
     ReturnPayableDemands,
-  } = receive_receipt;
+  } = payment_order;
 
   const tabPanes = [
     {
@@ -708,7 +833,7 @@ export const getTabPanes = (receive_receipt, selectedTab) => {
             />
           </Col>
           <Col xs={24}>
-            <PriceViewer price={price.ReceiveNoticesAmount} />
+            <PriceViewer price={price.PayToOthersAmount} />
           </Col>
         </Row>
       ),
@@ -717,12 +842,25 @@ export const getTabPanes = (receive_receipt, selectedTab) => {
       label: (
         <BadgedTabTitle
           selectedTab={selectedTab}
-          selectionTitle="return-from-others"
-          title={Words.return_from_other}
-          items={ReturnFromOthers}
+          selectionTitle="pay-to-others"
+          title={Words.pay_to_other}
+          items={PayToOthers}
         />
       ),
-      key: "return-from-others",
+      key: "pay-to-others",
+      children: (
+        <Row gutter={[0, 15]}>
+          <Col xs={24}>
+            <DetailsTable
+              records={PayToOthers}
+              columns={pay_to_other_columns}
+            />
+          </Col>
+          <Col xs={24}>
+            <PriceViewer price={price.PayToOthersAmount} />
+          </Col>
+        </Row>
+      ),
     },
     {
       label: (

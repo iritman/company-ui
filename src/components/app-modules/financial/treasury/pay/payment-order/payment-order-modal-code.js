@@ -44,7 +44,7 @@ export const schema = {
   Demands: Joi.array(),
   Cashes: Joi.array(),
   ReceiveNotices: Joi.array(),
-  ReturnFromOthers: Joi.array(),
+  PayToOthers: Joi.array(),
   ReturnGetableCheques: Joi.array(),
   ReturnGetableDemands: Joi.array(),
 };
@@ -62,7 +62,7 @@ export const initRecord = {
   Demands: [],
   Cashes: [],
   ReceiveNotices: [],
-  ReturnFromOthers: [],
+  PayToOthers: [],
   ReturnGetableCheques: [],
   ReturnGetableDemands: [],
 };
@@ -901,6 +901,178 @@ const getReceiveNoticeColumns = (access, statusID, onEdit, onDelete) => {
   return columns;
 };
 
+const getPayToOtherColumns = (access, statusID, onEdit, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "PayID",
+      sorter: getSorter("PayID"),
+      render: (PayID) => (
+        <Text>{PayID > 0 ? utils.farsiNum(`${PayID}`) : ""}</Text>
+      ),
+    },
+    {
+      title: Words.payment_base,
+      width: 150,
+      align: "center",
+      //   dataIndex: "ChequeID",
+      //   sorter: getSorter("ChequeID"),
+      render: (record) => (
+        <Text style={{ color: Colors.red[5] }}>
+          {record.RequestID > 0
+            ? utils.farsiNum(`${Words.request_with_id}: ${record.RequestID}`)
+            : Words.withou_base}
+        </Text>
+      ),
+    },
+    {
+      title: Words.financial_operation,
+      width: 200,
+      align: "center",
+      //   dataIndex: "Price",
+      sorter: getSorter("OperationTitle"),
+      render: (record) => (
+        <Text style={{ color: Colors.blue[6] }}>
+          {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.nature,
+      width: 100,
+      align: "center",
+      dataIndex: "PaperNatureTitle",
+      sorter: getSorter("PaperNatureTitle"),
+      render: (PaperNatureTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
+      ),
+    },
+    {
+      title: Words.duration,
+      width: 100,
+      align: "center",
+      dataIndex: "DurationTypeTitle",
+      sorter: getSorter("DurationTypeTitle"),
+      render: (DurationTypeTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
+      ),
+    },
+    {
+      title: Words.cash_flow,
+      width: 200,
+      align: "center",
+      dataIndex: "CashFlowTitle",
+      sorter: getSorter("CashFlowTitle"),
+      render: (CashFlowTitle) => (
+        <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
+      ),
+    },
+    {
+      title: Words.currency,
+      width: 150,
+      align: "center",
+      dataIndex: "CurrencyTitle",
+      sorter: getSorter("CurrencyTitle"),
+      render: (CurrencyTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{CurrencyTitle}</Text>
+      ),
+    },
+    {
+      title: Words.price,
+      width: 200,
+      align: "center",
+      dataIndex: "Amount",
+      sorter: getSorter("Amount"),
+      render: (Amount) => (
+        <Text style={{ color: Colors.green[6] }}>
+          {utils.farsiNum(utils.moneyNumber(Amount))}
+        </Text>
+      ),
+    },
+    {
+      title: Words.standard_description,
+      width: 100,
+      align: "center",
+      render: (record) => (
+        <>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Popover
+              content={
+                <Text>{`${utils.getDescription(
+                  record.StandardDetailsText,
+                  record.DetailsText
+                )}`}</Text>
+              }
+            >
+              <InfoIcon
+                style={{
+                  color: Colors.green[6],
+                  fontSize: 19,
+                  cursor: "pointer",
+                }}
+              />
+            </Popover>
+          )}
+        </>
+      ),
+    },
+  ];
+
+  // StatusID : 1 => Not Approve, Not Reject! Just Save...
+  if (
+    statusID === 1 &&
+    ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
+  ) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_selected_item}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+          </Space>
+        ),
+      },
+    ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
+      },
+    ];
+  }
+
+  return columns;
+};
+
 export const getTabPanes = (config, selectedTab) => {
   const {
     record,
@@ -916,6 +1088,8 @@ export const getTabPanes = (config, selectedTab) => {
     handleDeleteCash,
     handleEditReceiveNotice,
     handleDeleteReceiveNotice,
+    handleEditPayToOther,
+    handleDeletePayToOther,
   } = config;
 
   return [
@@ -1051,27 +1225,27 @@ export const getTabPanes = (config, selectedTab) => {
       label: (
         <BadgedTabTitle
           selectedTab={selectedTab}
-          selectionTitle="return-from-others"
-          title={Words.return_from_other}
-          items={record.ReturnFromOthers}
+          selectionTitle="pay-to-others"
+          title={Words.pay_to_other}
+          items={record.PayToOthers}
         />
       ),
-      key: "return-from-others",
+      key: "pay-to-others",
       children: (
         <Row gutter={[0, 15]}>
           <Col xs={24}>
-            {/* <DetailsTable
-              records={record.Cashes}
-              columns={getCashesColumns(
+            <DetailsTable
+              records={record.PayToOthers}
+              columns={getPayToOtherColumns(
                 access,
                 status_id,
-                handleEditCheque,
-                handleDeleteCheque
+                handleEditPayToOther,
+                handleDeletePayToOther
               )}
-            /> */}
+            />
           </Col>
           <Col xs={24}>
-            <PriceViewer price={price.ReturnFromOthersAmount} />
+            <PriceViewer price={price.PayToOthersAmount} />
           </Col>
         </Row>
       ),
@@ -1252,7 +1426,7 @@ export const getDisableStatus = (record) => {
       0 + record?.Demands?.length ||
       0 + record?.Cashes?.length ||
       0 + record?.ReceiveNotices?.length ||
-      0 + record?.RetrunFromOthers?.length ||
+      0 + record?.PayToOthers?.length ||
       0 + record?.RetrunPayableCheques?.length ||
       0 + record?.RetrunPayableDemands?.length ||
       0) === 0 ||
@@ -1293,10 +1467,10 @@ export const calculatePrice = (record) => {
   price.ReceiveNoticesAmount = sum;
   sum = 0;
 
-  record.ReturnFromOthers?.forEach((i) => {
+  record.PayToOthers?.forEach((i) => {
     sum += i.Amount;
   });
-  price.ReturnFromOthersAmount = sum;
+  price.PayToOthersAmount = sum;
   sum = 0;
 
   record.ReturnPayableCheques?.forEach((i) => {
