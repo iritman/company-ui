@@ -273,7 +273,7 @@ const ReceiveReceiptModal = ({
       //While adding items temporarily, we have no join operation in database
       //So, we need to select titles manually
 
-      const front_side_account = await service.searchFronSideAccountByID(
+      const front_side_account = await service.searchFrontSideAccountByID(
         cheque_to_save.FrontSideAccountID
       );
 
@@ -427,7 +427,7 @@ const ReceiveReceiptModal = ({
       //While adding items temporarily, we have no join operation in database
       //So, we need to select titles manually
 
-      const front_side_account = await service.searchFronSideAccountByID(
+      const front_side_account = await service.searchFrontSideAccountByID(
         demand_to_save.FrontSideAccountID
       );
 
@@ -566,7 +566,7 @@ const ReceiveReceiptModal = ({
       //While adding items temporarily, we have no join operation in database
       //So, we need to select titles manually
 
-      const front_side_account = await service.searchFronSideAccountByID(
+      const front_side_account = await service.searchFrontSideAccountByID(
         cash_to_save.FrontSideAccountID
       );
 
@@ -708,7 +708,7 @@ const ReceiveReceiptModal = ({
       //While adding items temporarily, we have no join operation in database
       //So, we need to select titles manually
 
-      const front_side_account = await service.searchFronSideAccountByID(
+      const front_side_account = await service.searchFrontSideAccountByID(
         payment_notice_to_save.FrontSideAccountID
       );
 

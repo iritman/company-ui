@@ -9,7 +9,7 @@ export async function getParams() {
   return data;
 }
 
-export async function searchFronSideAccounts(searchText) {
+export async function searchFrontSideAccounts(searchText) {
   const { data } = await http.post(`${apiEndpoint}/accounts`, { searchText });
 
   return data;
@@ -59,7 +59,7 @@ export async function deleteItem(recordID) {
 
 const service = {
   getParams,
-  searchFronSideAccounts,
+  searchFrontSideAccounts,
   searchData,
   saveData,
   saveItem,

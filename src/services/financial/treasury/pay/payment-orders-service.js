@@ -15,13 +15,13 @@ export async function getItemsParams() {
   return data;
 }
 
-export async function searchFronSideAccounts(searchText) {
+export async function searchFrontSideAccounts(searchText) {
   const { data } = await http.post(`${apiEndpoint}/accounts`, { searchText });
 
   return data;
 }
 
-export async function searchFronSideAccountByID(accountID) {
+export async function searchFrontSideAccountByID(accountID) {
   const { data } = await http.get(`${apiEndpoint}/account/${accountID}`);
 
   return data;
@@ -78,8 +78,8 @@ export async function deleteItem(itemType, recordID) {
 const service = {
   getParams,
   getItemsParams,
-  searchFronSideAccounts,
-  searchFronSideAccountByID,
+  searchFrontSideAccounts,
+  searchFrontSideAccountByID,
   searchPaymentRequestByID,
   searchData,
   saveData,

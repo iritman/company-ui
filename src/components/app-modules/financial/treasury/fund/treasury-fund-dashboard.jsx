@@ -42,7 +42,7 @@ const mapper = (pageID) => {
   return { link, icon, backColor };
 };
 
-const TreasuryCollectorAgentDashboard = () => {
+const TreasuryFundDashboard = () => {
   const [accessiblePages, setAccessiblePages] = useState([]);
 
   useMount(async () => {
@@ -70,4 +70,4 @@ const TreasuryCollectorAgentDashboard = () => {
   );
 };
 
-export default TreasuryCollectorAgentDashboard;
+export default TreasuryFundDashboard;

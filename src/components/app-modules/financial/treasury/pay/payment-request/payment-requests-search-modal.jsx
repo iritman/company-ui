@@ -108,7 +108,7 @@ const PaymentRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     setFrontSideAccountSearchProgress(true);
 
     try {
-      const data = await service.searchFronSideAccounts(searchText);
+      const data = await service.searchFrontSideAccounts(searchText);
 
       setFrontSideAccounts(data);
     } catch (ex) {

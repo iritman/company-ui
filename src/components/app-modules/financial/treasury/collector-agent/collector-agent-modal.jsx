@@ -131,7 +131,7 @@ const CollectorAgentModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={750}
+      width={950}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>

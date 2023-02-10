@@ -96,7 +96,7 @@ const PaymentOrdersSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
       if (record.FrontSideAccountID > 0) {
         const selected_front_side_account =
-          await service.searchFronSideAccountByID(record.FrontSideAccountID);
+          await service.searchFrontSideAccountByID(record.FrontSideAccountID);
 
         const { FrontSideAccountID, Title } = selected_front_side_account;
         setFrontSideAccounts([{ FrontSideAccountID, Title }]);
@@ -117,7 +117,7 @@ const PaymentOrdersSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     setFrontSideAccountSearchProgress(true);
 
     try {
-      const data = await service.searchFronSideAccounts(searchText);
+      const data = await service.searchFrontSideAccounts(searchText);
 
       setFrontSideAccounts(data);
     } catch (ex) {

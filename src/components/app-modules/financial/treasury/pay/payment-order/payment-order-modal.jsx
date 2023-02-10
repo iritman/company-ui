@@ -134,7 +134,7 @@ const PaymentOrderModal = ({
 
       if (selectedObject) {
         const selected_front_side_account =
-          await service.searchFronSideAccountByID(
+          await service.searchFrontSideAccountByID(
             selectedObject.FrontSideAccountID
           );
 
@@ -170,7 +170,7 @@ const PaymentOrderModal = ({
     setFrontSideAccountSearchProgress(true);
 
     try {
-      const data = await service.searchFronSideAccounts(searchText);
+      const data = await service.searchFrontSideAccounts(searchText);
 
       setFrontSideAccounts(data);
     } catch (ex) {

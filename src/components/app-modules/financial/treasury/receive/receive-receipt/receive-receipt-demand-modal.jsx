@@ -140,7 +140,7 @@ const ReceiveReceiptDemandModal = ({
       setStandardDetails(StandardDetails);
 
       if (selectedObject !== null) {
-        const front_side_account = await service.searchFronSideAccountByID(
+        const front_side_account = await service.searchFrontSideAccountByID(
           selectedObject.FrontSideAccountID
         );
 
@@ -192,7 +192,7 @@ const ReceiveReceiptDemandModal = ({
     setFrontSideAccountSearchProgress(true);
 
     try {
-      const data = await service.searchFronSideAccounts(searchText);
+      const data = await service.searchFrontSideAccounts(searchText);
 
       setFrontSideAccounts(data);
     } catch (ex) {
