@@ -3,7 +3,10 @@ import {
   FaDatabase as StoreIcon,
   FaMoneyCheckAlt as TreasuryIcon,
 } from "react-icons/fa";
-import { TbNotebook as LedgerIcon } from "react-icons/tb";
+import {
+  TbNotebook as LedgerIcon,
+  TbReportMoney as DocsIcon,
+} from "react-icons/tb";
 import {
   MdSettings as SettingsIcon,
   MdAccountBalanceWallet as AccountsIcon,
@@ -75,6 +78,11 @@ const mapper = (moduleID) => {
       icon = (
         <CollectorAgentIcon style={{ color: Colors.red[6] }} size={iconSize} />
       );
+      break;
+
+    case 29:
+      link = "docs";
+      icon = <DocsIcon style={{ color: Colors.purple[6] }} size={iconSize} />;
       break;
 
     default:

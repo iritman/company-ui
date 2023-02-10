@@ -405,6 +405,8 @@ class Words extends Component {
   static latest_tafsil_code = "آخرین کد تفصیل صادر شده";
   static latest_tafsil_type_first_pre_code = "آخرین کد شروع ثبت شده";
 
+  static financial_docs = "اسناد";
+
   static company_bank_accounts = "حساب های بانکی شرکت";
   static credit = "اعتبار حساب";
   static currency_type = "نوع ارز";
@@ -720,6 +722,28 @@ class Words extends Component {
 
   static main_info = "اطلاعات اصلی";
   static rate = "ضریب";
+
+  static financial_voucher = "سند حسابداری";
+  static voucher_id = "شماره عطف";
+  static voucher_no = "شماره سند";
+  static sub_no = "شماره فرعی";
+  static history = "تاریخچه";
+  static voucher_date = "تاریخ سند";
+  static from_voucher_date = "تاریخ سند از";
+  static to_voucher_date = "تاریخ سند تا";
+  static from_reg_date = "تاریخ ثبت از";
+  static to_reg_date = "تاریخ ثبت تا";
+  static from_amount = "از مبلغ";
+  static to_amount = "تا مبلغ";
+  static bedehkar = "بدهکار";
+  static bestankar = "بستانکار";
+  static total_bedehkar = "مجموع بدهکار";
+  static total_bestankar = "مجموع بستانکار";
+  static remained_bedehkar = "مانده بدهکار";
+  static remained_bestankar = "مانده بستانکار";
+  static follow_code = "کد پیگیری";
+  static follow_date = "تاریخ پیگیری";
+  static general = "عمومی";
 
   static user_account = "حساب کاربری";
   static visit_user_account = "مشاهده حساب کاربری";

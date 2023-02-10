@@ -11,6 +11,7 @@ import UserTreasuryPaymentRoutes from "./user-treasury-payment-routes";
 import UserTreasuryReceiveRoutes from "./user-treasury-receive-routes";
 import UserTreasuryCollectorAgentRoutes from "./user-treasury-collector-agent-routes";
 import UserTreasuryFundRoutes from "./user-treasury-fund-routes";
+import UserFinancialDocsRoutes from "./user-financial-docs-routes";
 //---
 
 const UserFinancialRoutes = ({ path }) => {
@@ -56,6 +57,10 @@ const UserFinancialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/treasury/fund`}
         render={() => <UserTreasuryFundRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/docs`}
+        render={() => <UserFinancialDocsRoutes path={path} />}
       />
       <Redirect to="/not-found" />
     </Switch>

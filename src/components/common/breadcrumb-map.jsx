@@ -37,6 +37,8 @@ const BreadcrumbMap = ({ location }) => {
     "/home/financial/treasury/collector-agent": Words.collector_agent,
     //---
     "/home/financial/accounts": Words.accounts,
+    //---
+    "/home/financial/docs": Words.financial_docs,
   };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);

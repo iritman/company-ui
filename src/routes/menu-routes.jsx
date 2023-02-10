@@ -34,6 +34,8 @@ import UserTreasuryReceiveMenu from "../components/menus/financial/user-treasury
 import UserTreasuryFundMenu from "../components/menus/financial/user-treasury-fund-menu";
 import UserTreasuryCollectorAgentMenu from "../components/menus/financial/user-treasury-collector-agent-menu";
 //---
+import UserFinancialDocsMenu from "../components/menus/financial/user-financial-docs-menu";
+//---
 
 const MenuRoutes = ({ path }) => {
   return (
@@ -135,6 +137,11 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/treasury/collector-agent`}
         component={UserTreasuryCollectorAgentMenu}
+      />
+      {/* ----------- */}
+      <ProtectedRoute
+        path={`${path}/financial/docs`}
+        component={UserFinancialDocsMenu}
       />
       {/* ----------- */}
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />
