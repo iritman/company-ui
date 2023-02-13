@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import { TbReportMoney as DocsIcon } from "react-icons/tb";
+import { MdOutlineDescription as DescriptionIcon } from "react-icons/md";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 
@@ -21,6 +22,12 @@ const mapper = (pageID) => {
       link = "vouchers";
       icon = <DocsIcon {...iconProps} />;
       backColor = Colors.green[3];
+      break;
+
+    case 505:
+      link = "voucher-descriptions";
+      icon = <DescriptionIcon {...iconProps} />;
+      backColor = Colors.blue[3];
       break;
 
     //   Colors.blue[2];

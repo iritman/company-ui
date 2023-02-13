@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { TbReportMoney as DocsIcon } from "react-icons/tb";
 import { useMount } from "react-use";
+import { TbReportMoney as DocsIcon } from "react-icons/tb";
+import { MdOutlineDescription as DescriptionIcon } from "react-icons/md";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
 import { useLocation } from "react-router-dom";
@@ -17,6 +18,13 @@ const mapper = (pageID) => {
     case 504:
       link = "vouchers";
       icon = <DocsIcon style={{ color: Colors.green[6] }} size={iconSize} />;
+      break;
+
+    case 505:
+      link = "voucher-descriptions";
+      icon = (
+        <DescriptionIcon style={{ color: Colors.blue[6] }} size={iconSize} />
+      );
       break;
 
     //   Colors.blue[2];

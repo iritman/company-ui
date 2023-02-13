@@ -745,6 +745,10 @@ class Words extends Component {
   static follow_date = "تاریخ پیگیری";
   static general = "عمومی";
 
+  static voucher_descriptions = "شرح سند حسابداری";
+  static operation_group = "گروه عملیات";
+  static operation = "عملیات";
+
   static user_account = "حساب کاربری";
   static visit_user_account = "مشاهده حساب کاربری";
   static main_page = "صفحه اصلی";
