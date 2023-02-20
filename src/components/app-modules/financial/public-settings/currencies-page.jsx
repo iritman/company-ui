@@ -13,6 +13,7 @@ import {
   getSorter,
   checkAccess,
   getColumns,
+  updateSavedRecords,
   GetSimplaDataPageMethods,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
@@ -32,6 +33,10 @@ const getSheets = (records) => [
       {
         label: Words.status,
         value: (record) => (record.IsActive ? Words.active : Words.inactive),
+      },
+      {
+        label: Words.is_default,
+        value: (record) => (record.IsDefault ? Words.yes : Words.no),
       },
     ],
   },
@@ -66,6 +71,18 @@ const baseColumns = [
         <LockIcon style={{ color: Colors.red[6] }} />
       ),
   },
+  {
+    title: Words.is_default,
+    width: 75,
+    align: "center",
+    sorter: getSorter("IsDefault"),
+    render: (record) =>
+      record.IsDefault ? (
+        <CheckIcon style={{ color: Colors.green[6] }} />
+      ) : (
+        <></>
+      ),
+  },
 ];
 
 const recordID = "CurrencyID";
@@ -81,6 +98,7 @@ const CurrenciesPage = ({ pageName }) => {
     access,
     setAccess,
     selectedObject,
+    setSelectedObject,
     showModal,
   } = usePageContext();
 
@@ -96,7 +114,7 @@ const CurrenciesPage = ({ pageName }) => {
     handleAdd,
     handleEdit,
     handleDelete,
-    handleSave,
+    // handleSave,
     handleResetContext,
   } = GetSimplaDataPageMethods({
     service,
@@ -106,6 +124,37 @@ const CurrenciesPage = ({ pageName }) => {
   const columns = access
     ? getColumns(baseColumns, null, access, handleEdit, handleDelete)
     : [];
+
+  const handleSaveCurrency = async (row) => {
+    const currencies = [...records];
+    if (row.CurrencyID === 0 && row.IsDefault) {
+      currencies.forEach((currency) => (currency.IsDefault = false));
+    } else if (row.CurrencyID > 0 && row.IsDefault) {
+      currencies.forEach((currency) => {
+        if (currency.CurrencyID !== row.CurrencyID) {
+          currency.IsDefault = false;
+        }
+      });
+    }
+
+    //--- save row
+
+    const savedRow = await service.saveData(row);
+
+    const updatedRecords = updateSavedRecords(
+      row,
+      recordID,
+      currencies,
+      savedRow
+    );
+
+    if (selectedObject !== null) {
+      setSelectedObject({ ...savedRow });
+    }
+
+    setRecords([]);
+    setRecords(updatedRecords);
+  };
 
   //------
 
@@ -135,7 +184,7 @@ const CurrenciesPage = ({ pageName }) => {
 
       {showModal && (
         <CurrencyModal
-          onOk={handleSave}
+          onOk={handleSaveCurrency}
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}

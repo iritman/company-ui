@@ -27,12 +27,14 @@ const schema = {
     .label(Words.title)
     .regex(utils.VALID_REGEX),
   IsActive: Joi.boolean(),
+  IsDefault: Joi.boolean(),
 };
 
 const initRecord = {
   CurrencyID: 0,
   Title: "",
   IsActive: true,
+  IsDefault: false,
 };
 
 const formRef = React.createRef();
@@ -54,6 +56,7 @@ const CurrencyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const clearRecord = () => {
     record.Title = "";
     record.IsActive = true;
+    record.IsDefault = false;
 
     setRecord(record);
     setErrors({});
@@ -101,13 +104,23 @@ const CurrencyModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
             />
           </Col>
-          <Col xs={24}>
+          <Col xs={12}>
             <SwitchItem
               title={Words.status}
               fieldName="IsActive"
               initialValue={true}
               checkedTitle={Words.active}
               unCheckedTitle={Words.inactive}
+              formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={12}>
+            <SwitchItem
+              title={Words.is_default}
+              fieldName="IsDefault"
+              initialValue={false}
+              checkedTitle={Words.yes}
+              unCheckedTitle={Words.no}
               formConfig={formConfig}
             />
           </Col>
