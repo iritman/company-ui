@@ -171,7 +171,7 @@ const StructureMoeinModal = ({
 
     setProgress(false);
   });
-
+  // console.log(record);
   const isEdit = selectedObject !== null;
 
   const handleSubmit = async () => {
@@ -189,7 +189,14 @@ const StructureMoeinModal = ({
   const handleIsConvertableSwitchChange = (checked) => {
     const rec = { ...record };
     rec.IsConvertable = checked;
-    rec.CurrencyID = 0;
+
+    if (!checked) rec.CurrencyID = 0;
+    else {
+      const default_currency = currencies.find((c) => c.IsDefault === true);
+      if (default_currency) {
+        rec.CurrencyID = default_currency.CurrencyID;
+      }
+    }
 
     setRecord(rec);
     loadFieldsValue(formRef, rec);
