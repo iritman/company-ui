@@ -1,7 +1,7 @@
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import { Button, Space, Typography, Popconfirm, Popover } from "antd";
+import { Button, Space, Typography, Popconfirm /*, Popover */ } from "antd";
 import { getSorter, validateForm } from "../../../../../tools/form-manager";
 import {
   PlusOutlined as AddIcon,
@@ -9,7 +9,7 @@ import {
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
+// import { MdInfoOutline as InfoIcon } from "react-icons/md";
 import Joi from "joi-browser";
 
 const { Text } = Typography;

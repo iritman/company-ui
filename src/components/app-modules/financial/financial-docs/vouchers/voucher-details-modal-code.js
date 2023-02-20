@@ -1,7 +1,7 @@
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import { Typography, Popover } from "antd";
+import { Typography /* , Popover */ } from "antd";
 import { getSorter } from "../../../../../tools/form-manager";
 // import { MdInfoOutline as InfoIcon } from "react-icons/md";
 
