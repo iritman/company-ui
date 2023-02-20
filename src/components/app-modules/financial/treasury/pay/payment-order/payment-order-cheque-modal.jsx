@@ -31,7 +31,7 @@ const schema = {
     .label(Words.bank_account),
   Amount: Joi.number().min(10).required().label(Words.price),
   DueDate: Joi.string().required().label(Words.due_date),
-  AgreedDate: Joi.string().required().label(Words.agreed_date),
+  AgreedDate: Joi.string().allow("").label(Words.agreed_date),
   StandardDetailsID: Joi.number(),
   DetailsText: Joi.string()
     .min(5)
@@ -297,7 +297,6 @@ const PaymentOrderChequeModal = ({
           <Col xs={24} md={12}>
             <DateItem
               horizontal
-              required
               title={Words.agreed_date}
               fieldName="AgreedDate"
               formConfig={formConfig}

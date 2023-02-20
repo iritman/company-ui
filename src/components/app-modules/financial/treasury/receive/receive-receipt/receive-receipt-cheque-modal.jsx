@@ -39,7 +39,7 @@ const schema = {
   CurrencyID: Joi.number().label(Words.currency),
   Amount: Joi.number().min(10).required().label(Words.price),
   DueDate: Joi.string().required().label(Words.due_date),
-  AgreedDate: Joi.string().required().label(Words.agreed_date),
+  AgreedDate: Joi.string().allow("").label(Words.agreed_date),
   StandardDetailsID: Joi.number(),
   DetailsText: Joi.string()
     .min(5)
@@ -267,6 +267,7 @@ const ReceiveReceiptChequeModal = ({
               keyColumn="CashFlowID"
               valueColumn="Title"
               formConfig={formConfig}
+              required
             />
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -389,7 +390,6 @@ const ReceiveReceiptChequeModal = ({
           <Col xs={24} md={12} lg={8}>
             <DateItem
               horizontal
-              required
               title={Words.agreed_date}
               fieldName="AgreedDate"
               formConfig={formConfig}
