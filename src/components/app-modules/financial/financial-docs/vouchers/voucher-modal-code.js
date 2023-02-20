@@ -96,6 +96,37 @@ export const getColumns = (access, statusID, onEdit, onDelete) => {
       ),
     },
     {
+      title: Words.standard_description,
+      width: 200,
+      align: "center",
+      render: (record) => (
+        <>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Text>{`${utils.getDescription(
+              record.StandardDetailsText,
+              record.DetailsText
+            )}`}</Text>
+            // <Popover
+            //   content={
+            //     <Text>{`${utils.getDescription(
+            //       record.StandardDetailsText,
+            //       record.DetailsText
+            //     )}`}</Text>
+            //   }
+            // >
+            //   <InfoIcon
+            //     style={{
+            //       color: Colors.green[6],
+            //       fontSize: 19,
+            //       cursor: "pointer",
+            //     }}
+            //   />
+            // </Popover>
+          )}
+        </>
+      ),
+    },
+    {
       title: Words.bedehkar,
       width: 200,
       align: "center",
@@ -141,33 +172,6 @@ export const getColumns = (access, statusID, onEdit, onDelete) => {
             ? utils.farsiNum(utils.slashDate(FollowDate))
             : ""}
         </Text>
-      ),
-    },
-    {
-      title: Words.standard_description,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
-            <Popover
-              content={
-                <Text>{`${utils.getDescription(
-                  record.StandardDetailsText,
-                  record.DetailsText
-                )}`}</Text>
-              }
-            >
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
       ),
     },
   ];

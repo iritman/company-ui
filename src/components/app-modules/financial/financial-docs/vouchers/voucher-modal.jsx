@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Descriptions, Typography } from "antd";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
@@ -35,6 +35,8 @@ import {
   calculatePrice,
   findTitle,
 } from "./voucher-modal-code";
+
+const { Text } = Typography;
 
 const formRef = React.createRef();
 
@@ -377,42 +379,6 @@ const VoucherModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={12}>
-              <TextItem
-                title={Words.total_bedehkar}
-                value={`${utils.farsiNum(utils.moneyNumber(price.Bedehkar))} ${
-                  Words.ryal
-                }`}
-                valueColor={Colors.red[6]}
-              />
-            </Col>
-            <Col xs={12}>
-              <TextItem
-                title={Words.total_bestankar}
-                value={`${utils.farsiNum(utils.moneyNumber(price.Bestankar))} ${
-                  Words.ryal
-                }`}
-                valueColor={Colors.green[6]}
-              />
-            </Col>
-            <Col xs={12}>
-              <TextItem
-                title={Words.remained_bedehkar}
-                value={`${utils.farsiNum(
-                  utils.moneyNumber(price.RemainedBedehkar)
-                )} ${Words.ryal}`}
-                valueColor={Colors.red[6]}
-              />
-            </Col>
-            <Col xs={12}>
-              <TextItem
-                title={Words.remained_bestankar}
-                value={`${utils.farsiNum(
-                  utils.moneyNumber(price.RemainedBestankar)
-                )} ${Words.ryal}`}
-                valueColor={Colors.green[6]}
-              />
-            </Col>
 
             {record && record.Items && (
               <Col xs={24}>
@@ -433,6 +399,64 @@ const VoucherModal = ({
                 <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
               </Col>
             )}
+
+            <Col xs={24}>
+              <Descriptions
+                bordered
+                column={{
+                  //   md: 2, sm: 2,
+                  lg: 3,
+                  md: 3,
+                  xs: 1,
+                }}
+                size="middle"
+              >
+                <Descriptions.Item label={Words.total_bedehkar}>
+                  <Text
+                    style={{
+                      color: Colors.red[6],
+                    }}
+                  >
+                    {`${utils.farsiNum(utils.moneyNumber(price.Bedehkar))} ${
+                      Words.ryal
+                    }`}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.total_bestankar} span={2}>
+                  <Text
+                    style={{
+                      color: Colors.green[6],
+                    }}
+                  >
+                    {`${utils.farsiNum(utils.moneyNumber(price.Bestankar))} ${
+                      Words.ryal
+                    }`}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.remained_bedehkar}>
+                  <Text
+                    style={{
+                      color: Colors.red[6],
+                    }}
+                  >
+                    {`${utils.farsiNum(
+                      utils.moneyNumber(price.RemainedBedehkar)
+                    )} ${Words.ryal}`}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item label={Words.remained_bestankar} span={2}>
+                  <Text
+                    style={{
+                      color: Colors.green[6],
+                    }}
+                  >
+                    {`${utils.farsiNum(
+                      utils.moneyNumber(price.RemainedBestankar)
+                    )} ${Words.ryal}`}
+                  </Text>
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
           </Row>
         </Form>
       </ModalWindow>

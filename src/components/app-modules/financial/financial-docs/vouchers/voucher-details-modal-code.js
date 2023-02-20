@@ -3,7 +3,7 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { Typography, Popover } from "antd";
 import { getSorter } from "../../../../../tools/form-manager";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
+// import { MdInfoOutline as InfoIcon } from "react-icons/md";
 
 const { Text } = Typography;
 
@@ -62,6 +62,37 @@ export const getColumns = () => {
       ),
     },
     {
+      title: Words.standard_description,
+      width: 200,
+      align: "center",
+      render: (record) => (
+        <>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Text>{`${utils.getDescription(
+              record.StandardDetailsText,
+              record.DetailsText
+            )}`}</Text>
+            // <Popover
+            //   content={
+            //     <Text>{`${utils.getDescription(
+            //       record.StandardDetailsText,
+            //       record.DetailsText
+            //     )}`}</Text>
+            //   }
+            // >
+            //   <InfoIcon
+            //     style={{
+            //       color: Colors.green[6],
+            //       fontSize: 19,
+            //       cursor: "pointer",
+            //     }}
+            //   />
+            // </Popover>
+          )}
+        </>
+      ),
+    },
+    {
       title: Words.bedehkar,
       width: 200,
       align: "center",
@@ -107,33 +138,6 @@ export const getColumns = () => {
             ? utils.farsiNum(utils.slashDate(FollowDate))
             : ""}
         </Text>
-      ),
-    },
-    {
-      title: Words.standard_description,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
-            <Popover
-              content={
-                <Text>{`${utils.getDescription(
-                  record.StandardDetailsText,
-                  record.DetailsText
-                )}`}</Text>
-              }
-            >
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
       ),
     },
     {

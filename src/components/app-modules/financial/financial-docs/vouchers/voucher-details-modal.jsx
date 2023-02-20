@@ -126,7 +126,22 @@ const VoucherDetailsModal = ({ selectedObject, isOpen, onOk }) => {
                 </Text>
               </Descriptions.Item>
             )}
-
+          </Descriptions>
+        </Col>
+        <Col xs={24}>
+          <DetailsTable records={Items} columns={getColumns()} />
+        </Col>
+        <Col xs={24}>
+          <Descriptions
+            bordered
+            column={{
+              //   md: 2, sm: 2,
+              lg: 3,
+              md: 3,
+              xs: 1,
+            }}
+            size="middle"
+          >
             <Descriptions.Item label={Words.total_bedehkar}>
               <Text
                 style={{
@@ -172,9 +187,6 @@ const VoucherDetailsModal = ({ selectedObject, isOpen, onOk }) => {
               </Text>
             </Descriptions.Item>
           </Descriptions>
-        </Col>
-        <Col xs={24}>
-          <DetailsTable records={Items} columns={getColumns()} />
         </Col>
       </Row>
     </ModalWindow>
