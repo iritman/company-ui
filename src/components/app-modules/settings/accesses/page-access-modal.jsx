@@ -29,7 +29,7 @@ const { Text } = Typography;
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
-const CheckAccess = ({ onChange, page, accessType }) => {
+const CheckAccess = ({ onChange, page, accessType, operation }) => {
   let title = "";
   let checked = false;
 
@@ -54,6 +54,11 @@ const CheckAccess = ({ onChange, page, accessType }) => {
       checked = page.Access?.CanDelete === true;
       break;
     }
+    case "operation": {
+      title = operation.OperationTitle;
+      checked = page.Access[operation.OperationName];
+      break;
+    }
     default: {
       title = Words.can_view;
       checked = page.Access?.CanView === true;
@@ -61,12 +66,14 @@ const CheckAccess = ({ onChange, page, accessType }) => {
     }
   }
 
+  const font_style = { fontSize: 13 };
+  if (operation) font_style.color = Colors.green[6];
   return (
     <Checkbox
       checked={checked}
-      onChange={(e) => onChange(e, page.PageID, accessType)}
+      onChange={(e) => onChange(e, page.PageID, accessType, operation)}
     >
-      <Text style={{ fontSize: 13 }}>{title}</Text>
+      <Text style={font_style}>{title}</Text>
     </Checkbox>
   );
 };
@@ -98,7 +105,31 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
           accessPage = data.Accesses.find((acc) => acc.PageID === page.PageID);
 
           if (accessPage) {
-            page.Access = { ...accessPage };
+            const {
+              AccessID,
+              PageID,
+              IsActive,
+              CanView,
+              CanAdd,
+              CanEdit,
+              CanDelete,
+              Operations,
+            } = accessPage;
+
+            page.Access = {
+              AccessID,
+              PageID,
+              IsActive,
+              CanView,
+              CanAdd,
+              CanEdit,
+              CanDelete,
+              Operations: [...Operations],
+            };
+
+            Operations.forEach((o) => {
+              page.Access[o.OperationName] = o.HasAccess;
+            });
           } else {
             page.Access = {
               AccessID: 0,
@@ -107,18 +138,41 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
               CanAdd: false,
               CanEdit: false,
               CanDelete: false,
+              Operations: [],
             };
           }
         });
       });
     });
 
-    setSavedAccesses([...data.Accesses]);
-    setUpdatedAccesses([...data.Accesses]);
+    //--- copy accesses
+    //--- with spread operator sub levels like Operations field is not copied as a new object
+    //--- and their reference persist!
+    //--- to create a different copy with no any reference values, we should do copy process manually
+
+    let saved_accesses = [];
+    let updated_accesses = [];
+
+    data.Accesses.forEach((access) => {
+      const new_access = { ...access };
+
+      access.Operations.forEach((o) => {
+        new_access[o.OperationName] = o.HasAccess;
+      });
+
+      saved_accesses = [...saved_accesses, { ...new_access }];
+      updated_accesses = [...updated_accesses, { ...new_access }];
+    });
+
+    setSavedAccesses(saved_accesses);
+    setUpdatedAccesses(updated_accesses);
+
+    //------
+
     setPages(activeCategories);
   };
 
-  const onCheckChange = (e, pageID, accessType) => {
+  const onCheckChange = (e, pageID, accessType, operation) => {
     const newCheckValue = e.target.checked;
 
     const rec = [...pages];
@@ -136,6 +190,7 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
         CanAdd: false,
         CanEdit: false,
         CanDelete: false,
+        Operations: [],
       };
     }
 
@@ -153,9 +208,23 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
                   page.Access.CanEdit = false;
                   page.Access.CanDelete = false;
 
+                  page.Access.Operations.forEach((opr) => {
+                    opr.HasAccess = false;
+                    if (page.Access[opr.OperationName] !== undefined)
+                      page.Access[opr.OperationName] = false;
+                  });
+
+                  //------
+
                   updatedAccess.CanAdd = false;
                   updatedAccess.CanEdit = false;
                   updatedAccess.CanDelete = false;
+
+                  updatedAccess.Operations.forEach((opr) => {
+                    opr.HasAccess = false;
+                    if (updatedAccess[opr.OperationName] !== undefined)
+                      updatedAccess[opr.OperationName] = false;
+                  });
                 }
 
                 break;
@@ -193,6 +262,21 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
 
                 break;
               }
+              case "operation": {
+                page.Access[operation.OperationName] = newCheckValue;
+                updatedAccess[operation.OperationName] = newCheckValue;
+
+                updatedAccess.Operations.find(
+                  (o) => o.OperationID === operation.OperationID
+                ).HasAccess = newCheckValue;
+
+                if (newCheckValue) {
+                  page.Access.CanView = newCheckValue;
+                  updatedAccess.CanView = newCheckValue;
+                }
+
+                break;
+              }
               default: {
                 break;
               }
@@ -221,7 +305,6 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
         setUpdatedAccesses([...updatedAccesses]);
       }
     }
-
     setPages(rec);
   };
 
@@ -240,7 +323,10 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
         savedAccess = savedAccesses.find((acc) => acc.PageID === uacc.PageID);
 
         for (const accessField in uacc) {
-          if (uacc[accessField] !== savedAccess[accessField]) {
+          if (
+            accessField !== "Operations" &&
+            uacc[accessField] !== savedAccess[accessField]
+          ) {
             result = true;
             break;
           }
@@ -261,7 +347,10 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
 
       if (savedAccess) {
         for (const accessField in uacc) {
-          if (uacc[accessField] !== savedAccess[accessField]) {
+          if (
+            accessField !== "Operations" &&
+            uacc[accessField] !== savedAccess[accessField]
+          ) {
             result = [...result, uacc];
             break;
           }
@@ -397,6 +486,27 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
                                             accessType="delete"
                                           />
                                         </Col>
+
+                                        {page.Access.Operations.length > 0 && (
+                                          <>
+                                            {page.Access.Operations.map(
+                                              (opr) => (
+                                                <Col
+                                                  xs={12}
+                                                  md={6}
+                                                  key={opr.OperationID}
+                                                >
+                                                  <CheckAccess
+                                                    onChange={onCheckChange}
+                                                    page={page}
+                                                    accessType="operation"
+                                                    operation={opr}
+                                                  />
+                                                </Col>
+                                              )
+                                            )}
+                                          </>
+                                        )}
                                       </Row>
 
                                       <div
