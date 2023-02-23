@@ -416,6 +416,61 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     setProgress(false);
   };
 
+  const handleUndoApprove = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.undoApprove(selectedObject.ReceiveID);
+
+      // Update selected object
+      selectedObject.StatusID = 1; // In progress
+      selectedObject.StatusTitle = Words.receive_receipt_status_1;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const receipt_index = records.findIndex(
+        (r) => r.ReceiveID === selectedObject.ReceiveID
+      );
+      records[receipt_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleSubmitVoucher = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.submitVoucher(selectedObject.ReceiveID);
+
+      const { VoucherID, Message } = data;
+
+      // Update selected object
+      selectedObject.SubmittedVoucherID = VoucherID;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const receipt_index = records.findIndex(
+        (r) => r.ReceiveID === selectedObject.ReceiveID
+      );
+      records[receipt_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
   //------
 
   return (
@@ -470,6 +525,8 @@ const ReceiveReceiptsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onUndoApprove={handleUndoApprove}
+          onSubmitVoucher={handleSubmitVoucher}
         />
       )}
     </>

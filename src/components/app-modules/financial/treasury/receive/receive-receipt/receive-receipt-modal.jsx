@@ -49,6 +49,8 @@ const ReceiveReceiptModal = ({
   onDeleteReceiveReceiptItem,
   onReject,
   onApprove,
+  onUndoApprove,
+  onSubmitVoucher,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
@@ -62,6 +64,8 @@ const ReceiveReceiptModal = ({
   const [standardDetails, setStandardDetails] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
+  const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
+  const [hasSubmitVoucherAccess, setHasSubmitVoucherAccess] = useState(false);
 
   const [checkReceiveBase, setCheckReceiveBase] = useState(false);
   const [receiveRequests, setReceiveRequests] = useState([]);
@@ -143,6 +147,8 @@ const ReceiveReceiptModal = ({
         StandardDetails,
         HasSaveApproveAccess,
         HasRejectAccess,
+        HasUndoApproveAccess,
+        HasSubmitVoucherAccess,
       } = data;
 
       ReceiveRequests.forEach(
@@ -161,6 +167,8 @@ const ReceiveReceiptModal = ({
       setStandardDetails(StandardDetails);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
+      setHasUndoApproveAccess(HasUndoApproveAccess);
+      setHasSubmitVoucherAccess(HasSubmitVoucherAccess);
 
       if (selectedObject && selectedObject.ChequeID) {
         const { DeliveryMemberID, FullName } = selectedObject;
@@ -898,12 +906,16 @@ const ReceiveReceiptModal = ({
     handleSubmit,
     handleSubmitAndApprove,
     onApprove,
-    hasRejectAccess,
     onReject,
+    onUndoApprove,
+    onSubmitVoucher,
     onCancel,
     clearRecord,
     progress,
     hasSaveApproveAccess,
+    hasRejectAccess,
+    hasUndoApproveAccess,
+    hasSubmitVoucherAccess,
   };
 
   const tabPanesConfig = {

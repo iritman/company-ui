@@ -65,6 +65,24 @@ export async function approveReceiveReceipt(receiveID) {
   return data;
 }
 
+export async function undoApprove(receiveID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/undo-approve/${receiveID}`,
+    {}
+  );
+
+  return data;
+}
+
+export async function submitVoucher(receiveID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/submit-voucher/${receiveID}`,
+    {}
+  );
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -88,6 +106,8 @@ const service = {
   saveItem,
   rejectReceiveReceipt,
   approveReceiveReceipt,
+  undoApprove,
+  submitVoucher,
   deleteData,
   deleteItem,
 };

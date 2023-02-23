@@ -499,6 +499,8 @@ class Words extends Component {
   static from_settlement_date = "تاریخ تسویه از";
   static to_settlement_date = "تاریخ تسویه تا";
   static submit_and_approve = "ثبت و تایید";
+  static undo_approve = "برگشت از تایید";
+  static submit_voucher = "صدور سند حسابداری";
 
   static receive_request_status_1 = "ثبت شده";
   static receive_request_status_2 = "تایید شده";
@@ -1145,6 +1147,9 @@ class Words extends Component {
       "برای ثبت و تایید اعلامیه واگذار به بانک اطمینان دارید؟",
     sure_to_submit_approve_collection_rejection:
       "برای ثبت و تایید اعلامیه وصول/واخواست اطمینان دارید؟",
+    sure_to_undo_approve_receive_receipt:
+      "برای برگشت از تایید رسید دریافت اطمینان دارید؟",
+    sure_to_submit_voucher: "برای صدور سند حسابداری اطمینان دارید؟",
   };
 
   static monthes = {

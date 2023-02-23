@@ -1,17 +1,39 @@
 import React, { useState } from "react";
-import { Button, Row, Col, Typography, Descriptions, Tabs } from "antd";
+import { useMount } from "react-use";
+import {
+  Button,
+  Row,
+  Col,
+  Typography,
+  Descriptions,
+  Tabs,
+  Space,
+  Popconfirm,
+} from "antd";
 import Words from "../../../../../../resources/words";
 import Colors from "../../../../../../resources/colors";
 import utils from "../../../../../../tools/utils";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import { getTabPanes } from "./receive-receipt-details-modal-code";
 import ModalWindow from "../../../../../common/modal-window";
+import service from "../../../../../../services/financial/treasury/receive/receive-receipts-service";
+import { handleError } from "../../../../../../tools/form-manager";
 
 const { Text } = Typography;
 
-const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
+const ReceiveReceiptDetailsModal = ({
+  selectedObject,
+  isOpen,
+  onOk,
+  onUndoApprove,
+  onSubmitVoucher,
+}) => {
   const valueColor = Colors.blue[7];
 
   const [selectedTab, setSelectedTab] = useState("cheques");
+  const [progress, setProgress] = useState(false);
+  const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
+  const [hasSubmitVoucherAccess, setHasSubmitVoucherAccess] = useState(false);
 
   const {
     ReceiveID,
@@ -36,6 +58,7 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     RegTime,
     StatusID,
     StatusTitle,
+    SubmittedVoucherID,
     Price,
     // Cheques,
     // Demands,
@@ -47,15 +70,85 @@ const ReceiveReceiptDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     RequestInfo,
   } = selectedObject;
 
+  useMount(async () => {
+    setProgress(true);
+
+    try {
+      //------ load receipt params
+
+      let data = await service.getParams();
+
+      let { HasUndoApproveAccess, HasSubmitVoucherAccess } = data;
+
+      setHasUndoApproveAccess(HasUndoApproveAccess);
+      setHasSubmitVoucherAccess(HasSubmitVoucherAccess);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  });
+
+  const getFooterButtons = () => {
+    return (
+      <Space>
+        {selectedObject !== null && selectedObject.StatusID === 2 && (
+          <>
+            {hasUndoApproveAccess && (
+              <Popconfirm
+                title={Words.questions.sure_to_undo_approve_receive_receipt}
+                onConfirm={onUndoApprove}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+                key="submit-approve-button"
+                disabled={progress}
+              >
+                <Button
+                  key="undo-approve-button"
+                  type="primary"
+                  disabled={progress}
+                >
+                  {Words.undo_approve}
+                </Button>
+              </Popconfirm>
+            )}
+
+            {hasSubmitVoucherAccess && SubmittedVoucherID === 0 && (
+              <Popconfirm
+                title={Words.questions.sure_to_submit_voucher}
+                onConfirm={onSubmitVoucher}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+                key="submit-voucher-confirm"
+                disabled={progress}
+              >
+                <Button key="submit-voucher-button" type="primary" danger>
+                  {Words.submit_voucher}
+                </Button>
+              </Popconfirm>
+            )}
+          </>
+        )}
+
+        <Button key="close-button" onClick={onOk}>
+          {Words.close}
+        </Button>
+      </Space>
+    );
+  };
+
   return (
     <ModalWindow
       isOpen={isOpen}
       title={Words.more_details}
-      footer={[
-        <Button key="close-button" onClick={onOk}>
-          {Words.close}
-        </Button>,
-      ]}
+      // footer={[
+      //   <Button key="close-button" onClick={onOk}>
+      //     {Words.close}
+      //   </Button>,
+      // ]}
+      footer={getFooterButtons()}
       showIcon={false}
       onCancel={onOk}
       width={1050}

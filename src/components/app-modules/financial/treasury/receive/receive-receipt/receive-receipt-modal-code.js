@@ -1239,12 +1239,12 @@ export const getFooterButtons = (is_disable, config) => {
     handleSubmit,
     handleSubmitAndApprove,
     onApprove,
-    hasRejectAccess,
     onReject,
     onCancel,
     clearRecord,
     progress,
     hasSaveApproveAccess,
+    hasRejectAccess,
   } = config;
 
   return (
