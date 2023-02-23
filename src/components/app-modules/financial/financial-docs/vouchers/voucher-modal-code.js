@@ -97,7 +97,7 @@ export const getColumns = (access, statusID, onEdit, onDelete) => {
     },
     {
       title: Words.standard_description,
-      width: 200,
+      width: 400,
       align: "center",
       render: (record) => (
         <>
@@ -157,7 +157,9 @@ export const getColumns = (access, statusID, onEdit, onDelete) => {
       dataIndex: "FollowCode",
       sorter: getSorter("FollowCode"),
       render: (FollowCode) => (
-        <Text style={{ color: Colors.purple[6] }}>{FollowCode}</Text>
+        <Text style={{ color: Colors.purple[6] }}>
+          {utils.farsiNum(FollowCode)}
+        </Text>
       ),
     },
     {
