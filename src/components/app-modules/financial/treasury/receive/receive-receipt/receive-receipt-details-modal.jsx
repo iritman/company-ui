@@ -94,7 +94,7 @@ const ReceiveReceiptDetailsModal = ({
       <Space>
         {selectedObject !== null && selectedObject.StatusID === 2 && (
           <>
-            {hasUndoApproveAccess && (
+            {hasUndoApproveAccess && SubmittedVoucherID === 0 && (
               <Popconfirm
                 title={Words.questions.sure_to_undo_approve_receive_receipt}
                 onConfirm={onUndoApprove}
