@@ -68,9 +68,11 @@ export const getColumns = () => {
       render: (record) => (
         <>
           {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
-            <Text>{`${utils.getDescription(
-              record.StandardDetailsText,
-              record.DetailsText
+            <Text>{`${utils.farsiNum(
+              utils.getDescription(
+                record.StandardDetailsText,
+                record.DetailsText
+              )
             )}`}</Text>
             // <Popover
             //   content={
