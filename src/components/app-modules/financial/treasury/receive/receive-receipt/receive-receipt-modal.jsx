@@ -440,13 +440,14 @@ const ReceiveReceiptModal = ({
       );
 
       const {
-        FrontSideAccountTitle,
+        // FrontSideAccountTitle,
         TafsilCode,
         TafsilTypeID,
         TafsilTypeTitle,
+        Title,
       } = front_side_account;
 
-      demand_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      demand_to_save.FrontSideAccountTitle = Title;
       demand_to_save.TafsilCode = TafsilCode;
       demand_to_save.TafsilTypeID = TafsilTypeID;
       demand_to_save.TafsilTypeTitle = TafsilTypeTitle;
@@ -579,13 +580,14 @@ const ReceiveReceiptModal = ({
       );
 
       const {
-        FrontSideAccountTitle,
+        // FrontSideAccountTitle,
         TafsilCode,
         TafsilTypeID,
         TafsilTypeTitle,
+        Title,
       } = front_side_account;
 
-      cash_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      cash_to_save.FrontSideAccountTitle = Title;
       cash_to_save.TafsilCode = TafsilCode;
       cash_to_save.TafsilTypeID = TafsilTypeID;
       cash_to_save.TafsilTypeTitle = TafsilTypeTitle;
@@ -721,13 +723,14 @@ const ReceiveReceiptModal = ({
       );
 
       const {
-        FrontSideAccountTitle,
+        // FrontSideAccountTitle,
         TafsilCode,
         TafsilTypeID,
         TafsilTypeTitle,
+        Title,
       } = front_side_account;
 
-      payment_notice_to_save.FrontSideAccountTitle = FrontSideAccountTitle;
+      payment_notice_to_save.FrontSideAccountTitle = Title;
       payment_notice_to_save.TafsilCode = TafsilCode;
       payment_notice_to_save.TafsilTypeID = TafsilTypeID;
       payment_notice_to_save.TafsilTypeTitle = TafsilTypeTitle;
