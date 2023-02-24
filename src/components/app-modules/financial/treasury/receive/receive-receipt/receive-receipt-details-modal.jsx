@@ -27,6 +27,7 @@ const ReceiveReceiptDetailsModal = ({
   onOk,
   onUndoApprove,
   onSubmitVoucher,
+  onDeleteVoucher,
 }) => {
   const valueColor = Colors.blue[7];
 
@@ -128,6 +129,24 @@ const ReceiveReceiptDetailsModal = ({
                   {Words.submit_voucher}
                 </Button>
               </Popconfirm>
+            )}
+
+            {SubmittedVoucherID > 0 && (
+              <>
+                <Popconfirm
+                  title={Words.questions.sure_to_delete_voucher}
+                  onConfirm={onDeleteVoucher}
+                  okText={Words.yes}
+                  cancelText={Words.no}
+                  icon={<QuestionIcon style={{ color: "red" }} />}
+                  key="delete-voucher-confirm"
+                  disabled={progress}
+                >
+                  <Button key="delete-voucher-button" type="primary" danger>
+                    {Words.delete_voucher}
+                  </Button>
+                </Popconfirm>
+              </>
             )}
           </>
         )}

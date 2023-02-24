@@ -471,6 +471,32 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     setProgress(false);
   };
 
+  const handleDeleteVoucher = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.deleteVoucher(selectedObject.ReceiveID);
+
+      // Update selected object
+      selectedObject.SubmittedVoucherID = 0;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const receipt_index = records.findIndex(
+        (r) => r.ReceiveID === selectedObject.ReceiveID
+      );
+      records[receipt_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
   //------
 
   return (
@@ -527,6 +553,7 @@ const ReceiveReceiptsPage = ({ pageName }) => {
           }}
           onUndoApprove={handleUndoApprove}
           onSubmitVoucher={handleSubmitVoucher}
+          onDeleteVoucher={handleDeleteVoucher}
         />
       )}
     </>
