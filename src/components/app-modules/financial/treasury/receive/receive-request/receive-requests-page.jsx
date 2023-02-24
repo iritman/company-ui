@@ -315,6 +315,33 @@ const ReceiveRequestsPage = ({ pageName }) => {
     setProgress(false);
   };
 
+  const handleUndoApprove = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.undoApprove(selectedObject.RequestID);
+
+      // Update selected object
+      selectedObject.StatusID = 1; // In progress
+      selectedObject.StatusTitle = Words.receive_request_status_1;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const request_index = records.findIndex(
+        (r) => r.RequestID === selectedObject.RequestID
+      );
+      records[request_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
   //------
 
   return (
@@ -371,6 +398,7 @@ const ReceiveRequestsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onUndoApprove={handleUndoApprove}
         />
       )}
     </>

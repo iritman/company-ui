@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useMount } from "react-use";
 import {
   Button,
   Row,
@@ -7,14 +8,19 @@ import {
   Descriptions,
   Alert,
   Popover,
+  Space,
+  Popconfirm,
 } from "antd";
 import { MdInfoOutline as InfoIcon } from "react-icons/md";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import Words from "../../../../../../resources/words";
 import Colors from "../../../../../../resources/colors";
 import utils from "../../../../../../tools/utils";
 import { getSorter } from "../../../../../../tools/form-manager";
 import DetailsTable from "../../../../../common/details-table";
 import ModalWindow from "../../../../../common/modal-window";
+import service from "../../../../../../services/financial/treasury/receive/receive-requests-service";
+import { handleError } from "../../../../../../tools/form-manager";
 
 const { Text } = Typography;
 
@@ -114,8 +120,16 @@ const columns = [
   },
 ];
 
-const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
+const ReceiveRequestDetailsModal = ({
+  selectedObject,
+  isOpen,
+  onOk,
+  onUndoApprove,
+}) => {
   const valueColor = Colors.blue[7];
+
+  const [progress, setProgress] = useState(false);
+  const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
 
   const {
     RequestID,
@@ -139,6 +153,58 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     Items,
   } = selectedObject;
 
+  useMount(async () => {
+    setProgress(true);
+
+    try {
+      //------ load request params
+
+      let data = await service.getParams();
+
+      let { HasUndoApproveAccess } = data;
+
+      setHasUndoApproveAccess(HasUndoApproveAccess);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  });
+
+  const getFooterButtons = () => {
+    return (
+      <Space>
+        {selectedObject !== null && selectedObject.StatusID === 2 && (
+          <>
+            {hasUndoApproveAccess && !selectedObject.IsReceiveBase && (
+              <Popconfirm
+                title={Words.questions.sure_to_undo_approve_receive_request}
+                onConfirm={onUndoApprove}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+                key="undo-approve-confirm"
+                disabled={progress}
+              >
+                <Button
+                  key="undo-approve-button"
+                  type="primary"
+                  disabled={progress}
+                >
+                  {Words.undo_approve}
+                </Button>
+              </Popconfirm>
+            )}
+          </>
+        )}
+
+        <Button key="close-button" onClick={onOk}>
+          {Words.close}
+        </Button>
+      </Space>
+    );
+  };
+
   let account_title = utils.farsiNum(
     `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`
   );
@@ -147,11 +213,7 @@ const ReceiveRequestDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     <ModalWindow
       isOpen={isOpen}
       title={Words.more_details}
-      footer={[
-        <Button key="close-button" onClick={onOk}>
-          {Words.close}
-        </Button>,
-      ]}
+      footer={getFooterButtons()}
       showIcon={false}
       onCancel={onOk}
       width={900}

@@ -45,6 +45,15 @@ export async function approveReceiveRequest(requestID) {
   return data;
 }
 
+export async function undoApprove(requestID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/undo-approve/${requestID}`,
+    {}
+  );
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -65,6 +74,7 @@ const service = {
   saveItem,
   rejectReceiveRequest,
   approveReceiveRequest,
+  undoApprove,
   deleteData,
   deleteItem,
 };

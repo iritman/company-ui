@@ -129,7 +129,7 @@ const ReceiveReceiptDetailsModal = ({
                 okText={Words.yes}
                 cancelText={Words.no}
                 icon={<QuestionIcon style={{ color: "red" }} />}
-                key="submit-approve-button"
+                key="undo-approve-confirm"
                 disabled={progress}
               >
                 <Button
