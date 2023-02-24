@@ -46,7 +46,6 @@ export async function deleteData(recordID) {
 }
 
 export async function deleteItem(recordID) {
-  console.log(`${apiEndpoint}/item/${recordID}`);
   const { data } = await http.delete(`${apiEndpoint}/item/${recordID}`);
 
   return data;

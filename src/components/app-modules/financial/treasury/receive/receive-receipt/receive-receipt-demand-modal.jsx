@@ -214,7 +214,7 @@ const ReceiveReceiptDemandModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       title={Words.reg_demand}
-      width={1050}
+      width={1250}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>

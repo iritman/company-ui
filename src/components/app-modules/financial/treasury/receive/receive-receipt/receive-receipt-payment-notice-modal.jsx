@@ -208,7 +208,7 @@ const ReceiveReceiptPaymentNoticeModal = ({
       onSubmit={handleSubmit}
       onCancel={onCancel}
       title={Words.reg_payment_notice}
-      width={1050}
+      width={1250}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
