@@ -502,6 +502,7 @@ class Words extends Component {
   static undo_approve = "برگشت از تایید";
   static submit_voucher = "صدور سند حسابداری";
   static delete_voucher = "حذف سند حسابداری";
+  static view_voucher = "مشاهده سند حسابداری";
 
   static receive_request_status_1 = "ثبت شده";
   static receive_request_status_2 = "تایید شده";

@@ -92,6 +92,12 @@ export async function deleteVoucher(receiveID) {
   return data;
 }
 
+export async function viewVoucher(voucherID) {
+  const { data } = await http.get(`${apiEndpoint}/view-voucher/${voucherID}`);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -118,6 +124,7 @@ const service = {
   undoApprove,
   submitVoucher,
   deleteVoucher,
+  viewVoucher,
   deleteData,
   deleteItem,
 };
