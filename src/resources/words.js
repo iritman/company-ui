@@ -1155,6 +1155,8 @@ class Words extends Component {
     sure_to_delete_voucher: "برای حذف سند حسابداری اطمینان دارید؟",
     sure_to_undo_approve_receive_request:
       "برای برگشت از تایید درخواست دریافت اطمینان دارید؟",
+    sure_to_undo_approve_bank_hand_over:
+      "برای برگشت از تایید اعلامیه واگذاری به بانک اطمینان دارید؟",
   };
 
   static monthes = {

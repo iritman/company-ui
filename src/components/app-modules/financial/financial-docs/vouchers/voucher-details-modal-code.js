@@ -1,7 +1,7 @@
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import { Typography /* , Popover */ } from "antd";
+import { Typography, Space } from "antd";
 import { getSorter } from "../../../../../tools/form-manager";
 // import { MdInfoOutline as InfoIcon } from "react-icons/md";
 
@@ -23,42 +23,72 @@ export const getColumns = () => {
       title: Words.account_moein,
       width: 200,
       align: "center",
-      dataIndex: "MoeinTitle",
+      // dataIndex: "MoeinTitle",
       sorter: getSorter("MoeinTitle"),
-      render: (MoeinTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(MoeinTitle)}
-        </Text>
+      render: (record) => (
+        <Space direction="vertical">
+          <Text style={{ color: Colors.cyan[6] }}>
+            {utils.farsiNum(record.MoeinTitle)}
+          </Text>
+          <Text>{utils.farsiNum(record.MoeinCode)}</Text>
+        </Space>
       ),
     },
     {
       title: Words.level_4,
       width: 250,
       align: "center",
-      dataIndex: "TafsilAccountTitle_Level4",
+      // dataIndex: "TafsilAccountTitle_Level4",
       sorter: getSorter("TafsilAccountTitle_Level4"),
-      render: (TafsilAccountTitle_Level4) => (
-        <Text>{utils.farsiNum(TafsilAccountTitle_Level4)}</Text>
+      render: (record) => (
+        <>
+          {record.TafsilAccountID_Level4 > 0 && (
+            <Space direction="vertical">
+              <Text>{utils.farsiNum(record.TafsilAccountTitle_Level4)}</Text>
+              <Text style={{ color: Colors.purple[7] }}>
+                {utils.farsiNum(record.TafsilAccountID_Level4)}
+              </Text>
+            </Space>
+          )}
+        </>
       ),
     },
     {
       title: Words.level_5,
       width: 250,
       align: "center",
-      dataIndex: "TafsilAccountTitle_Level5",
+      // dataIndex: "TafsilAccountTitle_Level5",
       sorter: getSorter("TafsilAccountTitle_Level5"),
-      render: (TafsilAccountTitle_Level5) => (
-        <Text>{utils.farsiNum(TafsilAccountTitle_Level5)}</Text>
+      render: (record) => (
+        <>
+          {record.TafsilAccountID_Level5 > 0 && (
+            <Space direction="vertical">
+              <Text>{utils.farsiNum(record.TafsilAccountTitle_Level5)}</Text>
+              <Text style={{ color: Colors.purple[7] }}>
+                {utils.farsiNum(record.TafsilAccountID_Level5)}
+              </Text>
+            </Space>
+          )}
+        </>
       ),
     },
     {
       title: Words.level_6,
       width: 250,
       align: "center",
-      dataIndex: "TafsilAccountTitle_Level6",
+      // dataIndex: "TafsilAccountTitle_Level6",
       sorter: getSorter("TafsilAccountTitle_Level6"),
-      render: (TafsilAccountTitle_Level6) => (
-        <Text>{utils.farsiNum(TafsilAccountTitle_Level6)}</Text>
+      render: (record) => (
+        <>
+          {record.TafsilAccountID_Level6 > 0 && (
+            <Space direction="vertical">
+              <Text>{utils.farsiNum(record.TafsilAccountTitle_Level6)}</Text>
+              <Text style={{ color: Colors.purple[7] }}>
+                {utils.farsiNum(record.TafsilAccountID_Level6)}
+              </Text>
+            </Space>
+          )}
+        </>
       ),
     },
     {

@@ -45,6 +45,39 @@ export async function approve(handOverID) {
   return data;
 }
 
+export async function undoApprove(handOverID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/undo-approve/${handOverID}`,
+    {}
+  );
+
+  return data;
+}
+
+export async function submitVoucher(handOverID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/submit-voucher/${handOverID}`,
+    {}
+  );
+
+  return data;
+}
+
+export async function deleteVoucher(handOverID) {
+  const { data } = await http.post(
+    `${apiEndpoint}/delete-voucher/${handOverID}`,
+    {}
+  );
+
+  return data;
+}
+
+export async function viewVoucher(voucherID) {
+  const { data } = await http.get(`${apiEndpoint}/view-voucher/${voucherID}`);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -81,6 +114,10 @@ const service = {
   saveItem,
   reject,
   approve,
+  undoApprove,
+  submitVoucher,
+  deleteVoucher,
+  viewVoucher,
   deleteData,
   deleteItem,
   getCheques,

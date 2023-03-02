@@ -356,9 +356,7 @@ const BankHandOversPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.approveReceiveReceipt(
-        selectedObject.HandOverID
-      );
+      const data = await service.approve(selectedObject.HandOverID);
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
@@ -390,6 +388,87 @@ const BankHandOversPage = ({ pageName }) => {
       // Update selected object
       selectedObject.StatusID = 3; // Reject
       selectedObject.StatusTitle = Words.hand_over_status_3;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const hand_over_index = records.findIndex(
+        (ho) => ho.HandOverID === selectedObject.HandOverID
+      );
+      records[hand_over_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleUndoApprove = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.undoApprove(selectedObject.HandOverID);
+
+      // Update selected object
+      selectedObject.StatusID = 1; // In progress
+      selectedObject.StatusTitle = Words.hand_over_status_1;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const hand_over_index = records.findIndex(
+        (ho) => ho.HandOverID === selectedObject.HandOverID
+      );
+      records[hand_over_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleSubmitVoucher = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.submitVoucher(selectedObject.HandOverID);
+
+      const { VoucherID, Message } = data;
+
+      // Update selected object
+      selectedObject.SubmittedVoucherID = VoucherID;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const hand_over_index = records.findIndex(
+        (ho) => ho.HandOverID === selectedObject.HandOverID
+      );
+      records[hand_over_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleDeleteVoucher = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.deleteVoucher(selectedObject.HandOverID);
+
+      // Update selected object
+      selectedObject.SubmittedVoucherID = 0;
       setSelectedObject({ ...selectedObject });
 
       // Update records
@@ -462,6 +541,9 @@ const BankHandOversPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onUndoApprove={handleUndoApprove}
+          onSubmitVoucher={handleSubmitVoucher}
+          onDeleteVoucher={handleDeleteVoucher}
         />
       )}
     </>
