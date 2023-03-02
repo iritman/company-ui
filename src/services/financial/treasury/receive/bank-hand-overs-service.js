@@ -64,9 +64,8 @@ export async function submitVoucher(handOverID) {
 }
 
 export async function deleteVoucher(handOverID) {
-  const { data } = await http.post(
-    `${apiEndpoint}/delete-voucher/${handOverID}`,
-    {}
+  const { data } = await http.delete(
+    `${apiEndpoint}/delete-voucher/${handOverID}`
   );
 
   return data;
