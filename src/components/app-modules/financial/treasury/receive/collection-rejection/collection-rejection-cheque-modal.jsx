@@ -223,6 +223,34 @@ const CollectionRejectionChequeModal = ({
 
   //------
 
+  const getOperationTypeID = (status_id) => {
+    let result = 0;
+
+    switch (status_id) {
+      // وصول
+      case 1:
+        result = 5;
+        break;
+      // واخواست
+      case 2:
+        result = 4;
+        break;
+      // واخواست بدون اقدام
+      case 3:
+        result = 6;
+        break;
+      default:
+        result = 0;
+        break;
+    }
+
+    return result;
+  };
+
+  const filtered_operations = operations.filter(
+    (o) => o.OperationTypeID === getOperationTypeID(record.StatusID)
+  );
+
   return (
     <ModalWindow
       isOpen={isOpen}
@@ -264,7 +292,7 @@ const CollectionRejectionChequeModal = ({
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.financial_operation}
-              dataSource={operations}
+              dataSource={filtered_operations}
               keyColumn="OperationID"
               valueColumn="Title"
               formConfig={formConfig}
