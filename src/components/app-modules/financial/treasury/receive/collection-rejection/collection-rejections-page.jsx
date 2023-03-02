@@ -348,9 +348,7 @@ const CollectionRejectionsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.approveReceiveReceipt(
-        selectedObject.CollectionRejectionID
-      );
+      const data = await service.approve(selectedObject.CollectionRejectionID);
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
@@ -359,8 +357,8 @@ const CollectionRejectionsPage = ({ pageName }) => {
 
       // Update records
       const collection_rejection_index = records.findIndex(
-        (ho) =>
-          ho.CollectionRejectionID === selectedObject.CollectionRejectionID
+        (cr) =>
+          cr.CollectionRejectionID === selectedObject.CollectionRejectionID
       );
       records[collection_rejection_index] = { ...selectedObject };
       setRecords([...records]);
@@ -378,9 +376,7 @@ const CollectionRejectionsPage = ({ pageName }) => {
     setProgress(true);
 
     try {
-      const data = await service.rejectHandOver(
-        selectedObject.CollectionRejectionID
-      );
+      const data = await service.reject(selectedObject.CollectionRejectionID);
 
       // Update selected object
       selectedObject.StatusID = 3; // Reject
@@ -389,8 +385,98 @@ const CollectionRejectionsPage = ({ pageName }) => {
 
       // Update records
       const collection_rejection_index = records.findIndex(
-        (ho) =>
-          ho.CollectionRejectionID === selectedObject.CollectionRejectionID
+        (cr) =>
+          cr.CollectionRejectionID === selectedObject.CollectionRejectionID
+      );
+      records[collection_rejection_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleUndoApprove = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.undoApprove(
+        selectedObject.CollectionRejectionID
+      );
+
+      // Update selected object
+      selectedObject.StatusID = 1; // In progress
+      selectedObject.StatusTitle = Words.collection_rejection_status_1;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const collection_rejection_index = records.findIndex(
+        (cr) =>
+          cr.CollectionRejectionID === selectedObject.CollectionRejectionID
+      );
+      records[collection_rejection_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleSubmitVoucher = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.submitVoucher(
+        selectedObject.CollectionRejectionID
+      );
+
+      const { VoucherID, Message } = data;
+
+      // Update selected object
+      selectedObject.SubmittedVoucherID = VoucherID;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const collection_rejection_index = records.findIndex(
+        (cr) =>
+          cr.CollectionRejectionID === selectedObject.CollectionRejectionID
+      );
+      records[collection_rejection_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      message.success(Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleDeleteVoucher = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.deleteVoucher(
+        selectedObject.CollectionRejectionID
+      );
+
+      // Update selected object
+      selectedObject.SubmittedVoucherID = 0;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const collection_rejection_index = records.findIndex(
+        (cr) =>
+          cr.CollectionRejectionID === selectedObject.CollectionRejectionID
       );
       records[collection_rejection_index] = { ...selectedObject };
       setRecords([...records]);
@@ -458,6 +544,9 @@ const CollectionRejectionsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onUndoApprove={handleUndoApprove}
+          onSubmitVoucher={handleSubmitVoucher}
+          onDeleteVoucher={handleDeleteVoucher}
         />
       )}
     </>

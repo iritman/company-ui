@@ -1157,6 +1157,8 @@ class Words extends Component {
       "برای برگشت از تایید درخواست دریافت اطمینان دارید؟",
     sure_to_undo_approve_bank_hand_over:
       "برای برگشت از تایید اعلامیه واگذاری به بانک اطمینان دارید؟",
+    sure_to_undo_approve_collection_rejection:
+      "برای برگشت از تایید اعلامیه وصول/واخواست اطمینان دارید؟",
   };
 
   static monthes = {

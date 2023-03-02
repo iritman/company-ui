@@ -56,6 +56,7 @@ const CollectionRejectionModal = ({
   ]);
   const [standardDetails, setStandardDetails] = useState([]);
   const [itemStatuses, setItemStatuses] = useState([]);
+  const [operations, setOperations] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
 
@@ -112,6 +113,7 @@ const CollectionRejectionModal = ({
         Currencies,
         StandardDetails,
         ItemStatuses,
+        Operations,
         HasSaveApproveAccess,
         HasRejectAccess,
       } = data;
@@ -120,6 +122,7 @@ const CollectionRejectionModal = ({
       setCurrencies(Currencies);
       setStandardDetails(StandardDetails);
       setItemStatuses(ItemStatuses);
+      setOperations(Operations);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
 
@@ -195,6 +198,10 @@ const CollectionRejectionModal = ({
       cheque_to_save.StatusID = cheque.StatusID;
       cheque_to_save.StatusTitle = itemStatuses.find(
         (s) => s.StatusID === cheque.StatusID
+      )?.Title;
+      cheque_to_save.OperationID = cheque.OperationID;
+      cheque_to_save.OperationTitle = operations.find(
+        (o) => o.OperationID === cheque.OperationID
       )?.Title;
 
       //--- managing unique id (UID) for new items
@@ -288,6 +295,11 @@ const CollectionRejectionModal = ({
       demand_to_save.StatusID = demand.StatusID;
       demand_to_save.StatusTitle = itemStatuses.find(
         (s) => s.StatusID === demand.StatusID
+      )?.Title;
+
+      demand_to_save.OperationID = demand.OperationID;
+      demand_to_save.OperationTitle = operations.find(
+        (o) => o.OperationID === demand.OperationID
       )?.Title;
 
       //--- managing unique id (UID) for new items

@@ -52,6 +52,38 @@ export async function approve(collection_rejection_id) {
   return data;
 }
 
+export async function undoApprove(collection_rejection_id) {
+  const { data } = await http.post(
+    `${apiEndpoint}/undo-approve/${collection_rejection_id}`,
+    {}
+  );
+
+  return data;
+}
+
+export async function submitVoucher(collection_rejection_id) {
+  const { data } = await http.post(
+    `${apiEndpoint}/submit-voucher/${collection_rejection_id}`,
+    {}
+  );
+
+  return data;
+}
+
+export async function deleteVoucher(collection_rejection_id) {
+  const { data } = await http.delete(
+    `${apiEndpoint}/delete-voucher/${collection_rejection_id}`
+  );
+
+  return data;
+}
+
+export async function viewVoucher(voucherID) {
+  const { data } = await http.get(`${apiEndpoint}/view-voucher/${voucherID}`);
+
+  return data;
+}
+
 export async function deleteData(recordID) {
   const { data } = await http.delete(`${apiEndpoint}/${recordID}`);
 
@@ -88,6 +120,10 @@ const service = {
   saveItem,
   reject,
   approve,
+  undoApprove,
+  submitVoucher,
+  deleteVoucher,
+  viewVoucher,
   deleteData,
   deleteItem,
   getCheques,

@@ -23,12 +23,14 @@ const schema = {
   ItemID: Joi.number().required(),
   ChequeID: Joi.number().min(1).required(),
   StatusID: Joi.number().min(1).required(),
+  OperationID: Joi.number().min(1).required(),
 };
 
 const initRecord = {
   ItemID: 0,
   ChequeID: 0,
   StatusID: 0,
+  OperationID: 0,
 };
 
 const formRef = React.createRef();
@@ -47,6 +49,7 @@ const CollectionRejectionChequeModal = ({
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
 
+  const [operations, setOperations] = useState([]);
   const [cheques, setCheques] = useState([]);
 
   const formConfig = {
@@ -60,6 +63,7 @@ const CollectionRejectionChequeModal = ({
   const clearRecord = () => {
     record.ChequeID = 0;
     record.StatusID = 0;
+    record.OperationID = 0;
 
     setRecord(record);
     setErrors({});
@@ -76,13 +80,18 @@ const CollectionRejectionChequeModal = ({
     setProgress(true);
 
     try {
-      const data = await service.getCheques(companyBankAccountID);
+      let data = await service.getCheques(companyBankAccountID);
 
       setCheques(
         data.Cheques.filter(
           (c) => !currentCheques.find((ch) => ch.ChequeID === c.ChequeID)
         )
       );
+
+      //------
+
+      data = await service.getParams();
+      setOperations(data.Operations);
     } catch (ex) {
       handleError(ex);
     }
@@ -242,11 +251,21 @@ const CollectionRejectionChequeModal = ({
               />
             </Col>
           )}
-          <Col xs={24}>
+          <Col xs={24} md={12}>
             <DropdownItem
               title={Words.status}
               dataSource={itemStatuses}
               keyColumn="StatusID"
+              valueColumn="Title"
+              formConfig={formConfig}
+              required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.financial_operation}
+              dataSource={operations}
+              keyColumn="OperationID"
               valueColumn="Title"
               formConfig={formConfig}
               required

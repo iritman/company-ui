@@ -91,6 +91,28 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
       ),
     },
     {
+      title: Words.financial_operation,
+      width: 200,
+      align: "center",
+      //   dataIndex: "OperationTitle",
+      sorter: getSorter("OperationTitle"),
+      render: (record) => (
+        <Text style={{ color: Colors.purple[6] }}>
+          {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.duration,
+      width: 120,
+      align: "center",
+      dataIndex: "DurationTypeTitle",
+      sorter: getSorter("DurationTypeTitle"),
+      render: (DurationTypeTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
+      ),
+    },
+    {
       title: Words.account_no,
       width: 150,
       align: "center",
@@ -253,6 +275,40 @@ const getDemandColumns = (access, statusID, onEdit, onDelete) => {
       render: (FrontSideAccountTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
           {utils.farsiNum(FrontSideAccountTitle)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.status,
+      width: 150,
+      align: "center",
+      dataIndex: "StatusTitle",
+      sorter: getSorter("StatusTitle"),
+      render: (StatusTitle) => (
+        <Text style={{ color: Colors.blue[6] }}>{StatusTitle}</Text>
+      ),
+    },
+    {
+      title: Words.bank_hand_over_id,
+      width: 220,
+      align: "center",
+      dataIndex: "HandOverID",
+      sorter: getSorter("HandOverID"),
+      render: (HandOverID) => (
+        <Text style={{ color: Colors.grey[6] }}>
+          {utils.farsiNum(HandOverID)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.financial_operation,
+      width: 200,
+      align: "center",
+      //   dataIndex: "OperationTitle",
+      sorter: getSorter("OperationTitle"),
+      render: (record) => (
+        <Text style={{ color: Colors.purple[6] }}>
+          {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
         </Text>
       ),
     },
