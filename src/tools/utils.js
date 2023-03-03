@@ -575,6 +575,23 @@ export function getDescription(standard_details_text, details_text) {
   return result;
 }
 
+export function setDefaultCurrency(
+  set_record,
+  init_record,
+  load_fields_value,
+  form_ref,
+  currencies
+) {
+  const rec = { ...init_record };
+  const default_currency = currencies.find((c) => c.IsDefault === true);
+  if (default_currency) {
+    rec.CurrencyID = default_currency.CurrencyID;
+  }
+
+  set_record(rec);
+  load_fields_value(form_ref, rec);
+}
+
 export const VALID_REGEX =
   /^[آ-یa-zA-Z0-9،,:<>?-_=+()*&^%$#@!~{}؟۰-۹.\-()\s]+$/;
 
@@ -623,6 +640,7 @@ const methods = {
   textSeparator,
   hasSelectedFilter,
   getDescription,
+  setDefaultCurrency,
 };
 
 export default methods;
