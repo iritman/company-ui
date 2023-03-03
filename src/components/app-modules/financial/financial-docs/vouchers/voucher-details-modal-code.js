@@ -46,7 +46,7 @@ export const getColumns = () => {
             <Space direction="vertical">
               <Text>{utils.farsiNum(record.TafsilAccountTitle_Level4)}</Text>
               <Text style={{ color: Colors.purple[7] }}>
-                {utils.farsiNum(record.TafsilAccountID_Level4)}
+                {utils.farsiNum(record.TafsilCode_Level4)}
               </Text>
             </Space>
           )}
@@ -65,7 +65,7 @@ export const getColumns = () => {
             <Space direction="vertical">
               <Text>{utils.farsiNum(record.TafsilAccountTitle_Level5)}</Text>
               <Text style={{ color: Colors.purple[7] }}>
-                {utils.farsiNum(record.TafsilAccountID_Level5)}
+                {utils.farsiNum(record.TafsilCode_Level5)}
               </Text>
             </Space>
           )}
@@ -84,7 +84,7 @@ export const getColumns = () => {
             <Space direction="vertical">
               <Text>{utils.farsiNum(record.TafsilAccountTitle_Level6)}</Text>
               <Text style={{ color: Colors.purple[7] }}>
-                {utils.farsiNum(record.TafsilAccountID_Level6)}
+                {utils.farsiNum(record.TafsilCode_Level6)}
               </Text>
             </Space>
           )}
