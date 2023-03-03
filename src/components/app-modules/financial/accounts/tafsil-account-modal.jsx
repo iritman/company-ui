@@ -87,9 +87,6 @@ const TafsilAccountModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
   useMount(async () => {
     resetContext();
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -116,6 +113,16 @@ const TafsilAccountModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
 
           setModuleItems(ModuleItems);
         }
+
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
       }
 
       setTafsilTypes(TafsilTypes);

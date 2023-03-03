@@ -106,12 +106,6 @@ const ReceiveReceiptPaymentNoticeModal = ({
   };
 
   useMount(async () => {
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
-
-    //------
-
     setProgress(true);
 
     try {
@@ -138,14 +132,7 @@ const ReceiveReceiptPaymentNoticeModal = ({
           selectedObject.FrontSideAccountID
         );
 
-        const {
-          FrontSideAccountID,
-          // FrontSideAccountTitle,
-          // TafsilCode,
-          // TafsilTypeID,
-          // TafsilTypeTitle,
-          Title,
-        } = front_side_account;
+        const { FrontSideAccountID, Title } = front_side_account;
 
         setFrontSideAccounts([
           {
@@ -153,6 +140,16 @@ const ReceiveReceiptPaymentNoticeModal = ({
             Title,
           },
         ]);
+
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
       }
     } catch (ex) {
       handleError(ex);

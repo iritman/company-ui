@@ -89,12 +89,6 @@ const PaymentOrderReceiveNoticeModal = ({
   };
 
   useMount(async () => {
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
-
-    //------
-
     setProgress(true);
 
     try {
@@ -155,6 +149,16 @@ const PaymentOrderReceiveNoticeModal = ({
             setCheckPaymentBase(true);
           }
         }
+
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
       }
     } catch (ex) {
       handleError(ex);

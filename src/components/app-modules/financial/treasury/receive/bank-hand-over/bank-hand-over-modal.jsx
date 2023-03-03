@@ -100,9 +100,6 @@ const BankHandOverModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord({ ...initRecord });
-    loadFieldsValue(formRef, { ...initRecord });
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -131,6 +128,16 @@ const BankHandOverModal = ({
 
       if (selectedObject !== null) {
         setSelectedTab(selectedObject.ItemType === 1 ? "cheques" : "demands");
+
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
       }
     } catch (ex) {
       handleError(ex);

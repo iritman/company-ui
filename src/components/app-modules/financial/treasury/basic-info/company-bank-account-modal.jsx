@@ -115,10 +115,6 @@ const CompanyBankAccountModal = ({
   useMount(async () => {
     resetContext();
 
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
-
     //------
 
     setProgress(true);
@@ -132,6 +128,18 @@ const CompanyBankAccountModal = ({
       setBranches(Branches);
       setCurrencies(Currencies);
       setBankAccountTypes(BankAccountTypes);
+
+      if (selectedObject) {
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
+      }
     } catch (err) {
       handleError(err);
     }

@@ -4,7 +4,7 @@ import { Form, Row, Col, Tabs } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../../common/modal-window";
 import Words from "../../../../../resources/words";
-// import utils from "../../../../../tools/utils";
+import utils from "../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
@@ -91,10 +91,6 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   useMount(async () => {
     resetContext();
 
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
-
     //------
 
     setProgress(true);
@@ -107,6 +103,18 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       setEmployees(Employees);
       setCurrencies(Currencies);
       setStandardDetails(StandardDetails);
+
+      if (selectedObject) {
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
+      }
     } catch (err) {
       handleError(err);
     }

@@ -4,6 +4,7 @@ import { Form, Row, Col, Divider, Typography } from "antd";
 import ModalWindow from "../../../../../common/modal-window";
 import Words from "../../../../../../resources/words";
 import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import { v4 as uuid } from "uuid";
 import {
   validateForm,
@@ -93,9 +94,6 @@ const PaymentRequestModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord({ ...initRecord });
-    loadFieldsValue(formRef, { ...initRecord });
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -126,6 +124,16 @@ const PaymentRequestModal = ({
         setFrontSideAccounts([
           { FrontSideAccountID, Title: FrontSideAccountTitle },
         ]);
+
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
       }
     } catch (ex) {
       handleError(ex);

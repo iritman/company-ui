@@ -282,9 +282,6 @@ const ReceiveRequestModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord({ ...initRecord });
-    loadFieldsValue(formRef, { ...initRecord });
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -320,6 +317,16 @@ const ReceiveRequestModal = ({
         let account_title = `${TafsilCode} - ${FrontSideAccountTitle} [${TafsilTypeTitle}]`;
 
         setFrontSideAccounts([{ FrontSideAccountID, Title: account_title }]);
+
+        initModal(formRef, selectedObject, setRecord);
+      } else {
+        utils.setDefaultCurrency(
+          setRecord,
+          initRecord,
+          loadFieldsValue,
+          formRef,
+          Currencies
+        );
       }
     } catch (ex) {
       handleError(ex);

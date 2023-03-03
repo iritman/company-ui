@@ -171,7 +171,7 @@ const StructureMoeinModal = ({
 
     setProgress(false);
   });
-  // console.log(record);
+
   const isEdit = selectedObject !== null;
 
   const handleSubmit = async () => {
