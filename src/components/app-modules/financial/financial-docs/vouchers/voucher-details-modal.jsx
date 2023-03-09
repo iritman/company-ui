@@ -48,7 +48,7 @@ const VoucherDetailsModal = ({ selectedObject, isOpen, onOk }) => {
       ]}
       showIcon={false}
       onCancel={onOk}
-      width={1200}
+      width={1700}
     >
       <Row gutter={[10, 10]}>
         <Col xs={24}>
