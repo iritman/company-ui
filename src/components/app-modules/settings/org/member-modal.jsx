@@ -385,19 +385,15 @@ const MemberModal = ({
 
   const handleCreateTafsilAccount = async () => {
     if (selectedObject.TafsilInfo.length === 0) {
+      setProgress(true);
+
       try {
-        const data = await service.createTafsilAccount(
-          7,
-          "Members",
-          selectedObject.MemberID
-        ); // PageID: 7 => Members page
-
-        onCreateTafsilAccount(data.TafsilInfo);
-
-        message.success(data.Message);
+        await onCreateTafsilAccount();
       } catch (ex) {
         handleError(ex);
       }
+
+      setProgress(false);
     }
   };
 
@@ -683,8 +679,9 @@ const MemberModal = ({
           okText={Words.yes}
           cancelText={Words.no}
           icon={<QuestionIcon style={{ color: "red" }} />}
+          disabled={is_disabled}
         >
-          <Button key="submit-button" type="primary">
+          <Button key="submit-button" type="primary" loading={progress}>
             {Words.create_tafsil_account}
           </Button>
         </Popconfirm>,
@@ -701,8 +698,6 @@ const MemberModal = ({
       inProgress={progress}
       disabled={is_disabled}
       footer={getFooterButtons()}
-      // onClear={clearRecord}
-      // onSubmit={handleSubmit}
       onCancel={onCancel}
       width={750}
     >

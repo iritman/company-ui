@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import {
   Button,
-  Modal,
   Row,
   Col,
   Typography,
@@ -11,7 +10,6 @@ import {
   Space,
   Tabs,
   Popconfirm,
-  message,
 } from "antd";
 import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
@@ -22,6 +20,7 @@ import MemberProfileImage from "../../../common/member-profile-image";
 import TafsilInfoViewer from "./../../../common/tafsil-info-viewer";
 import { handleError } from "../../../../tools/form-manager";
 import service from "../../../../services/financial/accounts/tafsil-accounts-service";
+import ModalWindow from "../../../common/modal-window";
 
 const { Text } = Typography;
 
@@ -35,6 +34,7 @@ const MemberDetailsModal = ({
 
   const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
     useState(false);
+  const [progress, setProgress] = useState(false);
 
   const {
     MemberID,
@@ -174,15 +174,15 @@ const MemberDetailsModal = ({
 
   const handleCreateTafsilAccount = async () => {
     if (TafsilInfo.length === 0) {
+      setProgress(true);
+
       try {
-        const data = await service.createTafsilAccount(7, "Members", MemberID); // PageID: 7 => Members page
-
-        onCreateTafsilAccount(data.TafsilInfo);
-
-        message.success(data.Message);
+        await onCreateTafsilAccount();
       } catch (ex) {
         handleError(ex);
       }
+
+      setProgress(false);
     }
   };
 
@@ -201,8 +201,9 @@ const MemberDetailsModal = ({
           okText={Words.yes}
           cancelText={Words.no}
           icon={<QuestionIcon style={{ color: "red" }} />}
+          disabled={progress}
         >
-          <Button key="submit-button" type="primary">
+          <Button key="submit-button" type="primary" loading={progress}>
             {Words.create_tafsil_account}
           </Button>
         </Popconfirm>,
@@ -213,12 +214,11 @@ const MemberDetailsModal = ({
   };
 
   return (
-    <Modal
-      open={isOpen}
-      maskClosable={false}
-      centered={true}
+    <ModalWindow
+      isOpen={isOpen}
       title={Words.more_details}
       footer={getFooterButtons()}
+      disabled={progress}
       onCancel={onOk}
       width={750}
     >
@@ -250,7 +250,7 @@ const MemberDetailsModal = ({
           </Row>
         </article>
       </section>
-    </Modal>
+    </ModalWindow>
   );
 };
 

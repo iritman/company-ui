@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
@@ -8,6 +8,7 @@ import {
 import Words from "../../../../resources/words";
 import utils from "../../../../tools/utils";
 import service from "../../../../services/settings/org/members-service";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -178,15 +179,29 @@ const MembersPage = ({ pageName }) => {
       )
     : [];
 
-  const handleCreateTafsilAccount = (tafsil_info) => {
-    selectedObject.TafsilInfo = tafsil_info;
-    setSelectedObject({ ...selectedObject });
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        7,
+        "Members",
+        selectedObject.MemberID
+      ); // PageID: 7 => Members page
 
-    const inx = records.findIndex(
-      (r) => r.MemberID === selectedObject.MemberID
-    );
-    records[inx].TafsilInfo = tafsil_info;
-    setRecords([...records]);
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.MemberID === selectedObject.MemberID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
   };
 
   //------
