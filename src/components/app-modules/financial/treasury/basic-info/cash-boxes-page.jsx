@@ -1,11 +1,12 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
+import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "./../../../../../resources/words";
 import Colors from "./../../../../../resources/colors";
 import utils from "./../../../../../tools/utils";
 import service from "./../../../../../services/financial/treasury/basic-info/cash-boxes-service";
+import tafsilAccountService from "./../../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -143,6 +144,31 @@ const CashBoxesPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "CashBoxes",
+        "CashBoxes",
+        selectedObject.CashBoxID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.CashBoxID === selectedObject.CashBoxID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -174,6 +200,7 @@ const CashBoxesPage = ({ pageName }) => {
           selectedObject={selectedObject}
           onOk={handleSave}
           onCancel={handleCloseModal}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
 
@@ -186,6 +213,7 @@ const CashBoxesPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
     </>

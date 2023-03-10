@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { useMount } from "react-use";
 import {
   Button,
-  Modal,
   Row,
   Col,
   Typography,
@@ -9,7 +9,9 @@ import {
   Alert,
   Tabs,
   Space,
+  Popconfirm,
 } from "antd";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
@@ -18,11 +20,23 @@ import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import TafsilInfoViewer from "../../../../common/tafsil-info-viewer";
+import { handleError } from "../../../../../tools/form-manager";
+import service from "../../../../../services/financial/accounts/tafsil-accounts-service";
+import ModalWindow from "../../../../common/modal-window";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];
 
-const CashBoxDetailsModal = ({ selectedObject, isOpen, onOk }) => {
+const CashBoxDetailsModal = ({
+  selectedObject,
+  isOpen,
+  onOk,
+  onCreateTafsilAccount,
+}) => {
+  const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
+    useState(false);
+  const [progress, setProgress] = useState(false);
+
   const {
     CashBoxID,
     Title,
@@ -33,6 +47,20 @@ const CashBoxDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     IsActive,
     TafsilInfo,
   } = selectedObject;
+
+  useMount(async () => {
+    if (TafsilInfo.length === 0) {
+      try {
+        const data = await service.getTafsilAccountAccesses("Members");
+
+        const { HasCreateTafsilAccountAccess } = data;
+
+        setHasCreateTafsilAccountAccess(HasCreateTafsilAccountAccess);
+      } catch (ex) {
+        handleError(ex);
+      }
+    }
+  });
 
   const items = [
     {
@@ -97,17 +125,61 @@ const CashBoxDetailsModal = ({ selectedObject, isOpen, onOk }) => {
     },
   ];
 
+  const handleCreateTafsilAccount = async () => {
+    if (TafsilInfo.length === 0) {
+      setProgress(true);
+
+      try {
+        await onCreateTafsilAccount();
+      } catch (ex) {
+        handleError(ex);
+      }
+
+      setProgress(false);
+    }
+  };
+
+  const getFooterButtons = () => {
+    let buttons = [
+      <Button key="close-button" onClick={onOk}>
+        {Words.confirm}
+      </Button>,
+    ];
+
+    if (hasCreateTafsilAccountAccess && TafsilInfo.length === 0) {
+      buttons = [
+        <Popconfirm
+          title={Words.questions.sure_to_create_tafsil_account}
+          onConfirm={handleCreateTafsilAccount}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+          disabled={progress}
+        >
+          <Button key="submit-button" type="primary" loading={progress}>
+            {Words.create_tafsil_account}
+          </Button>
+        </Popconfirm>,
+        ...buttons,
+      ];
+    }
+    return buttons;
+  };
+
   return (
-    <Modal
-      open={isOpen}
-      maskClosable={false}
-      centered={true}
+    <ModalWindow
+      isOpen={isOpen}
+      // open={isOpen}
+      // maskClosable={false}
+      // centered={true}
       title={Words.more_details}
-      footer={[
-        <Button key="close-button" onClick={onOk}>
-          {Words.close}
-        </Button>,
-      ]}
+      footer={getFooterButtons()}
+      disabled={progress}
+      // footer={[
+      //   <Button key="close-button" onClick={onOk}>
+      //     {Words.close}
+      //   </Button>,
+      // ]}
       onCancel={onOk}
       width={750}
     >
@@ -134,7 +206,7 @@ const CashBoxDetailsModal = ({ selectedObject, isOpen, onOk }) => {
           </Row>
         </article>
       </section>
-    </Modal>
+    </ModalWindow>
   );
 };
 
