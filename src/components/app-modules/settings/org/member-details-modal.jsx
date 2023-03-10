@@ -65,7 +65,7 @@ const MemberDetailsModal = ({
   useMount(async () => {
     if (TafsilInfo.length === 0) {
       try {
-        const data = await service.getTafsilAccountAccesses(7); // PageID: 7 => Members page
+        const data = await service.getTafsilAccountAccesses("Members");
 
         const { HasCreateTafsilAccountAccess } = data;
 

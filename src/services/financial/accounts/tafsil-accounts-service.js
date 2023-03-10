@@ -9,8 +9,8 @@ export async function getParams() {
   return data;
 }
 
-export async function getTafsilAccountAccesses(pageID) {
-  const { data } = await http.get(`${apiEndpoint}/accesses/${pageID}`);
+export async function getTafsilAccountAccesses(pageName) {
+  const { data } = await http.get(`${apiEndpoint}/accesses/${pageName}`);
 
   return data;
 }
@@ -39,9 +39,9 @@ export async function searchData(searchText) {
   return data;
 }
 
-export async function createTafsilAccount(pageID, tableName, itemID) {
+export async function createTafsilAccount(pageName, tableName, itemID) {
   const { data } = await http.post(`${apiEndpoint}/create`, {
-    pageID,
+    pageName,
     tableName,
     itemID,
   });

@@ -182,10 +182,10 @@ const MembersPage = ({ pageName }) => {
   const handleCreateTafsilAccount = async () => {
     if (selectedObject) {
       const data = await tafsilAccountService.createTafsilAccount(
-        7,
+        "Members",
         "Members",
         selectedObject.MemberID
-      ); // PageID: 7 => Members page
+      );
 
       const { TafsilInfo, Message } = data;
 
