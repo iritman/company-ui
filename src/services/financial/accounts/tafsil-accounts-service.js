@@ -9,6 +9,12 @@ export async function getParams() {
   return data;
 }
 
+export async function getTafsilAccountAccesses(pageID) {
+  const { data } = await http.get(`${apiEndpoint}/accesses/${pageID}`);
+
+  return data;
+}
+
 export async function getAllData() {
   const { data } = await http.get(`${apiEndpoint}`);
 
@@ -33,6 +39,16 @@ export async function searchData(searchText) {
   return data;
 }
 
+export async function createTafsilAccount(pageID, tableName, itemID) {
+  const { data } = await http.post(`${apiEndpoint}/create`, {
+    pageID,
+    tableName,
+    itemID,
+  });
+
+  return data;
+}
+
 export async function saveData(record) {
   const { data } = await http.post(`${apiEndpoint}`, record);
 
@@ -47,10 +63,12 @@ export async function deleteData(recordID) {
 
 const service = {
   getParams,
+  getTafsilAccountAccesses,
   getAllData,
   getNewTafsilCode,
   getModuleItems,
   searchData,
+  createTafsilAccount,
   saveData,
   deleteData,
 };

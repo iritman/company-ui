@@ -404,6 +404,7 @@ class Words extends Component {
   static level_8 = "سطح هشت";
   static latest_tafsil_code = "آخرین کد تفصیل صادر شده";
   static latest_tafsil_type_first_pre_code = "آخرین کد شروع ثبت شده";
+  static create_tafsil_account = "ایجاد حساب تفصیلی";
 
   static financial_docs = "اسناد";
 
@@ -1159,6 +1160,7 @@ class Words extends Component {
       "برای برگشت از تایید اعلامیه واگذاری به بانک اطمینان دارید؟",
     sure_to_undo_approve_collection_rejection:
       "برای برگشت از تایید اعلامیه وصول/واخواست اطمینان دارید؟",
+    sure_to_create_tafsil_account: "برای ایجاد حساب تفصیلی اطمینان دارید؟",
   };
 
   static monthes = {

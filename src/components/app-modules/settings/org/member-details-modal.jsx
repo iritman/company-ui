@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useMount } from "react-use";
 import {
   Button,
   Modal,
@@ -9,18 +10,31 @@ import {
   Descriptions,
   Space,
   Tabs,
+  Popconfirm,
+  message,
 } from "antd";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import { getGenderTitle } from "../../../../tools/general";
 import MemberProfileImage from "../../../common/member-profile-image";
 import TafsilInfoViewer from "./../../../common/tafsil-info-viewer";
+import { handleError } from "../../../../tools/form-manager";
+import service from "../../../../services/financial/accounts/tafsil-accounts-service";
 
 const { Text } = Typography;
 
-const MemberDetailsModal = ({ member, isOpen, onOk }) => {
+const MemberDetailsModal = ({
+  member,
+  isOpen,
+  onOk,
+  onCreateTafsilAccount,
+}) => {
   const valueColor = Colors.blue[7];
+
+  const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
+    useState(false);
 
   const {
     MemberID,
@@ -47,6 +61,20 @@ const MemberDetailsModal = ({ member, isOpen, onOk }) => {
     IsActive,
     TafsilInfo,
   } = member;
+
+  useMount(async () => {
+    if (TafsilInfo.length === 0) {
+      try {
+        const data = await service.getTafsilAccountAccesses(7); // PageID: 7 => Members page
+
+        const { HasCreateTafsilAccountAccess } = data;
+
+        setHasCreateTafsilAccountAccess(HasCreateTafsilAccountAccess);
+      } catch (ex) {
+        handleError(ex);
+      }
+    }
+  });
 
   const items = [
     {
@@ -75,7 +103,8 @@ const MemberDetailsModal = ({ member, isOpen, onOk }) => {
           </Descriptions.Item>
           <Descriptions.Item label={Words.birth_date}>
             <Text style={{ color: valueColor }}>
-              {utils.farsiNum(utils.slashDate(`${BirthDate}`))}
+              {BirthDate.length > 0 &&
+                utils.farsiNum(utils.slashDate(`${BirthDate}`))}
             </Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.mobile}>
@@ -143,17 +172,53 @@ const MemberDetailsModal = ({ member, isOpen, onOk }) => {
     },
   ];
 
+  const handleCreateTafsilAccount = async () => {
+    if (TafsilInfo.length === 0) {
+      try {
+        const data = await service.createTafsilAccount(7, "Members", MemberID); // PageID: 7 => Members page
+
+        onCreateTafsilAccount(data.TafsilInfo);
+
+        message.success(data.Message);
+      } catch (ex) {
+        handleError(ex);
+      }
+    }
+  };
+
+  const getFooterButtons = () => {
+    let buttons = [
+      <Button key="close-button" onClick={onOk}>
+        {Words.confirm}
+      </Button>,
+    ];
+
+    if (hasCreateTafsilAccountAccess && TafsilInfo.length === 0) {
+      buttons = [
+        <Popconfirm
+          title={Words.questions.sure_to_create_tafsil_account}
+          onConfirm={handleCreateTafsilAccount}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+        >
+          <Button key="submit-button" type="primary">
+            {Words.create_tafsil_account}
+          </Button>
+        </Popconfirm>,
+        ...buttons,
+      ];
+    }
+    return buttons;
+  };
+
   return (
     <Modal
       open={isOpen}
       maskClosable={false}
       centered={true}
       title={Words.more_details}
-      footer={[
-        <Button key="submit-button" type="primary" onClick={onOk}>
-          {Words.confirm}
-        </Button>,
-      ]}
+      footer={getFooterButtons()}
       onCancel={onOk}
       width={750}
     >

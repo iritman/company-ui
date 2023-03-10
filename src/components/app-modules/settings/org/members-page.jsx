@@ -178,6 +178,17 @@ const MembersPage = ({ pageName }) => {
       )
     : [];
 
+  const handleCreateTafsilAccount = (tafsil_info) => {
+    selectedObject.TafsilInfo = tafsil_info;
+    setSelectedObject({ ...selectedObject });
+
+    const inx = records.findIndex(
+      (r) => r.MemberID === selectedObject.MemberID
+    );
+    records[inx].TafsilInfo = tafsil_info;
+    setRecords([...records]);
+  };
+
   //------
 
   return (
@@ -219,6 +230,7 @@ const MembersPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
           isOpen={showDetails}
           member={selectedObject}
         />
