@@ -1,11 +1,12 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
+import { Spin, Row, Col, Typography, Button, message } from "antd";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "./../../../../../resources/words";
 import Colors from "./../../../../../resources/colors";
 import utils from "./../../../../../tools/utils";
 import service from "./../../../../../services/financial/treasury/basic-info/company-bank-accounts-service";
+import tafsilAccountService from "./../../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -173,6 +174,31 @@ const CompanyBankAccountsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "CompanyBankAccounts",
+        "CompanyBankAccounts",
+        selectedObject.AccountID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.AccountID === selectedObject.AccountID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -204,6 +230,7 @@ const CompanyBankAccountsPage = ({ pageName }) => {
           selectedObject={selectedObject}
           onOk={handleSave}
           onCancel={handleCloseModal}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
 
@@ -216,6 +243,7 @@ const CompanyBankAccountsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
     </>
