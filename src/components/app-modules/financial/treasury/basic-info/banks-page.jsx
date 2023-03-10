@@ -1,10 +1,11 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import service from "../../../../../services/financial/treasury/basic-info/banks-service";
+import tafsilAccountService from "../../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -123,6 +124,29 @@ const BanksPage = ({ pageName }) => {
       )
     : [];
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "Banks",
+        "Banks",
+        selectedObject.BankID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex((r) => r.BankID === selectedObject.BankID);
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -153,6 +177,7 @@ const BanksPage = ({ pageName }) => {
         <BankModal
           onOk={handleSave}
           onCancel={handleCloseModal}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
           isOpen={showModal}
           selectedObject={selectedObject}
         />
@@ -166,6 +191,7 @@ const BanksPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
     </>
