@@ -219,6 +219,7 @@ const MembersPage = ({ pageName }) => {
         <MemberModal
           onOk={handleSave}
           onCancel={handleCloseModal}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
           isOpen={showModal}
           selectedObject={selectedObject}
         />

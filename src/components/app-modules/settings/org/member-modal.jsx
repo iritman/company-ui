@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useMount } from "react-use";
 import {
   Form,
@@ -10,11 +10,13 @@ import {
   Space,
   Tooltip,
   Tabs,
+  Popconfirm,
 } from "antd";
 import {
   UserOutlined as UserIcon,
   CloseOutlined as RemoveIcon,
   ReloadOutlined as ReloadIcon,
+  QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "../../../common/modal-window";
@@ -35,6 +37,7 @@ import SwitchItem from "../../../form-controls/switch-item";
 import FileItem from "../../../form-controls/file-item";
 import TextItem from "../../../form-controls/text-item";
 import membersService from "../../../../services/settings/org/members-service";
+import service from "../../../../services/financial/accounts/tafsil-accounts-service";
 import fileService from "../../../../services/file-service";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
@@ -230,7 +233,16 @@ const handleSubmitWithFile = async (
   }
 };
 
-const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const MemberModal = ({
+  isOpen,
+  selectedObject,
+  onOk,
+  onCancel,
+  onCreateTafsilAccount,
+}) => {
+  const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
+    useState(false);
+
   const {
     progress,
     setProgress,
@@ -299,6 +311,14 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     setSelectedProvinceID(
       selectedObject !== null ? selectedObject.ProvinceID : 0
     );
+
+    //------
+
+    const access_data = await service.getTafsilAccountAccesses(7); // PageID: 7 => Members page
+
+    const { HasCreateTafsilAccountAccess } = access_data;
+
+    setHasCreateTafsilAccountAccess(HasCreateTafsilAccountAccess);
   });
 
   useEffect(() => {
@@ -362,6 +382,24 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       .regex(/^[a-zA-Z0-9-._!@#$%^&*]{7,31}$/)
       .label(Words.password);
   }
+
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject.TafsilInfo.length === 0) {
+      try {
+        const data = await service.createTafsilAccount(
+          7,
+          "Members",
+          selectedObject.MemberID
+        ); // PageID: 7 => Members page
+
+        onCreateTafsilAccount(data.TafsilInfo);
+
+        message.success(data.Message);
+      } catch (ex) {
+        handleError(ex);
+      }
+    }
+  };
 
   //------
 
@@ -615,14 +653,56 @@ const MemberModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     ];
   }
 
+  const is_disabled = validateForm({ record, schema }) && true;
+
+  const getFooterButtons = () => {
+    let buttons = [
+      <Button key="clear-button" onClick={clearRecord}>
+        {Words.clear}
+      </Button>,
+      <Button
+        key="submit-button"
+        type="primary"
+        onClick={handleSubmit}
+        loading={progress}
+        disabled={is_disabled}
+      >
+        {Words.submit}
+      </Button>,
+    ];
+
+    if (
+      selectedObject &&
+      hasCreateTafsilAccountAccess &&
+      selectedObject.TafsilInfo.length === 0
+    ) {
+      buttons = [
+        <Popconfirm
+          title={Words.questions.sure_to_create_tafsil_account}
+          onConfirm={handleCreateTafsilAccount}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+        >
+          <Button key="submit-button" type="primary">
+            {Words.create_tafsil_account}
+          </Button>
+        </Popconfirm>,
+        ...buttons,
+      ];
+    }
+    return buttons;
+  };
+
   return (
     <ModalWindow
       isOpen={isOpen}
       isEdit={isEdit}
       inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
+      disabled={is_disabled}
+      footer={getFooterButtons()}
+      // onClear={clearRecord}
+      // onSubmit={handleSubmit}
       onCancel={onCancel}
       width={750}
     >
