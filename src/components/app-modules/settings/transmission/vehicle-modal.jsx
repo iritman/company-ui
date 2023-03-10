@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tabs } from "antd";
+import { Form, Row, Col, Tabs, Button, Popconfirm } from "antd";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -22,6 +23,7 @@ import TextItem from "./../../../form-controls/text-item";
 import DropdownItem from "./../../../form-controls/dropdown-item";
 import NumericInputItem from "./../../../form-controls/numeric-input-item";
 import service from "../../../../services/settings/transmission/vehicles-service";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 import TafsilInfoViewer from "../../../common/tafsil-info-viewer";
 
 const schema = {
@@ -57,7 +59,16 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const VehicleBrandModal = ({
+  isOpen,
+  selectedObject,
+  onCancel,
+  onOk,
+  onCreateTafsilAccount,
+}) => {
+  const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
+    useState(false);
+
   const {
     progress,
     setProgress,
@@ -109,6 +120,16 @@ const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
       setTypes(VehicleTypes);
       setBrands(Brands);
       setModels(Models);
+
+      //------
+
+      const access_data = await tafsilAccountService.getTafsilAccountAccesses(
+        "Vehicles"
+      );
+
+      const { HasCreateTafsilAccountAccess } = access_data;
+
+      setHasCreateTafsilAccountAccess(HasCreateTafsilAccountAccess);
     } catch (err) {
       handleError(err);
     }
@@ -139,6 +160,20 @@ const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
   const isEdit = selectedObject !== null;
 
   const filteredModels = models.filter((m) => m.BrandID === record.BrandID);
+
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject.TafsilInfo.length === 0) {
+      setProgress(true);
+
+      try {
+        await onCreateTafsilAccount();
+      } catch (ex) {
+        handleError(ex);
+      }
+
+      setProgress(false);
+    }
+  };
 
   //------
 
@@ -254,14 +289,54 @@ const VehicleBrandModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     ];
   }
 
+  const is_disabled = validateForm({ record, schema }) && true;
+
+  const getFooterButtons = () => {
+    let buttons = [
+      <Button key="clear-button" onClick={clearRecord}>
+        {Words.clear}
+      </Button>,
+      <Button
+        key="submit-button"
+        type="primary"
+        onClick={handleSubmit}
+        loading={progress}
+        disabled={is_disabled}
+      >
+        {Words.submit}
+      </Button>,
+    ];
+
+    if (
+      selectedObject &&
+      hasCreateTafsilAccountAccess &&
+      selectedObject.TafsilInfo.length === 0
+    ) {
+      buttons = [
+        <Popconfirm
+          title={Words.questions.sure_to_create_tafsil_account}
+          onConfirm={handleCreateTafsilAccount}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+          disabled={is_disabled}
+        >
+          <Button key="submit-button" type="primary" loading={progress}>
+            {Words.create_tafsil_account}
+          </Button>
+        </Popconfirm>,
+        ...buttons,
+      ];
+    }
+    return buttons;
+  };
+
   return (
     <ModalWindow
       isOpen={isOpen}
       isEdit={isEdit}
-      inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
+      disabled={is_disabled}
+      footer={getFooterButtons()}
       onCancel={onCancel}
       width={750}
     >

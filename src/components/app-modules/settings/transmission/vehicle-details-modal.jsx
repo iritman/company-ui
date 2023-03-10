@@ -1,23 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import { useMount } from "react-use";
 import {
   Button,
-  Modal,
   Row,
   Col,
   Typography,
   Alert,
   Descriptions,
   Tabs,
+  Popconfirm,
 } from "antd";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import TafsilInfoViewer from "./../../../common/tafsil-info-viewer";
+import ModalWindow from "../../../common/modal-window";
+import { handleError } from "../../../../tools/form-manager";
+import service from "../../../../services/financial/accounts/tafsil-accounts-service";
 
 const { Text } = Typography;
 
-const VehicleDetailsModal = ({ vehicle, isOpen, onOk }) => {
+const VehicleDetailsModal = ({
+  vehicle,
+  isOpen,
+  onOk,
+  onCreateTafsilAccount,
+}) => {
   const valueColor = Colors.blue[7];
+
+  const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
+    useState(false);
+  const [progress, setProgress] = useState(false);
 
   const {
     VehicleTypeTitle,
@@ -32,6 +46,20 @@ const VehicleDetailsModal = ({ vehicle, isOpen, onOk }) => {
     RegTime,
     TafsilInfo,
   } = vehicle;
+
+  useMount(async () => {
+    if (TafsilInfo.length === 0) {
+      try {
+        const data = await service.getTafsilAccountAccesses("Vehicles");
+
+        const { HasCreateTafsilAccountAccess } = data;
+
+        setHasCreateTafsilAccountAccess(HasCreateTafsilAccountAccess);
+      } catch (ex) {
+        handleError(ex);
+      }
+    }
+  });
 
   const items = [
     {
@@ -92,19 +120,55 @@ const VehicleDetailsModal = ({ vehicle, isOpen, onOk }) => {
     },
   ];
 
+  const handleCreateTafsilAccount = async () => {
+    if (TafsilInfo.length === 0) {
+      setProgress(true);
+
+      try {
+        await onCreateTafsilAccount();
+      } catch (ex) {
+        handleError(ex);
+      }
+
+      setProgress(false);
+    }
+  };
+
+  const getFooterButtons = () => {
+    let buttons = [
+      <Button key="close-button" onClick={onOk}>
+        {Words.confirm}
+      </Button>,
+    ];
+
+    if (hasCreateTafsilAccountAccess && TafsilInfo.length === 0) {
+      buttons = [
+        <Popconfirm
+          title={Words.questions.sure_to_create_tafsil_account}
+          onConfirm={handleCreateTafsilAccount}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+          disabled={progress}
+        >
+          <Button key="submit-button" type="primary" loading={progress}>
+            {Words.create_tafsil_account}
+          </Button>
+        </Popconfirm>,
+        ...buttons,
+      ];
+    }
+    return buttons;
+  };
+
   return (
-    <Modal
-      open={isOpen}
-      maskClosable={false}
-      centered={true}
+    <ModalWindow
+      isOpen={isOpen}
       title={Words.more_details}
-      footer={[
-        <Button key="submit-button" type="primary" onClick={onOk}>
-          {Words.confirm}
-        </Button>,
-      ]}
+      footer={getFooterButtons()}
+      disabled={progress}
       onCancel={onOk}
-      width={650}
+      width={750}
     >
       <section>
         <article
@@ -128,7 +192,7 @@ const VehicleDetailsModal = ({ vehicle, isOpen, onOk }) => {
           </Row>
         </article>
       </section>
-    </Modal>
+    </ModalWindow>
   );
 };
 

@@ -1,9 +1,10 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import Words from "../../../../resources/words";
 import utils from "./../../../../tools/utils";
 import service from "./../../../../services/settings/transmission/vehicles-service";
+import tafsilAccountService from "./../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -181,6 +182,31 @@ const VehiclesPage = ({ pageName }) => {
       )
     : [];
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "Vehicles",
+        "Vehicles",
+        selectedObject.VehicleID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.VehicleID === selectedObject.VehicleID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -211,6 +237,7 @@ const VehiclesPage = ({ pageName }) => {
         <VehicleModal
           onOk={handleSave}
           onCancel={handleCloseModal}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
           isOpen={showModal}
           selectedObject={selectedObject}
         />
@@ -222,6 +249,7 @@ const VehiclesPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
           isOpen={showDetails}
           vehicle={selectedObject}
         />
