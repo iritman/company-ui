@@ -37,7 +37,7 @@ import SwitchItem from "../../../form-controls/switch-item";
 import FileItem from "../../../form-controls/file-item";
 import TextItem from "../../../form-controls/text-item";
 import membersService from "../../../../services/settings/org/members-service";
-import service from "../../../../services/financial/accounts/tafsil-accounts-service";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 import fileService from "../../../../services/file-service";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
@@ -314,7 +314,9 @@ const MemberModal = ({
 
     //------
 
-    const access_data = await service.getTafsilAccountAccesses(7); // PageID: 7 => Members page
+    const access_data = await tafsilAccountService.getTafsilAccountAccesses(
+      "Members"
+    );
 
     const { HasCreateTafsilAccountAccess } = access_data;
 
@@ -695,7 +697,6 @@ const MemberModal = ({
     <ModalWindow
       isOpen={isOpen}
       isEdit={isEdit}
-      inProgress={progress}
       disabled={is_disabled}
       footer={getFooterButtons()}
       onCancel={onCancel}
