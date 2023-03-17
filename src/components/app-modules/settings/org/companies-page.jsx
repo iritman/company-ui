@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button, Space, Tooltip } from "antd";
+import {
+  Spin,
+  Row,
+  Col,
+  Typography,
+  Button,
+  Space,
+  Tooltip,
+  message,
+} from "antd";
 import { FaUsersCog as AgentIcon } from "react-icons/fa";
 import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import service from "../../../../services/settings/org/companies-service";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -161,6 +171,31 @@ const CompaniesPage = ({ pageName }) => {
       )
     : [];
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "Companies",
+        "Companies",
+        selectedObject.CompanyID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.CompanyID === selectedObject.CompanyID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -193,6 +228,7 @@ const CompaniesPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
 
@@ -204,6 +240,7 @@ const CompaniesPage = ({ pageName }) => {
           }}
           isOpen={showDetails}
           company={selectedObject}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
 
