@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Tabs } from "antd";
+import { Form, Row, Col, Tabs, Button, Popconfirm } from "antd";
+import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import Joi from "joi-browser";
 import ModalWindow from "./../../../common/modal-window";
 import Words from "../../../../resources/words";
@@ -10,6 +11,7 @@ import {
   loadFieldsValue,
   initModal,
   saveModalChanges,
+  handleError,
 } from "../../../../tools/form-manager";
 import InputItem from "./../../../form-controls/input-item";
 import SwitchItem from "./../../../form-controls/switch-item";
@@ -18,6 +20,7 @@ import {
   useResetContext,
 } from "./../../../contexts/modal-context";
 import TafsilInfoViewer from "../../../common/tafsil-info-viewer";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 
 const schema = {
   ProjectID: Joi.number().required(),
@@ -38,7 +41,16 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const ProjectModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
+const ProjectModal = ({
+  isOpen,
+  selectedObject,
+  onOk,
+  onCancel,
+  onCreateTafsilAccount,
+}) => {
+  const [hasCreateTafsilAccountAccess, setHasCreateTafsilAccountAccess] =
+    useState(false);
+
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
@@ -65,9 +77,39 @@ const ProjectModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     resetContext();
     setRecord(initRecord);
     initModal(formRef, selectedObject, setRecord);
+
+    //------
+
+    setProgress(true);
+    try {
+      const access_data = await tafsilAccountService.getTafsilAccountAccesses(
+        "Projects"
+      );
+
+      const { HasCreateTafsilAccountAccess } = access_data;
+
+      setHasCreateTafsilAccountAccess(HasCreateTafsilAccountAccess);
+    } catch (ex) {
+      handleError(ex);
+    }
+    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
+
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject.TafsilInfo.length === 0) {
+      setProgress(true);
+
+      try {
+        await onCreateTafsilAccount();
+      } catch (ex) {
+        handleError(ex);
+      }
+
+      setProgress(false);
+    }
+  };
 
   const handleSubmit = async () => {
     saveModalChanges(
@@ -125,14 +167,54 @@ const ProjectModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
     ];
   }
 
+  const is_disabled = validateForm({ record, schema }) && true;
+
+  const getFooterButtons = () => {
+    let buttons = [
+      <Button key="clear-button" onClick={clearRecord}>
+        {Words.clear}
+      </Button>,
+      <Button
+        key="submit-button"
+        type="primary"
+        onClick={handleSubmit}
+        loading={progress}
+        disabled={is_disabled}
+      >
+        {Words.submit}
+      </Button>,
+    ];
+
+    if (
+      selectedObject &&
+      hasCreateTafsilAccountAccess &&
+      selectedObject.TafsilInfo.length === 0
+    ) {
+      buttons = [
+        <Popconfirm
+          title={Words.questions.sure_to_create_tafsil_account}
+          onConfirm={handleCreateTafsilAccount}
+          okText={Words.yes}
+          cancelText={Words.no}
+          icon={<QuestionIcon style={{ color: "red" }} />}
+          disabled={is_disabled}
+        >
+          <Button key="submit-button" type="primary" loading={progress}>
+            {Words.create_tafsil_account}
+          </Button>
+        </Popconfirm>,
+        ...buttons,
+      ];
+    }
+    return buttons;
+  };
+
   return (
     <ModalWindow
       isOpen={isOpen}
       isEdit={isEdit}
-      inProgress={progress}
-      disabled={validateForm({ record, schema }) && true}
-      onClear={clearRecord}
-      onSubmit={handleSubmit}
+      disabled={is_disabled}
+      footer={getFooterButtons()}
       onCancel={onCancel}
       width={650}
     >

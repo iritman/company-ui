@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
@@ -9,6 +9,7 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import service from "../../../../services/financial/public-settings/projects-service";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -128,6 +129,31 @@ const ProjectsPage = ({ pageName }) => {
       )
     : [];
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "Projects",
+        "Projects",
+        selectedObject.ProjectID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.ProjectID === selectedObject.ProjectID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -158,6 +184,7 @@ const ProjectsPage = ({ pageName }) => {
         <ProjectModal
           onOk={handleSave}
           onCancel={handleCloseModal}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
           isOpen={showModal}
           selectedObject={selectedObject}
         />
@@ -171,6 +198,7 @@ const ProjectsPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
     </>
