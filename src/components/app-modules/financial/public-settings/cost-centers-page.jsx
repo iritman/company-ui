@@ -1,6 +1,6 @@
 import React from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography } from "antd";
+import { Spin, Row, Col, Typography, message } from "antd";
 import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
@@ -9,6 +9,7 @@ import Words from "../../../../resources/words";
 import Colors from "../../../../resources/colors";
 import utils from "../../../../tools/utils";
 import service from "../../../../services/financial/public-settings/cost-centers-service";
+import tafsilAccountService from "../../../../services/financial/accounts/tafsil-accounts-service";
 import {
   getSorter,
   checkAccess,
@@ -139,6 +140,31 @@ const CostCentersPage = ({ pageName }) => {
       )
     : [];
 
+  const handleCreateTafsilAccount = async () => {
+    if (selectedObject) {
+      const data = await tafsilAccountService.createTafsilAccount(
+        "CostCenters",
+        "CostCenters",
+        selectedObject.CostCenterID
+      );
+
+      const { TafsilInfo, Message } = data;
+
+      message.success(Message);
+
+      //------
+
+      selectedObject.TafsilInfo = TafsilInfo;
+      setSelectedObject({ ...selectedObject });
+
+      const inx = records.findIndex(
+        (r) => r.CostCenterID === selectedObject.CostCenterID
+      );
+      records[inx].TafsilInfo = TafsilInfo;
+      setRecords([...records]);
+    }
+  };
+
   //------
 
   return (
@@ -171,6 +197,7 @@ const CostCentersPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
 
@@ -182,6 +209,7 @@ const CostCentersPage = ({ pageName }) => {
             setShowDetails(false);
             setSelectedObject(null);
           }}
+          onCreateTafsilAccount={handleCreateTafsilAccount}
         />
       )}
     </>
