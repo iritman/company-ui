@@ -582,6 +582,13 @@ class Words extends Component {
   static appointment_date = "تاریخ انتصاب";
   static ryal = "ریال";
 
+  static transfer_to_collector_agents = "واگذار به مامور وصول";
+  static transfer_to_collector_agent_status_1 = "ثبت شده";
+  static transfer_to_collector_agent_status_2 = "تایید شده";
+  static transfer_to_collector_agent_status_3 = "رد شده";
+
+  static transfer_to_collector_agent_date = "تاریخ واگذاری";
+
   static funds = "تنخواه";
   static fund = "تنخواه";
   static funder_member = "تنخواه دار";
@@ -1161,6 +1168,8 @@ class Words extends Component {
     sure_to_undo_approve_collection_rejection:
       "برای برگشت از تایید اعلامیه وصول/واخواست اطمینان دارید؟",
     sure_to_create_tafsil_account: "برای ایجاد حساب تفصیلی اطمینان دارید؟",
+    sure_to_submit_approve_transfer_to_collector_agent:
+      "برای ثبت و تایید واگذاری به مامور وصول اطمینان دارید؟",
   };
 
   static monthes = {

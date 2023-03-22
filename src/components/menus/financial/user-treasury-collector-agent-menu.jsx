@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
+import { RiFolderUserLine as TransferToCollectorAgentIcon } from "react-icons/ri";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
@@ -19,6 +20,16 @@ const mapper = (pageID) => {
       icon = (
         <CollectorAgentIcon
           style={{ color: Colors.green[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
+    case 251:
+      link = "transfer-to-collector-agents";
+      icon = (
+        <TransferToCollectorAgentIcon
+          style={{ color: Colors.blue[5] }}
           size={iconSize}
         />
       );

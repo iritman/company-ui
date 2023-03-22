@@ -3,6 +3,7 @@ import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
 import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
+import { RiFolderUserLine as TransferToCollectorAgentIcon } from "react-icons/ri";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
 
@@ -21,6 +22,12 @@ const mapper = (pageID) => {
       link = "collector-agents";
       icon = <CollectorAgentIcon {...iconProps} />;
       backColor = Colors.green[3];
+      break;
+
+    case 251:
+      link = "transfer-to-collector-agents";
+      icon = <TransferToCollectorAgentIcon {...iconProps} />;
+      backColor = Colors.blue[2];
       break;
 
     //   Colors.blue[2];
