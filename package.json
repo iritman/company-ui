@@ -32,6 +32,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-use": "^17.3.1",
+    "string-crypto": "^2.0.2",
     "use-window-width-breakpoints": "^1.0.12",
     "uuidv4": "^6.2.13",
     "web-vitals": "^1.1.2",
