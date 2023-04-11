@@ -57,46 +57,48 @@ const initRecord = {
 };
 
 const columns = [
-  // {
-  //   title: Words.id,
-  //   width: 75,
-  //   align: "center",
-  //   dataIndex: "CompanyChequeID",
-  //   sorter: getSorter("CompanyChequeID"),
-  //   render: (CompanyChequeID) => <Text>{utils.farsiNum(`${CompanyChequeID}`)}</Text>,
-  // },
   {
-    title: Words.serial_no,
+    title: Words.id,
+    width: 75,
+    align: "center",
+    dataIndex: "CompanyChequeID",
+    sorter: getSorter("CompanyChequeID"),
+    render: (CompanyChequeID) => (
+      <Text>{utils.farsiNum(`${CompanyChequeID}`)}</Text>
+    ),
+  },
+  {
+    title: Words.cheque_no,
     width: 150,
     align: "center",
-    dataIndex: "SerialNo",
-    sorter: getSorter("SerialNo"),
-    render: (SerialNo) => (
+    dataIndex: "ChequeNo",
+    sorter: getSorter("ChequeNo"),
+    render: (ChequeNo) => (
       <Text
         style={{
           color: Colors.green[6],
         }}
       >
-        {utils.farsiNum(`${SerialNo}`)}
+        {utils.farsiNum(`${ChequeNo}`)}
       </Text>
     ),
   },
-  {
-    title: Words.sayad_no,
-    width: 150,
-    align: "center",
-    dataIndex: "SayadNo",
-    sorter: getSorter("SayadNo"),
-    render: (SayadNo) => (
-      <Text
-        style={{
-          color: Colors.blue[6],
-        }}
-      >
-        {SayadNo.length > 0 ? utils.farsiNum(`${SayadNo}`) : ""}
-      </Text>
-    ),
-  },
+  // {
+  //   title: Words.sayad_no,
+  //   width: 150,
+  //   align: "center",
+  //   dataIndex: "SayadNo",
+  //   sorter: getSorter("SayadNo"),
+  //   render: (SayadNo) => (
+  //     <Text
+  //       style={{
+  //         color: Colors.blue[6],
+  //       }}
+  //     >
+  //       {SayadNo.length > 0 ? utils.farsiNum(`${SayadNo}`) : ""}
+  //     </Text>
+  //   ),
+  // },
   {
     title: Words.status,
     width: 120,
@@ -250,6 +252,7 @@ const ChequeBookModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
                   min={1}
                   max={300}
                   formConfig={formConfig}
+                  disabled={isEdit}
                   required
                 />
               </Col>
@@ -261,6 +264,7 @@ const ChequeBookModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
                   min={1}
                   max={9999999}
                   formConfig={formConfig}
+                  disabled={isEdit}
                   required
                 />
               </Col>
