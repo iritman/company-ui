@@ -178,7 +178,9 @@ const BankHandOverChequeModal = ({
           </Descriptions.Item>
           <Descriptions.Item label={Words.agreed_date}>
             <Text style={{ color: valueColor }}>
-              {utils.farsiNum(utils.slashDate(AgreedDate))}
+              {AgreedDate.length > 0
+                ? utils.farsiNum(utils.slashDate(AgreedDate))
+                : "-"}
             </Text>
           </Descriptions.Item>
           <Descriptions.Item label={Words.duration_type}>
