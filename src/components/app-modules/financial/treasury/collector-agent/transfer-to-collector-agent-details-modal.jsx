@@ -150,7 +150,9 @@ const cheque_columns = [
           color: Colors.blue[6],
         }}
       >
-        {utils.farsiNum(utils.slashDate(AgreedDate))}
+        {AgreedDate.length > 0
+          ? utils.farsiNum(utils.slashDate(AgreedDate))
+          : "-"}
       </Text>
     ),
   },

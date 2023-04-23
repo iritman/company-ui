@@ -293,7 +293,9 @@ const getChequeColumns = (access, statusID, onEdit, onDelete) => {
             color: Colors.blue[6],
           }}
         >
-          {utils.farsiNum(utils.slashDate(AgreedDate))}
+          {AgreedDate.length > 0
+            ? utils.farsiNum(utils.slashDate(AgreedDate))
+            : "-"}
         </Text>
       ),
     },
