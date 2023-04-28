@@ -195,7 +195,6 @@ const CompanyModal = ({
       try {
         await onCreateTafsilAccount();
       } catch (ex) {
-        console.log(ex);
         handleError(ex);
       }
 
