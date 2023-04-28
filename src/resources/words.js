@@ -528,8 +528,12 @@ class Words extends Component {
   static to_order_date = "تاریخ دستور تا";
   static payment_order_date = "تاریخ دستور";
   static select_payment_base = "انتخاب مبنای پرداخت";
-  static payment_base = "مبنای پرداخت";
   static request_with_id = "شناسه درخواست";
+
+  static payment_receipt = "اعلامیه پرداخت";
+  static payment_base = "مبنای پرداخت";
+  static from_receipt_date = "تاریخ اعلامیه از";
+  static to_receipt_date = "تاریخ اعلامیه تا";
 
   static payment_request_status_1 = "ثبت شده";
   static payment_request_status_2 = "تایید شده";
@@ -565,6 +569,15 @@ class Words extends Component {
   static cheque_series = "سری عددی چک";
   static demand_no = "شماره سفته";
   static demand_series = "سری عددی سفته";
+  static withdraw_notice_no = "شماره اعلامیه برداشت";
+  static withdraw_notice_date = "تاریخ اعلامیه برداشت";
+  static withraw_notices = "اعلامیه برداشت";
+  static reg_withdraw_notice = "ثبت اعلامیه برداشت";
+  static reg_transfer_to_other = "ثبت واگذار به غیر";
+  static reg_refund_received_cheque = "ثبت استرداد چک دریافتی";
+  static reg_refund_received_demand = "ثبت استرداد سفته دریافتی";
+  static refund_received_cheque = "استرداد چک دریافتی";
+  static refund_received_demand = "استرداد سفته دریافتی";
 
   static bank_hand_overs = "واگذار به بانک";
   static hand_over_date = "تاریخ واگذاری";
