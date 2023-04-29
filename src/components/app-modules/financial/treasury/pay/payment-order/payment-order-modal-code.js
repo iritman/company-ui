@@ -1434,10 +1434,6 @@ export const getDisableStatus = (record) => {
       0) === 0 ||
     (validateForm({ record, schema }) && true);
 
-  //   const is_disable =
-  //     (record?.Cheques?.length || 0 + record?.Demands?.length || 0) === 0 ||
-  //     (validateForm({ record, schema }) && true);
-
   return is_disable;
 };
 
