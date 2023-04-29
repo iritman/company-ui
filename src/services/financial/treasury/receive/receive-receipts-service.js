@@ -15,6 +15,26 @@ export async function getItemsParams() {
   return data;
 }
 
+export async function getPayedToOtherChequesForRefund(
+  cashBoxID,
+  chequeStatusID,
+  frontSideAccountID
+) {
+  const { data } = await http.get(
+    `${apiEndpoint}/refund/from-other/${cashBoxID}/${chequeStatusID}/${frontSideAccountID}`
+  );
+
+  return data;
+}
+
+export async function getPayedToOtherChequeForRefundByID(chequeID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/refund/from-other/${chequeID}`
+  );
+
+  return data;
+}
+
 export async function searchFrontSideAccounts(searchText) {
   const { data } = await http.post(`${apiEndpoint}/accounts`, { searchText });
 
@@ -113,6 +133,8 @@ export async function deleteItem(itemType, recordID) {
 const service = {
   getParams,
   getItemsParams,
+  getPayedToOtherChequesForRefund,
+  getPayedToOtherChequeForRefundByID,
   searchFrontSideAccounts,
   searchFrontSideAccountByID,
   searchDeliveryMembers,

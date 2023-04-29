@@ -53,7 +53,7 @@ export const schema = {
   Demands: Joi.array(),
   Cashes: Joi.array(),
   PaymentNotices: Joi.array(),
-  ReturnFromOthers: Joi.array(),
+  RefundFromOtherCheques: Joi.array(),
   ReturnPayableCheques: Joi.array(),
   ReturnPayableDemands: Joi.array(),
 };
@@ -74,7 +74,7 @@ export const initRecord = {
   Demands: [],
   Cashes: [],
   PaymentNotices: [],
-  ReturnFromOthers: [],
+  RefundFromOtherCheques: [],
   ReturnPayableCheques: [],
   ReturnPayableDemands: [],
 };
@@ -595,10 +595,10 @@ const getCashColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.id,
       width: 75,
       align: "center",
-      dataIndex: "DemandID",
-      sorter: getSorter("DemandID"),
-      render: (DemandID) => (
-        <Text>{DemandID > 0 ? utils.farsiNum(`${DemandID}`) : ""}</Text>
+      dataIndex: "CashID",
+      sorter: getSorter("CashID"),
+      render: (CashID) => (
+        <Text>{CashID > 0 ? utils.farsiNum(`${CashID}`) : ""}</Text>
       ),
     },
     {
@@ -991,6 +991,261 @@ const getPaymentNoticeColumns = (access, statusID, onEdit, onDelete) => {
   return columns;
 };
 
+const getRefundFromOtherChequeColumns = (
+  access,
+  statusID,
+  onEdit,
+  onDelete
+) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "RefundID",
+      sorter: getSorter("RefundID"),
+      render: (RefundID) => (
+        <Text>{RefundID > 0 ? utils.farsiNum(`${RefundID}`) : ""}</Text>
+      ),
+    },
+    {
+      title: Words.front_side,
+      width: 250,
+      align: "center",
+      dataIndex: "FrontSideAccountTitle",
+      sorter: getSorter("FrontSideAccountTitle"),
+      render: (FrontSideAccountTitle) => (
+        <Text style={{ color: Colors.cyan[6] }}>
+          {utils.farsiNum(FrontSideAccountTitle)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.cheque_no,
+      width: 150,
+      align: "center",
+      dataIndex: "ChequeNo",
+      sorter: getSorter("ChequeNo"),
+      render: (ChequeNo) => (
+        <Text style={{ color: Colors.red[6] }}>{utils.farsiNum(ChequeNo)}</Text>
+      ),
+    },
+    {
+      title: Words.account_no,
+      width: 200,
+      align: "center",
+      dataIndex: "AccountNo",
+      sorter: getSorter("AccountNo"),
+      render: (AccountNo) => (
+        <Text style={{ color: Colors.grey[6] }}>
+          {utils.farsiNum(AccountNo)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.bank,
+      width: 150,
+      align: "center",
+      dataIndex: "BankTitle",
+      sorter: getSorter("BankTitle"),
+      render: (BankTitle) => (
+        <Text style={{ color: Colors.purple[6] }}>
+          {utils.farsiNum(BankTitle)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.branch_name,
+      width: 150,
+      align: "center",
+      dataIndex: "BranchName",
+      sorter: getSorter("BranchName"),
+      render: (BranchName) => (
+        <Text style={{ color: Colors.orange[6] }}>
+          {utils.farsiNum(BranchName)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.financial_operation,
+      width: 200,
+      align: "center",
+      //   dataIndex: "Price",
+      sorter: getSorter("OperationTitle"),
+      render: (record) => (
+        <Text style={{ color: Colors.blue[6] }}>
+          {utils.farsiNum(`${record.OperationID} - ${record.OperationTitle}`)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.nature,
+      width: 100,
+      align: "center",
+      dataIndex: "PaperNatureTitle",
+      sorter: getSorter("PaperNatureTitle"),
+      render: (PaperNatureTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{PaperNatureTitle}</Text>
+      ),
+    },
+    {
+      title: Words.duration,
+      width: 100,
+      align: "center",
+      dataIndex: "DurationTypeTitle",
+      sorter: getSorter("DurationTypeTitle"),
+      render: (DurationTypeTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{DurationTypeTitle}</Text>
+      ),
+    },
+    {
+      title: Words.cash_flow,
+      width: 200,
+      align: "center",
+      dataIndex: "CashFlowTitle",
+      sorter: getSorter("CashFlowTitle"),
+      render: (CashFlowTitle) => (
+        <Text style={{ color: Colors.purple[6] }}>{CashFlowTitle}</Text>
+      ),
+    },
+    {
+      title: Words.currency,
+      width: 150,
+      align: "center",
+      dataIndex: "CurrencyTitle",
+      sorter: getSorter("CurrencyTitle"),
+      render: (CurrencyTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{CurrencyTitle}</Text>
+      ),
+    },
+    {
+      title: Words.price,
+      width: 200,
+      align: "center",
+      dataIndex: "Amount",
+      sorter: getSorter("Amount"),
+      render: (Amount) => (
+        <Text style={{ color: Colors.green[6] }}>
+          {utils.farsiNum(utils.moneyNumber(Amount))}
+        </Text>
+      ),
+    },
+    {
+      title: Words.due_date,
+      width: 120,
+      align: "center",
+      dataIndex: "DueDate",
+      sorter: getSorter("DueDate"),
+      render: (DueDate) => (
+        <Text
+          style={{
+            color: Colors.geekblue[6],
+          }}
+        >
+          {utils.farsiNum(utils.slashDate(DueDate))}
+        </Text>
+      ),
+    },
+    // {
+    //   title: Words.agreed_date,
+    //   width: 120,
+    //   align: "center",
+    //   dataIndex: "AgreedDate",
+    //   sorter: getSorter("AgreedDate"),
+    //   render: (AgreedDate) => (
+    //     <Text
+    //       style={{
+    //         color: Colors.blue[6],
+    //       }}
+    //     >
+    //       {AgreedDate.length > 0
+    //         ? utils.farsiNum(utils.slashDate(AgreedDate))
+    //         : "-"}
+    //     </Text>
+    //   ),
+    // },
+    {
+      title: Words.standard_description,
+      width: 100,
+      align: "center",
+      render: (record) => (
+        <>
+          {(record.StandardDetailsID > 0 || record.DetailsText.length > 0) && (
+            <Popover
+              content={
+                <Text>{`${utils.getDescription(
+                  record.StandardDetailsText,
+                  record.DetailsText
+                )}`}</Text>
+              }
+            >
+              <InfoIcon
+                style={{
+                  color: Colors.green[6],
+                  fontSize: 19,
+                  cursor: "pointer",
+                }}
+              />
+            </Popover>
+          )}
+        </>
+      ),
+    },
+  ];
+
+  // StatusID : 1 => Not Approve, Not Reject! Just Save...
+  if (
+    statusID === 1 &&
+    ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
+  ) {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 75,
+        render: (record) => (
+          <Space>
+            {access.CanDelete && onDelete && (
+              <Popconfirm
+                title={Words.questions.sure_to_delete_selected_item}
+                onConfirm={async () => await onDelete(record)}
+                okText={Words.yes}
+                cancelText={Words.no}
+                icon={<QuestionIcon style={{ color: "red" }} />}
+              >
+                <Button type="link" icon={<DeleteIcon />} danger />
+              </Popconfirm>
+            )}
+
+            {access.CanEdit && onEdit && (
+              <Button
+                type="link"
+                icon={<EditIcon />}
+                onClick={() => onEdit(record)}
+              />
+            )}
+          </Space>
+        ),
+      },
+    ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
+      },
+    ];
+  }
+
+  return columns;
+};
+
 export const getTabPanes = (config, selectedTab) => {
   const {
     record,
@@ -1006,6 +1261,8 @@ export const getTabPanes = (config, selectedTab) => {
     handleDeleteCash,
     handleEditPaymentNotice,
     handleDeletePaymentNotice,
+    handleEditRefundFromOtherCheque,
+    handleDeleteRefundFromOtherCheque,
   } = config;
 
   return [
@@ -1141,27 +1398,27 @@ export const getTabPanes = (config, selectedTab) => {
       label: (
         <BadgedTabTitle
           selectedTab={selectedTab}
-          selectionTitle="return-from-others"
-          title={Words.return_from_other}
-          items={record.ReturnFromOthers}
+          selectionTitle="refund-from-other-cheques"
+          title={Words.refund_from_other_cheque}
+          items={record.RefundFromOtherCheques}
         />
       ),
-      key: "return-from-others",
+      key: "refund-from-other-cheques",
       children: (
         <Row gutter={[0, 15]}>
           <Col xs={24}>
-            {/* <DetailsTable
-              records={record.Cashes}
-              columns={getCashesColumns(
+            <DetailsTable
+              records={record.RefundFromOtherCheques}
+              columns={getRefundFromOtherChequeColumns(
                 access,
                 status_id,
-                handleEditCheque,
-                handleDeleteCheque
+                handleEditRefundFromOtherCheque,
+                handleDeleteRefundFromOtherCheque
               )}
-            /> */}
+            />
           </Col>
           <Col xs={24}>
-            <PriceViewer price={price.ReturnFromOthersAmount} />
+            <PriceViewer price={price.RefundFromOtherChequesAmount} />
           </Col>
         </Row>
       ),
@@ -1342,7 +1599,7 @@ export const getDisableStatus = (record) => {
       0 + record?.Demands?.length ||
       0 + record?.Cashes?.length ||
       0 + record?.PaymentNotices?.length ||
-      0 + record?.RetrunFromOthers?.length ||
+      0 + record?.RefundFromOtherCheques?.length ||
       0 + record?.RetrunPayableCheques?.length ||
       0 + record?.RetrunPayableDemands?.length ||
       0) === 0 ||
@@ -1383,10 +1640,10 @@ export const calculatePrice = (record) => {
   price.PaymentNoticesAmount = sum;
   sum = 0;
 
-  record.ReturnFromOthers?.forEach((i) => {
+  record.RefundFromOtherCheques?.forEach((i) => {
     sum += i.Amount;
   });
-  price.ReturnFromOthersAmount = sum;
+  price.RefundFromOtherChequesAmount = sum;
   sum = 0;
 
   record.ReturnPayableCheques?.forEach((i) => {

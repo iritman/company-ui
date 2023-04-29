@@ -892,7 +892,7 @@ export const getTabPanes = (receive_receipt, selectedTab) => {
         <BadgedTabTitle
           selectedTab={selectedTab}
           selectionTitle="return-from-others"
-          title={Words.return_from_other}
+          title={Words.refund_from_other_cheque}
           items={ReturnFromOthers}
         />
       ),

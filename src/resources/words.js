@@ -557,7 +557,7 @@ class Words extends Component {
   static payment_notice_no = "شماره اعلامیه واریز";
   static payment_notice_date = "تاریخ اعلامیه واریز";
   static account_name = "عنوان حساب";
-  static return_from_other = "برگشت از واگذاری به غیر";
+  static refund_from_other_cheque = "برگشت از واگذار به غیر";
   static pay_to_other = "واگذار به غیر";
   static return_payable_cheque = "استرداد چک پرداختنی";
   static return_payable_demand = "استرداد سفته پرداختنی";
@@ -566,6 +566,7 @@ class Words extends Component {
   static receive_date = "تاریخ دریافت";
   static agreed_date = "تاریخ توافق شده";
   static cheque_no = "شماره چک";
+  static cheque_status = "وضعیت چک";
   static cheque_series = "سری عددی چک";
   static demand_no = "شماره سفته";
   static demand_series = "سری عددی سفته";
@@ -578,6 +579,8 @@ class Words extends Component {
   static reg_refund_received_demand = "ثبت استرداد سفته دریافتی";
   static refund_received_cheque = "استرداد چک دریافتی";
   static refund_received_demand = "استرداد سفته دریافتی";
+  static reg_receive_receipt_refund_from_other_cheque =
+    "ثبت برگشت از واگذار به غیر";
 
   static bank_hand_overs = "واگذار به بانک";
   static hand_over_date = "تاریخ واگذاری";

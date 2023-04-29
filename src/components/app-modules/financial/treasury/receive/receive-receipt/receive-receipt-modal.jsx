@@ -24,6 +24,7 @@ import ChequeModal from "./receive-receipt-cheque-modal";
 import DemandModal from "./receive-receipt-demand-modal";
 import CashModal from "./receive-receipt-cash-modal";
 import PaymentNoticeModal from "./receive-receipt-payment-notice-modal";
+import RefundFromOtherChequeModal from "./receive-receipt-refund-from-other-cheque-modal";
 import { v4 as uuid } from "uuid";
 import {
   schema,
@@ -76,12 +77,17 @@ const ReceiveReceiptModal = ({
   const [companyBankAccounts, setCompanyBankAccounts] = useState([]);
   const [cities, setCities] = useState([]);
 
+  const [
+    selectedChequeForRefundFromOtherCheque,
+    setSelectedChequeForRefundFromOtherCheque,
+  ] = useState(null);
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [showChequeModal, setShowChequeModal] = useState(false);
   const [showDemandModal, setShowDemandModal] = useState(false);
   const [showCashModal, setShowCashModal] = useState(false);
   const [showPaymentNoticeModal, setShowPaymentNoticeModal] = useState(false);
-  const [showReturnFromOtherModal, setShowReturnFromOtherModal] =
+  const [showRefundFromOtherChequeModal, setShowRefundFromOtherChequeModal] =
     useState(false);
   const [showReturnPayableChequeModal, setShowReturnPayableChequeModal] =
     useState(false);
@@ -114,7 +120,7 @@ const ReceiveReceiptModal = ({
     record.Demands = [];
     record.Cashes = [];
     record.PaymentNotices = [];
-    record.ReturnFromOthers = [];
+    record.RefundFromOtherCheques = [];
     record.ReturnPayableCheques = [];
     record.ReturnPayableDemands = [];
 
@@ -864,6 +870,157 @@ const ReceiveReceiptModal = ({
 
   //------
 
+  const handleSelectChequeForRefundFromOtherCheque = (cheque) => {
+    setSelectedChequeForRefundFromOtherCheque(cheque);
+  };
+
+  const handleSaveRefundFromOtherCheque = async (
+    refund_from_other_cheque_to_save
+  ) => {
+    if (selectedObject !== null) {
+      refund_from_other_cheque_to_save.ReceiveID = selectedObject.ReceiveID;
+
+      const saved_payment_notice = await onSaveReceiveReceiptItem(
+        "refund-from-other-cheque",
+        "RefundID",
+        refund_from_other_cheque_to_save
+      );
+
+      const index = record.RefundFromOtherCheques.findIndex(
+        (item) => item.RefundID === refund_from_other_cheque_to_save.RefundID
+      );
+
+      if (index === -1) {
+        record.RefundFromOtherCheques = [
+          ...record.RefundFromOtherCheques,
+          saved_payment_notice,
+        ];
+      } else {
+        record.RefundFromOtherCheques[index] = saved_payment_notice;
+      }
+    } else {
+      const {
+        FrontSideAccountTitle,
+        ChequeNo,
+        AccountNo,
+        BankTitle,
+        BranchName,
+        DueDate,
+        AgreedDate,
+        CurrencyTitle,
+        DurationTypeTitle,
+        OperationTitle,
+        CityTitle,
+      } = selectedChequeForRefundFromOtherCheque;
+
+      refund_from_other_cheque_to_save = {
+        ...refund_from_other_cheque_to_save,
+        FrontSideAccountTitle,
+        ChequeNo,
+        AccountNo,
+        BankTitle,
+        BranchName,
+        DueDate,
+        AgreedDate,
+        CurrencyTitle,
+        DurationTypeTitle,
+        OperationTitle,
+        CityTitle,
+      };
+
+      //While adding items temporarily, we have no join operation in database
+      //So, we need to select titles manually
+
+      refund_from_other_cheque_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        refund_from_other_cheque_to_save.OperationID
+      );
+
+      refund_from_other_cheque_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        refund_from_other_cheque_to_save.CashFlowID
+      );
+
+      refund_from_other_cheque_to_save.StandardDetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        refund_from_other_cheque_to_save.StandardDetailsID
+      );
+
+      //--- managing unique id (UID) for new items
+      if (
+        refund_from_other_cheque_to_save.RefundID === 0 &&
+        selectedItem === null
+      ) {
+        refund_from_other_cheque_to_save.UID = uuid();
+        record.RefundFromOtherCheques = [
+          ...record.RefundFromOtherCheques,
+          refund_from_other_cheque_to_save,
+        ];
+      } else if (
+        refund_from_other_cheque_to_save.RefundID === 0 &&
+        selectedItem !== null
+      ) {
+        const index = record.RefundFromOtherCheques.findIndex(
+          (item) => item.UID === selectedItem.UID
+        );
+        record.RefundFromOtherCheques[index] = refund_from_other_cheque_to_save;
+      }
+    }
+
+    //------
+
+    setRecord({ ...record });
+    setSelectedItem(null);
+  };
+
+  const handleDeleteRefundFromOtherCheque = async (
+    refund_from_other_cheque_to_delete
+  ) => {
+    setProgress(true);
+
+    try {
+      if (refund_from_other_cheque_to_delete.RefundID > 0) {
+        await onDeleteReceiveReceiptItem(
+          "refund-from-other-cheque",
+          "RefundID",
+          refund_from_other_cheque_to_delete.RefundID
+        );
+
+        record.RefundFromOtherCheques = record.RefundFromOtherCheques.filter(
+          (i) => i.RefundID !== refund_from_other_cheque_to_delete.RefundID
+        );
+      } else {
+        record.RefundFromOtherCheques = record.RefundFromOtherCheques.filter(
+          (i) => i.UID !== refund_from_other_cheque_to_delete.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleCloseRefundFromOtherChequeModal = () => {
+    setSelectedItem(null);
+    setShowRefundFromOtherChequeModal(false);
+  };
+
+  const handleEditRefundFromOtherCheque = (data) => {
+    setSelectedItem(data);
+    setShowRefundFromOtherChequeModal(true);
+  };
+
+  //------
+
   const handleShowNewModal = () => {
     switch (selectedTab) {
       case "cheques":
@@ -878,8 +1035,8 @@ const ReceiveReceiptModal = ({
       case "payment-notices":
         setShowPaymentNoticeModal(true);
         break;
-      case "return-from-others":
-        setShowReturnFromOtherModal(true);
+      case "refund-from-other-cheques":
+        setShowRefundFromOtherChequeModal(true);
         break;
       case "return-payable-cheques":
         setShowReturnPayableChequeModal(true);
@@ -935,6 +1092,8 @@ const ReceiveReceiptModal = ({
     handleDeleteCash,
     handleEditPaymentNotice,
     handleDeletePaymentNotice,
+    handleEditRefundFromOtherCheque,
+    handleDeleteRefundFromOtherCheque,
   };
 
   const handleReceiveBaseChange = (e) => {
@@ -950,6 +1109,44 @@ const ReceiveReceiptModal = ({
       setRecord(rec);
       loadFieldsValue(formRef, rec);
     }
+  };
+
+  const showNewButton = () => {
+    let result = false;
+
+    if (
+      status_id === 1 &&
+      (selectedTab === "payment-notices" || record.CashBoxID > 0)
+    )
+      result = true;
+
+    return result;
+  };
+
+  const isCashBoxDdlDisabled = () => {
+    let result = false;
+
+    const {
+      Cheques,
+      Demands,
+      Cashes,
+      // PaymentNotices,
+      RefundFromOtherCheques,
+      // RefundReceivedCheques,
+      // RefundReceivedDemands,
+    } = record;
+
+    if (
+      Cheques?.length > 0 ||
+      Demands?.length > 0 ||
+      Cashes?.length > 0 ||
+      RefundFromOtherCheques?.length > 0 //||
+      // RefundReceivedCheques?.length > 0 ||
+      // RefundReceivedDemands?.length > 0
+    )
+      result = true;
+
+    return result;
   };
 
   //------
@@ -1035,7 +1232,7 @@ const ReceiveReceiptModal = ({
                 keyColumn="CashBoxID"
                 valueColumn="Title"
                 formConfig={formConfig}
-                disabled={record.Cashes?.length > 0}
+                disabled={isCashBoxDdlDisabled()}
               />
             </Col>
             <Col xs={24}>
@@ -1083,13 +1280,11 @@ const ReceiveReceiptModal = ({
               </Form.Item>
             </Col>
 
-            {status_id === 1 &&
-              (selectedTab !== "cashes" ||
-                (selectedTab === "cashes" && record.CashBoxID > 0)) && (
-                <Col xs={24}>
-                  <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
-                </Col>
-              )}
+            {showNewButton() && (
+              <Col xs={24}>
+                <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
+              </Col>
+            )}
           </Row>
         </Form>
       </ModalWindow>
@@ -1130,7 +1325,18 @@ const ReceiveReceiptModal = ({
         />
       )}
 
-      {showReturnFromOtherModal && <></>}
+      {showRefundFromOtherChequeModal && (
+        <RefundFromOtherChequeModal
+          isOpen={showRefundFromOtherChequeModal}
+          selectedObject={selectedItem}
+          cashBoxID={record.CashBoxID}
+          selectedCheques={record.RefundFromOtherCheques}
+          onOk={handleSaveRefundFromOtherCheque}
+          onCancel={handleCloseRefundFromOtherChequeModal}
+          onSelectCheque={handleSelectChequeForRefundFromOtherCheque}
+        />
+      )}
+
       {showReturnPayableChequeModal && <></>}
       {showReturnPayableDemandModal && <></>}
     </>

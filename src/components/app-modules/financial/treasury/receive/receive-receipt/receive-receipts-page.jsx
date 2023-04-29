@@ -244,8 +244,8 @@ const ReceiveReceiptsPage = ({ pageName }) => {
       case "payment-notice":
         collection = "PaymentNotices";
         break;
-      case "return-from-other":
-        collection = "ReturnFromOthers";
+      case "refund-from-other-cheque":
+        collection = "RefundFromOtherCheques";
         break;
       case "return-payable-cheque":
         collection = "ReturnPayableCheques";
@@ -326,7 +326,6 @@ const ReceiveReceiptsPage = ({ pageName }) => {
     item_id
   ) => {
     //--- specify collection
-
     const collection = getCollection(item_type);
 
     //------
