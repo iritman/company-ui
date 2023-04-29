@@ -1350,12 +1350,7 @@ const PaymentReceiptModal = ({
                 keyColumn="CashBoxID"
                 valueColumn="Title"
                 formConfig={formConfig}
-                disabled={
-                  isCashBoxDdlDisabled()
-                  // record.Demands?.length > 0 ||
-                  // record.Cashes?.length > 0 ||
-                  // record.TransferToOthers?.length > 0
-                }
+                disabled={isCashBoxDdlDisabled()}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -1413,14 +1408,6 @@ const PaymentReceiptModal = ({
                 />
               </Form.Item>
             </Col>
-
-            {/* {status_id === 1 &&
-              (selectedTab !== "cashes" ||
-                (selectedTab === "cashes" && record.CashBoxID > 0)) && (
-                <Col xs={24}>
-                  <Form.Item>{getNewButton(handleClickNewButton)}</Form.Item>
-                </Col>
-              )} */}
 
             {showNewButton() && (
               <Col xs={24}>
