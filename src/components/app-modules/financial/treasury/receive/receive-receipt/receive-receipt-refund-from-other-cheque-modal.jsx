@@ -72,7 +72,7 @@ const ReceiveReceiptRefundFromOtherChequeModal = ({
 
   const [cheques, setCheques] = useState([]);
   const [chequeStatuses, setChequeStatuses] = useState([]);
-  const [currencies, setCurrencies] = useState([]);
+  // const [currencies, setCurrencies] = useState([]);
   const [operations, setOperations] = useState([]);
   const [cashFlows, setCashFlows] = useState([]);
   const [standardDetails, setStandardDetails] = useState([]);
@@ -111,14 +111,14 @@ const ReceiveReceiptRefundFromOtherChequeModal = ({
         ChequeStatuses,
         Operations,
         CashFlows,
-        Currencies,
+        // Currencies,
         StandardDetails,
       } = data;
 
       setChequeStatuses(ChequeStatuses);
       setOperations(Operations);
       setCashFlows(CashFlows);
-      setCurrencies(Currencies);
+      // setCurrencies(Currencies);
       setStandardDetails(StandardDetails);
 
       if (selectedObject) {
@@ -157,13 +157,15 @@ const ReceiveReceiptRefundFromOtherChequeModal = ({
         setFrontSideAccounts([{ FrontSideAccountID, Title }]);
         initModal(formRef, selectedObject, setRecord);
       } else {
-        utils.setDefaultCurrency(
-          setRecord,
-          initRecord,
-          loadFieldsValue,
-          formRef,
-          Currencies
-        );
+        setRecord(initRecord);
+        loadFieldsValue(formRef, initRecord);
+        // utils.setDefaultCurrency(
+        //   setRecord,
+        //   initRecord,
+        //   loadFieldsValue,
+        //   formRef,
+        //   Currencies
+        // );
       }
     } catch (ex) {
       handleError(ex);
