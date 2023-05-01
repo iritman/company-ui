@@ -35,6 +35,38 @@ export async function getPayedToOtherChequeForRefundByID(chequeID) {
   return data;
 }
 
+export async function getPayedChequesForRefund(cashBoxID, frontSideAccountID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/refund/payed/cheque/${cashBoxID}/${frontSideAccountID}`
+  );
+
+  return data;
+}
+
+export async function getPayedChequeForRefundByID(chequeID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/refund/payed/cheque/${chequeID}`
+  );
+
+  return data;
+}
+
+export async function getPayedDemandsForRefund(cashBoxID, frontSideAccountID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/refund/payed/demand/${cashBoxID}/${frontSideAccountID}`
+  );
+
+  return data;
+}
+
+export async function getPayedDemandForRefundByID(demandID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/refund/payed/demand/${demandID}`
+  );
+
+  return data;
+}
+
 export async function searchFrontSideAccounts(searchText) {
   const { data } = await http.post(`${apiEndpoint}/accounts`, { searchText });
 
@@ -135,6 +167,10 @@ const service = {
   getItemsParams,
   getPayedToOtherChequesForRefund,
   getPayedToOtherChequeForRefundByID,
+  getPayedChequesForRefund,
+  getPayedChequeForRefundByID,
+  getPayedDemandsForRefund,
+  getPayedDemandForRefundByID,
   searchFrontSideAccounts,
   searchFrontSideAccountByID,
   searchDeliveryMembers,

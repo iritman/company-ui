@@ -25,6 +25,8 @@ import DemandModal from "./receive-receipt-demand-modal";
 import CashModal from "./receive-receipt-cash-modal";
 import PaymentNoticeModal from "./receive-receipt-payment-notice-modal";
 import RefundFromOtherChequeModal from "./receive-receipt-refund-from-other-cheque-modal";
+import RefundPayedChequeModal from "./receive-receipt-refund-payed-cheque-modal";
+import RefundPayedDemandModal from "./receive-receipt-refund-payed-demand-modal";
 import { v4 as uuid } from "uuid";
 import {
   schema,
@@ -81,6 +83,14 @@ const ReceiveReceiptModal = ({
     selectedChequeForRefundFromOtherCheque,
     setSelectedChequeForRefundFromOtherCheque,
   ] = useState(null);
+  const [
+    selectedChequeForRefundPayedCheque,
+    setSelectedChequeForRefundPayedCheque,
+  ] = useState(null);
+  const [
+    selectedDemandForRefundPayedDemand,
+    setSelectedDemandForRefundPayedDemand,
+  ] = useState(null);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [showChequeModal, setShowChequeModal] = useState(false);
@@ -89,9 +99,9 @@ const ReceiveReceiptModal = ({
   const [showPaymentNoticeModal, setShowPaymentNoticeModal] = useState(false);
   const [showRefundFromOtherChequeModal, setShowRefundFromOtherChequeModal] =
     useState(false);
-  const [showReturnPayableChequeModal, setShowReturnPayableChequeModal] =
+  const [showRefundPayedChequeModal, setShowRefundPayedChequeModal] =
     useState(false);
-  const [showReturnPayableDemandModal, setShowReturnPayableDemandModal] =
+  const [showRefundPayedDemandModal, setShowRefundPayedDemandModal] =
     useState(false);
 
   const [selectedTab, setSelectedTab] = useState("cheques");
@@ -121,8 +131,8 @@ const ReceiveReceiptModal = ({
     record.Cashes = [];
     record.PaymentNotices = [];
     record.RefundFromOtherCheques = [];
-    record.ReturnPayableCheques = [];
-    record.ReturnPayableDemands = [];
+    record.RefundPayedCheques = [];
+    record.RefundPayedDemands = [];
 
     setRecord(record);
     setErrors({});
@@ -880,7 +890,7 @@ const ReceiveReceiptModal = ({
     if (selectedObject !== null) {
       refund_from_other_cheque_to_save.ReceiveID = selectedObject.ReceiveID;
 
-      const saved_payment_notice = await onSaveReceiveReceiptItem(
+      const saved_refund_from_other_cheque = await onSaveReceiveReceiptItem(
         "refund-from-other-cheque",
         "RefundID",
         refund_from_other_cheque_to_save
@@ -893,10 +903,10 @@ const ReceiveReceiptModal = ({
       if (index === -1) {
         record.RefundFromOtherCheques = [
           ...record.RefundFromOtherCheques,
-          saved_payment_notice,
+          saved_refund_from_other_cheque,
         ];
       } else {
-        record.RefundFromOtherCheques[index] = saved_payment_notice;
+        record.RefundFromOtherCheques[index] = saved_refund_from_other_cheque;
       }
     } else {
       const {
@@ -1021,6 +1031,290 @@ const ReceiveReceiptModal = ({
 
   //------
 
+  const handleSelectChequeForRefundPayedCheque = (cheque) => {
+    setSelectedChequeForRefundPayedCheque(cheque);
+  };
+
+  const handleSaveRefundPayedCheque = async (refund_payed_cheque_to_save) => {
+    if (selectedObject !== null) {
+      refund_payed_cheque_to_save.ReceiveID = selectedObject.ReceiveID;
+
+      const saved_refund_payed_cheque = await onSaveReceiveReceiptItem(
+        "refund-payed-cheque",
+        "RefundID",
+        refund_payed_cheque_to_save
+      );
+
+      const index = record.RefundPayedCheques.findIndex(
+        (item) => item.RefundID === refund_payed_cheque_to_save.RefundID
+      );
+
+      if (index === -1) {
+        record.RefundPayedCheques = [
+          ...record.RefundPayedCheques,
+          saved_refund_payed_cheque,
+        ];
+      } else {
+        record.RefundPayedCheques[index] = saved_refund_payed_cheque;
+      }
+    } else {
+      const {
+        FrontSideAccountTitle,
+        ChequeNo,
+        AccountNo,
+        BankTitle,
+        BranchName,
+        DueDate,
+        AgreedDate,
+        CurrencyTitle,
+        DurationTypeTitle,
+        OperationTitle,
+        CityTitle,
+      } = selectedChequeForRefundPayedCheque;
+
+      refund_payed_cheque_to_save = {
+        ...refund_payed_cheque_to_save,
+        FrontSideAccountTitle,
+        ChequeNo,
+        AccountNo,
+        BankTitle,
+        BranchName,
+        DueDate,
+        AgreedDate,
+        CurrencyTitle,
+        DurationTypeTitle,
+        OperationTitle,
+        CityTitle,
+      };
+
+      //While adding items temporarily, we have no join operation in database
+      //So, we need to select titles manually
+
+      refund_payed_cheque_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        refund_payed_cheque_to_save.OperationID
+      );
+
+      refund_payed_cheque_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        refund_payed_cheque_to_save.CashFlowID
+      );
+
+      refund_payed_cheque_to_save.StandardDetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        refund_payed_cheque_to_save.StandardDetailsID
+      );
+
+      //--- managing unique id (UID) for new items
+      if (refund_payed_cheque_to_save.RefundID === 0 && selectedItem === null) {
+        refund_payed_cheque_to_save.UID = uuid();
+        record.RefundPayedCheques = [
+          ...record.RefundPayedCheques,
+          refund_payed_cheque_to_save,
+        ];
+      } else if (
+        refund_payed_cheque_to_save.RefundID === 0 &&
+        selectedItem !== null
+      ) {
+        const index = record.RefundPayedCheques.findIndex(
+          (item) => item.UID === selectedItem.UID
+        );
+        record.RefundPayedCheques[index] = refund_payed_cheque_to_save;
+      }
+    }
+
+    //------
+
+    setRecord({ ...record });
+    setSelectedItem(null);
+  };
+
+  const handleDeleteRefundPayedCheque = async (
+    refund_payed_cheque_to_delete
+  ) => {
+    setProgress(true);
+
+    try {
+      if (refund_payed_cheque_to_delete.RefundID > 0) {
+        await onDeleteReceiveReceiptItem(
+          "refund-payed-cheque",
+          "RefundID",
+          refund_payed_cheque_to_delete.RefundID
+        );
+
+        record.RefundPayedCheques = record.RefundPayedCheques.filter(
+          (i) => i.RefundID !== refund_payed_cheque_to_delete.RefundID
+        );
+      } else {
+        record.RefundPayedCheques = record.RefundPayedCheques.filter(
+          (i) => i.UID !== refund_payed_cheque_to_delete.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleCloseRefundPayedChequeModal = () => {
+    setSelectedItem(null);
+    setShowRefundPayedChequeModal(false);
+  };
+
+  const handleEditRefundPayedCheque = (data) => {
+    setSelectedItem(data);
+    setShowRefundPayedChequeModal(true);
+  };
+
+  //------
+
+  const handleSelectDemandForRefundPayedDemand = (cheque) => {
+    setSelectedDemandForRefundPayedDemand(cheque);
+  };
+
+  const handleSaveRefundPayedDemand = async (refund_payed_demand_to_save) => {
+    if (selectedObject !== null) {
+      refund_payed_demand_to_save.ReceiveID = selectedObject.ReceiveID;
+
+      const saved_refund_payed_demand = await onSaveReceiveReceiptItem(
+        "refund-payed-demand",
+        "RefundID",
+        refund_payed_demand_to_save
+      );
+
+      const index = record.RefundPayedDemands.findIndex(
+        (item) => item.RefundID === refund_payed_demand_to_save.RefundID
+      );
+
+      if (index === -1) {
+        record.RefundPayedDemands = [
+          ...record.RefundPayedDemands,
+          saved_refund_payed_demand,
+        ];
+      } else {
+        record.RefundPayedDemands[index] = saved_refund_payed_demand;
+      }
+    } else {
+      const {
+        FrontSideAccountTitle,
+        DemandNo,
+        DueDate,
+        CurrencyTitle,
+        DurationTypeTitle,
+        OperationTitle,
+        CityTitle,
+      } = selectedDemandForRefundPayedDemand;
+
+      refund_payed_demand_to_save = {
+        ...refund_payed_demand_to_save,
+        FrontSideAccountTitle,
+        DemandNo,
+        DueDate,
+        CurrencyTitle,
+        DurationTypeTitle,
+        OperationTitle,
+        CityTitle,
+      };
+
+      //While adding items temporarily, we have no join operation in database
+      //So, we need to select titles manually
+
+      refund_payed_demand_to_save.PaperNatureTitle = findTitle(
+        operations,
+        "OperationID",
+        "PaperNatureTitle",
+        refund_payed_demand_to_save.OperationID
+      );
+
+      refund_payed_demand_to_save.CashFlowTitle = findTitle(
+        cashFlows,
+        "CashFlowID",
+        "Title",
+        refund_payed_demand_to_save.CashFlowID
+      );
+
+      refund_payed_demand_to_save.StandardDetailsText = findTitle(
+        standardDetails,
+        "StandardDetailsID",
+        "DetailsText",
+        refund_payed_demand_to_save.StandardDetailsID
+      );
+
+      //--- managing unique id (UID) for new items
+      if (refund_payed_demand_to_save.RefundID === 0 && selectedItem === null) {
+        refund_payed_demand_to_save.UID = uuid();
+        record.RefundPayedDemands = [
+          ...record.RefundPayedDemands,
+          refund_payed_demand_to_save,
+        ];
+      } else if (
+        refund_payed_demand_to_save.RefundID === 0 &&
+        selectedItem !== null
+      ) {
+        const index = record.RefundPayedDemands.findIndex(
+          (item) => item.UID === selectedItem.UID
+        );
+        record.RefundPayedDemands[index] = refund_payed_demand_to_save;
+      }
+    }
+
+    //------
+
+    setRecord({ ...record });
+    setSelectedItem(null);
+  };
+
+  const handleDeleteRefundPayedDemand = async (
+    refund_payed_demand_to_delete
+  ) => {
+    setProgress(true);
+
+    try {
+      if (refund_payed_demand_to_delete.RefundID > 0) {
+        await onDeleteReceiveReceiptItem(
+          "refund-payed-demand",
+          "RefundID",
+          refund_payed_demand_to_delete.RefundID
+        );
+
+        record.RefundPayedDemands = record.RefundPayedDemands.filter(
+          (i) => i.RefundID !== refund_payed_demand_to_delete.RefundID
+        );
+      } else {
+        record.RefundPayedDemands = record.RefundPayedDemands.filter(
+          (i) => i.UID !== refund_payed_demand_to_delete.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
+  const handleCloseRefundPayedDemandModal = () => {
+    setSelectedItem(null);
+    setShowRefundPayedDemandModal(false);
+  };
+
+  const handleEditRefundPayedDemand = (data) => {
+    setSelectedItem(data);
+    setShowRefundPayedDemandModal(true);
+  };
+
+  //------
+
   const handleShowNewModal = () => {
     switch (selectedTab) {
       case "cheques":
@@ -1038,11 +1332,11 @@ const ReceiveReceiptModal = ({
       case "refund-from-other-cheques":
         setShowRefundFromOtherChequeModal(true);
         break;
-      case "return-payable-cheques":
-        setShowReturnPayableChequeModal(true);
+      case "refund-payed-cheques":
+        setShowRefundPayedChequeModal(true);
         break;
-      case "return-payable-demands":
-        setShowReturnPayableDemandModal(true);
+      case "refund-payed-demands":
+        setShowRefundPayedDemandModal(true);
         break;
       default:
         break;
@@ -1094,6 +1388,10 @@ const ReceiveReceiptModal = ({
     handleDeletePaymentNotice,
     handleEditRefundFromOtherCheque,
     handleDeleteRefundFromOtherCheque,
+    handleEditRefundPayedCheque,
+    handleDeleteRefundPayedCheque,
+    handleEditRefundPayedDemand,
+    handleDeleteRefundPayedDemand,
   };
 
   const handleReceiveBaseChange = (e) => {
@@ -1132,17 +1430,17 @@ const ReceiveReceiptModal = ({
       Cashes,
       // PaymentNotices,
       RefundFromOtherCheques,
-      // RefundReceivedCheques,
-      // RefundReceivedDemands,
+      RefundPayedCheques,
+      RefundPayedDemands,
     } = record;
 
     if (
       Cheques?.length > 0 ||
       Demands?.length > 0 ||
       Cashes?.length > 0 ||
-      RefundFromOtherCheques?.length > 0 //||
-      // RefundReceivedCheques?.length > 0 ||
-      // RefundReceivedDemands?.length > 0
+      RefundFromOtherCheques?.length > 0 ||
+      RefundPayedCheques?.length > 0 ||
+      RefundPayedDemands?.length > 0
     )
       result = true;
 
@@ -1337,8 +1635,29 @@ const ReceiveReceiptModal = ({
         />
       )}
 
-      {showReturnPayableChequeModal && <></>}
-      {showReturnPayableDemandModal && <></>}
+      {showRefundPayedChequeModal && (
+        <RefundPayedChequeModal
+          isOpen={showRefundPayedChequeModal}
+          selectedObject={selectedItem}
+          cashBoxID={record.CashBoxID}
+          selectedCheques={record.RefundPayedCheques}
+          onOk={handleSaveRefundPayedCheque}
+          onCancel={handleCloseRefundPayedChequeModal}
+          onSelectCheque={handleSelectChequeForRefundPayedCheque}
+        />
+      )}
+
+      {showRefundPayedDemandModal && (
+        <RefundPayedDemandModal
+          isOpen={showRefundPayedDemandModal}
+          selectedObject={selectedItem}
+          cashBoxID={record.CashBoxID}
+          selectedDemands={record.RefundPayedDemands}
+          onOk={handleSaveRefundPayedDemand}
+          onCancel={handleCloseRefundPayedDemandModal}
+          onSelectDemand={handleSelectDemandForRefundPayedDemand}
+        />
+      )}
     </>
   );
 };

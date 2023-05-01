@@ -902,23 +902,23 @@ export const getTabPanes = (receive_receipt, selectedTab) => {
       label: (
         <BadgedTabTitle
           selectedTab={selectedTab}
-          selectionTitle="return-payable-cheques"
-          title={Words.return_payable_cheque}
+          selectionTitle="refund-payed-cheques"
+          title={Words.refund_payed_cheque}
           items={ReturnPayableCheques}
         />
       ),
-      key: "return-payable-cheques",
+      key: "refund-payed-cheques",
     },
     {
       label: (
         <BadgedTabTitle
           selectedTab={selectedTab}
-          selectionTitle="return-payable-demands"
-          title={Words.return_payable_demand}
+          selectionTitle="refund-payed-demands"
+          title={Words.refund_payed_demand}
           items={ReturnPayableDemands}
         />
       ),
-      key: "return-payable-demands",
+      key: "refund-payed-demands",
     },
   ];
 

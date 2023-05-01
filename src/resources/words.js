@@ -559,8 +559,8 @@ class Words extends Component {
   static account_name = "عنوان حساب";
   static refund_from_other_cheque = "برگشت از واگذار به غیر";
   static pay_to_other = "واگذار به غیر";
-  static return_payable_cheque = "استرداد چک پرداختنی";
-  static return_payable_demand = "استرداد سفته پرداختنی";
+  static refund_payed_cheque = "استرداد چک پرداختی";
+  static refund_payed_demand = "استرداد سفته پرداختی";
   static receipt_receive_type = "نوع دریافت";
   static delivery_member = "تحویل دهنده";
   static receive_date = "تاریخ دریافت";
@@ -581,6 +581,8 @@ class Words extends Component {
   static refund_received_demand = "استرداد سفته دریافتی";
   static reg_receive_receipt_refund_from_other_cheque =
     "ثبت برگشت از واگذار به غیر";
+  static reg_receive_receipt_refund_payed_cheque = "ثبت استرداد چک پرداختی";
+  static reg_receive_receipt_refund_payed_demand = "ثبت استرداد سفته پرداختی";
 
   static bank_hand_overs = "واگذار به بانک";
   static hand_over_date = "تاریخ واگذاری";

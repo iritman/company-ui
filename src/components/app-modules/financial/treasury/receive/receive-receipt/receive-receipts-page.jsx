@@ -247,11 +247,11 @@ const ReceiveReceiptsPage = ({ pageName }) => {
       case "refund-from-other-cheque":
         collection = "RefundFromOtherCheques";
         break;
-      case "return-payable-cheque":
-        collection = "ReturnPayableCheques";
+      case "refund-payed-cheque":
+        collection = "RefundPayedCheques";
         break;
-      case "return-payable-demand":
-        collection = "ReturnPayableDemands";
+      case "refund-payed-demand":
+        collection = "RefundPayedDemands";
         break;
       default:
         break;
