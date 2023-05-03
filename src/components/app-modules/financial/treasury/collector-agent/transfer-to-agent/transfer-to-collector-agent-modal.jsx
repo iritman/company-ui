@@ -2,30 +2,30 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col, Space, Popconfirm, Button, Tabs } from "antd";
 import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/collector-agent/transfer-to-collector-agents-service";
-import DateItem from "../../../../form-controls/date-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import InputItem from "../../../../form-controls/input-item";
-import TextItem from "../../../../form-controls/text-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/collector-agent/transfer-to-collector-agents-service";
+import DateItem from "../../../../../form-controls/date-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
+import InputItem from "../../../../../form-controls/input-item";
+import TextItem from "../../../../../form-controls/text-item";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
-import DetailsTable from "../../../../common/details-table";
+} from "../../../../../contexts/modal-context";
+import DetailsTable from "../../../../../common/details-table";
 import ChequeModal from "./transfer-to-collector-agent-cheque-modal";
 import { v4 as uuid } from "uuid";
-import PriceViewer from "../../../../common/price-viewer";
+import PriceViewer from "../../../../../common/price-viewer";
 import {
   schema,
   initRecord,

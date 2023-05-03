@@ -13,9 +13,9 @@ import {
   AiFillLock as LockIcon,
   AiOutlineCheck as CheckIcon,
 } from "react-icons/ai";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 
 const { Text } = Typography;
 const valueColor = Colors.blue[7];

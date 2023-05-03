@@ -10,15 +10,15 @@ import {
   Space,
   Popconfirm,
 } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
-import { getSorter, handleError } from "../../../../../tools/form-manager";
-import DetailsTable from "../../../../common/details-table";
-import ModalWindow from "../../../../common/modal-window";
-import PriceViewer from "../../../../common/price-viewer";
-import service from "../../../../../services/financial/treasury/collector-agent/transfer-to-collector-agents-service";
+import { getSorter, handleError } from "../../../../../../tools/form-manager";
+import DetailsTable from "../../../../../common/details-table";
+import ModalWindow from "../../../../../common/modal-window";
+import PriceViewer from "../../../../../common/price-viewer";
+import service from "../../../../../../services/financial/treasury/collector-agent/transfer-to-collector-agents-service";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;

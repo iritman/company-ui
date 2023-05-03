@@ -1,22 +1,22 @@
 import React from "react";
 import { useMount } from "react-use";
 import { Spin, Row, Col, Typography } from "antd";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
-import service from "../../../../../services/financial/treasury/collector-agent/collector-agents-service";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
+import service from "../../../../../../services/financial/treasury/collector-agent/collector-agents-service";
 import {
   getSorter,
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
-} from "../../../../../tools/form-manager";
-import SimpleDataTable from "../../../../common/simple-data-table";
-import SimpleDataPageHeader from "../../../../common/simple-data-page-header";
+} from "../../../../../../tools/form-manager";
+import SimpleDataTable from "../../../../../common/simple-data-table";
+import SimpleDataPageHeader from "../../../../../common/simple-data-page-header";
 import CollectorAgentModal from "./collector-agent-modal";
 import DetailsModal from "./collector-agent-details-modal";
-import { usePageContext } from "../../../../contexts/page-context";
-import DetailsButton from "../../../../common/details-button";
+import { usePageContext } from "../../../../../contexts/page-context";
+import DetailsButton from "../../../../../common/details-button";
 
 const { Text } = Typography;
 

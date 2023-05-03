@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
+import {
+  BsFileEarmarkPersonFill as CollectorAgentIcon,
+  BsCashCoin as CashIcon,
+} from "react-icons/bs";
 import { RiFolderUserLine as TransferToCollectorAgentIcon } from "react-icons/ri";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
@@ -35,7 +38,11 @@ const mapper = (pageID) => {
       );
       break;
 
-    //   Colors.blue[2];
+    case 252:
+      link = "collector-agent-make-cashes";
+      icon = <CashIcon style={{ color: Colors.purple[5] }} size={iconSize} />;
+      break;
+
     //   Colors.purple[3];
     //   Colors.orange[3];
     //   Colors.yellow[6];

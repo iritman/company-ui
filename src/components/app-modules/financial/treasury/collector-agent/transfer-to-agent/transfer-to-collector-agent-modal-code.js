@@ -6,10 +6,10 @@ import {
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
-import { getSorter } from "../../../../../tools/form-manager";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import { getSorter } from "../../../../../../tools/form-manager";
+import Words from "../../../../../../resources/words";
+import Colors from "../../../../../../resources/colors";
+import utils from "../../../../../../tools/utils";
 import Joi from "joi-browser";
 
 const { Text } = Typography;

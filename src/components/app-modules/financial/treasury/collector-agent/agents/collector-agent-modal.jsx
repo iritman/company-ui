@@ -2,24 +2,24 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
-import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
+import ModalWindow from "../../../../../common/modal-window";
+import Words from "../../../../../../resources/words";
 import {
   validateForm,
   loadFieldsValue,
   initModal,
   saveModalChanges,
   handleError,
-} from "../../../../../tools/form-manager";
-import service from "../../../../../services/financial/treasury/collector-agent/collector-agents-service";
-import NumericInputItem from "../../../../form-controls/numeric-input-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import DateItem from "../../../../form-controls/date-item";
-import SwitchItem from "../../../../form-controls/switch-item";
+} from "../../../../../../tools/form-manager";
+import service from "../../../../../../services/financial/treasury/collector-agent/collector-agents-service";
+import NumericInputItem from "../../../../../form-controls/numeric-input-item";
+import DropdownItem from "../../../../../form-controls/dropdown-item";
+import DateItem from "../../../../../form-controls/date-item";
+import SwitchItem from "../../../../../form-controls/switch-item";
 import {
   useModalContext,
   useResetContext,
-} from "../../../../contexts/modal-context";
+} from "../../../../../contexts/modal-context";
 
 const schema = {
   CollectorAgentID: Joi.number().required(),
