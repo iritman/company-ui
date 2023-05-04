@@ -549,6 +549,8 @@ class Words extends Component {
 
   static receive_receipts = "رسیدهای دریافت";
   static receive_receipt = "رسید دریافت";
+  static receive_receipt_id = "شماره رسید دریافت";
+  static receive_receipt_status = "وضعیت رسید دریافت";
   static cheque = "چک";
   static demand = "سفته";
   static cash = "وجه نقد";
@@ -601,9 +603,12 @@ class Words extends Component {
   static ryal = "ریال";
 
   static transfer_to_collector_agents = "واگذار به مامور وصول";
+  static collector_agent_make_cashes = "نقد کردن";
   static transfer_to_collector_agent_status_1 = "ثبت شده";
   static transfer_to_collector_agent_status_2 = "تایید شده";
   static transfer_to_collector_agent_status_3 = "رد شده";
+  static not_issued = "صادر نشده";
+  static submit_receive_receipt = "صدور رسید دریافت";
 
   static transfer_to_collector_agent_date = "تاریخ واگذاری";
 
@@ -1188,6 +1193,7 @@ class Words extends Component {
     sure_to_create_tafsil_account: "برای ایجاد حساب تفصیلی اطمینان دارید؟",
     sure_to_submit_approve_transfer_to_collector_agent:
       "برای ثبت و تایید واگذاری به مامور وصول اطمینان دارید؟",
+    sure_to_submit_receive_receipt: "برای صدور رسید دریافت اطمینان دارید؟",
   };
 
   static monthes = {

@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useMount } from "react-use";
 import { Row, Col } from "antd";
 import DashboardTile from "../../../../common/dashboard-tile";
-import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
+import {
+  BsFileEarmarkPersonFill as CollectorAgentIcon,
+  BsCashCoin as CashIcon,
+} from "react-icons/bs";
 import { RiFolderUserLine as TransferToCollectorAgentIcon } from "react-icons/ri";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
@@ -30,7 +33,12 @@ const mapper = (pageID) => {
       backColor = Colors.blue[2];
       break;
 
-    //   Colors.blue[2];
+    case 252:
+      link = "collector-agent-make-cashes";
+      icon = <CashIcon {...iconProps} />;
+      backColor = Colors.purple[2];
+      break;
+
     //   Colors.purple[3];
     //   Colors.orange[3];
     //   Colors.yellow[6];
