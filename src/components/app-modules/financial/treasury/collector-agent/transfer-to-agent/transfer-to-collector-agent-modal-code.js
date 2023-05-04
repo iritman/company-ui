@@ -214,6 +214,17 @@ export const getChequeColumns = (access, statusID, onEdit, onDelete) => {
         ),
       },
     ];
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
+      },
+    ];
   }
 
   return columns;
