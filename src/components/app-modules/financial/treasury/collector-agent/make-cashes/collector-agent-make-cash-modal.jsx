@@ -136,18 +136,18 @@ const CollectorAgentMakeCashModal = ({
     );
   };
 
-  const handleSubmitAndApprove = async () => {
-    record.StatusID = 2;
-    setRecord({ ...record });
+  // const handleSubmitAndApprove = async () => {
+  //   record.StatusID = 2;
+  //   setRecord({ ...record });
 
-    saveModalChanges(
-      formConfig,
-      selectedObject,
-      setProgress,
-      onOk,
-      clearRecord
-    );
-  };
+  //   saveModalChanges(
+  //     formConfig,
+  //     selectedObject,
+  //     setProgress,
+  //     onOk,
+  //     clearRecord
+  //   );
+  // };
 
   //------
 
