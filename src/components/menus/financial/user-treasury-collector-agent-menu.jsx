@@ -3,7 +3,10 @@ import {
   BsFileEarmarkPersonFill as CollectorAgentIcon,
   BsCashCoin as CashIcon,
 } from "react-icons/bs";
-import { RiFolderUserLine as TransferToCollectorAgentIcon } from "react-icons/ri";
+import {
+  RiFolderUserLine as TransferToCollectorAgentIcon,
+  RiRefund2Fill as RefundIcon,
+} from "react-icons/ri";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
@@ -43,8 +46,11 @@ const mapper = (pageID) => {
       icon = <CashIcon style={{ color: Colors.purple[5] }} size={iconSize} />;
       break;
 
-    //   Colors.purple[3];
-    //   Colors.orange[3];
+    case 253:
+      link = "collector-agent-refunds";
+      icon = <RefundIcon style={{ color: Colors.orange[5] }} size={iconSize} />;
+      break;
+
     //   Colors.yellow[6];
     //   Colors.volcano[4];
     //   Colors.cyan[3];

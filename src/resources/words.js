@@ -610,6 +610,11 @@ class Words extends Component {
   static not_issued = "صادر نشده";
   static submit_receive_receipt = "صدور رسید دریافت";
 
+  static collector_agent_refunds = "استرداد به صندوق";
+  static collector_agent_refund_status_1 = "ثبت شده";
+  static collector_agent_refund_status_2 = "تایید شده";
+  static collector_agent_refund_status_3 = "رد شده";
+
   static transfer_to_collector_agent_date = "تاریخ واگذاری";
 
   static funds = "تنخواه";
@@ -1190,10 +1195,16 @@ class Words extends Component {
       "برای برگشت از تایید اعلامیه واگذاری به بانک اطمینان دارید؟",
     sure_to_undo_approve_collection_rejection:
       "برای برگشت از تایید اعلامیه وصول/واخواست اطمینان دارید؟",
+    sure_to_undo_approve_transfer_to_collector_agent:
+      "برای برگشت از تایید واگذاری به مامور وصول اطمینان دارید؟",
     sure_to_create_tafsil_account: "برای ایجاد حساب تفصیلی اطمینان دارید؟",
     sure_to_submit_approve_transfer_to_collector_agent:
       "برای ثبت و تایید واگذاری به مامور وصول اطمینان دارید؟",
     sure_to_submit_receive_receipt: "برای صدور رسید دریافت اطمینان دارید؟",
+    sure_to_submit_approve_collector_agent_refund:
+      "برای ثبت و تایید استرداد به صندوق اطمینان دارید؟",
+    sure_to_undo_approve_collector_agent_refund:
+      "برای برگشت از تایید استرداد به صندوق اطمینان دارید؟",
   };
 
   static monthes = {

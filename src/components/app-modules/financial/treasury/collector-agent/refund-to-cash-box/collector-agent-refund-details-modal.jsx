@@ -18,7 +18,7 @@ import { getSorter, handleError } from "../../../../../../tools/form-manager";
 import DetailsTable from "../../../../../common/details-table";
 import ModalWindow from "../../../../../common/modal-window";
 import PriceViewer from "../../../../../common/price-viewer";
-import service from "../../../../../../services/financial/treasury/collector-agent/transfer-to-collector-agents-service";
+import service from "../../../../../../services/financial/treasury/collector-agent/collector-agent-refunds-service";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -165,7 +165,7 @@ const cheque_columns = [
   },
 ];
 
-const TransferToCollectorAgentDetailsModal = ({
+const CollectorAgentRefundDetailsModal = ({
   selectedObject,
   isOpen,
   onOk,
@@ -177,16 +177,16 @@ const TransferToCollectorAgentDetailsModal = ({
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
 
   const {
-    TransferID,
+    RefundID,
     AgentTitle,
-    TransferDate,
+    RefundDate,
     SubNo,
-    StandardDetailsText,
-    DetailsText,
     StatusID,
     StatusTitle,
-    RegMemberFirstName,
-    RegMemberLastName,
+    StandardDetailsText,
+    DetailsText,
+    RegFirstName,
+    RegLastName,
     RegDate,
     RegTime,
     Price,
@@ -219,8 +219,7 @@ const TransferToCollectorAgentDetailsModal = ({
             {hasUndoApproveAccess && (
               <Popconfirm
                 title={
-                  Words.questions
-                    .sure_to_undo_approve_transfer_to_collector_agent
+                  Words.questions.sure_to_undo_approve_collector_agent_refund
                 }
                 onConfirm={onUndoApprove}
                 okText={Words.yes}
@@ -292,15 +291,15 @@ const TransferToCollectorAgentDetailsModal = ({
             >
               <Descriptions.Item label={Words.id}>
                 <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(`${TransferID}`)}
+                  {utils.farsiNum(`${RefundID}`)}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.collector_agent}>
                 <Text style={{ color: valueColor }}>{AgentTitle}</Text>
               </Descriptions.Item>
-              <Descriptions.Item label={Words.transfer_to_collector_agent_date}>
+              <Descriptions.Item label={Words.date}>
                 <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(utils.slashDate(TransferDate))}
+                  {utils.farsiNum(utils.slashDate(RefundDate))}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.sub_no}>
@@ -325,7 +324,7 @@ const TransferToCollectorAgentDetailsModal = ({
               <Descriptions.Item label={Words.reg_member}>
                 <Text
                   style={{ color: valueColor }}
-                >{`${RegMemberFirstName} ${RegMemberLastName}`}</Text>
+                >{`${RegFirstName} ${RegLastName}`}</Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.reg_date_time}>
                 <Text style={{ color: valueColor }}>
@@ -389,4 +388,4 @@ const TransferToCollectorAgentDetailsModal = ({
   );
 };
 
-export default TransferToCollectorAgentDetailsModal;
+export default CollectorAgentRefundDetailsModal;

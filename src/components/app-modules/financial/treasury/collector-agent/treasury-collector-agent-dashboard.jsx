@@ -6,7 +6,10 @@ import {
   BsFileEarmarkPersonFill as CollectorAgentIcon,
   BsCashCoin as CashIcon,
 } from "react-icons/bs";
-import { RiFolderUserLine as TransferToCollectorAgentIcon } from "react-icons/ri";
+import {
+  RiFolderUserLine as TransferToCollectorAgentIcon,
+  RiRefund2Fill as RefundIcon,
+} from "react-icons/ri";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
 
@@ -36,10 +39,15 @@ const mapper = (pageID) => {
     case 252:
       link = "collector-agent-make-cashes";
       icon = <CashIcon {...iconProps} />;
-      backColor = Colors.purple[2];
+      backColor = Colors.purple[3];
       break;
 
-    //   Colors.purple[3];
+    case 253:
+      link = "collector-agent-refunds";
+      icon = <RefundIcon {...iconProps} />;
+      backColor = Colors.orange[3];
+      break;
+
     //   Colors.orange[3];
     //   Colors.yellow[6];
     //   Colors.volcano[4];
