@@ -615,6 +615,11 @@ class Words extends Component {
   static collector_agent_refund_status_2 = "تایید شده";
   static collector_agent_refund_status_3 = "رد شده";
 
+  static collector_agent_rejections = "واخواست";
+  static collector_agent_rejection_status_1 = "ثبت شده";
+  static collector_agent_rejection_status_2 = "تایید شده";
+  static collector_agent_rejection_status_3 = "رد شده";
+
   static transfer_to_collector_agent_date = "تاریخ واگذاری";
 
   static funds = "تنخواه";
@@ -1205,6 +1210,10 @@ class Words extends Component {
       "برای ثبت و تایید استرداد به صندوق اطمینان دارید؟",
     sure_to_undo_approve_collector_agent_refund:
       "برای برگشت از تایید استرداد به صندوق اطمینان دارید؟",
+    sure_to_submit_approve_collector_agent_rejection:
+      "برای ثبت و تایید واخواست اطمینان دارید؟",
+    sure_to_undo_approve_collector_agent_rejection:
+      "برای برگشت از تایید واخواست اطمینان دارید؟",
   };
 
   static monthes = {

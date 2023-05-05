@@ -10,6 +10,7 @@ import {
   RiFolderUserLine as TransferToCollectorAgentIcon,
   RiRefund2Fill as RefundIcon,
 } from "react-icons/ri";
+import { MdUndo as RejectionIcon } from "react-icons/md";
 import Colors from "../../../../../resources/colors";
 import modulesService from "../../../../../services/app/modules-service";
 
@@ -48,7 +49,12 @@ const mapper = (pageID) => {
       backColor = Colors.orange[3];
       break;
 
-    //   Colors.orange[3];
+    case 254:
+      link = "collector-agent-rejections";
+      icon = <RejectionIcon {...iconProps} />;
+      backColor = Colors.volcano[4];
+      break;
+
     //   Colors.yellow[6];
     //   Colors.volcano[4];
     //   Colors.cyan[3];

@@ -7,6 +7,7 @@ import CollectorAgentsPage from "../../components/app-modules/financial/treasury
 import TransferToCollectorAgentsPage from "../../components/app-modules/financial/treasury/collector-agent/transfer-to-agent/transfer-to-collector-agents-page";
 import CollectorAgentMakeCashesPage from "../../components/app-modules/financial/treasury/collector-agent/make-cashes/collector-agent-make-cashes-page";
 import CollectorAgentRefundsPage from "../../components/app-modules/financial/treasury/collector-agent/refund-to-cash-box/collector-agent-refunds-page";
+import CollectorAgentRejectionsPage from "../../components/app-modules/financial/treasury/collector-agent/rejections/collector-agent-rejections-page";
 //---
 
 const modulePath = "financial/treasury/collector-agent";
@@ -43,6 +44,13 @@ const UserTreasuryReceiveRoutes = ({ path }) => {
         exact
         render={() => (
           <CollectorAgentRefundsPage pageName="CollectorAgentRefunds" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/collector-agent-rejections`}
+        exact
+        render={() => (
+          <CollectorAgentRejectionsPage pageName="CollectorAgentRejections" />
         )}
       />
       <Redirect to="/not-found" />
