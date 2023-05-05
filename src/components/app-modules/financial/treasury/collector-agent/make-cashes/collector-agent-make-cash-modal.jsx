@@ -158,13 +158,14 @@ const CollectorAgentMakeCashModal = ({
 
   const handleSaveCheque = async () => {
     if (selectedObject !== null) {
-      const { ItemID, ChequeID, Amount } = selectedCheque;
+      const { ItemID, ChequeID, Amount, PriorCheque } = selectedCheque;
 
       const saved_cheque = await onSaveCheque({
         ItemID,
         OperationID: selectedObject.OperationID,
         ChequeID,
         Amount,
+        PriorCheque,
       });
 
       const index = record.Cheques.findIndex(
