@@ -150,13 +150,14 @@ const CollectorAgentRefundModal = ({
 
   const handleSaveCheque = async () => {
     if (selectedObject !== null) {
-      const { ItemID, ChequeID, Amount } = selectedCheque;
+      const { ItemID, ChequeID, Amount, PriorCheque } = selectedCheque;
 
       const saved_cheque = await onSaveCheque({
         ItemID,
         RefundID: selectedObject.RefundID,
         ChequeID,
         Amount,
+        PriorCheque,
       });
 
       const index = record.Cheques.findIndex(

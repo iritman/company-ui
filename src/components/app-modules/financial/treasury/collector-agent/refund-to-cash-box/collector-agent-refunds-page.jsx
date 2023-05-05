@@ -219,15 +219,19 @@ const CollectorAgentRefundsPage = ({ pageName }) => {
     if (cheque_item.ItemID === 0) {
       diff_price = cheque_item.Amount;
     } else {
-      diff_price =
-        cheque_item.Amount -
-        selectedObject.Cheques.find((c) => c.ChequeID === cheque_item.ChequeID)
-          .Amount;
+      const prior_cheque_amount = cheque_item.PriorCheque?.Amount;
+
+      diff_price = cheque_item.Amount - prior_cheque_amount;
     }
 
     //---
 
-    const saved_item = await service.saveItem(cheque_item);
+    const { ItemID, RefundID, ChequeID } = cheque_item;
+    const saved_item = await service.saveItem({
+      ItemID,
+      RefundID,
+      ChequeID,
+    });
 
     const rec = { ...selectedObject };
     // update price

@@ -207,6 +207,7 @@ const CollectorAgentRefundChequeModal = ({
   const handleChangeCheque = (value) => {
     const cheque = cheques.find((c) => c.ChequeID === value);
     cheque.ItemID = record.ItemID;
+    cheque.PriorCheque = cheques.find((c) => c.ChequeID === record.ChequeID);
     onSelectCheque(cheque);
 
     const rec = { ...record };
