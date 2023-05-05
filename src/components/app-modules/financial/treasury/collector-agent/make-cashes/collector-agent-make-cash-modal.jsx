@@ -81,7 +81,7 @@ const CollectorAgentMakeCashModal = ({
     record.SubNo = "";
     record.StandardDetailsID = 0;
     record.DetailsText = "";
-    record.StatusID = 1;
+    record.ReceiveID = 0;
     record.Cheques = [];
 
     setRecord(record);
@@ -360,7 +360,7 @@ const CollectorAgentMakeCashModal = ({
 
   const getDisableStatus = () => {
     const is_disable =
-      (record?.Cheques?.length || 0 + record?.Demands?.length || 0) === 0 ||
+      (record?.Cheques?.length || 0) === 0 ||
       (validateForm({ record, schema }) && true);
 
     return is_disable;

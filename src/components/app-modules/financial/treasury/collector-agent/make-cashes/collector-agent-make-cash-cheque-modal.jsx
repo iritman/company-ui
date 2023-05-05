@@ -79,7 +79,11 @@ const CollectorAgentMakeCashChequeModal = ({
       );
 
       if (selectedObject) {
-        selectable_cheques = [selectedObject, ...selectable_cheques];
+        const current_cheque = await service.getChequeByID(
+          selectedObject.ChequeID
+        );
+
+        selectable_cheques = [current_cheque, ...selectable_cheques];
       }
 
       setCheques(selectable_cheques);

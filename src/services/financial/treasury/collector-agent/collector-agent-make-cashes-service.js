@@ -22,6 +22,12 @@ export async function searchData(filter) {
   return data;
 }
 
+export async function getChequeByID(chequeID) {
+  const { data } = await http.get(`${apiEndpoint}/cheque/${chequeID}`);
+
+  return data;
+}
+
 export async function saveData(record) {
   const { data } = await http.post(`${apiEndpoint}`, record);
 
@@ -84,6 +90,7 @@ const service = {
   getParams,
   getCheques,
   searchData,
+  getChequeByID,
   saveData,
   saveItem,
   submitReceiveReceipt,
