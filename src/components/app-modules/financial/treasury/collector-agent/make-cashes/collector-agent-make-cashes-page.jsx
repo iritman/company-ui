@@ -14,7 +14,7 @@ import {
 } from "../../../../../../tools/form-manager";
 import SimpleDataTable from "../../../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../../../common/simple-data-page-header";
-import TransferAgentMakeCashModal from "./collector-agent-make-cash-modal";
+import CollectorAgentMakeCashModal from "./collector-agent-make-cash-modal";
 import SearchModal from "./collector-agent-make-cashes-search-modal";
 import DetailsModal from "./collector-agent-make-cash-details-modal";
 import { usePageContext } from "../../../../../contexts/page-context";
@@ -375,8 +375,6 @@ const CollectorAgentMakeCashesPage = ({ pageName }) => {
     setProgress(false);
   };
 
-  */
-
   const handleUndoApprove = async () => {
     setProgress(true);
 
@@ -403,6 +401,8 @@ const CollectorAgentMakeCashesPage = ({ pageName }) => {
 
     setProgress(false);
   };
+
+   */
 
   //------
 
@@ -437,7 +437,7 @@ const CollectorAgentMakeCashesPage = ({ pageName }) => {
       )}
 
       {showModal && (
-        <TransferAgentMakeCashModal
+        <CollectorAgentMakeCashModal
           access={access}
           onOk={handleSave}
           onCancel={handleCloseModal}
