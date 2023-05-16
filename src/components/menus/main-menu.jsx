@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
 import { FiSettings as SettingsIcon } from "react-icons/fi";
 import { RiMoneyPoundCircleLine as FinancialIcon } from "react-icons/ri";
+import { SiHiveBlockchain as LogisticIcon } from "react-icons/si";
 import { Link } from "react-router-dom";
 import { useMount } from "react-use";
 import modulesService from "../../services/app/modules-service";
@@ -26,6 +27,11 @@ const mapper = (categoryID) => {
     case 3:
       link = "financial";
       icon = <FinancialIcon style={{ color: Colors.red[5] }} size={20} />;
+      break;
+
+    case 4:
+      link = "logistic";
+      icon = <LogisticIcon style={{ color: Colors.cyan[5] }} size={20} />;
       break;
 
     default:

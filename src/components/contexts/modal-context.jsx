@@ -9,6 +9,7 @@ const ModalContextProvider = ({ children }) => {
   const [record, setRecord] = useState({});
   const [errors, setErrors] = useState({});
   const [memberSearchProgress, setMemberSearchProgress] = useState(false);
+  const [employeeSearchProgress, setEmployeeSearchProgress] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
   const [members, setMembers] = useState([]);
@@ -58,6 +59,8 @@ const ModalContextProvider = ({ children }) => {
     setErrors,
     memberSearchProgress,
     setMemberSearchProgress,
+    employeeSearchProgress,
+    setEmployeeSearchProgress,
     departments,
     setDepartments,
     roles,

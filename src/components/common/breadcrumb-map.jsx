@@ -36,6 +36,9 @@ const BreadcrumbMap = ({ location }) => {
     "/home/financial/treasury/fund": Words.fund,
     "/home/financial/treasury/collector-agent": Words.collector_agent,
     //---
+    "/home/logistic": Words.logistic,
+    "/home/logistic/basic-info": Words.logistic_basic_info,
+    //---
     "/home/financial/accounts": Words.accounts,
     //---
     "/home/financial/docs": Words.financial_docs,

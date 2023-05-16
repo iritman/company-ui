@@ -1068,6 +1068,24 @@ class Words extends Component {
 
   //---
 
+  static logistic = "تدارکات و پشتیبانی";
+  static logistic_basic_info = "اطلاعات پایه";
+  static supplier_activity_types = "نوع فعالیت تامین کنندگان";
+  static service_groups = "گروه های خدمت";
+  static service_group = "گروه خدمت";
+  static purchasing_services = "خدمت ها";
+  static purchasing_service = "خدمت";
+  static purchasing_admins = "کاربران ارشد تدارکات";
+  static purchasing_admin = "کاربر ارشد تدارکات";
+  static purchasing_agents = "کارشناسان خرید";
+  static purchasing_agent = "کارشناس خرید";
+  static activity_type = "نوع فعالیت";
+  static suppliers = "تامین کنندگان";
+  static supplier = "تامین کننده";
+  static relation_start_date = "تاریخ شروع همکاری";
+
+  //---
+
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",

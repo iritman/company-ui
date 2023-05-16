@@ -6,6 +6,7 @@ import MainDashboard from "../pages/main-dashboard";
 import SettingsRoutes from "./settings/settings-routes";
 import UserOfficialRoutes from "./official/user-official-routes";
 import UserFinancialRoutes from "./financial/user-financial-routes";
+import UserLogisticRoutes from "./logistic/user-logistic-routes";
 //---
 import UserProfileRoutes from "./user-account/user-account-routes";
 //---
@@ -25,6 +26,10 @@ const PageRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial`}
         render={() => <UserFinancialRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/logistic`}
+        render={() => <UserLogisticRoutes path={path} />}
       />
       <ProtectedRoute
         path={`${path}/account`}

@@ -6,6 +6,7 @@ import Colors from "./../resources/colors";
 import { AiOutlineDatabase as OfficialIcon } from "react-icons/ai";
 import { FiSettings as SettingsIcon } from "react-icons/fi";
 import { RiMoneyPoundCircleLine as FinancialIcon } from "react-icons/ri";
+import { SiHiveBlockchain as LogisticIcon } from "react-icons/si";
 import DashboardTile from "../components/common/dashboard-tile";
 
 const iconProps = {
@@ -35,6 +36,12 @@ const mapper = (categoryID) => {
       link = "financial";
       icon = <FinancialIcon {...iconProps} />;
       backColor = Colors.red[4];
+      break;
+
+    case 4:
+      link = "logistic";
+      icon = <LogisticIcon {...iconProps} />;
+      backColor = Colors.cyan[4];
       break;
 
     default:
