@@ -59,7 +59,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const VehicleBrandModal = ({
+const VehicleModal = ({
   isOpen,
   selectedObject,
   onCancel,
@@ -347,4 +347,4 @@ const VehicleBrandModal = ({
   );
 };
 
-export default VehicleBrandModal;
+export default VehicleModal;
