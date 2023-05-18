@@ -17,7 +17,7 @@ import {
   // MdNorthEast as PaymentIcon,
   MdSettingsInputComponent as BasicInfoIcon,
 } from "react-icons/md";
-// import { RiRefundFill as FundIcon } from "react-icons/ri";
+import { FaShoppingBasket as BasketIcon } from "react-icons/fa";
 // import { BsFileEarmarkPersonFill as CollectorAgentIcon } from "react-icons/bs";
 import Colors from "../../../resources/colors";
 import modulesService from "../../../services/app/modules-service";
@@ -39,11 +39,11 @@ const mapper = (moduleID) => {
       backColor = Colors.blue[3];
       break;
 
-    // case 17:
-    //   link = "public-settings";
-    //   icon = <SettingsIcon {...iconProps} />;
-    //   backColor = Colors.cyan[3];
-    //   break;
+    case 32:
+      link = "purchase";
+      icon = <BasketIcon {...iconProps} />;
+      backColor = Colors.cyan[3];
+      break;
 
     // case 19:
     //   link = "accounts";

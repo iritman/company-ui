@@ -14,7 +14,7 @@ import PurchasingServicesPage from "../../components/app-modules/logistic/basic-
 
 const modulePath = "logistic/basic-info";
 
-const UserLedgerRoutes = ({ path }) => {
+const UserLogisticBasicInfoRoutes = ({ path }) => {
   return (
     <Switch>
       <ProtectedRoute
@@ -60,4 +60,4 @@ const UserLedgerRoutes = ({ path }) => {
   );
 };
 
-export default UserLedgerRoutes;
+export default UserLogisticBasicInfoRoutes;

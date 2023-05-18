@@ -1086,6 +1086,10 @@ class Words extends Component {
 
   //---
 
+  static logistic_purchase_operation = "عملیات خرید";
+
+  //---
+
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",

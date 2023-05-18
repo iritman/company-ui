@@ -38,6 +38,7 @@ import UserFinancialDocsMenu from "../components/menus/financial/user-financial-
 //---
 import UserLogisticMenu from "../components/menus/logistic/user-logistic-menu";
 import UserLogisticBasicInfoMenu from "../components/menus/logistic/user-logistic-basic-info-menu";
+import UserLogisticPurchaseMenu from "../components/menus/logistic/user-logistic-purchase-menu";
 //---
 
 const MenuRoutes = ({ path }) => {
@@ -155,6 +156,10 @@ const MenuRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/logistic/basic-info`}
         component={UserLogisticBasicInfoMenu}
+      />
+      <ProtectedRoute
+        path={`${path}/logistic/purchase`}
+        component={UserLogisticPurchaseMenu}
       />
       {/* ----------- */}
       <ProtectedRoute path={`${path}/`} exact component={MainMenu} />
