@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import { TbTruckDelivery as DeliveryIcon } from "react-icons/tb";
 import { FaFileInvoiceDollar as InvoiceIcon } from "react-icons/fa";
+import { RiToolsFill as ServiceRequestIcon } from "react-icons/ri";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";
@@ -32,18 +33,28 @@ const mapper = (pageID) => {
       break;
 
     case 307:
+      link = "service-requests";
+      icon = (
+        <ServiceRequestIcon
+          style={{ color: Colors.geekblue[6] }}
+          size={iconSize}
+        />
+      );
+      break;
+
+    case 308:
       link = "call-for-prices";
       icon = (
         <CallForPriceIcon style={{ color: Colors.orange[6] }} size={iconSize} />
       );
       break;
 
-    case 308:
+    case 309:
       link = "invoices";
       icon = <InvoiceIcon style={{ color: Colors.green[6] }} size={iconSize} />;
       break;
 
-    case 309:
+    case 310:
       link = "purchase-commands";
       icon = (
         <PurchaseCommandIcon
@@ -53,14 +64,14 @@ const mapper = (pageID) => {
       );
       break;
 
-    case 310:
+    case 311:
       link = "purchase-orders";
       icon = (
         <PurchaseOrderIcon style={{ color: Colors.cyan[6] }} size={iconSize} />
       );
       break;
 
-    case 311:
+    case 312:
       link = "purchase-deliveries";
       icon = (
         <DeliveryIcon style={{ color: Colors.magenta[6] }} size={iconSize} />
