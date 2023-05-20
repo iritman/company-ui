@@ -1086,7 +1086,22 @@ class Words extends Component {
 
   //---
 
+  static purchase_requests = "درخواست های خرید";
+  static purchase_request = "درخواست خرید";
   static logistic_purchase_operation = "عملیات خرید";
+  static front_side_type = "نوع طرف مقابل";
+  static request_member = "درخواست کننده";
+  static base_type = "نوع مبنا";
+  static base = "مبنا";
+  static request_count = "مقدار";
+  static purchase_type = "نوع خرید";
+  static need_date = "تاریخ نیاز";
+  static inquiry_deadline = "تاریخ استعلام";
+  static purchase_items = "اقلام خرید";
+
+  static purchase_request_status_1 = "ثبت شده";
+  static purchase_request_status_2 = "تایید شده";
+  static purchase_request_status_3 = "رد شده";
 
   //---
 
@@ -1236,6 +1251,8 @@ class Words extends Component {
       "برای ثبت و تایید واخواست اطمینان دارید؟",
     sure_to_undo_approve_collector_agent_rejection:
       "برای برگشت از تایید واخواست اطمینان دارید؟",
+    sure_to_undo_approve_purchase_request:
+      "برای برگشت از تایید درخواست خرید اطمینان دارید؟",
   };
 
   static monthes = {

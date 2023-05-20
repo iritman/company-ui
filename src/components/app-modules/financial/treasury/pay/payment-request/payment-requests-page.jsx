@@ -201,6 +201,8 @@ const PaymentRequestsPage = ({ pageName }) => {
     setSearched(false);
   };
 
+  //------
+
   const handleSavePaymentRequestItem = async (request_item) => {
     const saved_payment_request_item = await service.saveItem(request_item);
 
