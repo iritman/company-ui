@@ -24,7 +24,7 @@ import service from "../../../../../services/logistic/purchase/purchase-requests
 const { Text } = Typography;
 const { TabPane } = Tabs;
 
-const getPurchaseRequestItemsColumns = (access, statusID, onEdit, onDelete) => {
+const getPurchaseRequestItemsColumns = () => {
   let columns = [
     {
       title: Words.id,

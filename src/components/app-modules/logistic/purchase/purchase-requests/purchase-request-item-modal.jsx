@@ -169,7 +169,7 @@ const PurchaseRequestItemModal = ({
     setRecord(rec);
   };
 
-  const getProductTitle = () => {
+  const getProductMeasureUnitTitle = () => {
     let result = "-";
 
     if (record?.ProductID > 0) {
@@ -234,7 +234,7 @@ const PurchaseRequestItemModal = ({
           <Col xs={24} md={12}>
             <TextItem
               title={Words.measure_unit}
-              value={getProductTitle()}
+              value={getProductMeasureUnitTitle()}
               valueColor={Colors.magenta[6]}
             />
           </Col>
