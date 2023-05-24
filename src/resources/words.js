@@ -1086,9 +1086,12 @@ class Words extends Component {
 
   //---
 
+  static logistic_purchase_operation = "عملیات خرید";
+
+  //---
+
   static purchase_requests = "درخواست های خرید";
   static purchase_request = "درخواست خرید";
-  static logistic_purchase_operation = "عملیات خرید";
   static front_side_type = "نوع طرف مقابل";
   static request_member = "درخواست کننده";
   static base_type = "نوع مبنا";
@@ -1102,6 +1105,25 @@ class Words extends Component {
   static purchase_request_status_1 = "ثبت شده";
   static purchase_request_status_2 = "تایید شده";
   static purchase_request_status_3 = "رد شده";
+
+  //---
+
+  static service_requests = "درخواست های خدمت";
+  static service_request = "درخواست خدمت";
+  static front_side_type = "نوع طرف مقابل";
+  static request_member = "درخواست کننده";
+  static base_type = "نوع مبنا";
+  static base = "مبنا";
+  static request_count = "مقدار";
+  static service_type = "نوع خدمت";
+  static need_date = "تاریخ نیاز";
+  static inquiry_deadline = "تاریخ استعلام";
+  static service_items = "اقلام خدمت";
+  static service = "خدمت";
+
+  static service_request_status_1 = "ثبت شده";
+  static service_request_status_2 = "تایید شده";
+  static service_request_status_3 = "رد شده";
 
   //---
 
@@ -1253,6 +1275,8 @@ class Words extends Component {
       "برای برگشت از تایید واخواست اطمینان دارید؟",
     sure_to_undo_approve_purchase_request:
       "برای برگشت از تایید درخواست خرید اطمینان دارید؟",
+    sure_to_undo_approve_service_request:
+      "برای برگشت از تایید درخواست خدمت اطمینان دارید؟",
   };
 
   static monthes = {
