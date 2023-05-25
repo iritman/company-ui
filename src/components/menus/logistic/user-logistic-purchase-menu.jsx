@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   MdOutlineRequestQuote as PurchaseRequestIcon,
-  MdPriceCheck as CallForPriceIcon,
+  MdPriceCheck as InquiryRequestIcon,
   MdReceiptLong as PurchaseCommandIcon,
   MdListAlt as PurchaseOrderIcon,
 } from "react-icons/md";
@@ -43,9 +43,12 @@ const mapper = (pageID) => {
       break;
 
     case 308:
-      link = "call-for-prices";
+      link = "inquiry-requests";
       icon = (
-        <CallForPriceIcon style={{ color: Colors.orange[6] }} size={iconSize} />
+        <InquiryRequestIcon
+          style={{ color: Colors.orange[6] }}
+          size={iconSize}
+        />
       );
       break;
 

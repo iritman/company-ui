@@ -5,7 +5,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import PurchaseDashboard from "../../components/app-modules/logistic/purchase/logistic-purchase-dashboard";
 import PurchaseRequestsPage from "../../components/app-modules/logistic/purchase/purchase-requests/purchase-requests-page";
 import ServiceRequestsPage from "../../components/app-modules/logistic/purchase/service-requests/service-requests-page";
-import CallForPricesPage from "../../components/app-modules/logistic/purchase/call-for-prices/call-for-prices-page";
+import InquiryRequestsPage from "../../components/app-modules/logistic/purchase/inquiry-requests/inquiry-requests-page";
 import InvoicesPage from "../../components/app-modules/logistic/purchase/invoices/invoices-page";
 import PurchaseCommandsPage from "../../components/app-modules/logistic/purchase/commands/purchase-commands-page";
 import PurchaseOrdersPage from "../../components/app-modules/logistic/purchase/orders/purchase-orders-page";
@@ -33,9 +33,9 @@ const UserLogisticPurchaseRoutes = ({ path }) => {
         render={() => <ServiceRequestsPage pageName="ServiceRequests" />}
       />
       <ProtectedRoute
-        path={`${path}/${modulePath}/call-for-prices`}
+        path={`${path}/${modulePath}/inquiry-requests`}
         exact
-        render={() => <CallForPricesPage pageName="CallForPrices" />}
+        render={() => <InquiryRequestsPage pageName="InquiryRequests" />}
       />
       <ProtectedRoute
         path={`${path}/${modulePath}/invoices`}

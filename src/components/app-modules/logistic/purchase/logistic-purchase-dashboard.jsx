@@ -4,7 +4,7 @@ import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import {
   MdOutlineRequestQuote as PurchaseRequestIcon,
-  MdPriceCheck as CallForPriceIcon,
+  MdPriceCheck as InquiryRequestIcon,
   MdReceiptLong as PurchaseCommandIcon,
   MdListAlt as PurchaseOrderIcon,
 } from "react-icons/md";
@@ -38,8 +38,8 @@ const mapper = (pageID) => {
       break;
 
     case 308:
-      link = "call-for-prices";
-      icon = <CallForPriceIcon {...iconProps} />;
+      link = "inquiry-requests";
+      icon = <InquiryRequestIcon {...iconProps} />;
       backColor = Colors.orange[3];
       break;
 
