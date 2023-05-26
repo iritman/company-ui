@@ -310,6 +310,16 @@ export const getFooterButtons = (config) => {
 
       {selectedObject !== null && selectedObject.StatusID === 1 && (
         <>
+          <Button
+            key="submit-button"
+            type="primary"
+            onClick={handleSubmit}
+            loading={progress}
+            disabled={is_disable}
+          >
+            {Words.submit}
+          </Button>
+
           {hasSaveApproveAccess && (
             <Popconfirm
               title={Words.questions.sure_to_submit_approve_request}

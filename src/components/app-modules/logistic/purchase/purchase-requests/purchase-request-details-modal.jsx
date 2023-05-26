@@ -22,7 +22,6 @@ import ModalWindow from "../../../../common/modal-window";
 import service from "../../../../../services/logistic/purchase/purchase-requests-service";
 
 const { Text } = Typography;
-const { TabPane } = Tabs;
 
 const getPurchaseRequestItemsColumns = () => {
   let columns = [
@@ -269,6 +268,23 @@ const PurchaseRequestDetailsModal = ({
     );
   };
 
+  const items = [
+    {
+      label: Words.inquiry_items,
+      key: "inquiry-items",
+      children: (
+        <Row gutter={[0, 15]}>
+          <Col xs={24}>
+            <DetailsTable
+              records={Items}
+              columns={getPurchaseRequestItemsColumns()}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+  ];
+
   return (
     <>
       <ModalWindow
@@ -361,18 +377,7 @@ const PurchaseRequestDetailsModal = ({
             </Descriptions>
           </Col>
           <Col xs={24}>
-            <Tabs type="card" defaultActiveKey="0">
-              <TabPane tab={Words.purchase_items} key="items">
-                <Row gutter={[0, 15]}>
-                  <Col xs={24}>
-                    <DetailsTable
-                      records={Items}
-                      columns={getPurchaseRequestItemsColumns()}
-                    />
-                  </Col>
-                </Row>
-              </TabPane>
-            </Tabs>
+            <Tabs type="card" defaultActiveKey="0" items={items} />
           </Col>
         </Row>
       </ModalWindow>
