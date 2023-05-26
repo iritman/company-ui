@@ -1117,13 +1117,32 @@ class Words extends Component {
   static request_count = "مقدار";
   static service_type = "نوع خدمت";
   static need_date = "تاریخ نیاز";
-  static inquiry_deadline = "تاریخ استعلام";
   static service_items = "اقلام خدمت";
   static service = "خدمت";
+  static no_service_item = "قلم خدمت ثبت نشده است";
 
   static service_request_status_1 = "ثبت شده";
   static service_request_status_2 = "تایید شده";
   static service_request_status_3 = "رد شده";
+
+  //---
+
+  static inquiry_requests = "درخواست های استعلام بها";
+  static inquiry_request = "درخواست استعلام بها";
+  static inquiry_items = "اقلام استعلام";
+  static inquiry_date = "تاریخ استعلام";
+  static no_inquiry_item = "قلم استعلام بها ثبت نشده است";
+  static inquiry_final_deadline = "مهلت استعلام";
+  static item_code = "کد قلم";
+  static item_title = "عنوان قلم";
+  static request = "درخواست";
+  static unit = "واحد";
+  static base = "مبنا";
+  static consumer = "مصرف کننده";
+
+  static inquiry_request_status_1 = "ثبت شده";
+  static inquiry_request_status_2 = "تایید شده";
+  static inquiry_request_status_3 = "رد شده";
 
   //---
 
@@ -1277,6 +1296,8 @@ class Words extends Component {
       "برای برگشت از تایید درخواست خرید اطمینان دارید؟",
     sure_to_undo_approve_service_request:
       "برای برگشت از تایید درخواست خدمت اطمینان دارید؟",
+    sure_to_undo_approve_inquiry_request:
+      "برای برگشت از تایید استعلام بها اطمینان دارید؟",
   };
 
   static monthes = {

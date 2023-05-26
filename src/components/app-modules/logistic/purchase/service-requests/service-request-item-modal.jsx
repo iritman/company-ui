@@ -62,7 +62,7 @@ const initRecord = {
 
 const formRef = React.createRef();
 
-const PurchaseRequestItemModal = ({
+const ServiceRequestItemModal = ({
   isOpen,
   selectedObject,
   onOk,
@@ -317,4 +317,4 @@ const PurchaseRequestItemModal = ({
   );
 };
 
-export default PurchaseRequestItemModal;
+export default ServiceRequestItemModal;
