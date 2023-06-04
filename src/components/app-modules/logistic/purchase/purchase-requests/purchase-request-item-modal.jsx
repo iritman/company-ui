@@ -17,7 +17,6 @@ import InputItem from "../../../../form-controls/input-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
-import MultiSelectItem from "../../../../form-controls/multi-select-item";
 
 const schema = {
   ItemID: Joi.number().required(),
@@ -55,7 +54,7 @@ const initRecord = {
   NeededItemID: 0,
   NeededItemMeasureUnitID: 0,
   RequestCount: 0,
-  NeedDate: utils.currentPersianDateWithoutSlash(),
+  NeedDate: "",
   PurchaseTypeID: 0,
   InquiryDeadline: "",
   PurchaseAgentID: 0,
@@ -80,6 +79,7 @@ const PurchaseRequestItemModal = ({
   const [choices, setChoices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [currentDate, setCurrentDate] = useState("");
 
   const formConfig = {
     schema,
@@ -95,7 +95,7 @@ const PurchaseRequestItemModal = ({
     record.NeededItemID = 0;
     record.NeededItemMeasureUnitID = 0;
     record.RequestCount = 0;
-    record.NeedDate = utils.currentPersianDateWithoutSlash();
+    record.NeedDate = currentDate;
     record.PurchaseTypeID = 0;
     record.InquiryDeadline = "";
     record.PurchaseAgentID = 0;
@@ -107,31 +107,36 @@ const PurchaseRequestItemModal = ({
   };
 
   useMount(async () => {
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
-
-    //------
-
     setProgress(true);
 
     try {
       const data = await service.getItemParams();
 
-      let { BaseTypes, Choices, PurchaseTypes, Agents } = data;
+      let { BaseTypes, Choices, PurchaseTypes, Agents, CurrentDate } = data;
 
       setParams({
         BaseTypes,
         Choices,
         PurchaseTypes,
-
         Agents,
+        CurrentDate,
       });
 
       setBaseTypes(BaseTypes);
       setChoices(Choices);
       setPurchaseTypes(PurchaseTypes);
       setAgents(Agents);
+      setCurrentDate(CurrentDate);
+
+      if (!selectedObject) {
+        const rec = { ...initRecord };
+        rec.NeedDate = `${CurrentDate}`;
+
+        setRecord({ ...rec });
+        loadFieldsValue(formRef, { ...rec });
+      } else {
+        initModal(formRef, selectedObject, setRecord);
+      }
     } catch (ex) {
       handleError(ex);
     }

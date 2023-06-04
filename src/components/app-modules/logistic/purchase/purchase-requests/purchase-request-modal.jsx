@@ -184,7 +184,7 @@ const PurchaseRequestModal = ({
   //------
 
   const handleGetItemParams = (params) => {
-    const { BaseTypes, Choices, PurchaseTypes, Suppliers, Agents } = params;
+    const { BaseTypes, Choices, PurchaseTypes, Agents } = params;
 
     setBaseTypes(BaseTypes);
     setProducts(Choices);
