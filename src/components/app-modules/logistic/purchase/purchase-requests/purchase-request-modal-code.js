@@ -180,26 +180,6 @@ export const getPurchaseRequestItemsColumns = (
       ),
     },
     {
-      title: Words.descriptions,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.DetailsText.length > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
-      ),
-    },
-    {
       title: Words.suppliers,
       width: 150,
       align: "center",
@@ -231,11 +211,27 @@ export const getPurchaseRequestItemsColumns = (
         </>
       ),
     },
+    {
+      title: Words.descriptions,
+      width: 100,
+      align: "center",
+      render: (record) => (
+        <>
+          {record.DetailsText.length > 0 && (
+            <Popover content={<Text>{record.DetailsText}</Text>}>
+              <InfoIcon
+                style={{
+                  color: Colors.green[6],
+                  fontSize: 19,
+                  cursor: "pointer",
+                }}
+              />
+            </Popover>
+          )}
+        </>
+      ),
+    },
   ];
-
-  /*
-
-  */
 
   if (access) {
     // StatusID : 1 => Not Approve, Not Reject! Just Save...

@@ -199,7 +199,7 @@ const PurchaseRequestModal = ({
     setPurchaseTypes(PurchaseTypes);
     setAgents(Agents);
   };
-  console.log(record.Items);
+
   const handleSavePurchaseRequestItem = async (purchase_item) => {
     if (selectedObject !== null) {
       purchase_item.RequestID = selectedObject.RequestID;
