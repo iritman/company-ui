@@ -68,6 +68,7 @@ const PurchaseRequestModal = ({
   const [products, setProducts] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [currentDate, setCurrentDate] = useState("");
 
   const [selectedPurchaseRequestItem, setSelectedPurchaseRequestItem] =
     useState(null);
@@ -90,7 +91,7 @@ const PurchaseRequestModal = ({
     record.FrontSideAccountID = 0;
     record.RequestMemberID = 0;
     record.RequestTypeID = 0;
-    record.RequestDate = "";
+    record.RequestDate = currentDate;
     record.DetailsText = "";
     record.StatusID = 1;
     record.Items = [];
@@ -104,8 +105,6 @@ const PurchaseRequestModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord(initRecord);
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -120,6 +119,7 @@ const PurchaseRequestModal = ({
         FrontSideTypes,
         HasSaveApproveAccess,
         HasRejectAccess,
+        CurrentDate,
       } = data;
 
       setStorageCenters(StorageCenters);
@@ -127,10 +127,17 @@ const PurchaseRequestModal = ({
       setFrontSideTypes(FrontSideTypes);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
+      setCurrentDate(CurrentDate);
 
       //------
 
-      if (selectedObject) {
+      if (!selectedObject) {
+        const rec = { ...initRecord };
+        rec.RequestDate = `${CurrentDate}`;
+
+        setRecord({ ...rec });
+        loadFieldsValue(formRef, { ...rec });
+      } else {
         const request_member = await service.searchMemberByID(
           selectedObject.RequestMemberID
         );
@@ -148,6 +155,7 @@ const PurchaseRequestModal = ({
         );
 
         setFrontSideAccounts(front_side_account);
+        initModal(formRef, selectedObject, setRecord);
       }
     } catch (ex) {
       handleError(ex);
