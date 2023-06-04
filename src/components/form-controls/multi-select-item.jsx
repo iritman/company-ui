@@ -63,8 +63,16 @@ const MultiSelectItem = ({
             formConfig,
             setIDsAutomatically
           ),
-    filterOption: (input, option) =>
-      option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0,
+    filterOption: (inputValue, option) => {
+      const optionValue = option.props.value.toString();
+      const optionLabel = option.props.children.props.children.toString();
+
+      // Filter by option value or label
+      return (
+        optionValue.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+        optionLabel.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
+      );
+    },
   };
 
   return (
