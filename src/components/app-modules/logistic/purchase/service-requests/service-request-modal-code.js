@@ -1,13 +1,16 @@
 import React from "react";
 import Joi from "joi-browser";
-import { Button, Space, Popconfirm, Popover, Typography } from "antd";
+import { Button, Space, Popconfirm, Popover, Typography, Tag } from "antd";
 import {
   PlusOutlined as AddIcon,
   DeleteOutlined as DeleteIcon,
   EditOutlined as EditIcon,
   QuestionCircleOutlined as QuestionIcon,
 } from "@ant-design/icons";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
+import {
+  MdInfoOutline as InfoIcon,
+  MdGroups as GroupIcon,
+} from "react-icons/md";
 import { getSorter } from "../../../../../tools/form-manager";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
@@ -174,6 +177,38 @@ export const getServiceRequestItemsColumns = (
         <Text
           style={{ color: Colors.grey[6] }}
         >{`${record.AgentFirstName} ${record.AgentLastName}`}</Text>
+      ),
+    },
+    {
+      title: Words.suppliers,
+      width: 150,
+      align: "center",
+      //   dataIndex: "---",
+      // sorter: getSorter("AgentLastName"),
+      render: (record) => (
+        <>
+          {record?.Suppliers?.length > 0 && (
+            <Popover
+              content={
+                <>
+                  {record?.Suppliers?.map((sp) => (
+                    <Tag color="magenta" key={sp.SupplierID}>
+                      {utils.farsiNum(sp.Title)}
+                    </Tag>
+                  ))}
+                </>
+              }
+            >
+              <GroupIcon
+                style={{
+                  color: Colors.orange[6],
+                  fontSize: 19,
+                  cursor: "pointer",
+                }}
+              />
+            </Popover>
+          )}
+        </>
       ),
     },
     {

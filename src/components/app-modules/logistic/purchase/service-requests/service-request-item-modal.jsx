@@ -19,6 +19,7 @@ import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import TextItem from "./../../../../form-controls/text-item";
+import MultiSelectItem from "../../../../form-controls/multi-select-item";
 
 const schema = {
   ItemID: Joi.number().required(),
@@ -39,7 +40,6 @@ const schema = {
   NeedDate: Joi.string(),
   PurchaseTypeID: Joi.number().min(1).required().label(Words.purchase_type),
   InquiryDeadline: Joi.string().allow(""),
-  SupplierID: Joi.number().required().label(Words.supplier),
   PurchaseAgentID: Joi.number().required().label(Words.purchasing_agent),
   DetailsText: Joi.string()
     .min(5)
@@ -47,6 +47,8 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
+  Suppliers: Joi.array(),
+  SuppliersIDs: Joi.array(),
 };
 
 const initRecord = {
@@ -63,6 +65,8 @@ const initRecord = {
   SupplierID: 0,
   PurchaseAgentID: 0,
   DetailsText: "",
+  Suppliers: [],
+  SuppliersIDs: [],
 };
 
 const formRef = React.createRef();
@@ -82,6 +86,7 @@ const ServiceRequestItemModal = ({
   const [bases, setBases] = useState([]);
   const [choices, setChoices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
 
@@ -104,6 +109,8 @@ const ServiceRequestItemModal = ({
     record.InquiryDeadline = "";
     record.PurchaseAgentID = 0;
     record.DetailsText = "";
+    record.Suppliers = [];
+    record.SuppliersIDs = [];
 
     setRecord(record);
     setErrors({});
@@ -116,12 +123,20 @@ const ServiceRequestItemModal = ({
     try {
       const data = await service.getItemParams();
 
-      let { BaseTypes, Choices, PurchaseTypes, Agents, CurrentDate } = data;
+      let {
+        BaseTypes,
+        Choices,
+        PurchaseTypes,
+        Suppliers,
+        Agents,
+        CurrentDate,
+      } = data;
 
       setParams({
         BaseTypes,
         Choices,
         PurchaseTypes,
+        Suppliers,
         Agents,
         CurrentDate,
       });
@@ -129,6 +144,7 @@ const ServiceRequestItemModal = ({
       setBaseTypes(BaseTypes);
       setChoices(Choices);
       setPurchaseTypes(PurchaseTypes);
+      setSuppliers(Suppliers);
       setAgents(Agents);
       setCurrentDate(CurrentDate);
 
@@ -304,6 +320,19 @@ const ServiceRequestItemModal = ({
               title={Words.inquiry_deadline}
               fieldName="InquiryDeadline"
               formConfig={formConfig}
+            />
+          </Col>
+          <Col xs={24}>
+            <MultiSelectItem
+              title={Words.suppliers}
+              dataSource={suppliers}
+              keyColumn="SupplierID"
+              valueColumn="Title"
+              fieldName="Suppliers"
+              fieldIDs="SuppliersIDs"
+              formConfig={formConfig}
+              setIDsAutomatically
+              required
             />
           </Col>
           <Col xs={24} md={12}>
