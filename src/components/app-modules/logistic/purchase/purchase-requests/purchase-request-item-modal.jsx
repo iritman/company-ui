@@ -4,7 +4,6 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   validateForm,
@@ -18,14 +17,18 @@ import InputItem from "../../../../form-controls/input-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "../../../../form-controls/text-item";
+import MultiSelectItem from "../../../../form-controls/multi-select-item";
 
 const schema = {
   ItemID: Joi.number().required(),
   RequestID: Joi.number().required(),
   BaseTypeID: Joi.number().min(1).required().label(Words.base_type),
   BaseID: Joi.number().required().label(Words.base),
-  ProductID: Joi.number().min(1).required().label(Words.product),
+  NeededItemID: Joi.number().min(1).required().label(Words.product),
+  NeededItemMeasureUnitID: Joi.number()
+    .min(1)
+    .required()
+    .label(Words.measure_unit),
   RequestCount: Joi.number()
     .min(0)
     .max(999999)
@@ -35,7 +38,6 @@ const schema = {
   NeedDate: Joi.string(),
   PurchaseTypeID: Joi.number().min(1).required().label(Words.purchase_type),
   InquiryDeadline: Joi.string().allow(""),
-  SupplierID: Joi.number().required().label(Words.supplier),
   PurchaseAgentID: Joi.number().required().label(Words.purchasing_agent),
   DetailsText: Joi.string()
     .min(5)
@@ -50,12 +52,12 @@ const initRecord = {
   RequestID: 0,
   BaseTypeID: 1,
   BaseID: 0,
-  ProductID: 0,
+  NeededItemID: 0,
+  NeededItemMeasureUnitID: 0,
   RequestCount: 0,
-  NeedDate: "",
+  NeedDate: utils.currentPersianDateWithoutSlash(),
   PurchaseTypeID: 0,
   InquiryDeadline: "",
-  SupplierID: 0,
   PurchaseAgentID: 0,
   DetailsText: "",
 };
@@ -75,9 +77,8 @@ const PurchaseRequestItemModal = ({
 
   const [baseTypes, setBaseTypes] = useState([]);
   const [bases, setBases] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [choices, setChoices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
 
   const formConfig = {
@@ -91,12 +92,12 @@ const PurchaseRequestItemModal = ({
   const clearRecord = () => {
     record.BaseTypeID = 1;
     record.BaseID = 0;
-    record.ProductID = 0;
+    record.NeededItemID = 0;
+    record.NeededItemMeasureUnitID = 0;
     record.RequestCount = 0;
-    record.NeedDate = "";
+    record.NeedDate = utils.currentPersianDateWithoutSlash();
     record.PurchaseTypeID = 0;
     record.InquiryDeadline = "";
-    record.SupplierID = 0;
     record.PurchaseAgentID = 0;
     record.DetailsText = "";
 
@@ -117,20 +118,19 @@ const PurchaseRequestItemModal = ({
     try {
       const data = await service.getItemParams();
 
-      let { BaseTypes, Products, PurchaseTypes, Suppliers, Agents } = data;
+      let { BaseTypes, Choices, PurchaseTypes, Agents } = data;
 
       setParams({
         BaseTypes,
-        Products,
+        Choices,
         PurchaseTypes,
-        Suppliers,
+
         Agents,
       });
 
       setBaseTypes(BaseTypes);
-      setProducts(Products);
+      setChoices(Choices);
       setPurchaseTypes(PurchaseTypes);
-      setSuppliers(Suppliers);
       setAgents(Agents);
     } catch (ex) {
       handleError(ex);
@@ -156,7 +156,7 @@ const PurchaseRequestItemModal = ({
 
   const handleChangeBaseType = (value) => {
     const rec = { ...record };
-    rec.BaseTypeID = value;
+    rec.BaseTypeID = value || 0;
 
     if (value > 1) {
       schema.BaseID = Joi.number().min(1).required().label(Words.base);
@@ -169,18 +169,28 @@ const PurchaseRequestItemModal = ({
     setRecord(rec);
   };
 
-  const getProductMeasureUnitTitle = () => {
-    let result = "-";
+  const handleChangeProduct = (value) => {
+    const rec = { ...record };
+    rec.NeededItemID = value || 0;
 
-    if (record?.ProductID > 0) {
-      const product = products.find((p) => p.ProductID === record.ProductID);
+    const measure_units = choices?.find(
+      (choice) => choice.NeededItemID === value
+    )?.MeasureUnits;
 
-      if (product) {
-        result = product.MeasureTitle.length > 0 ? product.MeasureTitle : "-";
-      }
-    }
+    const default_measure_unit = measure_units?.find((mu) => mu.IsDefault);
 
-    return result;
+    rec.NeededItemMeasureUnitID = default_measure_unit
+      ? default_measure_unit.NeededItemMeasureUnitID
+      : 0;
+
+    setRecord(rec);
+    loadFieldsValue(formRef, rec);
+  };
+
+  const getMeasureUnits = () => {
+    return choices?.find(
+      (choice) => choice.NeededItemID === record.NeededItemID
+    )?.MeasureUnits;
   };
 
   //------
@@ -224,18 +234,22 @@ const PurchaseRequestItemModal = ({
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.product}
-              dataSource={products}
-              keyColumn="ProductID"
+              dataSource={choices}
+              keyColumn="NeededItemID"
               valueColumn="Title"
               formConfig={formConfig}
+              onChange={handleChangeProduct}
               required
             />
           </Col>
           <Col xs={24} md={12}>
-            <TextItem
+            <DropdownItem
               title={Words.measure_unit}
-              value={getProductMeasureUnitTitle()}
-              valueColor={Colors.magenta[6]}
+              dataSource={getMeasureUnits()}
+              keyColumn="NeededItemMeasureUnitID"
+              valueColumn="MeasureUnitTitle"
+              formConfig={formConfig}
+              required
             />
           </Col>
           <Col xs={24} md={12}>
@@ -276,17 +290,8 @@ const PurchaseRequestItemModal = ({
           <Col xs={24} md={12}>
             <DateItem
               horizontal
-              title={Words.inquiry_deadline}
+              title={Words.inquiry_final_deadline}
               fieldName="InquiryDeadline"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.supplier}
-              dataSource={suppliers}
-              keyColumn="SupplierID"
-              valueColumn="Title"
               formConfig={formConfig}
             />
           </Col>
@@ -304,7 +309,7 @@ const PurchaseRequestItemModal = ({
               title={Words.standard_description}
               fieldName="DetailsText"
               multiline
-              rows={7}
+              rows={4}
               showCount
               maxLength={250}
               formConfig={formConfig}

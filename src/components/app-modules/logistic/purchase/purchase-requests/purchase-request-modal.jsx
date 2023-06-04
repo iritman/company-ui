@@ -67,7 +67,6 @@ const PurchaseRequestModal = ({
   //   const [bases, setBases] = useState([]);
   const [products, setProducts] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
 
   const [selectedPurchaseRequestItem, setSelectedPurchaseRequestItem] =
@@ -185,12 +184,11 @@ const PurchaseRequestModal = ({
   //------
 
   const handleGetItemParams = (params) => {
-    const { BaseTypes, Products, PurchaseTypes, Suppliers, Agents } = params;
+    const { BaseTypes, Choices, PurchaseTypes, Suppliers, Agents } = params;
 
     setBaseTypes(BaseTypes);
-    setProducts(Products);
+    setProducts(Choices);
     setPurchaseTypes(PurchaseTypes);
-    setSuppliers(Suppliers);
     setAgents(Agents);
   };
 
@@ -217,23 +215,23 @@ const PurchaseRequestModal = ({
       purchase_item.BaseTypeTitle = baseTypes.find(
         (r) => r.BaseTypeID === purchase_item.BaseTypeID
       )?.Title;
-
+      console.log(products);
       const product = products.find(
-        (r) => r.ProductID === purchase_item.ProductID
+        (r) => r.NeededItemID === purchase_item.NeededItemID
       );
 
       if (product) {
-        purchase_item.ProductCode = product.ProductCode;
-        purchase_item.ProductTitle = product.ProductTitle;
+        purchase_item.NeededItemCode = product.ProductCode;
+        purchase_item.NeededItemTitle = product.Title;
+        purchase_item.MeasureUnitTitle = product.MeasureUnits.find(
+          (mu) =>
+            mu.NeededItemMeasureUnitID === purchase_item.NeededItemMeasureUnitID
+        )?.MeasureUnitTitle;
       }
 
       purchase_item.PurchaseTypeTitle = purchaseTypes.find(
         (r) => r.PurchaseTypeID === purchase_item.PurchaseTypeID
       )?.Title;
-
-      purchase_item.SupplierTitle =
-        suppliers.find((r) => r.SupplierID === purchase_item.SupplierID)
-          ?.Title || "";
 
       const agent = agents.find(
         (r) => r.PurchaseAgentID === purchase_item.PurchaseAgentID
@@ -373,6 +371,8 @@ const PurchaseRequestModal = ({
     onReject,
     onCancel,
   };
+
+  //------
 
   return (
     <>
