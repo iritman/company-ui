@@ -58,7 +58,7 @@ const ServiceRequestModal = ({
   const [members, setMembers] = useState([]);
 
   const [storageCenters, setStorageCenters] = useState([]);
-  const [serviceRequestTypes, setServiceRequestTypes] = useState([]);
+  const [purchaseRequestTypes, setPurchaseRequestTypes] = useState([]); // NOTE: purchase is correct
   const [frontSideTypes, setFrontSideTypes] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
@@ -67,8 +67,8 @@ const ServiceRequestModal = ({
   //   const [bases, setBases] = useState([]);
   const [services, setServices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [currentDate, setCurrentDate] = useState("");
 
   const [selectedServiceRequestItem, setSelectedServiceRequestItem] =
     useState(null);
@@ -91,7 +91,7 @@ const ServiceRequestModal = ({
     record.FrontSideAccountID = 0;
     record.RequestMemberID = 0;
     record.RequestTypeID = 0;
-    record.RequestDate = "";
+    record.RequestDate = currentDate;
     record.DetailsText = "";
     record.StatusID = 1;
     record.Items = [];
@@ -105,8 +105,6 @@ const ServiceRequestModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord(initRecord);
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -117,21 +115,29 @@ const ServiceRequestModal = ({
 
       let {
         StorageCenters,
-        ServiceRequestTypes,
+        PurchaseRequestTypes,
         FrontSideTypes,
         HasSaveApproveAccess,
         HasRejectAccess,
+        CurrentDate,
       } = data;
 
       setStorageCenters(StorageCenters);
-      setServiceRequestTypes(ServiceRequestTypes);
+      setPurchaseRequestTypes(PurchaseRequestTypes);
       setFrontSideTypes(FrontSideTypes);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
+      setCurrentDate(CurrentDate);
 
       //------
 
-      if (selectedObject) {
+      if (!selectedObject) {
+        const rec = { ...initRecord };
+        rec.RequestDate = `${CurrentDate}`;
+
+        setRecord({ ...rec });
+        loadFieldsValue(formRef, { ...rec });
+      } else {
         const request_member = await service.searchMemberByID(
           selectedObject.RequestMemberID
         );
@@ -149,6 +155,7 @@ const ServiceRequestModal = ({
         );
 
         setFrontSideAccounts(front_side_account);
+        initModal(formRef, selectedObject, setRecord);
       }
     } catch (ex) {
       handleError(ex);
@@ -185,12 +192,11 @@ const ServiceRequestModal = ({
   //------
 
   const handleGetItemParams = (params) => {
-    const { BaseTypes, Services, PurchaseTypes, Suppliers, Agents } = params;
+    const { BaseTypes, Choices, PurchaseTypes, Agents } = params;
 
     setBaseTypes(BaseTypes);
-    setServices(Services);
+    setServices(Choices);
     setPurchaseTypes(PurchaseTypes);
-    setSuppliers(Suppliers);
     setAgents(Agents);
   };
 
@@ -219,20 +225,18 @@ const ServiceRequestModal = ({
       )?.Title;
 
       const service = services.find(
-        (r) => r.ServiceID === service_item.ServiceID
+        (r) => r.NeededItemID === service_item.NeededItemID
       );
 
       if (service) {
-        service_item.ServiceTitle = service.ServiceTitle;
+        service_item.NeededItemCode = `${service.NeededItemID}`;
+        service_item.NeededItemTitle = service.Title;
+        service_item.MeasureUnitTitle = service.MeasureUnitTitle;
       }
 
-      service_item.ServiceTypeTitle = purchaseTypes.find(
-        (r) => r.ServiceTypeID === service_item.ServiceTypeID
+      service_item.PurchaseTypeTitle = purchaseTypes.find(
+        (r) => r.PurchaseTypeID === service_item.PurchaseTypeID
       )?.Title;
-
-      service_item.SupplierTitle =
-        suppliers.find((r) => r.SupplierID === service_item.SupplierID)
-          ?.Title || "";
 
       const agent = agents.find(
         (r) => r.ServiceAgentID === service_item.ServiceAgentID
@@ -412,7 +416,7 @@ const ServiceRequestModal = ({
             <Col xs={24} md={12}>
               <DropdownItem
                 title={Words.request_type}
-                dataSource={serviceRequestTypes}
+                dataSource={purchaseRequestTypes}
                 keyColumn="RequestTypeID"
                 valueColumn="Title"
                 formConfig={formConfig}

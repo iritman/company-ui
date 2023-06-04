@@ -8,163 +8,19 @@ import {
   Descriptions,
   Tabs,
   Space,
-  Popover,
   Popconfirm,
 } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
-import { getSorter, handleError } from "../../../../../tools/form-manager";
+import { handleError } from "../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "../../../../common/modal-window";
 import service from "../../../../../services/logistic/purchase/service-requests-service";
+import { getServiceRequestItemsColumns } from "./service-request-modal-code";
 
 const { Text } = Typography;
-const { TabPane } = Tabs;
-
-const getServiceRequestItemsColumns = () => {
-  let columns = [
-    {
-      title: Words.id,
-      width: 75,
-      align: "center",
-      dataIndex: "ItemID",
-      sorter: getSorter("ItemID"),
-      render: (ItemID) => (
-        <Text>{ItemID > 0 ? utils.farsiNum(`${ItemID}`) : ""}</Text>
-      ),
-    },
-    {
-      title: Words.base_type,
-      width: 120,
-      align: "center",
-      dataIndex: "BaseTypeTitle",
-      sorter: getSorter("BaseTypeTitle"),
-      render: (BaseTypeTitle) => (
-        <Text style={{ color: Colors.magenta[6] }}> {BaseTypeTitle}</Text>
-      ),
-    },
-    {
-      title: Words.service,
-      width: 150,
-      align: "center",
-      dataIndex: "ServiceTitle",
-      sorter: getSorter("ServiceTitle"),
-      render: (ServiceTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(ServiceTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.request_count,
-      width: 150,
-      align: "center",
-      dataIndex: "RequestCount",
-      sorter: getSorter("RequestCount"),
-      render: (RequestCount) => (
-        <Text style={{ color: Colors.red[6] }}>
-          {utils.farsiNum(RequestCount)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.need_date,
-      width: 120,
-      align: "center",
-      dataIndex: "NeedDate",
-      sorter: getSorter("NeedDate"),
-      render: (NeedDate) => (
-        <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(utils.slashDate(NeedDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.purchase_type,
-      width: 120,
-      align: "center",
-      dataIndex: "PurchaseTypeTitle",
-      sorter: getSorter("PurchaseTypeTitle"),
-      render: (PurchaseTypeTitle) => (
-        <Text style={{ color: Colors.blue[6] }}>{PurchaseTypeTitle}</Text>
-      ),
-    },
-    {
-      title: Words.inquiry_deadline,
-      width: 120,
-      align: "center",
-      dataIndex: "InquiryDeadline",
-      sorter: getSorter("InquiryDeadline"),
-      render: (InquiryDeadline) => (
-        <Text
-          style={{
-            color: Colors.green[6],
-          }}
-        >
-          {InquiryDeadline.length > 0
-            ? utils.farsiNum(utils.slashDate(InquiryDeadline))
-            : ""}
-        </Text>
-      ),
-    },
-    {
-      title: Words.supplier,
-      width: 200,
-      align: "center",
-      dataIndex: "SupplierTitle",
-      sorter: getSorter("SupplierTitle"),
-      render: (SupplierTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>
-          {utils.farsiNum(SupplierTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.purchasing_agent,
-      width: 150,
-      align: "center",
-      //   dataIndex: "---",
-      sorter: getSorter("AgentLastName"),
-      render: (record) => (
-        <Text
-          style={{ color: Colors.grey[6] }}
-        >{`${record.AgentFirstName} ${record.AgentLastName}`}</Text>
-      ),
-    },
-    {
-      title: Words.descriptions,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.DetailsText.length > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
-      ),
-    },
-    {
-      title: "",
-      fixed: "right",
-      align: "center",
-      width: 1,
-      render: () => <></>,
-    },
-  ];
-
-  return columns;
-};
 
 const ServiceRequestDetailsModal = ({
   selectedObject,
@@ -256,6 +112,23 @@ const ServiceRequestDetailsModal = ({
       </Space>
     );
   };
+
+  const items = [
+    {
+      label: Words.service_items,
+      key: "service-items",
+      children: (
+        <Row gutter={[0, 15]}>
+          <Col xs={24}>
+            <DetailsTable
+              records={Items}
+              columns={getServiceRequestItemsColumns()}
+            />
+          </Col>
+        </Row>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -349,18 +222,7 @@ const ServiceRequestDetailsModal = ({
             </Descriptions>
           </Col>
           <Col xs={24}>
-            <Tabs type="card" defaultActiveKey="0">
-              <TabPane tab={Words.service_items} key="items">
-                <Row gutter={[0, 15]}>
-                  <Col xs={24}>
-                    <DetailsTable
-                      records={Items}
-                      columns={getServiceRequestItemsColumns()}
-                    />
-                  </Col>
-                </Row>
-              </TabPane>
-            </Tabs>
+            <Tabs type="card" defaultActiveKey="0" items={items} />
           </Col>
         </Row>
       </ModalWindow>

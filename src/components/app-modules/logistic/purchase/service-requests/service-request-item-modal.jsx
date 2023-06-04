@@ -18,14 +18,18 @@ import InputItem from "../../../../form-controls/input-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "../../../../form-controls/text-item";
+import TextItem from "./../../../../form-controls/text-item";
 
 const schema = {
   ItemID: Joi.number().required(),
   RequestID: Joi.number().required(),
   BaseTypeID: Joi.number().min(1).required().label(Words.base_type),
   BaseID: Joi.number().required().label(Words.base),
-  ServiceID: Joi.number().min(1).required().label(Words.service),
+  NeededItemID: Joi.number().min(1).required().label(Words.service),
+  NeededItemMeasureUnitID: Joi.number()
+    .min(1)
+    .required()
+    .label(Words.measure_unit),
   RequestCount: Joi.number()
     .min(0)
     .max(999999)
@@ -50,7 +54,8 @@ const initRecord = {
   RequestID: 0,
   BaseTypeID: 1,
   BaseID: 0,
-  ServiceID: 0,
+  NeededItemID: 0,
+  NeededItemMeasureUnitID: 0,
   RequestCount: 0,
   NeedDate: "",
   PurchaseTypeID: 0,
@@ -75,10 +80,10 @@ const ServiceRequestItemModal = ({
 
   const [baseTypes, setBaseTypes] = useState([]);
   const [bases, setBases] = useState([]);
-  const [services, setServices] = useState([]);
+  const [choices, setChoices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [currentDate, setCurrentDate] = useState("");
 
   const formConfig = {
     schema,
@@ -91,12 +96,12 @@ const ServiceRequestItemModal = ({
   const clearRecord = () => {
     record.BaseTypeID = 1;
     record.BaseID = 0;
-    record.ServiceID = 0;
+    record.NeededItemID = 0;
+    record.NeededItemMeasureUnitID = 0;
     record.RequestCount = 0;
-    record.NeedDate = "";
+    record.NeedDate = currentDate;
     record.PurchaseTypeID = 0;
     record.InquiryDeadline = "";
-    record.SupplierID = 0;
     record.PurchaseAgentID = 0;
     record.DetailsText = "";
 
@@ -106,32 +111,36 @@ const ServiceRequestItemModal = ({
   };
 
   useMount(async () => {
-    setRecord(initRecord);
-    loadFieldsValue(formRef, initRecord);
-    initModal(formRef, selectedObject, setRecord);
-
-    //------
-
     setProgress(true);
 
     try {
       const data = await service.getItemParams();
 
-      let { BaseTypes, Services, PurchaseTypes, Suppliers, Agents } = data;
+      let { BaseTypes, Choices, PurchaseTypes, Agents, CurrentDate } = data;
 
       setParams({
         BaseTypes,
-        Services,
+        Choices,
         PurchaseTypes,
-        Suppliers,
         Agents,
+        CurrentDate,
       });
 
       setBaseTypes(BaseTypes);
-      setServices(Services);
+      setChoices(Choices);
       setPurchaseTypes(PurchaseTypes);
-      setSuppliers(Suppliers);
       setAgents(Agents);
+      setCurrentDate(CurrentDate);
+
+      if (!selectedObject) {
+        const rec = { ...initRecord };
+        rec.NeedDate = `${CurrentDate}`;
+
+        setRecord({ ...rec });
+        loadFieldsValue(formRef, { ...rec });
+      } else {
+        initModal(formRef, selectedObject, setRecord);
+      }
     } catch (ex) {
       handleError(ex);
     }
@@ -156,7 +165,7 @@ const ServiceRequestItemModal = ({
 
   const handleChangeBaseType = (value) => {
     const rec = { ...record };
-    rec.BaseTypeID = value;
+    rec.BaseTypeID = value || 0;
 
     if (value > 1) {
       schema.BaseID = Joi.number().min(1).required().label(Words.base);
@@ -169,17 +178,31 @@ const ServiceRequestItemModal = ({
     setRecord(rec);
   };
 
-  const getServiceMeasureUnitTitle = () => {
-    let result = "-";
+  const handleChangeService = (value) => {
+    const rec = { ...record };
+    rec.NeededItemID = value || 0;
+    rec.NeededItemMeasureUnitID = 0;
 
-    if (record?.ServiceID > 0) {
-      const product = services.find((p) => p.ServiceID === record.ServiceID);
+    if (value > 0) {
+      const selected_choice = choices?.find(
+        (choice) => choice.NeededItemID === value
+      );
 
-      if (product) {
-        result =
-          product.MeasureUnitTitle.length > 0 ? product.MeasureUnitTitle : "-";
-      }
+      rec.NeededItemMeasureUnitID =
+        selected_choice?.NeededItemMeasureUnitID || 0;
     }
+
+    setRecord(rec);
+  };
+
+  const getServiceMeasureUnitTitle = () => {
+    let result = "---";
+
+    result = choices?.find(
+      (choice) => choice.NeededItemID === record.NeededItemID
+    )?.MeasureUnitTitle;
+
+    result = result || "-";
 
     return result;
   };
@@ -225,10 +248,11 @@ const ServiceRequestItemModal = ({
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.service}
-              dataSource={services}
-              keyColumn="ServiceID"
-              valueColumn="ServiceTitle"
+              dataSource={choices}
+              keyColumn="NeededItemID"
+              valueColumn="Title"
               formConfig={formConfig}
+              onChange={handleChangeService}
               required
             />
           </Col>
@@ -279,15 +303,6 @@ const ServiceRequestItemModal = ({
               horizontal
               title={Words.inquiry_deadline}
               fieldName="InquiryDeadline"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.supplier}
-              dataSource={suppliers}
-              keyColumn="SupplierID"
-              valueColumn="Title"
               formConfig={formConfig}
             />
           </Col>
