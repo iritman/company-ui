@@ -215,7 +215,7 @@ const PurchaseRequestModal = ({
       purchase_item.BaseTypeTitle = baseTypes.find(
         (r) => r.BaseTypeID === purchase_item.BaseTypeID
       )?.Title;
-      console.log(products);
+
       const product = products.find(
         (r) => r.NeededItemID === purchase_item.NeededItemID
       );

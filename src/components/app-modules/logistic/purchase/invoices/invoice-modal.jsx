@@ -377,9 +377,6 @@ const InvoiceModal = ({
 
   //   ------
 
-  console.log(record.Items);
-  console.log(validateForm({ record, schema }));
-
   return (
     <>
       <ModalWindow

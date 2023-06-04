@@ -106,7 +106,7 @@ const InvoiceItemModal = ({
   useMount(async () => {
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
-    console.log(invoiceItems);
+
     try {
       let items = await service.getRegedInquiryRequestItems(supplierID);
 
