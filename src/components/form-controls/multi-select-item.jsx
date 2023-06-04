@@ -6,11 +6,13 @@ const { Option } = Select;
 const { Text } = Typography;
 
 const handleSelectItemsChange = (
+  fieldIDs,
   fieldName,
   value,
   dataSource,
   keyColumn,
-  formConfig
+  formConfig,
+  setIDsAutomatically
 ) => {
   const { record, setRecord } = formConfig;
 
@@ -18,6 +20,9 @@ const handleSelectItemsChange = (
   rec[fieldName] = dataSource.filter(
     (item) => value.filter((v) => v === item[keyColumn]).length > 0
   );
+
+  if (setIDsAutomatically && setIDsAutomatically !== false)
+    rec[fieldIDs] = value;
 
   setRecord(rec);
 };
@@ -30,6 +35,7 @@ const MultiSelectItem = ({
   fieldName,
   fieldIDs,
   onChange,
+  setIDsAutomatically,
   onSearch,
   required,
   vertical,
@@ -49,11 +55,13 @@ const MultiSelectItem = ({
       onChange
         ? onChange(selectedValue)
         : handleSelectItemsChange(
+            fieldIDs,
             fieldName,
             selectedValue,
             dataSource,
             keyColumn,
-            formConfig
+            formConfig,
+            setIDsAutomatically
           ),
     filterOption: (input, option) =>
       option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0,
