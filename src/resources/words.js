@@ -1146,6 +1146,27 @@ class Words extends Component {
 
   //---
 
+  static invoices = "پیش فاکتورها";
+  static invoice = "پیش فاکتور";
+  static invoice_no = "شماره پیش فاکتور";
+  static transport_type = "نوع حمل";
+  static purchase_way = "نحوه خرید";
+  static invoice_date = "تاریخ پیش فاکتور";
+  static credit_date = "تاریخ اعتبار";
+  static payment_type = "روش پرداخت";
+  static pre_payment_amount = "پیش پرداخت";
+  static fee = "فی";
+  static returnable = "استردادی";
+  static delivery_duration = "مدت تحویل";
+  static no_invoice_item = "اقلام پیش فاکتور ثبت نشده است";
+  static invoice_items = "اقلام پیش فاکتور";
+
+  static invoice_status_1 = "ثبت شده";
+  static invoice_status_2 = "تایید شده";
+  static invoice_status_3 = "رد شده";
+
+  //---
+
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",
