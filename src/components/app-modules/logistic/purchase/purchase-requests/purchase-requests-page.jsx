@@ -265,6 +265,14 @@ const PurchaseRequestsPage = ({ pageName }) => {
       // Update selected object
       selectedObject.StatusID = 2; // Approve
       selectedObject.StatusTitle = Words.purchase_request_status_2;
+
+      selectedObject.Items.forEach((item) => {
+        if (item.StatusID === 1) {
+          item.StatusID = 2;
+          item.StatusTitle = Words.purchase_request_status_2;
+        }
+      });
+
       setSelectedObject({ ...selectedObject });
 
       // Update records

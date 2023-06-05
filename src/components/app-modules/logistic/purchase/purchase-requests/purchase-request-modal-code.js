@@ -231,6 +231,16 @@ export const getPurchaseRequestItemsColumns = (
         </>
       ),
     },
+    {
+      title: Words.status,
+      width: 150,
+      align: "center",
+      dataIndex: "StatusTitle",
+      sorter: getSorter("StatusTitle"),
+      render: (StatusTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{StatusTitle}</Text>
+      ),
+    },
   ];
 
   if (access) {

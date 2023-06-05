@@ -68,6 +68,7 @@ const PurchaseRequestModal = ({
   const [products, setProducts] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
 
   const [selectedPurchaseRequestItem, setSelectedPurchaseRequestItem] =
@@ -177,8 +178,15 @@ const PurchaseRequestModal = ({
   };
 
   const handleSubmitAndApprove = async () => {
-    record.StatusID = 2;
-    setRecord({ ...record });
+    const rec = { ...record };
+    rec.Items.forEach((item) => {
+      if (item.StatusID === 1) {
+        item.StatusID = 2;
+        item.StatusTitle = Words.purchase_request_status_2;
+      }
+    });
+    rec.StatusID = 2;
+    setRecord(rec);
 
     saveModalChanges(
       formConfig,
@@ -192,12 +200,13 @@ const PurchaseRequestModal = ({
   //------
 
   const handleGetItemParams = (params) => {
-    const { BaseTypes, Choices, PurchaseTypes, Agents } = params;
+    const { BaseTypes, Choices, PurchaseTypes, Agents, Statuses } = params;
 
     setBaseTypes(BaseTypes);
     setProducts(Choices);
     setPurchaseTypes(PurchaseTypes);
     setAgents(Agents);
+    setStatuses(Statuses);
   };
 
   const handleSavePurchaseRequestItem = async (purchase_item) => {
@@ -247,6 +256,10 @@ const PurchaseRequestModal = ({
 
       purchase_item.AgentFirstName = agent ? agent.FirstName : "";
       purchase_item.AgentLastName = agent ? agent.LastName : "";
+
+      purchase_item.StatusTitle = statuses.find(
+        (sts) => sts.StatusID === purchase_item.StatusID
+      )?.Title;
 
       //--- managing unique id (UID) for new items
       if (purchase_item.ItemID === 0 && selectedPurchaseRequestItem === null) {
@@ -389,7 +402,7 @@ const PurchaseRequestModal = ({
         isEdit={isEdit}
         inProgress={progress}
         disabled={is_disable}
-        width={1050}
+        width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
       >
@@ -408,7 +421,7 @@ const PurchaseRequestModal = ({
                 />
               </Col>
             )}
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.storage_center}
                 dataSource={storageCenters}
@@ -418,7 +431,7 @@ const PurchaseRequestModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.request_type}
                 dataSource={purchaseRequestTypes}
@@ -427,7 +440,7 @@ const PurchaseRequestModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.request_member}
                 dataSource={members}
@@ -438,7 +451,7 @@ const PurchaseRequestModal = ({
                 onSearch={handleSearchMember}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DateItem
                 horizontal
                 required
@@ -447,7 +460,7 @@ const PurchaseRequestModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.front_side_type}
                 dataSource={frontSideTypes}
@@ -458,7 +471,7 @@ const PurchaseRequestModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.front_side_account}
                 dataSource={frontSideAccounts}

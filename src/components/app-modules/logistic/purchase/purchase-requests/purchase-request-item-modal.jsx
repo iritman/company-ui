@@ -4,6 +4,7 @@ import { Form, Row, Col } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
+import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   validateForm,
@@ -18,6 +19,7 @@ import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import MultiSelectItem from "../../../../form-controls/multi-select-item";
+import TextItem from "../../../../form-controls/text-item";
 
 const schema = {
   ItemID: Joi.number().required(),
@@ -45,6 +47,7 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
+  StatusID: Joi.number().min(1),
   Suppliers: Joi.array(),
   SuppliersIDs: Joi.array(),
 };
@@ -62,6 +65,7 @@ const initRecord = {
   InquiryDeadline: "",
   PurchaseAgentID: 0,
   DetailsText: "",
+  StatusID: 1,
   Suppliers: [],
   SuppliersIDs: [],
 };
@@ -85,6 +89,7 @@ const PurchaseRequestItemModal = ({
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
 
   const formConfig = {
@@ -106,6 +111,7 @@ const PurchaseRequestItemModal = ({
     record.InquiryDeadline = "";
     record.PurchaseAgentID = 0;
     record.DetailsText = "";
+    record.StatusID = 1;
     record.Suppliers = [];
     record.SuppliersIDs = [];
 
@@ -126,6 +132,7 @@ const PurchaseRequestItemModal = ({
         PurchaseTypes,
         Suppliers,
         Agents,
+        Statuses,
         CurrentDate,
       } = data;
 
@@ -135,6 +142,7 @@ const PurchaseRequestItemModal = ({
         PurchaseTypes,
         Suppliers,
         Agents,
+        Statuses,
         CurrentDate,
       });
 
@@ -143,6 +151,7 @@ const PurchaseRequestItemModal = ({
       setPurchaseTypes(PurchaseTypes);
       setSuppliers(Suppliers);
       setAgents(Agents);
+      setStatuses(Statuses);
       setCurrentDate(CurrentDate);
 
       if (!selectedObject) {
@@ -226,7 +235,7 @@ const PurchaseRequestItemModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={750}
+      width={950}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
@@ -338,6 +347,23 @@ const PurchaseRequestItemModal = ({
               valueColumn="FullName"
               formConfig={formConfig}
             />
+          </Col>
+          <Col xs={24} md={12}>
+            {selectedObject && selectedObject.ItemID > 0 ? (
+              <DropdownItem
+                title={Words.status}
+                dataSource={statuses}
+                keyColumn="StatusID"
+                valueColumn="Title"
+                formConfig={formConfig}
+              />
+            ) : (
+              <TextItem
+                title={Words.status}
+                value={Words.purchase_request_status_1}
+                valueColor={Colors.magenta[6]}
+              />
+            )}
           </Col>
           <Col xs={24}>
             <InputItem
