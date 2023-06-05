@@ -264,6 +264,14 @@ const ServiceRequestsPage = ({ pageName }) => {
       // Update selected object
       selectedObject.StatusID = 2; // Approve
       selectedObject.StatusTitle = Words.service_request_status_2;
+
+      selectedObject.Items.forEach((item) => {
+        if (item.StatusID === 1) {
+          item.StatusID = 2;
+          item.StatusTitle = Words.service_request_status_2;
+        }
+      });
+
       setSelectedObject({ ...selectedObject });
 
       // Update records

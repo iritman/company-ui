@@ -18,8 +18,8 @@ import InputItem from "../../../../form-controls/input-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DateItem from "../../../../form-controls/date-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "./../../../../form-controls/text-item";
 import MultiSelectItem from "../../../../form-controls/multi-select-item";
+import TextItem from "./../../../../form-controls/text-item";
 
 const schema = {
   ItemID: Joi.number().required(),
@@ -47,6 +47,7 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
+  StatusID: Joi.number().min(1),
   Suppliers: Joi.array(),
   SuppliersIDs: Joi.array(),
 };
@@ -65,6 +66,7 @@ const initRecord = {
   SupplierID: 0,
   PurchaseAgentID: 0,
   DetailsText: "",
+  StatusID: 1,
   Suppliers: [],
   SuppliersIDs: [],
 };
@@ -88,6 +90,7 @@ const ServiceRequestItemModal = ({
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
 
   const formConfig = {
@@ -109,6 +112,7 @@ const ServiceRequestItemModal = ({
     record.InquiryDeadline = "";
     record.PurchaseAgentID = 0;
     record.DetailsText = "";
+    record.StatusID = 1;
     record.Suppliers = [];
     record.SuppliersIDs = [];
 
@@ -129,6 +133,7 @@ const ServiceRequestItemModal = ({
         PurchaseTypes,
         Suppliers,
         Agents,
+        Statuses,
         CurrentDate,
       } = data;
 
@@ -138,6 +143,7 @@ const ServiceRequestItemModal = ({
         PurchaseTypes,
         Suppliers,
         Agents,
+        Statuses,
         CurrentDate,
       });
 
@@ -146,6 +152,7 @@ const ServiceRequestItemModal = ({
       setPurchaseTypes(PurchaseTypes);
       setSuppliers(Suppliers);
       setAgents(Agents);
+      setStatuses(Statuses);
       setCurrentDate(CurrentDate);
 
       if (!selectedObject) {
@@ -343,6 +350,23 @@ const ServiceRequestItemModal = ({
               valueColumn="FullName"
               formConfig={formConfig}
             />
+          </Col>
+          <Col xs={24} md={12}>
+            {selectedObject && selectedObject.ItemID > 0 ? (
+              <DropdownItem
+                title={Words.status}
+                dataSource={statuses}
+                keyColumn="StatusID"
+                valueColumn="Title"
+                formConfig={formConfig}
+              />
+            ) : (
+              <TextItem
+                title={Words.status}
+                value={Words.purchase_request_status_1}
+                valueColor={Colors.magenta[6]}
+              />
+            )}
           </Col>
           <Col xs={24}>
             <InputItem

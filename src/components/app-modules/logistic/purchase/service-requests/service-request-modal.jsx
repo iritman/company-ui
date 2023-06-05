@@ -68,6 +68,7 @@ const ServiceRequestModal = ({
   const [services, setServices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
 
   const [selectedServiceRequestItem, setSelectedServiceRequestItem] =
@@ -177,8 +178,15 @@ const ServiceRequestModal = ({
   };
 
   const handleSubmitAndApprove = async () => {
-    record.StatusID = 2;
-    setRecord({ ...record });
+    const rec = { ...record };
+    rec.Items.forEach((item) => {
+      if (item.StatusID === 1) {
+        item.StatusID = 2;
+        item.StatusTitle = Words.purchase_request_status_2;
+      }
+    });
+    rec.StatusID = 2;
+    setRecord(rec);
 
     saveModalChanges(
       formConfig,
@@ -192,12 +200,13 @@ const ServiceRequestModal = ({
   //------
 
   const handleGetItemParams = (params) => {
-    const { BaseTypes, Choices, PurchaseTypes, Agents } = params;
+    const { BaseTypes, Choices, PurchaseTypes, Agents, Statuses } = params;
 
     setBaseTypes(BaseTypes);
     setServices(Choices);
     setPurchaseTypes(PurchaseTypes);
     setAgents(Agents);
+    setStatuses(Statuses);
   };
 
   const handleSaveServiceRequestItem = async (service_item) => {
@@ -244,6 +253,10 @@ const ServiceRequestModal = ({
 
       service_item.AgentFirstName = agent ? agent.FirstName : "";
       service_item.AgentLastName = agent ? agent.LastName : "";
+
+      service_item.StatusTitle = statuses.find(
+        (sts) => sts.StatusID === service_item.StatusID
+      )?.Title;
 
       //--- managing unique id (UID) for new items
       if (service_item.ItemID === 0 && selectedServiceRequestItem === null) {
@@ -384,7 +397,7 @@ const ServiceRequestModal = ({
         isEdit={isEdit}
         inProgress={progress}
         disabled={is_disable}
-        width={1050}
+        width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
       >
@@ -403,7 +416,7 @@ const ServiceRequestModal = ({
                 />
               </Col>
             )}
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.storage_center}
                 dataSource={storageCenters}
@@ -413,7 +426,7 @@ const ServiceRequestModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.request_type}
                 dataSource={purchaseRequestTypes}
@@ -422,7 +435,7 @@ const ServiceRequestModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.request_member}
                 dataSource={members}
@@ -433,7 +446,7 @@ const ServiceRequestModal = ({
                 onSearch={handleSearchMember}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DateItem
                 horizontal
                 required
@@ -442,7 +455,7 @@ const ServiceRequestModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.front_side_type}
                 dataSource={frontSideTypes}
@@ -453,7 +466,7 @@ const ServiceRequestModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.front_side_account}
                 dataSource={frontSideAccounts}
