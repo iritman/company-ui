@@ -1083,6 +1083,7 @@ class Words extends Component {
   static activity_type = "نوع فعالیت";
   static suppliers = "تامین کنندگان";
   static supplier = "تامین کننده";
+  static suplier_id = "شناسه تامین کننده";
   static relation_start_date = "تاریخ شروع همکاری";
 
   //---
@@ -1091,6 +1092,7 @@ class Words extends Component {
 
   //---
 
+  static request_no = "شماره درخواست";
   static purchase_requests = "درخواست های خرید";
   static purchase_request = "درخواست خرید";
   static front_side_type = "نوع طرف مقابل";
@@ -1105,7 +1107,7 @@ class Words extends Component {
 
   static purchase_request_status_1 = "ثبت شده";
   static purchase_request_status_2 = "تایید شده";
-  static purchase_request_status_3 = "رد شده";
+  static purchase_request_status_3 = "لفو شده";
 
   //---
 
@@ -1124,7 +1126,7 @@ class Words extends Component {
 
   static service_request_status_1 = "ثبت شده";
   static service_request_status_2 = "تایید شده";
-  static service_request_status_3 = "رد شده";
+  static service_request_status_3 = "لفو شده";
 
   //---
 
@@ -1133,6 +1135,7 @@ class Words extends Component {
   static inquiry_items = "اقلام استعلام";
   static inquiry_date = "تاریخ استعلام";
   static no_inquiry_item = "قلم استعلام بها ثبت نشده است";
+  static no_supplier = "تامین کننده ای ثبت نشده است";
   static inquiry_final_deadline = "مهلت استعلام";
   static item_code = "کد قلم";
   static item_title = "عنوان قلم";
@@ -1143,7 +1146,7 @@ class Words extends Component {
 
   static inquiry_request_status_1 = "ثبت شده";
   static inquiry_request_status_2 = "تایید شده";
-  static inquiry_request_status_3 = "رد شده";
+  static inquiry_request_status_3 = "لفو شده";
 
   //---
 

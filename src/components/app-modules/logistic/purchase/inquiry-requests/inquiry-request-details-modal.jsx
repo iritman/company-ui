@@ -8,344 +8,22 @@ import {
   Descriptions,
   Tabs,
   Space,
-  Popover,
   Popconfirm,
 } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
-import { MdInfoOutline as InfoIcon } from "react-icons/md";
-import { getSorter, handleError } from "../../../../../tools/form-manager";
+import { handleError } from "../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "../../../../common/modal-window";
 import service from "../../../../../services/logistic/purchase/inquiry-requests-service";
+import {
+  getInquiryItemColumns,
+  getInquirySupplierColumns,
+} from "./inquiry-request-modal-code";
 
 const { Text } = Typography;
-
-export const getPurchaseRequestItemsColumns = () => {
-  let columns = [
-    {
-      title: Words.id,
-      width: 75,
-      align: "center",
-      dataIndex: "ItemID",
-      sorter: getSorter("ItemID"),
-      render: (ItemID) => (
-        <Text>{ItemID > 0 ? utils.farsiNum(`${ItemID}`) : ""}</Text>
-      ),
-    },
-    {
-      title: Words.product_code,
-      width: 150,
-      align: "center",
-      dataIndex: "ProductCode",
-      sorter: getSorter("ProductCode"),
-      render: (ProductCode) => (
-        <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(ProductCode)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.product,
-      width: 150,
-      align: "center",
-      dataIndex: "ProductTitle",
-      sorter: getSorter("ProductTitle"),
-      render: (ProductTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(ProductTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.request_count,
-      width: 150,
-      align: "center",
-      dataIndex: "RequestCount",
-      sorter: getSorter("RequestCount"),
-      render: (RequestCount) => (
-        <Text style={{ color: Colors.red[6] }}>
-          {utils.farsiNum(RequestCount)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.unit,
-      width: 150,
-      align: "center",
-      dataIndex: "MeasureUnitTitle",
-      sorter: getSorter("MeasureUnitTitle"),
-      render: (MeasureUnitTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(MeasureUnitTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.consumer,
-      width: 200,
-      align: "center",
-      dataIndex: "FrontSideAccountTitle",
-      sorter: getSorter("FrontSideAccountTitle"),
-      render: (FrontSideAccountTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>{FrontSideAccountTitle}</Text>
-      ),
-    },
-    {
-      title: Words.need_date,
-      width: 120,
-      align: "center",
-      dataIndex: "NeedDate",
-      sorter: getSorter("NeedDate"),
-      render: (NeedDate) => (
-        <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(utils.slashDate(NeedDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.inquiry_deadline,
-      width: 120,
-      align: "center",
-      dataIndex: "InquiryDeadline",
-      sorter: getSorter("InquiryDeadline"),
-      render: (InquiryDeadline) => (
-        <Text
-          style={{
-            color: Colors.green[6],
-          }}
-        >
-          {InquiryDeadline?.length > 0
-            ? utils.farsiNum(utils.slashDate(InquiryDeadline))
-            : ""}
-        </Text>
-      ),
-    },
-    {
-      title: Words.supplier,
-      width: 200,
-      align: "center",
-      dataIndex: "SupplierTitle",
-      sorter: getSorter("SupplierTitle"),
-      render: (SupplierTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>
-          {utils.farsiNum(SupplierTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.purchasing_agent,
-      width: 150,
-      align: "center",
-      //   dataIndex: "---",
-      sorter: getSorter("AgentLastName"),
-      render: (record) => (
-        <Text
-          style={{ color: Colors.grey[6] }}
-        >{`${record.AgentFirstName} ${record.AgentLastName}`}</Text>
-      ),
-    },
-    {
-      title: Words.descriptions,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.DetailsText.length > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
-      ),
-    },
-    {
-      title: "",
-      fixed: "right",
-      align: "center",
-      width: 1,
-      render: () => <></>,
-    },
-  ];
-
-  return columns;
-};
-
-export const getServiceRequestItemsColumns = () => {
-  let columns = [
-    {
-      title: Words.id,
-      width: 75,
-      align: "center",
-      dataIndex: "ItemID",
-      sorter: getSorter("ItemID"),
-      render: (ItemID) => (
-        <Text>{ItemID > 0 ? utils.farsiNum(`${ItemID}`) : ""}</Text>
-      ),
-    },
-    {
-      title: Words.base,
-      width: 120,
-      align: "center",
-      dataIndex: "RefItemID",
-      sorter: getSorter("RefItemID"),
-      render: (RefItemID) => (
-        <Text style={{ color: Colors.magenta[6] }}>
-          {utils.farsiNum(RefItemID)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.service,
-      width: 200,
-      align: "center",
-      dataIndex: "ServiceTitle",
-      sorter: getSorter("ServiceTitle"),
-      render: (ServiceTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(ServiceTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.request_count,
-      width: 150,
-      align: "center",
-      dataIndex: "RequestCount",
-      sorter: getSorter("RequestCount"),
-      render: (RequestCount) => (
-        <Text style={{ color: Colors.red[6] }}>
-          {utils.farsiNum(RequestCount)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.unit,
-      width: 150,
-      align: "center",
-      dataIndex: "MeasureUnitTitle",
-      sorter: getSorter("MeasureUnitTitle"),
-      render: (MeasureUnitTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(MeasureUnitTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.consumer,
-      width: 200,
-      align: "center",
-      dataIndex: "FrontSideAccountTitle",
-      sorter: getSorter("FrontSideAccountTitle"),
-      render: (FrontSideAccountTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>{FrontSideAccountTitle}</Text>
-      ),
-    },
-    {
-      title: Words.request_date,
-      width: 120,
-      align: "center",
-      dataIndex: "RequestDate",
-      sorter: getSorter("RequestDate"),
-      render: (RequestDate) => (
-        <Text style={{ color: Colors.orange[8] }}>
-          {utils.farsiNum(utils.slashDate(RequestDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.need_date,
-      width: 120,
-      align: "center",
-      dataIndex: "NeedDate",
-      sorter: getSorter("NeedDate"),
-      render: (NeedDate) => (
-        <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(utils.slashDate(NeedDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.inquiry_deadline,
-      width: 120,
-      align: "center",
-      dataIndex: "InquiryDeadline",
-      sorter: getSorter("InquiryDeadline"),
-      render: (InquiryDeadline) => (
-        <Text
-          style={{
-            color: Colors.green[6],
-          }}
-        >
-          {InquiryDeadline?.length > 0
-            ? utils.farsiNum(utils.slashDate(InquiryDeadline))
-            : ""}
-        </Text>
-      ),
-    },
-    {
-      title: Words.supplier,
-      width: 200,
-      align: "center",
-      dataIndex: "SupplierTitle",
-      sorter: getSorter("SupplierTitle"),
-      render: (SupplierTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>
-          {utils.farsiNum(SupplierTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.purchasing_agent,
-      width: 150,
-      align: "center",
-      //   dataIndex: "---",
-      sorter: getSorter("AgentLastName"),
-      render: (record) => (
-        <Text
-          style={{ color: Colors.grey[6] }}
-        >{`${record.AgentFirstName} ${record.AgentLastName}`}</Text>
-      ),
-    },
-    {
-      title: Words.descriptions,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.DetailsText.length > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
-      ),
-    },
-    {
-      title: "",
-      fixed: "right",
-      align: "center",
-      width: 1,
-      render: () => <></>,
-    },
-  ];
-
-  return columns;
-};
 
 const InquiryRequestDetailsModal = ({
   selectedObject,
@@ -360,39 +38,24 @@ const InquiryRequestDetailsModal = ({
 
   const {
     RequestID,
-    BaseID,
     InquiryDeadline,
+    InquiryDate,
     // RegMemberID,
-    RegFirstName, //
-    RegLastName, //
-    RequestDate, //
-    // RequestMemberID,
-    // RequestMemberFirstName,
-    // RequestMemberLastName,
-    RequestTypeID,
-    RequestTypeTitle, //
-    StatusID,
+    RegFirstName,
+    RegLastName,
+    // StatusID,
     StatusTitle,
-    RegDate, //
-    RegTime, //
-    DetailsText, //
-    Items, //
+    RegDate,
+    RegTime,
+    DetailsText,
+    Items,
+    Suppliers,
   } = selectedObject;
-
+  console.log(selectedObject);
   useMount(async () => {
     setProgress(true);
 
     try {
-      const request =
-        RequestTypeID === 1
-          ? await service.getRegedPurchaseRequestByID(BaseID)
-          : await service.getRegedServiceRequestByID(BaseID);
-
-      selectedObject.Items.forEach((i) => {
-        i.FrontSideAccountTitle = request.FrontSideAccountTitle;
-        i.RequestDate = request.RequestDate;
-      });
-
       //------ load params
 
       let data = await service.getParams();
@@ -444,17 +107,24 @@ const InquiryRequestDetailsModal = ({
   const items = [
     {
       label: Words.inquiry_items,
-      key: "inquiry-items",
+      key: "items-tab",
+      children: (
+        <Row gutter={[0, 15]}>
+          <Col xs={24}>
+            <DetailsTable records={Items} columns={getInquiryItemColumns()} />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: Words.suppliers,
+      key: "suppliers-tab",
       children: (
         <Row gutter={[0, 15]}>
           <Col xs={24}>
             <DetailsTable
-              records={Items}
-              columns={
-                RequestTypeID === 1
-                  ? getPurchaseRequestItemsColumns()
-                  : getServiceRequestItemsColumns()
-              }
+              records={Suppliers}
+              columns={getInquirySupplierColumns()}
             />
           </Col>
         </Row>
@@ -478,7 +148,7 @@ const InquiryRequestDetailsModal = ({
               bordered
               column={{
                 //   md: 2, sm: 2,
-                lg: 3,
+                lg: 2,
                 md: 2,
                 xs: 1,
               }}
@@ -491,7 +161,7 @@ const InquiryRequestDetailsModal = ({
               </Descriptions.Item>
               <Descriptions.Item label={Words.request_date}>
                 <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(utils.slashDate(RequestDate))}
+                  {utils.farsiNum(utils.slashDate(InquiryDate))}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.inquiry_final_deadline}>
@@ -499,18 +169,10 @@ const InquiryRequestDetailsModal = ({
                   {utils.farsiNum(utils.slashDate(InquiryDeadline))}
                 </Text>
               </Descriptions.Item>
-              <Descriptions.Item label={Words.request_type}>
-                <Text style={{ color: valueColor }}>{RequestTypeTitle}</Text>
-              </Descriptions.Item>
               <Descriptions.Item label={Words.status} span={2}>
                 <Text
                   style={{
-                    color:
-                      StatusID === 1
-                        ? Colors.blue[6]
-                        : StatusID === 2
-                        ? Colors.green[6]
-                        : Colors.red[6],
+                    color: valueColor,
                   }}
                 >
                   {StatusTitle}
@@ -528,7 +190,7 @@ const InquiryRequestDetailsModal = ({
                   )}
                 </Text>
               </Descriptions.Item>
-              {DetailsText.length > 0 && (
+              {DetailsText?.length > 0 && (
                 <Descriptions.Item label={Words.descriptions} span={3}>
                   <Text
                     style={{

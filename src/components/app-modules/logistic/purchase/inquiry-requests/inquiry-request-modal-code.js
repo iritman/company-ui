@@ -17,10 +17,10 @@ const { Text } = Typography;
 
 export const schema = {
   RequestID: Joi.number().required().label(Words.id),
-  RequestTypeID: Joi.number().required().min(1).label(Words.request_type),
-  BaseID: Joi.number().required().min(1).label(Words.request),
+  // RequestTypeID: Joi.number().required().min(1).label(Words.request_type),
+  // BaseID: Joi.number().required().min(1).label(Words.request),
   InquiryDeadline: Joi.string().required().label(Words.inquiry_final_deadline),
-  RequestDate: Joi.string().required().label(Words.request_date),
+  InquiryDate: Joi.string().required().label(Words.request_date),
   DetailsText: Joi.string()
     .min(5)
     .max(250)
@@ -34,22 +34,17 @@ export const schema = {
 
 export const initRecord = {
   RequestID: 0,
-  RequestTypeID: 0,
-  BaseID: 0,
+  // RequestTypeID: 0,
+  // BaseID: 0,
   InquiryDeadline: "",
-  RequestDate: "",
+  InquiryDate: "",
   DetailsText: "",
   StatusID: 1,
   Items: [],
   Suppliers: [],
 };
 
-export const getPurchaseRequestItemsColumns = (
-  access,
-  statusID,
-  onEdit,
-  onDelete
-) => {
+export const getInquiryItemColumns = (access, statusID, onEdit, onDelete) => {
   let columns = [
     {
       title: Words.id,
@@ -62,26 +57,26 @@ export const getPurchaseRequestItemsColumns = (
       ),
     },
     {
-      title: Words.product_code,
+      title: Words.item_code,
       width: 150,
       align: "center",
-      dataIndex: "ProductCode",
-      sorter: getSorter("ProductCode"),
-      render: (ProductCode) => (
+      dataIndex: "NeededItemCode",
+      sorter: getSorter("NeededItemCode"),
+      render: (NeededItemCode) => (
         <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(ProductCode)}
+          {utils.farsiNum(NeededItemCode)}
         </Text>
       ),
     },
     {
-      title: Words.product,
-      width: 150,
+      title: Words.item_title,
+      width: 175,
       align: "center",
-      dataIndex: "ProductTitle",
-      sorter: getSorter("ProductTitle"),
-      render: (ProductTitle) => (
+      dataIndex: "NeededItemTitle",
+      sorter: getSorter("NeededItemTitle"),
+      render: (NeededItemTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(ProductTitle)}
+          {utils.farsiNum(NeededItemTitle)}
         </Text>
       ),
     },
@@ -129,187 +124,6 @@ export const getPurchaseRequestItemsColumns = (
         <Text style={{ color: Colors.orange[6] }}>
           {utils.farsiNum(utils.slashDate(NeedDate))}
         </Text>
-      ),
-    },
-    {
-      title: Words.inquiry_deadline,
-      width: 120,
-      align: "center",
-      dataIndex: "InquiryDeadline",
-      sorter: getSorter("InquiryDeadline"),
-      render: (InquiryDeadline) => (
-        <Text
-          style={{
-            color: Colors.green[6],
-          }}
-        >
-          {InquiryDeadline?.length > 0
-            ? utils.farsiNum(utils.slashDate(InquiryDeadline))
-            : ""}
-        </Text>
-      ),
-    },
-    {
-      title: Words.supplier,
-      width: 200,
-      align: "center",
-      dataIndex: "SupplierTitle",
-      sorter: getSorter("SupplierTitle"),
-      render: (SupplierTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>
-          {utils.farsiNum(SupplierTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.purchasing_agent,
-      width: 150,
-      align: "center",
-      //   dataIndex: "---",
-      sorter: getSorter("AgentLastName"),
-      render: (record) => (
-        <Text
-          style={{ color: Colors.grey[6] }}
-        >{`${record.AgentFirstName} ${record.AgentLastName}`}</Text>
-      ),
-    },
-    {
-      title: Words.descriptions,
-      width: 100,
-      align: "center",
-      render: (record) => (
-        <>
-          {record.DetailsText.length > 0 && (
-            <Popover content={<Text>{record.DetailsText}</Text>}>
-              <InfoIcon
-                style={{
-                  color: Colors.green[6],
-                  fontSize: 19,
-                  cursor: "pointer",
-                }}
-              />
-            </Popover>
-          )}
-        </>
-      ),
-    },
-  ];
-
-  // StatusID : 1 => Not Approve, Not Reject! Just Save...
-  if (
-    statusID === 1 &&
-    ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
-  ) {
-    columns = [
-      ...columns,
-      {
-        title: "",
-        fixed: "right",
-        align: "center",
-        width: 75,
-        render: (record) => (
-          <Space>
-            {access.CanDelete && onDelete && (
-              <Popconfirm
-                title={Words.questions.sure_to_delete_selected_item}
-                onConfirm={async () => await onDelete(record)}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-              >
-                <Button type="link" icon={<DeleteIcon />} danger />
-              </Popconfirm>
-            )}
-
-            {access.CanEdit && onEdit && (
-              <Button
-                type="link"
-                icon={<EditIcon />}
-                onClick={() => onEdit(record)}
-              />
-            )}
-          </Space>
-        ),
-      },
-    ];
-  }
-
-  return columns;
-};
-
-export const getServiceRequestItemsColumns = (
-  access,
-  statusID,
-  onEdit,
-  onDelete
-) => {
-  let columns = [
-    {
-      title: Words.id,
-      width: 75,
-      align: "center",
-      dataIndex: "ItemID",
-      sorter: getSorter("ItemID"),
-      render: (ItemID) => (
-        <Text>{ItemID > 0 ? utils.farsiNum(`${ItemID}`) : ""}</Text>
-      ),
-    },
-    {
-      title: Words.base,
-      width: 120,
-      align: "center",
-      dataIndex: "RefItemID",
-      sorter: getSorter("RefItemID"),
-      render: (RefItemID) => (
-        <Text style={{ color: Colors.magenta[6] }}>
-          {utils.farsiNum(RefItemID)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.service,
-      width: 200,
-      align: "center",
-      dataIndex: "ServiceTitle",
-      sorter: getSorter("ServiceTitle"),
-      render: (ServiceTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(ServiceTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.request_count,
-      width: 150,
-      align: "center",
-      dataIndex: "RequestCount",
-      sorter: getSorter("RequestCount"),
-      render: (RequestCount) => (
-        <Text style={{ color: Colors.red[6] }}>
-          {utils.farsiNum(RequestCount)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.unit,
-      width: 150,
-      align: "center",
-      dataIndex: "MeasureUnitTitle",
-      sorter: getSorter("MeasureUnitTitle"),
-      render: (MeasureUnitTitle) => (
-        <Text style={{ color: Colors.grey[6] }}>
-          {utils.farsiNum(MeasureUnitTitle)}
-        </Text>
-      ),
-    },
-    {
-      title: Words.consumer,
-      width: 200,
-      align: "center",
-      dataIndex: "FrontSideAccountTitle",
-      sorter: getSorter("FrontSideAccountTitle"),
-      render: (FrontSideAccountTitle) => (
-        <Text style={{ color: Colors.cyan[6] }}>{FrontSideAccountTitle}</Text>
       ),
     },
     {
@@ -319,20 +133,8 @@ export const getServiceRequestItemsColumns = (
       dataIndex: "RequestDate",
       sorter: getSorter("RequestDate"),
       render: (RequestDate) => (
-        <Text style={{ color: Colors.orange[8] }}>
+        <Text style={{ color: Colors.red[7] }}>
           {utils.farsiNum(utils.slashDate(RequestDate))}
-        </Text>
-      ),
-    },
-    {
-      title: Words.need_date,
-      width: 120,
-      align: "center",
-      dataIndex: "NeedDate",
-      sorter: getSorter("NeedDate"),
-      render: (NeedDate) => (
-        <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(utils.slashDate(NeedDate))}
         </Text>
       ),
     },
@@ -354,18 +156,18 @@ export const getServiceRequestItemsColumns = (
         </Text>
       ),
     },
-    {
-      title: Words.supplier,
-      width: 200,
-      align: "center",
-      dataIndex: "SupplierTitle",
-      sorter: getSorter("SupplierTitle"),
-      render: (SupplierTitle) => (
-        <Text style={{ color: Colors.purple[6] }}>
-          {utils.farsiNum(SupplierTitle)}
-        </Text>
-      ),
-    },
+    // {
+    //   title: Words.supplier,
+    //   width: 200,
+    //   align: "center",
+    //   dataIndex: "SupplierTitle",
+    //   sorter: getSorter("SupplierTitle"),
+    //   render: (SupplierTitle) => (
+    //     <Text style={{ color: Colors.purple[6] }}>
+    //       {utils.farsiNum(SupplierTitle)}
+    //     </Text>
+    //   ),
+    // },
     {
       title: Words.purchasing_agent,
       width: 150,
@@ -373,9 +175,11 @@ export const getServiceRequestItemsColumns = (
       //   dataIndex: "---",
       sorter: getSorter("AgentLastName"),
       render: (record) => (
-        <Text
-          style={{ color: Colors.grey[6] }}
-        >{`${record.AgentFirstName} ${record.AgentLastName}`}</Text>
+        <Text style={{ color: Colors.grey[6] }}>
+          {record.PurchaseAgentID > 0
+            ? `${record.AgentFirstName} ${record.AgentLastName}`
+            : "-"}
+        </Text>
       ),
     },
     {
@@ -384,7 +188,7 @@ export const getServiceRequestItemsColumns = (
       align: "center",
       render: (record) => (
         <>
-          {record.DetailsText.length > 0 && (
+          {record?.DetailsText?.length > 0 && (
             <Popover content={<Text>{record.DetailsText}</Text>}>
               <InfoIcon
                 style={{
@@ -398,43 +202,66 @@ export const getServiceRequestItemsColumns = (
         </>
       ),
     },
+    {
+      title: Words.status,
+      width: 120,
+      align: "center",
+      dataIndex: "StatusTitle",
+      sorter: getSorter("StatusTitle"),
+      render: (StatusTitle) => (
+        <Text style={{ color: Colors.grey[6] }}>{StatusTitle}</Text>
+      ),
+    },
   ];
 
-  // StatusID : 1 => Not Approve, Not Reject! Just Save...
-  if (
-    statusID === 1 &&
-    ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
-  ) {
+  if (access) {
+    // StatusID : 1 => Not Approve, Not Reject! Just Save...
+    if (
+      statusID === 1 &&
+      ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
+    ) {
+      columns = [
+        ...columns,
+        {
+          title: "",
+          fixed: "right",
+          align: "center",
+          width: 75,
+          render: (record) => (
+            <Space>
+              {access.CanDelete && onDelete && (
+                <Popconfirm
+                  title={Words.questions.sure_to_delete_selected_item}
+                  onConfirm={async () => await onDelete(record)}
+                  okText={Words.yes}
+                  cancelText={Words.no}
+                  icon={<QuestionIcon style={{ color: "red" }} />}
+                >
+                  <Button type="link" icon={<DeleteIcon />} danger />
+                </Popconfirm>
+              )}
+
+              {access.CanEdit && onEdit && (
+                <Button
+                  type="link"
+                  icon={<EditIcon />}
+                  onClick={() => onEdit(record)}
+                />
+              )}
+            </Space>
+          ),
+        },
+      ];
+    }
+  } else {
     columns = [
       ...columns,
       {
         title: "",
         fixed: "right",
         align: "center",
-        width: 75,
-        render: (record) => (
-          <Space>
-            {access.CanDelete && onDelete && (
-              <Popconfirm
-                title={Words.questions.sure_to_delete_selected_item}
-                onConfirm={async () => await onDelete(record)}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-              >
-                <Button type="link" icon={<DeleteIcon />} danger />
-              </Popconfirm>
-            )}
-
-            {access.CanEdit && onEdit && (
-              <Button
-                type="link"
-                icon={<EditIcon />}
-                onClick={() => onEdit(record)}
-              />
-            )}
-          </Space>
-        ),
+        width: 1,
+        render: () => <></>,
       },
     ];
   }
@@ -442,7 +269,99 @@ export const getServiceRequestItemsColumns = (
   return columns;
 };
 
-export const getNewInquiryRequestItemButton = (disabled, onClick) => {
+export const getInquirySupplierColumns = (access, statusID, onDelete) => {
+  let columns = [
+    {
+      title: Words.id,
+      width: 75,
+      align: "center",
+      dataIndex: "RowID",
+      sorter: getSorter("RowID"),
+      render: (RowID) => (
+        <Text>{RowID > 0 ? utils.farsiNum(`${RowID}`) : ""}</Text>
+      ),
+    },
+    {
+      title: Words.suplier_id,
+      width: 100,
+      align: "center",
+      dataIndex: "SupplierID",
+      sorter: getSorter("SupplierID"),
+      render: (SupplierID) => (
+        <Text>{SupplierID > 0 ? utils.farsiNum(`${SupplierID}`) : ""}</Text>
+      ),
+    },
+    {
+      title: Words.supplier,
+      width: 175,
+      align: "center",
+      dataIndex: "SupplierTitle",
+      sorter: getSorter("SupplierTitle"),
+      render: (SupplierTitle) => (
+        <Text style={{ color: Colors.cyan[6] }}>
+          {utils.farsiNum(SupplierTitle)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.activity_type,
+      width: 150,
+      align: "center",
+      dataIndex: "ActivityTypeTitle",
+      sorter: getSorter("ActivityTypeTitle"),
+      render: (ActivityTypeTitle) => (
+        <Text style={{ color: Colors.orange[6] }}>
+          {utils.farsiNum(ActivityTypeTitle)}
+        </Text>
+      ),
+    },
+  ];
+
+  if (access) {
+    // StatusID : 1 => Not Approve, Not Reject! Just Save...
+    if (statusID === 1 && access.CanDelete && onDelete) {
+      columns = [
+        ...columns,
+        {
+          title: "",
+          fixed: "right",
+          align: "center",
+          width: 75,
+          render: (record) => (
+            <Space>
+              {access.CanDelete && onDelete && (
+                <Popconfirm
+                  title={Words.questions.sure_to_delete_selected_item}
+                  onConfirm={async () => await onDelete(record)}
+                  okText={Words.yes}
+                  cancelText={Words.no}
+                  icon={<QuestionIcon style={{ color: "red" }} />}
+                >
+                  <Button type="link" icon={<DeleteIcon />} danger />
+                </Popconfirm>
+              )}
+            </Space>
+          ),
+        },
+      ];
+    }
+  } else {
+    columns = [
+      ...columns,
+      {
+        title: "",
+        fixed: "right",
+        align: "center",
+        width: 1,
+        render: () => <></>,
+      },
+    ];
+  }
+
+  return columns;
+};
+
+export const getNewButton = (disabled, onClick) => {
   return (
     <Button
       type="primary"
@@ -544,7 +463,7 @@ export const getFooterButtons = (config) => {
 
           {hasRejectAccess && (
             <Popconfirm
-              title={Words.questions.sure_to_reject_request}
+              title={Words.questions.sure_to_cancel_request}
               onConfirm={onReject}
               okText={Words.yes}
               cancelText={Words.no}
@@ -553,7 +472,7 @@ export const getFooterButtons = (config) => {
               disabled={progress}
             >
               <Button key="reject-button" type="primary" danger>
-                {Words.reject_request}
+                {Words.cancel_request}
               </Button>
             </Popconfirm>
           )}
@@ -570,9 +489,9 @@ export const getFooterButtons = (config) => {
 const codes = {
   schema,
   initRecord,
-  getPurchaseRequestItemsColumns,
-  getServiceRequestItemsColumns,
-  getNewInquiryRequestItemButton,
+  getInquiryItemColumns,
+  getInquirySupplierColumns,
+  getNewButton,
   getFooterButtons,
 };
 

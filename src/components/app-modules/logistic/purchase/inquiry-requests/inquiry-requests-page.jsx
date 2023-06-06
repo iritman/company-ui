@@ -28,14 +28,14 @@ const getSheets = (records) => [
     data: records,
     columns: [
       { label: Words.id, value: "RequestID" },
-      { label: Words.request_type, value: "RequestTypeTitle" },
+      // { label: Words.request_type, value: "RequestTypeTitle" },
       {
         label: Words.inquiry_deadline,
         value: (record) => utils.slashDate(record.InquiryDeadline),
       },
       {
         label: Words.request_date,
-        value: (record) => utils.slashDate(record.PayDate),
+        value: (record) => utils.slashDate(record.InquiryDate),
       },
       { label: Words.standard_description, value: "DetailsText" },
       {
@@ -65,22 +65,22 @@ const baseColumns = [
     title: Words.request_date,
     width: 150,
     align: "center",
-    dataIndex: "RequestDate",
-    sorter: getSorter("RequestDate"),
-    render: (RequestDate) => (
+    dataIndex: "InquiryDate",
+    sorter: getSorter("InquiryDate"),
+    render: (InquiryDate) => (
       <Text style={{ color: Colors.blue[6] }}>
-        {utils.farsiNum(utils.slashDate(RequestDate))}
+        {utils.farsiNum(utils.slashDate(InquiryDate))}
       </Text>
     ),
   },
-  {
-    title: Words.request_type,
-    width: 150,
-    align: "center",
-    dataIndex: "RequestTypeTitle",
-    sorter: getSorter("RequestTypeTitle"),
-    render: (RequestTypeTitle) => <Text>{RequestTypeTitle}</Text>,
-  },
+  // {
+  //   title: Words.request_type,
+  //   width: 150,
+  //   align: "center",
+  //   dataIndex: "RequestTypeTitle",
+  //   sorter: getSorter("RequestTypeTitle"),
+  //   render: (RequestTypeTitle) => <Text>{RequestTypeTitle}</Text>,
+  // },
   {
     title: Words.inquiry_final_deadline,
     width: 150,
@@ -99,7 +99,21 @@ const baseColumns = [
     align: "center",
     dataIndex: "StatusTitle",
     sorter: getSorter("StatusTitle"),
-    render: (StatusTitle) => <Text>{StatusTitle}</Text>,
+    render: (StatusTitle) => (
+      <Text style={{ color: Colors.blue[7] }}>{StatusTitle}</Text>
+    ),
+  },
+  {
+    title: Words.reg_member,
+    width: 150,
+    align: "center",
+    // dataIndex: "StatusTitle",
+    sorter: getSorter("RegFirstName"),
+    render: (record) => (
+      <Text
+        style={{ color: Colors.grey[6] }}
+      >{`${record.RegFirstName} ${record.RegLastName}`}</Text>
+    ),
   },
 ];
 
@@ -192,18 +206,21 @@ const InquiryRequestsPage = ({ pageName }) => {
   //------
 
   const handleSaveItem = async (request_item) => {
-    const saved_item = await service.saveItem(request_item);
+    const data = await service.saveItem(request_item);
+
+    const { SavedItem, NewSuppliers } = data;
 
     const rec = { ...selectedObject };
     if (request_item.ItemID === 0) {
-      rec.Items = [...rec.Items, saved_item];
+      rec.Items = [...rec.Items, SavedItem];
     } else {
       const index = rec.Items.findIndex(
         (i) => i.ItemID === request_item.ItemID
       );
 
-      rec.Items[index] = saved_item;
+      rec.Items[index] = SavedItem;
     }
+    rec.Suppliers = [...rec.Suppliers, ...NewSuppliers];
     setSelectedObject(rec);
 
     //------
@@ -218,7 +235,7 @@ const InquiryRequestsPage = ({ pageName }) => {
 
     setRecords([...records]);
 
-    return saved_item;
+    return data;
   };
 
   const handleDeleteItem = async (item_id) => {
@@ -252,6 +269,14 @@ const InquiryRequestsPage = ({ pageName }) => {
       // Update selected object
       selectedObject.StatusID = 2; // Approve
       selectedObject.StatusTitle = Words.inquiry_request_status_2;
+
+      selectedObject.Items.forEach((item) => {
+        if (item.StatusID === 1) {
+          item.StatusID = 2;
+          item.StatusTitle = Words.inquiry_request_status_2;
+        }
+      });
+
       setSelectedObject({ ...selectedObject });
 
       // Update records
@@ -328,6 +353,61 @@ const InquiryRequestsPage = ({ pageName }) => {
 
   //------
 
+  const handleSaveSupplier = async (request_supplier) => {
+    const saved_supplier = await service.saveSupplier(request_supplier);
+
+    const rec = { ...selectedObject };
+    if (request_supplier.RowID === 0) {
+      rec.Suppliers = [...rec.Suppliers, saved_supplier];
+    } else {
+      const index = rec.Suppliers.findIndex(
+        (i) => i.RowID === request_supplier.RowID
+      );
+
+      rec.Suppliers[index] = saved_supplier;
+    }
+    setSelectedObject(rec);
+
+    //------
+
+    const inquiry_request_index = records.findIndex(
+      (inquiry_request) =>
+        inquiry_request.RequestID === request_supplier.RequestID
+    );
+
+    records[inquiry_request_index] = rec;
+
+    //------
+
+    setRecords([...records]);
+
+    return saved_supplier;
+  };
+
+  const handleDeleteSupplier = async (supplier_row_id) => {
+    await service.deleteSupplier(supplier_row_id);
+
+    if (selectedObject) {
+      const rec = { ...selectedObject };
+      rec.Suppliers = rec.Suppliers.filter(
+        (sp) => sp.RowID !== supplier_row_id
+      );
+      setSelectedObject(rec);
+
+      //------
+
+      const inquiry_request_index = records.findIndex(
+        (inquiry_request) => inquiry_request.RequestID === rec.RequestID
+      );
+
+      records[inquiry_request_index] = rec;
+
+      setRecords([...records]);
+    }
+  };
+
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -365,8 +445,10 @@ const InquiryRequestsPage = ({ pageName }) => {
           onCancel={handleCloseModal}
           isOpen={showModal}
           selectedObject={selectedObject}
-          onSaveInquiryRequestItem={handleSaveItem}
-          onDeleteInquiryRequestItem={handleDeleteItem}
+          onSaveInquiryItem={handleSaveItem}
+          onDeleteInquiryItem={handleDeleteItem}
+          onSaveInquirySupplier={handleSaveSupplier}
+          onDeleteInquirySupplier={handleDeleteSupplier}
           onReject={handleReject}
           onApprove={handleApprove}
         />

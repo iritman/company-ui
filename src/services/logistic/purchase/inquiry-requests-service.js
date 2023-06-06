@@ -21,30 +21,20 @@ export async function getItemParams() {
   return data;
 }
 
-export async function getRegedPurchaseRequests() {
-  const { data } = await http.get(`${apiEndpoint}/search/purchases`);
+export async function getSupplierParams() {
+  const { data } = await http.get(`${apiEndpoint}/supplier/params`);
 
   return data;
 }
 
-export async function getRegedPurchaseRequestByID(requestID) {
-  const { data } = await http.get(
-    `${apiEndpoint}/search/purchases/${requestID}`
-  );
+export async function getRegedPurchaseItems() {
+  const { data } = await http.get(`${apiEndpoint}/purchase/items`);
 
   return data;
 }
 
-export async function getRegedServiceRequests() {
-  const { data } = await http.get(`${apiEndpoint}/search/services`);
-
-  return data;
-}
-
-export async function getRegedServiceRequestByID(requestID) {
-  const { data } = await http.get(
-    `${apiEndpoint}/search/services/${requestID}`
-  );
+export async function getRegedPurchaseItemByID(itemID) {
+  const { data } = await http.get(`${apiEndpoint}/purchase/item/${itemID}`);
 
   return data;
 }
@@ -116,10 +106,9 @@ const service = {
   getParams,
   getSearchParams,
   getItemParams,
-  getRegedPurchaseRequests,
-  getRegedPurchaseRequestByID,
-  getRegedServiceRequests,
-  getRegedServiceRequestByID,
+  getSupplierParams,
+  getRegedPurchaseItems,
+  getRegedPurchaseItemByID,
   searchData,
   saveData,
   saveItem,

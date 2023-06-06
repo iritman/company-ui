@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col, Divider, Typography } from "antd";
+import { Form, Row, Col, Tabs } from "antd";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
@@ -16,24 +16,22 @@ import {
 import service from "../../../../../services/logistic/purchase/inquiry-requests-service";
 import InputItem from "../../../../form-controls/input-item";
 import DateItem from "../../../../form-controls/date-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
 import TextItem from "../../../../form-controls/text-item";
 import {
   useModalContext,
   useResetContext,
 } from "../../../../contexts/modal-context";
 import DetailsTable from "../../../../common/details-table";
-import InquiryRequestItemModal from "./inquiry-request-item-modal";
+import InquiryItemModal from "./inquiry-request-item-modal";
+import InquirySupplierModal from "./inquiry-request-supplier-modal";
 import {
   schema,
   initRecord,
-  getPurchaseRequestItemsColumns,
-  getServiceRequestItemsColumns,
-  getNewInquiryRequestItemButton,
+  getInquiryItemColumns,
+  getInquirySupplierColumns,
+  getNewButton,
   getFooterButtons,
 } from "./inquiry-request-modal-code";
-
-const { Text } = Typography;
 
 const formRef = React.createRef();
 
@@ -43,25 +41,30 @@ const InquiryRequestModal = ({
   selectedObject,
   onOk,
   onCancel,
-  onSaveInquiryRequestItem,
-  onDeleteInquiryRequestItem,
+  onSaveInquiryItem,
+  onDeleteInquiryItem,
+  onSaveInquirySupplier,
+  onDeleteInquirySupplier,
   onReject,
   onApprove,
 }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
-  const [requestTypeProgress, setRequestTypeProgress] = useState(false);
-  const [requestTypes, setRequestTypes] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
 
-  const [requests, setRequests] = useState([]);
+  const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [purchaseItem, setPurchaseItem] = useState(null);
 
-  const [selectedInquiryRequestItem, setSelectedInquiryRequestItem] =
-    useState(null);
-  const [showInquiryRequestItemModal, setShowInquiryRequestItemModal] =
+  const [selectedInquiryItem, setSelectedInquiryItem] = useState(null);
+  const [showInquiryItemModal, setShowInquiryItemModal] = useState(false);
+
+  const [selectedInquirySupplier, setSelectedInquirySupplier] = useState(null);
+  const [showInquirySupplierModal, setShowInquirySupplierModal] =
     useState(false);
+  const [addedSupplier, setAddedSupplier] = useState(null);
 
   const resetContext = useResetContext();
 
@@ -74,15 +77,12 @@ const InquiryRequestModal = ({
   };
 
   const clearRecord = () => {
-    record.RequestTypeID = 0;
-    record.BaseID = 0;
     record.InquiryDeadline = "";
-    record.RequestDate = "";
+    record.InquiryDate = "";
     record.DetailsText = "";
     record.StatusID = 1;
     record.Items = [];
-
-    setRequests([]);
+    record.Suppliers = [];
 
     setRecord(record);
     setErrors({});
@@ -91,8 +91,6 @@ const InquiryRequestModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord(initRecord);
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -101,28 +99,21 @@ const InquiryRequestModal = ({
     try {
       const data = await service.getParams();
 
-      let { RequestTypes, HasSaveApproveAccess, HasRejectAccess } = data;
+      let { HasSaveApproveAccess, HasRejectAccess, CurrentDate } = data;
 
-      setRequestTypes(RequestTypes);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
 
       //------
 
-      if (selectedObject) {
-        const { RequestTypeID, BaseID } = selectedObject;
+      if (!selectedObject) {
+        const rec = { ...initRecord };
+        rec.InquiryDate = `${CurrentDate}`;
 
-        const request =
-          RequestTypeID === 1
-            ? await service.getRegedPurchaseRequestByID(BaseID)
-            : await service.getRegedServiceRequestByID(BaseID);
-
-        selectedObject.Items.forEach((i) => {
-          i.FrontSideAccountTitle = request.FrontSideAccountTitle;
-          i.RequestDate = request.RequestDate;
-        });
-
-        setRequests([request]);
+        setRecord({ ...rec });
+        loadFieldsValue(formRef, { ...rec });
+      } else {
+        initModal(formRef, selectedObject, setRecord);
       }
     } catch (ex) {
       handleError(ex);
@@ -144,8 +135,15 @@ const InquiryRequestModal = ({
   };
 
   const handleSubmitAndApprove = async () => {
-    record.StatusID = 2;
-    setRecord({ ...record });
+    const rec = { ...record };
+    rec.Items.forEach((item) => {
+      if (item.StatusID === 1) {
+        item.StatusID = 2;
+        item.StatusTitle = Words.inquiry_request_status_2;
+      }
+    });
+    rec.StatusID = 2;
+    setRecord(rec);
 
     saveModalChanges(
       formConfig,
@@ -158,13 +156,27 @@ const InquiryRequestModal = ({
 
   //------
 
-  const handleSaveInquiryRequestItem = async (inquiry_item) => {
+  const handleGetItemParams = (params) => {
+    const { PurchaseItem, Agents, Statuses } = params;
+
+    setPurchaseItem(PurchaseItem);
+    setAgents(Agents);
+    setStatuses(Statuses);
+  };
+
+  const handleAddedSupplier = (supplier) => {
+    setAddedSupplier(supplier);
+  };
+
+  const handleSaveInquiryItem = async (inquiry_item) => {
     if (selectedObject !== null) {
       inquiry_item.RequestID = selectedObject.RequestID;
 
-      const saved_inquiry_request_item = await onSaveInquiryRequestItem(
-        inquiry_item
-      );
+      const data = await onSaveInquiryItem(inquiry_item);
+
+      const { SavedItem, NewSuppliers } = data;
+
+      const saved_inquiry_request_item = SavedItem;
 
       const index = record.Items.findIndex(
         (item) => item.ItemID === inquiry_item.ItemID
@@ -175,77 +187,76 @@ const InquiryRequestModal = ({
       } else {
         record.Items[index] = saved_inquiry_request_item;
       }
+
+      record.Suppliers = [...record.Suppliers, ...NewSuppliers];
     } else {
       //While adding items temporarily, we have no jpin operation in database
       //So, we need to select titles manually
-      const selectedRequest = getSelectedRequest();
-      const { FrontSideAccountTitle, RequestDate } = selectedRequest;
-      inquiry_item = {
-        ...inquiry_item,
-        FrontSideAccountTitle,
-        RequestDate,
-      };
 
-      const selectedItem = getSelectedRequest()?.Items?.find(
-        (i) => i.ItemID === inquiry_item.RefItemID
+      if (purchaseItem) {
+        const {
+          NeededItemCode,
+          NeededItemTitle,
+          MeasureUnitTitle,
+          FrontSideAccountTitle,
+          NeedDate,
+          RequestDate,
+          InquiryDeadline,
+          // AgentFirstName,
+          // AgentLastName,
+          // StatusTitle,
+          Suppliers,
+        } = purchaseItem;
+
+        inquiry_item = {
+          ...inquiry_item,
+          NeededItemCode,
+          NeededItemTitle,
+          MeasureUnitTitle,
+          FrontSideAccountTitle,
+          NeedDate,
+          RequestDate,
+          InquiryDeadline,
+          // AgentFirstName,
+          // AgentLastName,
+          // StatusTitle,
+        };
+
+        // add selected purchase item's suppliers to the inquiry request's suppliers
+        // which not added before
+
+        const new_suppliers = Suppliers.filter(
+          (sp) =>
+            !record.Suppliers.find((sup) => sup.SupplierID === sp.SupplierID)
+        );
+
+        new_suppliers.forEach((sp) => {
+          sp.SupplierTitle = sp.Title;
+          delete sp.Title;
+          delete sp.RowID;
+        });
+
+        record.Suppliers = [...record.Suppliers, ...new_suppliers];
+      }
+
+      const agent = agents?.find(
+        (ag) => ag.PurchaseAgentID === inquiry_item.PurchaseAgentID
       );
 
-      if (record.RequestTypeID === 1) {
-        //-- [purchase]
-        const {
-          ProductTitle,
-          ProductCode,
-          MeasureUnitTitle,
-          AgentFirstName,
-          AgentLastName,
-          NeedDate,
-          InquiryDeadline,
-          SupplierTitle,
-        } = selectedItem;
-        inquiry_item = {
-          ...inquiry_item,
-          ProductTitle,
-          ProductCode,
-          MeasureUnitTitle,
-          AgentFirstName,
-          AgentLastName,
-          NeedDate,
-          InquiryDeadline,
-          SupplierTitle,
-        };
-      } else {
-        //-- [service]
-        const {
-          ServiceTitle,
-          MeasureUnitTitle,
-          AgentFirstName,
-          AgentLastName,
-          NeedDate,
-          InquiryDeadline,
-          SupplierTitle,
-        } = selectedItem;
+      inquiry_item.AgentFirstName = agent ? agent.FirstName : "";
+      inquiry_item.AgentLastName = agent ? agent.LastName : "";
 
-        inquiry_item = {
-          ...inquiry_item,
-          ServiceTitle,
-          MeasureUnitTitle,
-          AgentFirstName,
-          AgentLastName,
-          NeedDate,
-          InquiryDeadline,
-          SupplierTitle,
-        };
-      }
+      inquiry_item.StatusTitle = statuses?.find(
+        (sts) => sts.StatusID === inquiry_item.StatusID
+      )?.Title;
+
       //--- managing unique id (UID) for new items
-      if (inquiry_item.ItemID === 0 && selectedInquiryRequestItem === null) {
+      if (inquiry_item.ItemID === 0 && selectedInquiryItem === null) {
         inquiry_item.UID = uuid();
         record.Items = [...record.Items, inquiry_item];
-      } else if (
-        inquiry_item.ItemID === 0 &&
-        selectedInquiryRequestItem !== null
-      ) {
+      } else if (inquiry_item.ItemID === 0 && selectedInquiryItem !== null) {
         const index = record.Items.findIndex(
-          (item) => item.UID === selectedInquiryRequestItem.UID
+          (item) => item.UID === selectedInquiryItem.UID
         );
         record.Items[index] = inquiry_item;
       }
@@ -254,15 +265,15 @@ const InquiryRequestModal = ({
     //------
 
     setRecord({ ...record });
-    setSelectedInquiryRequestItem(null);
+    setSelectedInquiryItem(null);
   };
 
-  const handleDeleteInquiryRequestItem = async (item) => {
+  const handleDeleteInquiryItem = async (item) => {
     setProgress(true);
 
     try {
       if (item.ItemID > 0) {
-        await onDeleteInquiryRequestItem(item.ItemID);
+        await onDeleteInquiryItem(item.ItemID);
 
         record.Items = record.Items.filter((i) => i.ItemID !== item.ItemID);
       } else {
@@ -277,64 +288,100 @@ const InquiryRequestModal = ({
     setProgress(false);
   };
 
-  const handleCloseInquiryRequestItemModal = () => {
-    setSelectedInquiryRequestItem(null);
-    setShowInquiryRequestItemModal(false);
+  const handleCloseInquiryItemModal = () => {
+    setSelectedInquiryItem(null);
+    setShowInquiryItemModal(false);
   };
 
-  const handleEditInquiryRequestItem = (data) => {
-    setSelectedInquiryRequestItem(data);
-    setShowInquiryRequestItemModal(true);
+  const handleEditInquiryItem = (data) => {
+    setSelectedInquiryItem(data);
+    setShowInquiryItemModal(true);
   };
 
   const handleNewItemClick = () => {
-    setSelectedInquiryRequestItem(null);
-    setShowInquiryRequestItemModal(true);
+    setSelectedInquiryItem(null);
+    setShowInquiryItemModal(true);
   };
 
   //------
 
-  const handleChangeRequestTypes = async (value) => {
-    const rec = { ...record };
-    rec.RequestTypeID = value || 0;
-    rec.BaseID = 0;
+  const handleSaveInquirySupplier = async (inquiry_supplier) => {
+    if (selectedObject !== null) {
+      inquiry_supplier.RequestID = selectedObject.RequestID;
 
-    setRecord(rec);
-    loadFieldsValue(formRef, rec);
+      const saved_inquiry_request_supplier = await onSaveInquirySupplier(
+        inquiry_supplier
+      );
+
+      const index = record.Suppliers.findIndex(
+        (sp) => sp.SupplierID === inquiry_supplier.SupplierID
+      );
+
+      if (index === -1) {
+        record.Suppliers = [
+          ...record.Suppliers,
+          saved_inquiry_request_supplier,
+        ];
+      } else {
+        record.Suppliers[index] = saved_inquiry_request_supplier;
+      }
+    } else {
+      //While adding items temporarily, we have no jpin operation in database
+      //So, we need to select titles manually
+
+      const { SupplierTitle, ActivityTypeTitle } = addedSupplier;
+
+      inquiry_supplier = {
+        ...inquiry_supplier,
+        SupplierTitle,
+        ActivityTypeTitle,
+      };
+
+      //--- managing unique id (UID) for new items
+      if (inquiry_supplier.RowID === 0) {
+        inquiry_supplier.UID = uuid();
+        record.Suppliers = [...record.Suppliers, inquiry_supplier];
+      }
+    }
 
     //------
 
-    if (value > 0) {
-      setRequestTypeProgress(true);
-
-      try {
-        const data =
-          value === 1
-            ? await service.getRegedPurchaseRequests()
-            : await service.getRegedServiceRequests();
-
-        setRequests(data);
-      } catch (ex) {
-        handleError(ex);
-      }
-
-      setRequestTypeProgress(false);
-    } else {
-      setRequests([]);
-    }
+    setRecord({ ...record });
+    setAddedSupplier(null);
   };
 
-  const getSelectedRequest = () => {
-    let request = null;
+  const handleDeleteInquirySupplier = async (supplier) => {
+    setProgress(true);
 
-    request = requests.find((r) => r.BaseID === record.BaseID);
+    try {
+      if (supplier.RowID > 0) {
+        await onDeleteInquirySupplier(supplier.RowID);
 
-    if (!request) request = null;
-    else {
-      request.InquiryRequestTypeID = record.RequestTypeID;
+        record.Suppliers = record.Suppliers.filter(
+          (i) => i.RowID !== supplier.RowID
+        );
+      } else {
+        record.Suppliers = record.Suppliers.filter(
+          (i) => i.UID !== supplier.UID
+        );
+      }
+
+      setRecord({ ...record });
+    } catch (ex) {
+      handleError(ex);
     }
 
-    return request;
+    setProgress(false);
+  };
+
+  const handleCloseInquirySupplierModal = () => {
+    setSelectedInquirySupplier(null);
+    setShowInquirySupplierModal(false);
+  };
+
+  const handleNewSupplierClick = () => {
+    setSelectedInquirySupplier(null);
+    setShowInquirySupplierModal(true);
   };
 
   //------
@@ -359,6 +406,84 @@ const InquiryRequestModal = ({
     onCancel,
   };
 
+  const items = [
+    {
+      label: Words.inquiry_items,
+      key: "items-tab",
+      children: (
+        <>
+          {record.Items && (
+            <>
+              <Col xs={24}>
+                <Form.Item>
+                  <Row gutter={[0, 15]}>
+                    <Col xs={24}>
+                      <DetailsTable
+                        records={record.Items}
+                        columns={getInquiryItemColumns(
+                          access,
+                          status_id,
+                          handleEditInquiryItem,
+                          handleDeleteInquiryItem
+                        )}
+                        emptyDataMessage={Words.no_inquiry_item}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Item>
+              </Col>
+            </>
+          )}
+
+          {status_id === 1 && (
+            <Col xs={24}>
+              <Form.Item>{getNewButton(false, handleNewItemClick)}</Form.Item>
+            </Col>
+          )}
+        </>
+      ),
+    },
+    {
+      label: Words.suppliers,
+      key: "suppliers-tab",
+      children: (
+        <>
+          {record.Suppliers && (
+            <>
+              <Col xs={24}>
+                <Form.Item>
+                  <Row gutter={[0, 15]}>
+                    <Col xs={24}>
+                      <DetailsTable
+                        records={record.Suppliers}
+                        columns={getInquirySupplierColumns(
+                          access,
+                          status_id,
+                          handleDeleteInquirySupplier
+                        )}
+                        emptyDataMessage={Words.no_supplier}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Item>
+              </Col>
+            </>
+          )}
+
+          {status_id === 1 && (
+            <Col xs={24}>
+              <Form.Item>
+                {getNewButton(false, handleNewSupplierClick)}
+              </Form.Item>
+            </Col>
+          )}
+        </>
+      ),
+    },
+  ];
+
+  // ------
+
   return (
     <>
       <ModalWindow
@@ -366,7 +491,7 @@ const InquiryRequestModal = ({
         isEdit={isEdit}
         inProgress={progress}
         disabled={is_disable}
-        width={1050}
+        width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
       >
@@ -386,31 +511,6 @@ const InquiryRequestModal = ({
               </Col>
             )}
             <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.request_type}
-                dataSource={requestTypes}
-                keyColumn="RequestTypeID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                loading={requestTypeProgress}
-                onChange={handleChangeRequestTypes}
-                disabled={record?.Items?.length > 0}
-                autoFocus
-                required
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.request}
-                dataSource={requests}
-                keyColumn="BaseID"
-                valueColumn="RequestInfo"
-                formConfig={formConfig}
-                disabled={record?.Items?.length > 0}
-                required
-              />
-            </Col>
-            <Col xs={24} md={12}>
               <DateItem
                 horizontal
                 required
@@ -424,7 +524,7 @@ const InquiryRequestModal = ({
                 horizontal
                 required
                 title={Words.inquiry_date}
-                fieldName="RequestDate"
+                fieldName="InquiryDate"
                 formConfig={formConfig}
               />
             </Col>
@@ -440,68 +540,34 @@ const InquiryRequestModal = ({
               />
             </Col>
 
-            {/* ToDo: Implement base_doc_id field based on the selected base type */}
             <Col xs={24}>
-              <Divider orientation="right">
-                <Text style={{ fontSize: 14, color: Colors.green[6] }}>
-                  {Words.inquiry_items}
-                </Text>
-              </Divider>
+              <Form.Item>
+                <Tabs defaultActiveKey="1" type="card" items={items} />
+              </Form.Item>
             </Col>
-
-            {record.Items && (
-              <>
-                <Col xs={24}>
-                  <Form.Item>
-                    <Row gutter={[0, 15]}>
-                      <Col xs={24}>
-                        <DetailsTable
-                          records={record.Items}
-                          columns={
-                            record.RequestTypeID === 1
-                              ? getPurchaseRequestItemsColumns(
-                                  access,
-                                  status_id,
-                                  handleEditInquiryRequestItem,
-                                  handleDeleteInquiryRequestItem
-                                )
-                              : getServiceRequestItemsColumns(
-                                  access,
-                                  status_id,
-                                  handleEditInquiryRequestItem,
-                                  handleDeleteInquiryRequestItem
-                                )
-                          }
-                          emptyDataMessage={Words.no_inquiry_item}
-                        />
-                      </Col>
-                    </Row>
-                  </Form.Item>
-                </Col>
-              </>
-            )}
-
-            {status_id === 1 && (
-              <Col xs={24}>
-                <Form.Item>
-                  {getNewInquiryRequestItemButton(
-                    record?.BaseID === 0,
-                    handleNewItemClick
-                  )}
-                </Form.Item>
-              </Col>
-            )}
           </Row>
         </Form>
       </ModalWindow>
 
-      {showInquiryRequestItemModal && (
-        <InquiryRequestItemModal
-          isOpen={showInquiryRequestItemModal}
-          selectedObject={selectedInquiryRequestItem}
-          selectedBaseRequest={getSelectedRequest()}
-          onOk={handleSaveInquiryRequestItem}
-          onCancel={handleCloseInquiryRequestItemModal}
+      {showInquiryItemModal && (
+        <InquiryItemModal
+          isOpen={showInquiryItemModal}
+          selectedObject={selectedInquiryItem}
+          selectedItems={record?.Items}
+          setParams={handleGetItemParams}
+          onOk={handleSaveInquiryItem}
+          onCancel={handleCloseInquiryItemModal}
+        />
+      )}
+
+      {showInquirySupplierModal && (
+        <InquirySupplierModal
+          isOpen={showInquirySupplierModal}
+          selectedObject={selectedInquirySupplier}
+          selectedSuppliers={record?.Suppliers}
+          onAddSupplier={handleAddedSupplier}
+          onOk={handleSaveInquirySupplier}
+          onCancel={handleCloseInquirySupplierModal}
         />
       )}
     </>
