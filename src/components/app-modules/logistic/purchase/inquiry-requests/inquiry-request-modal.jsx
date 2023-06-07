@@ -164,10 +164,6 @@ const InquiryRequestModal = ({
     setStatuses(Statuses);
   };
 
-  const handleAddedSupplier = (supplier) => {
-    setAddedSupplier(supplier);
-  };
-
   const handleSaveInquiryItem = async (inquiry_item) => {
     if (selectedObject !== null) {
       inquiry_item.RequestID = selectedObject.RequestID;
@@ -304,6 +300,10 @@ const InquiryRequestModal = ({
   };
 
   //------
+
+  const handleAddedSupplier = (supplier) => {
+    setAddedSupplier(supplier);
+  };
 
   const handleSaveInquirySupplier = async (inquiry_supplier) => {
     if (selectedObject !== null) {

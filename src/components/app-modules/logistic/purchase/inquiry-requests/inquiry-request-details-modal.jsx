@@ -51,7 +51,7 @@ const InquiryRequestDetailsModal = ({
     Items,
     Suppliers,
   } = selectedObject;
-  console.log(selectedObject);
+
   useMount(async () => {
     setProgress(true);
 

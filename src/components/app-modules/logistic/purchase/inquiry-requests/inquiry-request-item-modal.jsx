@@ -194,7 +194,6 @@ const InquiryRequestItemModal = ({
   const clearRecord = () => {
     record.RefItemID = 0;
     record.RequestCount = 0;
-    record.RequestCount = 0;
     record.PurchaseAgentID = 0;
     record.DetailsText = "";
     record.StatusID = 1;
