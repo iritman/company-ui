@@ -15,24 +15,20 @@ export async function getSearchParams() {
   return data;
 }
 
-// export async function getItemParams() {
-//   const { data } = await http.get(`${apiEndpoint}/item/params`);
-
-//   return data;
-// }
-
-export async function getRegedInquiryRequestItems(supplierID) {
-  const { data } = await http.get(
-    `${apiEndpoint}/search/inquiry/items/${supplierID}`
-  );
+export async function getItemParams() {
+  const { data } = await http.get(`${apiEndpoint}/item/params`);
 
   return data;
 }
 
-export async function getRegedInquiryRequestItemByID(itemID) {
-  const { data } = await http.get(
-    `${apiEndpoint}/search/inquiry/item/${itemID}`
-  );
+export async function getRegedInquiryItems(supplierID) {
+  const { data } = await http.get(`${apiEndpoint}/inquiry/items/${supplierID}`);
+
+  return data;
+}
+
+export async function getRegedInquiryItemByID(itemID) {
+  const { data } = await http.get(`${apiEndpoint}/inquiry/item/${itemID}`);
 
   return data;
 }
@@ -55,21 +51,21 @@ export async function saveItem(record) {
   return data;
 }
 
-export async function rejectInvoice(requestID) {
-  const { data } = await http.post(`${apiEndpoint}/reject/${requestID}`, {});
+export async function rejectInvoice(invoiceID) {
+  const { data } = await http.post(`${apiEndpoint}/reject/${invoiceID}`, {});
 
   return data;
 }
 
-export async function approveInvoice(requestID) {
-  const { data } = await http.post(`${apiEndpoint}/approve/${requestID}`, {});
+export async function approveInvoice(invoiceID) {
+  const { data } = await http.post(`${apiEndpoint}/approve/${invoiceID}`, {});
 
   return data;
 }
 
-export async function undoApproveInvoice(requestID) {
+export async function undoApproveInvoice(invoiceID) {
   const { data } = await http.post(
-    `${apiEndpoint}/undo-approve/${requestID}`,
+    `${apiEndpoint}/undo-approve/${invoiceID}`,
     {}
   );
 
@@ -91,9 +87,9 @@ export async function deleteItem(recordID) {
 const service = {
   getParams,
   getSearchParams,
-  //   getItemParams,
-  getRegedInquiryRequestItems,
-  getRegedInquiryRequestItemByID,
+  getItemParams,
+  getRegedInquiryItems,
+  getRegedInquiryItemByID,
   searchData,
   saveData,
   saveItem,

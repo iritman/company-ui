@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Typography, Descriptions } from "antd";
 import Joi from "joi-browser";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
+import service from "../../../../../services/logistic/purchase/invoices-service";
 import {
   validateForm,
   loadFieldsValue,
@@ -13,18 +14,131 @@ import {
   saveModalChanges,
   handleError,
 } from "../../../../../tools/form-manager";
-import service from "../../../../../services/logistic/purchase/invoices-service";
 import InputItem from "../../../../form-controls/input-item";
 import TextItem from "../../../../form-controls/text-item";
 import NumericInputItem from "../../../../form-controls/numeric-input-item";
 import DropdownItem from "../../../../form-controls/dropdown-item";
 import SwitchItem from "../../../../form-controls/switch-item";
 
+const { Text } = Typography;
+const valueColor = Colors.blue[7];
+
+const InquiryItemDetails = ({ selectedItem }) => {
+  if (!selectedItem) return <></>;
+
+  const {
+    // RefItemID,
+    RequestID,
+    NeededItemCode,
+    NeededItemTitle,
+    FrontSideAccountTitle,
+    RequestCount,
+    MeasureUnitTitle,
+    AgentFirstName,
+    AgentLastName,
+    NeedDate,
+    RequestDate,
+    InquiryDeadline,
+  } = selectedItem;
+
+  return (
+    <Descriptions
+      bordered
+      column={{
+        //   md: 2, sm: 2,
+        lg: 2,
+        md: 2,
+        xs: 1,
+      }}
+      size="middle"
+    >
+      {/* <Descriptions.Item label={Words.id}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(`${RefItemID}`)}
+        </Text>
+      </Descriptions.Item> */}
+
+      <Descriptions.Item label={Words.request_no}>
+        <Text style={{ color: Colors.red[6] }}>
+          {utils.farsiNum(RequestID)}
+        </Text>
+      </Descriptions.Item>
+
+      <Descriptions.Item label={Words.item_code}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(NeededItemCode)}
+        </Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.item_title}>
+        <Text style={{ color: valueColor }}>{NeededItemTitle}</Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.consumer}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(FrontSideAccountTitle)}
+        </Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.request_count}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(RequestCount)}
+        </Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.unit}>
+        <Text style={{ color: valueColor }}>{MeasureUnitTitle}</Text>
+      </Descriptions.Item>
+
+      <Descriptions.Item label={Words.request_date}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(utils.slashDate(RequestDate))}
+        </Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.need_date}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(utils.slashDate(NeedDate))}
+        </Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.inquiry_deadline}>
+        <Text style={{ color: valueColor }}>
+          {utils.farsiNum(utils.slashDate(InquiryDeadline))}
+        </Text>
+      </Descriptions.Item>
+      <Descriptions.Item label={Words.purchasing_agent}>
+        <Text style={{ color: valueColor }}>
+          {`${AgentFirstName} ${AgentLastName}`}
+        </Text>
+      </Descriptions.Item>
+
+      {/* {DetailsText.length > 0 && (
+        <Descriptions.Item label={Words.descriptions} span={2}>
+          <Text
+            style={{
+              color: Colors.purple[7],
+              whiteSpace: "pre-line",
+            }}
+          >
+            {utils.farsiNum(DetailsText)}
+          </Text>
+        </Descriptions.Item>
+      )} */}
+      {/* <Descriptions.Item label={Words.status} span={2}>
+                      <Space>
+                        {IsActive ? (
+                          <CheckIcon style={{ color: Colors.green[6] }} />
+                        ) : (
+                          <LockIcon style={{ color: Colors.red[6] }} />
+                        )}
+
+                        <Text style={{ color: valueColor }}>
+                          {`${IsActive ? Words.active : Words.inactive} `}
+                        </Text>
+                      </Space>
+                    </Descriptions.Item> */}
+    </Descriptions>
+  );
+};
+
 const schema = {
   ItemID: Joi.number().required(),
   InvoiceID: Joi.number().required(),
-  InquiryRequestID: Joi.number().required(),
-  InquiryRequestTypeID: Joi.number().required(),
   RefItemID: Joi.number().min(1).required(),
   RequestCount: Joi.number()
     .min(1)
@@ -32,6 +146,7 @@ const schema = {
     .positive()
     .precision(2)
     .label(Words.request_count),
+  PurchaseAgentID: Joi.number().min(1).required().label(Words.purchasing_agent),
   Fee: Joi.number().min(1000).label(Words.fee),
   //   Price: Joi.number().min(1000).label(Words.price),
   Returnable: Joi.boolean(),
@@ -42,22 +157,20 @@ const schema = {
     .allow("")
     .regex(utils.VALID_REGEX)
     .label(Words.descriptions),
-  MoreInfo: Joi.object().allow(null),
+  StatusID: Joi.number().min(1).required(),
 };
 
 const initRecord = {
   ItemID: 0,
   InvoiceID: 0,
-  InquiryRequestID: 0,
-  InquiryRequestTypeID: 0,
   RefItemID: 0,
   RequestCount: 0,
+  PurchaseAgentID: 0,
   Fee: 0,
-  Price: 0,
   Returnable: true,
   DeliveryDuration: 0,
   DetailsText: "",
-  MoreInfo: null,
+  StatusID: 1,
 };
 
 const formRef = React.createRef();
@@ -65,8 +178,9 @@ const formRef = React.createRef();
 const InvoiceItemModal = ({
   isOpen,
   selectedObject,
+  selectedItems,
+  setParams,
   supplierID,
-  invoiceItems,
   onOk,
   onCancel,
 }) => {
@@ -74,8 +188,9 @@ const InvoiceItemModal = ({
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
 
-  const [requestItems, setRequestItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [items, setItems] = useState([]);
+  const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
 
   const formConfig = {
     schema,
@@ -86,17 +201,14 @@ const InvoiceItemModal = ({
   };
 
   const clearRecord = () => {
-    record.InvoiceID = 0;
-    record.InquiryRequestID = 0;
-    record.InquiryRequestTypeID = 0;
     record.RefItemID = 0;
     record.RequestCount = 0;
+    record.PurchaseAgentID = 0;
     record.Fee = 0;
-    record.Price = 0;
     record.Returnable = true;
     record.DeliveryDuration = 0;
     record.DetailsText = "";
-    record.MoreInfo = null;
+    record.StatusID = 1;
 
     setRecord(record);
     setErrors({});
@@ -106,49 +218,57 @@ const InvoiceItemModal = ({
   useMount(async () => {
     setRecord(initRecord);
     loadFieldsValue(formRef, initRecord);
+    initModal(formRef, selectedObject, setRecord);
+
+    setProgress(true);
 
     try {
-      let items = await service.getRegedInquiryRequestItems(supplierID);
+      const params = await service.getItemParams();
+
+      const { Agents, Statuses } = params;
+
+      setAgents(Agents);
+      setStatuses(Statuses);
+
+      //------
+
+      const data = await service.getRegedInquiryItems(supplierID);
+
+      let choices = data.filter(
+        (i) => !selectedItems.find((itm) => itm.RefItemID === i.RefItemID)
+      );
+
+      let selected_inquiry_item = null;
 
       if (selectedObject) {
-        let selected_item = items?.find(
+        selected_inquiry_item = data.find(
           (i) => i.RefItemID === selectedObject.RefItemID
         );
 
-        if (!selected_item) {
-          selected_item = await service.getRegedInquiryRequestItemByID(
+        if (
+          (!selected_inquiry_item && selectedObject.ItemID === 0) ||
+          selectedObject.ItemID > 0
+        ) {
+          selected_inquiry_item = await service.getRegedInquiryItemByID(
             selectedObject.RefItemID
           );
         }
 
-        const {
-          ItemCode,
-          ItemTitle,
-          AgentFirstName,
-          AgentLastName,
-          MeasureUnitTitle,
-        } = selected_item;
-
-        selectedObject.MoreInfo = {
-          ItemCode,
-          ItemTitle,
-          AgentFirstName,
-          AgentLastName,
-          MeasureUnitTitle,
-        };
-
-        setSelectedItem(selected_item);
-      } else {
-        items = items.filter(
-          (i) => !invoiceItems.find((ivi) => ivi.RefItemID === i.RefItemID)
-        );
+        choices = [selected_inquiry_item, ...choices];
       }
 
-      setRequestItems(items);
-      initModal(formRef, selectedObject, setRecord);
+      setParams({
+        Agents,
+        Statuses,
+        InquiryItem: selected_inquiry_item,
+      });
+
+      setItems(choices);
     } catch (ex) {
       handleError(ex);
     }
+
+    setProgress(false);
   });
 
   const isEdit = selectedObject !== null;
@@ -166,45 +286,42 @@ const InvoiceItemModal = ({
     onCancel();
   };
 
+  const getSelectedItem = (item_id) => {
+    let selected_item = null;
+
+    if (item_id > 0) {
+      selected_item = items.find((i) => i.RefItemID === item_id);
+
+      if (!selected_item) selected_item = null;
+    }
+
+    return selected_item;
+  };
+
   const handleChangeItem = (value) => {
     const rec = { ...record };
     rec.RefItemID = value;
 
     if (value === 0) {
       rec.RequestCount = 0;
-      rec.InquiryRequestTypeID = 0;
-      rec.InquiryRequestID = 0;
-      rec.MoreInfo = null;
-      setSelectedItem(null);
+      rec.PurchaseAgentID = 0;
     } else {
-      const selected_item = requestItems?.find((i) => i.RefItemID === value);
-      setSelectedItem(selected_item);
+      const selected_item = getSelectedItem(value);
 
-      if (selected_item) {
-        const {
-          RequestCount,
-          RequestID,
-          RequestTypeID,
-          ItemCode,
-          ItemTitle,
-          AgentFirstName,
-          AgentLastName,
-          MeasureUnitTitle,
-        } = selected_item;
+      setParams({
+        Agents: agents,
+        Statuses: statuses,
+        InquiryItem: selected_item,
+      });
 
-        rec.RequestCount = RequestCount;
-        rec.InquiryRequestTypeID = RequestTypeID;
-        rec.InquiryRequestID = RequestID;
+      rec.RequestCount = selected_item?.RequestCount;
 
-        rec.MoreInfo = {
-          ...rec.MoreInfo,
-          ItemCode,
-          ItemTitle,
-          AgentFirstName,
-          AgentLastName,
-          MeasureUnitTitle,
-        };
-      }
+      if (
+        agents?.find(
+          (ag) => ag.PurchaseAgentID === selected_item.PurchaseAgentID
+        )
+      )
+        rec.PurchaseAgentID = selected_item.PurchaseAgentID;
     }
 
     setRecord(rec);
@@ -222,16 +339,16 @@ const InvoiceItemModal = ({
       onClear={clearRecord}
       onSubmit={handleSubmit}
       onCancel={onCancel}
-      width={850}
+      width={950}
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.base}
-              dataSource={requestItems}
+              dataSource={items}
               keyColumn="RefItemID"
-              valueColumn={"ItemInfo"}
+              valueColumn={"InfoTitle"}
               formConfig={formConfig}
               onChange={handleChangeItem}
               required
@@ -254,30 +371,34 @@ const InvoiceItemModal = ({
               required
             />
           </Col>
-          {record.RefItemID > 0 && (
-            <>
-              <Col xs={24} md={6}>
-                <TextItem
-                  title={Words.unit}
-                  value={selectedItem?.MeasureUnitTitle}
-                  valueColor={Colors.magenta[6]}
+          <Col xs={24} md={12}>
+            <DropdownItem
+              title={Words.purchasing_agent}
+              dataSource={agents}
+              keyColumn="PurchaseAgentID"
+              valueColumn={"FullName"}
+              formConfig={formConfig}
+              required
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <NumericInputItem
+              horizontal
+              title={Words.delivery_duration}
+              fieldName="DeliveryDuration"
+              min={0}
+              max={1000}
+              formConfig={formConfig}
+            />
+          </Col>
+          {record?.RefItemID > 0 && (
+            <Col xs={24}>
+              <Form.Item>
+                <InquiryItemDetails
+                  selectedItem={getSelectedItem(record.RefItemID)}
                 />
-              </Col>
-              <Col xs={24} md={6}>
-                <TextItem
-                  title={Words.item_code}
-                  value={utils.farsiNum(selectedItem?.ItemCode)}
-                  valueColor={Colors.magenta[6]}
-                />
-              </Col>
-              <Col xs={24} md={6}>
-                <TextItem
-                  title={Words.item_title}
-                  value={utils.farsiNum(selectedItem?.ItemTitle)}
-                  valueColor={Colors.magenta[6]}
-                />
-              </Col>
-            </>
+              </Form.Item>
+            </Col>
           )}
           <Col xs={24} md={12}>
             <NumericInputItem
@@ -300,16 +421,6 @@ const InvoiceItemModal = ({
             />
           </Col>
           <Col xs={24} md={12}>
-            <NumericInputItem
-              horizontal
-              title={Words.delivery_duration}
-              fieldName="DeliveryDuration"
-              min={0}
-              max={1000}
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
             <SwitchItem
               title={Words.returnable}
               fieldName="Returnable"
@@ -319,33 +430,23 @@ const InvoiceItemModal = ({
               formConfig={formConfig}
             />
           </Col>
-          {record.RefItemID > 0 && (
-            <Col xs={24}>
+          <Col xs={24} md={12}>
+            {selectedObject && selectedObject.ItemID > 0 ? (
+              <DropdownItem
+                title={Words.status}
+                dataSource={statuses}
+                keyColumn="StatusID"
+                valueColumn="Title"
+                formConfig={formConfig}
+              />
+            ) : (
               <TextItem
-                title={Words.purchasing_agent}
-                value={`${selectedItem?.AgentFirstName} ${selectedItem?.AgentLastName}`}
+                title={Words.status}
+                value={Words.invoice_status_1}
                 valueColor={Colors.magenta[6]}
               />
-            </Col>
-          )}
-          {/* {record?.RefItemID > 0 && (
-            <Col xs={24}>
-              <Form.Item>
-                {selectedBaseRequest.InquiryRequestTypeID === 1 ? (
-                  <PurchaseDetails
-                    request={selectedBaseRequest}
-                    selectedRefItemID={record.RefItemID}
-                  />
-                ) : (
-                  <ServiceDetails
-                    request={selectedBaseRequest}
-                    selectedRefItemID={record.RefItemID}
-                  />
-                )}
-              </Form.Item>
-            </Col>
-          )}
-           */}
+            )}
+          </Col>
           <Col xs={24}>
             <InputItem
               title={Words.standard_description}

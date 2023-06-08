@@ -223,11 +223,11 @@ const InvoicesPage = ({ pageName }) => {
 
     //------
 
-    const inquiry_request_index = records.findIndex(
-      (inquiry_request) => inquiry_request.InvoiceID === request_item.InvoiceID
+    const invoice_index = records.findIndex(
+      (invoice) => invoice.InvoiceID === request_item.InvoiceID
     );
 
-    records[inquiry_request_index] = rec;
+    records[invoice_index] = rec;
 
     //------
 
@@ -246,11 +246,11 @@ const InvoicesPage = ({ pageName }) => {
 
       //------
 
-      const inquiry_request_index = records.findIndex(
-        (inquiry_request) => inquiry_request.InvoiceID === rec.InvoiceID
+      const invoice_index = records.findIndex(
+        (invoice) => invoice.InvoiceID === rec.InvoiceID
       );
 
-      records[inquiry_request_index] = rec;
+      records[invoice_index] = rec;
 
       setRecords([...records]);
     }
@@ -264,7 +264,15 @@ const InvoicesPage = ({ pageName }) => {
 
       // Update selected object
       selectedObject.StatusID = 2; // Approve
-      selectedObject.StatusTitle = Words.inquiry_request_status_2;
+      selectedObject.StatusTitle = Words.invoice_status_2;
+
+      selectedObject.Items.forEach((item) => {
+        if (item.StatusID === 1) {
+          item.StatusID = 2;
+          item.StatusTitle = Words.invoice_status_2;
+        }
+      });
+
       setSelectedObject({ ...selectedObject });
 
       // Update records
@@ -291,7 +299,7 @@ const InvoicesPage = ({ pageName }) => {
 
       // Update selected object
       selectedObject.StatusID = 1; // In progress
-      selectedObject.StatusTitle = Words.inquiry_request_status_1;
+      selectedObject.StatusTitle = Words.invoice_status_1;
       setSelectedObject({ ...selectedObject });
 
       // Update records
@@ -318,7 +326,7 @@ const InvoicesPage = ({ pageName }) => {
 
       // Update selected object
       selectedObject.StatusID = 3; // Reject
-      selectedObject.StatusTitle = Words.inquiry_request_status_3;
+      selectedObject.StatusTitle = Words.invoice_status_3;
       setSelectedObject({ ...selectedObject });
 
       // Update records

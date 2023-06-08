@@ -46,7 +46,6 @@ export const schema = {
 export const initRecord = {
   InvoiceID: 0,
   InvoiceNo: "",
-  // BaseID: 0,
   SupplierID: 0,
   TransportTypeID: 0,
   PurchaseWayID: 0,
@@ -59,7 +58,7 @@ export const initRecord = {
   Items: [],
 };
 
-export const getInvoiceItemsColumns = (access, statusID, onEdit, onDelete) => {
+export const getInvoiceItemColumns = (access, statusID, onEdit, onDelete) => {
   let columns = [
     {
       title: Words.id,
@@ -75,11 +74,11 @@ export const getInvoiceItemsColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.item_code,
       width: 150,
       align: "center",
-      dataIndex: "ItemCode",
-      sorter: getSorter("ItemCode"),
-      render: (ItemCode) => (
+      dataIndex: "NeededItemCode",
+      sorter: getSorter("NeededItemCode"),
+      render: (NeededItemCode) => (
         <Text style={{ color: Colors.orange[6] }}>
-          {utils.farsiNum(ItemCode)}
+          {utils.farsiNum(NeededItemCode)}
         </Text>
       ),
     },
@@ -87,11 +86,11 @@ export const getInvoiceItemsColumns = (access, statusID, onEdit, onDelete) => {
       title: Words.item_title,
       width: 150,
       align: "center",
-      dataIndex: "ItemTitle",
-      sorter: getSorter("ItemTitle"),
-      render: (ItemTitle) => (
+      dataIndex: "NeededItemTitle",
+      sorter: getSorter("NeededItemTitle"),
+      render: (NeededItemTitle) => (
         <Text style={{ color: Colors.cyan[6] }}>
-          {utils.farsiNum(ItemTitle)}
+          {utils.farsiNum(NeededItemTitle)}
         </Text>
       ),
     },
@@ -187,7 +186,7 @@ export const getInvoiceItemsColumns = (access, statusID, onEdit, onDelete) => {
       align: "center",
       render: (record) => (
         <>
-          {record.DetailsText.length > 0 && (
+          {record?.DetailsText?.length > 0 && (
             <Popover content={<Text>{record.DetailsText}</Text>}>
               <InfoIcon
                 style={{
@@ -203,41 +202,54 @@ export const getInvoiceItemsColumns = (access, statusID, onEdit, onDelete) => {
     },
   ];
 
-  // StatusID : 1 => Not Approve, Not Reject! Just Save...
-  if (
-    statusID === 1 &&
-    ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
-  ) {
+  if (access) {
+    // StatusID : 1 => Not Approve, Not Reject! Just Save...
+    if (
+      statusID === 1 &&
+      ((access.CanDelete && onDelete) || (access.CanEdit && onEdit))
+    ) {
+      columns = [
+        ...columns,
+        {
+          title: "",
+          fixed: "right",
+          align: "center",
+          width: 75,
+          render: (record) => (
+            <Space>
+              {access.CanDelete && onDelete && (
+                <Popconfirm
+                  title={Words.questions.sure_to_delete_selected_item}
+                  onConfirm={async () => await onDelete(record)}
+                  okText={Words.yes}
+                  cancelText={Words.no}
+                  icon={<QuestionIcon style={{ color: "red" }} />}
+                >
+                  <Button type="link" icon={<DeleteIcon />} danger />
+                </Popconfirm>
+              )}
+
+              {access.CanEdit && onEdit && (
+                <Button
+                  type="link"
+                  icon={<EditIcon />}
+                  onClick={() => onEdit(record)}
+                />
+              )}
+            </Space>
+          ),
+        },
+      ];
+    }
+  } else {
     columns = [
       ...columns,
       {
         title: "",
         fixed: "right",
         align: "center",
-        width: 75,
-        render: (record) => (
-          <Space>
-            {access.CanDelete && onDelete && (
-              <Popconfirm
-                title={Words.questions.sure_to_delete_selected_item}
-                onConfirm={async () => await onDelete(record)}
-                okText={Words.yes}
-                cancelText={Words.no}
-                icon={<QuestionIcon style={{ color: "red" }} />}
-              >
-                <Button type="link" icon={<DeleteIcon />} danger />
-              </Popconfirm>
-            )}
-
-            {access.CanEdit && onEdit && (
-              <Button
-                type="link"
-                icon={<EditIcon />}
-                onClick={() => onEdit(record)}
-              />
-            )}
-          </Space>
-        ),
+        width: 1,
+        render: () => <></>,
       },
     ];
   }
@@ -245,7 +257,7 @@ export const getInvoiceItemsColumns = (access, statusID, onEdit, onDelete) => {
   return columns;
 };
 
-export const getNewInvoiceItemButton = (disabled, onClick) => {
+export const getNewButton = (disabled, onClick) => {
   return (
     <Button
       type="primary"
@@ -373,8 +385,8 @@ export const getFooterButtons = (config) => {
 const codes = {
   schema,
   initRecord,
-  getInvoiceItemsColumns,
-  getNewInvoiceItemButton,
+  getInvoiceItemColumns,
+  getNewButton,
   getFooterButtons,
 };
 

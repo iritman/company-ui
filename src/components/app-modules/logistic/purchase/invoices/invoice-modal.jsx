@@ -28,8 +28,8 @@ import InvoiceItemModal from "./invoice-item-modal";
 import {
   schema,
   initRecord,
-  getInvoiceItemsColumns,
-  getNewInvoiceItemButton,
+  getInvoiceItemColumns,
+  getNewButton,
   getFooterButtons,
 } from "./invoice-modal-code";
 
@@ -51,13 +51,17 @@ const InvoiceModal = ({
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
+  const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
+  const [hasRejectAccess, setHasRejectAccess] = useState(false);
+
+  const [agents, setAgents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [inquiryItem, setInquiryItem] = useState(null);
+
   const [suppliers, setSuppliers] = useState([]);
   const [transportTypes, setTransportTypes] = useState([]);
   const [purchaseWays, setPurchaseWays] = useState([]);
   const [paymentTypes, setPaymentTypes] = useState([]);
-
-  const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
-  const [hasRejectAccess, setHasRejectAccess] = useState(false);
 
   const [selectedInvoiceItem, setSelectedInvoiceItem] = useState(null);
   const [showInvoiceItemModal, setShowInvoiceItemModal] = useState(false);
@@ -74,7 +78,6 @@ const InvoiceModal = ({
 
   const clearRecord = () => {
     record.InvoiceNo = "";
-    record.BaseID = 0;
     record.SupplierID = 0;
     record.TransportTypeID = 0;
     record.PurchaseWayID = 0;
@@ -93,8 +96,6 @@ const InvoiceModal = ({
 
   useMount(async () => {
     resetContext();
-    setRecord(initRecord);
-    initModal(formRef, selectedObject, setRecord);
 
     //------
 
@@ -110,6 +111,7 @@ const InvoiceModal = ({
         PaymentTypes,
         HasSaveApproveAccess,
         HasRejectAccess,
+        CurrentDate,
       } = data;
 
       setSuppliers(Suppliers);
@@ -118,6 +120,18 @@ const InvoiceModal = ({
       setPaymentTypes(PaymentTypes);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
+
+      //------
+
+      if (!selectedObject) {
+        const rec = { ...initRecord };
+        rec.InvoiceDate = `${CurrentDate}`;
+
+        setRecord({ ...rec });
+        loadFieldsValue(formRef, { ...rec });
+      } else {
+        initModal(formRef, selectedObject, setRecord);
+      }
     } catch (ex) {
       handleError(ex);
     }
@@ -138,8 +152,15 @@ const InvoiceModal = ({
   };
 
   const handleSubmitAndApprove = async () => {
-    record.StatusID = 2;
-    setRecord({ ...record });
+    const rec = { ...record };
+    rec.Items.forEach((item) => {
+      if (item.StatusID === 1) {
+        item.StatusID = 2;
+        item.StatusTitle = Words.invoice_status_2;
+      }
+    });
+    rec.StatusID = 2;
+    setRecord(rec);
 
     saveModalChanges(
       formConfig,
@@ -151,6 +172,14 @@ const InvoiceModal = ({
   };
 
   //------
+
+  const handleGetItemParams = (params) => {
+    const { InquiryItem, Agents, Statuses } = params;
+
+    setInquiryItem(InquiryItem);
+    setAgents(Agents);
+    setStatuses(Statuses);
+  };
 
   const handleSaveInvoiceItem = async (invoice_item) => {
     if (selectedObject !== null) {
@@ -170,82 +199,47 @@ const InvoiceModal = ({
     } else {
       //While adding items temporarily, we have no jpin operation in database
       //So, we need to select titles manually
-      const {
-        ItemCode,
-        ItemTitle,
-        AgentFirstName,
-        AgentLastName,
-        MeasureUnitTitle,
-      } = invoice_item.MoreInfo;
 
-      delete invoice_item.MoreInfo;
+      if (inquiryItem) {
+        const {
+          NeededItemCode,
+          NeededItemTitle,
+          MeasureUnitTitle,
+          FrontSideAccountTitle,
+          NeedDate,
+          RequestDate,
+          InquiryDeadline,
+          // AgentFirstName,
+          // AgentLastName,
+          // StatusTitle,
+        } = inquiryItem;
 
-      invoice_item = {
-        ...invoice_item,
-        ItemCode,
-        ItemTitle,
-        AgentFirstName,
-        AgentLastName,
-        MeasureUnitTitle,
-      };
-      //   const selectedRequest = getSelectedRequest();
-      //   const { FrontSideAccountTitle, RequestDate } = selectedRequest;
-      //   invoice_item = {
-      //     ...invoice_item,
-      //     FrontSideAccountTitle,
-      //     RequestDate,
-      //   };
+        invoice_item = {
+          ...invoice_item,
+          NeededItemCode,
+          NeededItemTitle,
+          MeasureUnitTitle,
+          FrontSideAccountTitle,
+          NeedDate,
+          RequestDate,
+          InquiryDeadline,
+          // AgentFirstName,
+          // AgentLastName,
+          // StatusTitle,
+        };
+      }
 
-      //   const selectedItem = getSelectedRequest()?.Items?.find(
-      //     (i) => i.ItemID === invoice_item.RefItemID
-      //   );
+      const agent = agents?.find(
+        (ag) => ag.PurchaseAgentID === invoice_item.PurchaseAgentID
+      );
 
-      //   if (record.RequestTypeID === 1) {
-      //     //-- [purchase]
-      //     const {
-      //       ProductTitle,
-      //       ProductCode,
-      //       MeasureUnitTitle,
-      //       AgentFirstName,
-      //       AgentLastName,
-      //       NeedDate,
-      //       InquiryDeadline,
-      //       SupplierTitle,
-      //     } = selectedItem;
-      //     invoice_item = {
-      //       ...invoice_item,
-      //       ProductTitle,
-      //       ProductCode,
-      //       MeasureUnitTitle,
-      //       AgentFirstName,
-      //       AgentLastName,
-      //       NeedDate,
-      //       InquiryDeadline,
-      //       SupplierTitle,
-      //     };
-      //   } else {
-      //     //-- [service]
-      //     const {
-      //       ServiceTitle,
-      //       MeasureUnitTitle,
-      //       AgentFirstName,
-      //       AgentLastName,
-      //       NeedDate,
-      //       InquiryDeadline,
-      //       SupplierTitle,
-      //     } = selectedItem;
+      invoice_item.AgentFirstName = agent ? agent.FirstName : "";
+      invoice_item.AgentLastName = agent ? agent.LastName : "";
 
-      //     invoice_item = {
-      //       ...invoice_item,
-      //       ServiceTitle,
-      //       MeasureUnitTitle,
-      //       AgentFirstName,
-      //       AgentLastName,
-      //       NeedDate,
-      //       InquiryDeadline,
-      //       SupplierTitle,
-      //     };
-      //   }
+      invoice_item.StatusTitle = statuses?.find(
+        (sts) => sts.StatusID === invoice_item.StatusID
+      )?.Title;
+
       //--- managing unique id (UID) for new items
       if (invoice_item.ItemID === 0 && selectedInvoiceItem === null) {
         invoice_item.UID = uuid();
@@ -301,51 +295,6 @@ const InvoiceModal = ({
 
   //------
 
-  //   const handleChangeRequestTypes = async (value) => {
-  //     const rec = { ...record };
-  //     rec.RequestTypeID = value || 0;
-  //     rec.BaseID = 0;
-
-  //     setRecord(rec);
-  //     loadFieldsValue(formRef, rec);
-
-  //     //------
-
-  //     if (value > 0) {
-  //       setRequestTypeProgress(true);
-
-  //       try {
-  //         const data =
-  //           value === 1
-  //             ? await service.getRegedPurchaseRequests()
-  //             : await service.getRegedServiceRequests();
-
-  //         setRequests(data);
-  //       } catch (ex) {
-  //         handleError(ex);
-  //       }
-
-  //       setRequestTypeProgress(false);
-  //     } else {
-  //       setRequests([]);
-  //     }
-  //   };
-
-  //   const getSelectedRequest = () => {
-  //     let request = null;
-
-  //     request = requests.find((r) => r.BaseID === record.BaseID);
-
-  //     if (!request) request = null;
-  //     else {
-  //       request.InvoiceTypeID = record.RequestTypeID;
-  //     }
-
-  //     return request;
-  //   };
-
-  //------
-
   const is_disable =
     record?.Items?.length === 0 || (validateForm({ record, schema }) && true);
 
@@ -366,17 +315,8 @@ const InvoiceModal = ({
     onCancel,
   };
 
-  //   ------
-
-  //   const handleChangeSupplier = async (value) => {
-  //     const rec = { ...record };
-  //     rec.SupplierID = value || 0;
-
-  //     setRecord(rec);
-  //   };
-
-  //   ------
-
+  //------
+  console.log(record.Items);
   return (
     <>
       <ModalWindow
@@ -384,7 +324,7 @@ const InvoiceModal = ({
         isEdit={isEdit}
         inProgress={progress}
         disabled={is_disable}
-        width={1050}
+        width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
       >
@@ -403,7 +343,7 @@ const InvoiceModal = ({
                 />
               </Col>
             )}
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <InputItem
                 title={Words.invoice_no}
                 fieldName="InvoiceNo"
@@ -412,19 +352,7 @@ const InvoiceModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
-              <DropdownItem
-                title={Words.supplier}
-                dataSource={suppliers}
-                keyColumn="SupplierID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                disabled={record?.Items?.length > 0}
-                // onChange={handleChangeSupplier}
-                required
-              />
-            </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DateItem
                 horizontal
                 title={Words.invoice_date}
@@ -433,7 +361,18 @@ const InvoiceModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
+              <DropdownItem
+                title={Words.supplier}
+                dataSource={suppliers}
+                keyColumn="SupplierID"
+                valueColumn="Title"
+                formConfig={formConfig}
+                disabled={record?.Items?.length > 0}
+                required
+              />
+            </Col>
+            <Col xs={24} md={12} lg={8}>
               <DateItem
                 horizontal
                 title={Words.credit_date}
@@ -441,7 +380,7 @@ const InvoiceModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.transport_type}
                 dataSource={transportTypes}
@@ -450,7 +389,7 @@ const InvoiceModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.purchase_way}
                 dataSource={purchaseWays}
@@ -459,7 +398,7 @@ const InvoiceModal = ({
                 formConfig={formConfig}
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <DropdownItem
                 title={Words.payment_type}
                 dataSource={paymentTypes}
@@ -469,7 +408,7 @@ const InvoiceModal = ({
                 required
               />
             </Col>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={12} lg={8}>
               <NumericInputItem
                 horizontal
                 title={Words.pre_payment_amount}
@@ -508,7 +447,7 @@ const InvoiceModal = ({
                       <Col xs={24}>
                         <DetailsTable
                           records={record.Items}
-                          columns={getInvoiceItemsColumns(
+                          columns={getInvoiceItemColumns(
                             access,
                             status_id,
                             handleEditInvoiceItem,
@@ -526,10 +465,7 @@ const InvoiceModal = ({
             {status_id === 1 && (
               <Col xs={24}>
                 <Form.Item>
-                  {getNewInvoiceItemButton(
-                    record?.SupplierID === 0,
-                    handleNewItemClick
-                  )}
+                  {getNewButton(record?.SupplierID === 0, handleNewItemClick)}
                 </Form.Item>
               </Col>
             )}
@@ -541,8 +477,9 @@ const InvoiceModal = ({
         <InvoiceItemModal
           isOpen={showInvoiceItemModal}
           selectedObject={selectedInvoiceItem}
+          selectedItems={record?.Items}
           supplierID={record?.SupplierID}
-          invoiceItems={record?.Items}
+          setParams={handleGetItemParams}
           onOk={handleSaveInvoiceItem}
           onCancel={handleCloseInvoiceItemModal}
         />
