@@ -1171,6 +1171,20 @@ class Words extends Component {
 
   //---
 
+  static purchase_commands = "دستورهای خرید";
+  static purchase_command = "دستور خرید";
+  static purchase_command_date = "تاریخ دستور";
+  static ordering_date = "تاریخ سفارش گذاری";
+  static no_purchase_command_item = "اقلام دستور خرید ثبت نشده است";
+  static purchase_command_items = "اقلام دستور خرید";
+  static tolerance_percent = "تلورانس (درصد)";
+
+  static purchase_command_status_1 = "ثبت شده";
+  static purchase_command_status_2 = "تایید شده";
+  static purchase_command_status_3 = "رد شده";
+
+  //---
+
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",
