@@ -316,7 +316,7 @@ const InvoiceModal = ({
   };
 
   //------
-  console.log(record.Items);
+
   return (
     <>
       <ModalWindow
