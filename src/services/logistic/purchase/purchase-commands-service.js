@@ -51,21 +51,21 @@ export async function saveItem(record) {
   return data;
 }
 
-export async function rejectCommand(invoiceID) {
-  const { data } = await http.post(`${apiEndpoint}/reject/${invoiceID}`, {});
+export async function rejectCommand(commandID) {
+  const { data } = await http.post(`${apiEndpoint}/reject/${commandID}`, {});
 
   return data;
 }
 
-export async function approveCommand(invoiceID) {
-  const { data } = await http.post(`${apiEndpoint}/approve/${invoiceID}`, {});
+export async function approveCommand(commandID) {
+  const { data } = await http.post(`${apiEndpoint}/approve/${commandID}`, {});
 
   return data;
 }
 
-export async function undoApproveCommand(invoiceID) {
+export async function undoApproveCommand(commandID) {
   const { data } = await http.post(
-    `${apiEndpoint}/undo-approve/${invoiceID}`,
+    `${apiEndpoint}/undo-approve/${commandID}`,
     {}
   );
 
