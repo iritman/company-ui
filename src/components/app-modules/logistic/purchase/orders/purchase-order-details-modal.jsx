@@ -18,11 +18,11 @@ import { handleError } from "../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "../../../../common/modal-window";
 import service from "../../../../../services/logistic/purchase/purchase-commands-service";
-import { getCommandItemColumns } from "./purchase-command-modal-code";
+import { getOrderItemColumns } from "./purchase-order-modal-code";
 
 const { Text } = Typography;
 
-const PurchaseCommandDetailsModal = ({
+const PurchaseOrderDetailsModal = ({
   selectedObject,
   isOpen,
   onOk,
@@ -34,8 +34,13 @@ const PurchaseCommandDetailsModal = ({
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
 
   const {
-    CommandID,
-    CommandDate,
+    OrderID,
+    OrderDate,
+    // SupplierID,
+    SupplierTitle,
+    // BaseTypeID,
+    BaseTypeTitle,
+    BaseID,
     DetailsText,
     // StatusID,
     StatusTitle,
@@ -44,6 +49,7 @@ const PurchaseCommandDetailsModal = ({
     RegLastName,
     RegDate,
     RegTime,
+    Price,
     Items,
   } = selectedObject;
 
@@ -72,7 +78,7 @@ const PurchaseCommandDetailsModal = ({
           <>
             {hasUndoApproveAccess && (
               <Popconfirm
-                title={Words.questions.sure_to_undo_approve_command_request}
+                title={Words.questions.sure_to_undo_approve_order_request}
                 onConfirm={onUndoApprove}
                 okText={Words.yes}
                 cancelText={Words.no}
@@ -107,7 +113,7 @@ const PurchaseCommandDetailsModal = ({
         footer={getFooterButtons()}
         showIcon={false}
         onCancel={onOk}
-        width={1050}
+        width={1250}
       >
         <Row gutter={[10, 10]}>
           <Col xs={24}>
@@ -123,21 +129,33 @@ const PurchaseCommandDetailsModal = ({
             >
               <Descriptions.Item label={Words.id}>
                 <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(`${CommandID}`)}
+                  {utils.farsiNum(`${OrderID}`)}
                 </Text>
               </Descriptions.Item>
-              <Descriptions.Item label={Words.purchase_command_date}>
+              <Descriptions.Item label={Words.purchase_order_date}>
                 <Text style={{ color: valueColor }}>
-                  {utils.farsiNum(utils.slashDate(CommandDate))}
+                  {utils.farsiNum(utils.slashDate(OrderDate))}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.status}>
-                <Text
-                  style={{
-                    color: valueColor,
-                  }}
-                >
-                  {StatusTitle}
+                <Text style={{ color: valueColor }}>{StatusTitle}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.base_type}>
+                <Text style={{ color: valueColor }}>{BaseTypeTitle}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.base}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(BaseID)}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.supplier}>
+                <Text style={{ color: valueColor }}>
+                  {utils.farsiNum(SupplierTitle)}
+                </Text>
+              </Descriptions.Item>
+              <Descriptions.Item label={Words.price}>
+                <Text style={{ color: Colors.orange[6] }}>
+                  {utils.farsiNum(`${utils.moneyNumber(Price)} ${Words.ryal}`)}
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label={Words.reg_member}>
@@ -145,7 +163,7 @@ const PurchaseCommandDetailsModal = ({
                   style={{ color: valueColor }}
                 >{`${RegFirstName} ${RegLastName}`}</Text>
               </Descriptions.Item>
-              <Descriptions.Item label={Words.reg_date_time} span={2}>
+              <Descriptions.Item label={Words.reg_date_time}>
                 <Text style={{ color: valueColor }}>
                   {utils.farsiNum(
                     `${utils.slashDate(RegDate)} - ${utils.colonTime(RegTime)}`
@@ -153,7 +171,7 @@ const PurchaseCommandDetailsModal = ({
                 </Text>
               </Descriptions.Item>
               {DetailsText?.length > 0 && (
-                <Descriptions.Item label={Words.descriptions} span={2}>
+                <Descriptions.Item label={Words.descriptions} span={3}>
                   <Text
                     style={{
                       color: Colors.purple[7],
@@ -170,7 +188,7 @@ const PurchaseCommandDetailsModal = ({
           <Col xs={24}>
             <Divider orientation="right">
               <Text style={{ fontSize: 14, color: Colors.green[6] }}>
-                {Words.invoice_items}
+                {Words.purchase_order_items}
               </Text>
             </Divider>
           </Col>
@@ -178,10 +196,7 @@ const PurchaseCommandDetailsModal = ({
           <Col xs={24}>
             <Row gutter={[0, 15]}>
               <Col xs={24}>
-                <DetailsTable
-                  records={Items}
-                  columns={getCommandItemColumns()}
-                />
+                <DetailsTable records={Items} columns={getOrderItemColumns()} />
               </Col>
             </Row>
           </Col>
@@ -191,4 +206,4 @@ const PurchaseCommandDetailsModal = ({
   );
 };
 
-export default PurchaseCommandDetailsModal;
+export default PurchaseOrderDetailsModal;

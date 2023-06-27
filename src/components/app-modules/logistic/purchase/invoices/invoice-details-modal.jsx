@@ -83,7 +83,7 @@ const InvoiceDetailsModal = ({
           <>
             {hasUndoApproveAccess && (
               <Popconfirm
-                title={Words.questions.sure_to_undo_approve_inquiry_request}
+                title={Words.questions.sure_to_undo_approve_invoice_request}
                 onConfirm={onUndoApprove}
                 okText={Words.yes}
                 cancelText={Words.no}
