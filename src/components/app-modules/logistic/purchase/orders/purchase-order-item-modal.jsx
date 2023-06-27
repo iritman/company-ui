@@ -307,6 +307,9 @@ const PurchaseOrderItemModal = ({
 
             break;
           }
+
+          default:
+            break;
         }
 
         initModal(formRef, selectedObject, setRecord);
