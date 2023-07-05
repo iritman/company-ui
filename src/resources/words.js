@@ -1197,6 +1197,25 @@ class Words extends Component {
 
   //---
 
+  static purchase_deliveries = "تحویل";
+  static purchase_delivery = "تحویل";
+  static purchase_delivery_date = "تاریخ تحویل";
+  static no_purchase_delivery_item = "اقلام تحویل ثبت نشده است";
+  static purchase_delivery_items = "اقلام تحویل";
+  static transferee_type = "نوع تحویل گیرنده";
+  static transferee = "تحویل گیرنده";
+  static delivery_person = "تحویل دهنده";
+  static item_count = "مقدار";
+  static acceptable_decrease_amount = "افت قابل پذیرش";
+  static extra_amount = "اضافات";
+  static order_no = "شماره سفارش";
+
+  static purchase_delivery_status_1 = "ثبت شده";
+  static purchase_delivery_status_2 = "تایید شده";
+  static purchase_delivery_status_3 = "رد شده";
+
+  //---
+
   static messages = {
     operation_failed: "امکان انجام عملیات وجود ندارد",
     success_submit: "ثبت اطلاعات با موفقیت انجام شد",

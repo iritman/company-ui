@@ -62,7 +62,7 @@ const mapper = (pageID) => {
       break;
 
     case 312:
-      link = "purchase-delvieries";
+      link = "purchase-deliveries";
       icon = <DeliveryIcon {...iconProps} />;
       backColor = Colors.magenta[4];
       break;
