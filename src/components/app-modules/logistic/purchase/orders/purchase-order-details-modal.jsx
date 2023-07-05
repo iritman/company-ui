@@ -17,7 +17,7 @@ import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
 import { handleError } from "../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "../../../../common/modal-window";
-import service from "../../../../../services/logistic/purchase/purchase-commands-service";
+import service from "../../../../../services/logistic/purchase/purchase-orders-service";
 import { getOrderItemColumns } from "./purchase-order-modal-code";
 
 const { Text } = Typography;

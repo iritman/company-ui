@@ -17,7 +17,7 @@ const { Text } = Typography;
 
 export const schema = {
   OrderID: Joi.number().required().label(Words.id),
-  OrderDate: Joi.string().required().label(Words.purchase_command_date),
+  OrderDate: Joi.string().required().label(Words.purchase_order_date),
   BaseTypeID: Joi.number().required().min(1).label(Words.base_type),
   BaseID: Joi.number().required().label(Words.base_id),
   SupplierID: Joi.number().required().label(Words.supplier),
