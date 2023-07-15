@@ -78,14 +78,6 @@ const baseColumns = [
     ),
   },
   {
-    title: Words.status,
-    width: 150,
-    align: "center",
-    dataIndex: "StatusTitle",
-    sorter: getSorter("StatusTitle"),
-    render: (StatusTitle) => <Text>{StatusTitle}</Text>,
-  },
-  {
     title: Words.front_side_type,
     width: 150,
     align: "center",
@@ -112,6 +104,16 @@ const baseColumns = [
     dataIndex: "RequestTypeTitle",
     sorter: getSorter("RequestTypeTitle"),
     render: (RequestTypeTitle) => <Text>{RequestTypeTitle}</Text>,
+  },
+  {
+    title: Words.status,
+    width: 150,
+    align: "center",
+    dataIndex: "StatusTitle",
+    sorter: getSorter("StatusTitle"),
+    render: (StatusTitle) => (
+      <Text style={{ color: Colors.blue[6] }}>{StatusTitle}</Text>
+    ),
   },
 ];
 

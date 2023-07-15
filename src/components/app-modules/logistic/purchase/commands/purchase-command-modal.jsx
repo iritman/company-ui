@@ -135,8 +135,11 @@ const PurchaseCommandModal = ({
     rec.StatusID = 2;
     setRecord(rec);
 
+    const updated_config = { ...formConfig };
+    updated_config.record = rec;
+
     saveModalChanges(
-      formConfig,
+      updated_config,
       selectedObject,
       setProgress,
       onOk,
