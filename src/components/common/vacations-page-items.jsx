@@ -143,7 +143,7 @@ export const baseColumns = [
     sorter: getSorter("StartTime"),
     render: (StartTime) => (
       <>
-        {StartTime.Length > 0 && (
+        {StartTime.length > 0 && (
           <Text style={{ color: Colors.magenta[6] }}>
             {`${utils.farsiNum(utils.colonTime(StartTime))}`}
           </Text>
@@ -173,7 +173,7 @@ export const baseColumns = [
     sorter: getSorter("FinishTime"),
     render: (FinishTime) => (
       <>
-        {FinishTime.Length > 0 && (
+        {FinishTime.length > 0 && (
           <Text style={{ color: Colors.magenta[6] }}>
             {`${utils.farsiNum(utils.colonTime(FinishTime))}`}
           </Text>
