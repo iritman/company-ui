@@ -209,8 +209,8 @@ const MissionDetails = ({ mission, securityPersonView }) => {
   ];
 
   if (!securityPersonView) {
-    Actions.forEach((action) => {
-      steps.push({
+    Actions?.forEach((action) => {
+      steps?.push({
         stepID: action.StepID,
         title: action.SysRoleTitle,
         status: action.MemberID > 0 ? "finish" : "wait",
@@ -286,7 +286,7 @@ const MissionDetails = ({ mission, securityPersonView }) => {
                   </Descriptions.Item>
                 )}
                 {action.StepID === 3 &&
-                  OfficialTransmissionDetailsText.length > 0 && (
+                  OfficialTransmissionDetailsText?.length > 0 && (
                     <Descriptions.Item
                       label={Words.transmission_descriptions}
                       span={2}

@@ -87,7 +87,7 @@ const MissionRequestReportsModal = ({ isOpen, mission, onCancel }) => {
     >
       <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
         <Col xs={24}>
-          {mission.ReportInfo.length > 0 ? (
+          {mission?.ReportInfo?.length > 0 ? (
             <Collapse accordion>
               {mission.ReportInfo.map((report) => (
                 <Panel

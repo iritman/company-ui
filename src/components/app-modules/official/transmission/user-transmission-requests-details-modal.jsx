@@ -180,7 +180,7 @@ const UserTransmissionRequestsDetailsModal = ({
                       </Descriptions.Item>
                     </>
                   )}
-                  {OfficialTransmissionDetailsText.length > 0 && (
+                  {OfficialTransmissionDetailsText?.length > 0 && (
                     <Descriptions.Item
                       label={Words.transmission_descriptions}
                       span={2}
