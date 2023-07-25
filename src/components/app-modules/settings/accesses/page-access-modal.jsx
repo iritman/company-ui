@@ -502,6 +502,8 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
         break;
       }
       //---
+      default:
+        break;
     }
 
     return result;
