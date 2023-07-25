@@ -380,6 +380,133 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
     }
   };
 
+  const getTimexPageTitle = (page) => {
+    let result = "";
+
+    switch (page.PageName) {
+      case "user-MyRegedCards": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      case "user-MyWorkShifts": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      case "user-MyVacations": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      case "user-MyMissions": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      case "user-VacationReplaceWorkRequests": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      case "user-MissionReplaceWorkRequests": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      case "user-MyWorkReport": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
+      //---
+      case "user-SecurityGuardRegedCards": {
+        result = `${page.PageTitle} - [ ${Words.security_cartable} ]`;
+        break;
+      }
+      case "user-ApprovedVacations": {
+        result = `${page.PageTitle} - [ ${Words.security_cartable} ]`;
+        break;
+      }
+      case "user-ApprovedMissions": {
+        result = `${page.PageTitle} - [ ${Words.security_cartable} ]`;
+        break;
+      }
+      //---
+      case "user-MembersRegedCards": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersWorkShifts": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersNewVacationsCheckManager": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersVacations": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersNewMissionsCheckManager": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersMissions": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersNewMissionReports": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersExtraWorkRequests": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      case "user-MembersWorkReport": {
+        result = `${page.PageTitle} - [ ${Words.department_cartable} ]`;
+        break;
+      }
+      //---
+
+      case "user-OfficialCheckRegedCards": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-OfficialCheckExtraWorkRequests": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-OfficialCheckNoAlternativeEmployees": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-MembersNewVacationsCheckOfficial": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-OfficialCheckMembersVacations": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-OfficialCheckVacationCardexes": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-MembersNewMissionsCheckOfficial": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      case "user-OfficialCheckMembersMissions": {
+        result = `${page.PageTitle} - [ ${Words.official_cartable} ]`;
+        break;
+      }
+      //---
+      case "user-ReportMyInOutCards": {
+        result = `${page.PageTitle} - [ ${Words.my_reports_cartable} ]`;
+        break;
+      }
+      //---
+    }
+
+    return result;
+  };
+
   return (
     <Modal
       open={isOpen}
@@ -447,7 +574,10 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
                                 <Row key={page.PageID}>
                                   <Col xs={24}>
                                     <Text style={{ color: Colors.red[6] }}>
-                                      {page.PageTitle}
+                                      {/* -- Timex -- */}
+                                      {module.ModuleID === 6
+                                        ? getTimexPageTitle(page)
+                                        : page.PageTitle}
                                     </Text>
                                   </Col>
                                   <Col xs={24}>
