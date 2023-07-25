@@ -99,7 +99,7 @@ const PurchaseDeliveryDetailsModal = ({
       </Space>
     );
   };
-  console.log(selectedObject);
+
   return (
     <>
       <ModalWindow
