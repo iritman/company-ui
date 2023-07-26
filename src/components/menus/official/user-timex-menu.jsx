@@ -63,6 +63,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 71:
+      link = "approved-extra-works";
+      icon = (
+        <ExtraWorkIcon style={{ color: Colors.purple[6] }} size={iconSize} />
+      );
+      break;
+
     case 40:
       link = "my-reged-cards";
       icon = (
@@ -278,6 +285,7 @@ const tabs = [
       { pageName: "user-SecurityGuardRegedCards" },
       { pageName: "user-ApprovedVacations" },
       { pageName: "user-ApprovedMissions" },
+      { pageName: "user-ApprovedExtraWorks" },
     ],
   },
   {

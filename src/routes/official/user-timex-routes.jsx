@@ -7,6 +7,7 @@ import UserTimexDashboard from "../../components/app-modules/official/timex/user
 import UserSecurityGuardRegedCardsPage from "../../components/app-modules/official/timex/user-security-guard-reged-cards-page";
 import UserApprovedVacationsPage from "../../components/app-modules/official/timex/user-approved-vacations-page";
 import UserApprovedMissionsPage from "../../components/app-modules/official/timex/user-approved-missions-page";
+import UserApprovedExtraWorksPage from "../../components/app-modules/official/timex/user-approved-extra-works-page";
 //---
 import UserMyRegedCardsPage from "../../components/app-modules/official/timex/user-my-reged-cards-page";
 import UserMyWorkShiftsPage from "../../components/app-modules/official/timex/user-my-work-shifts-page";
@@ -65,6 +66,13 @@ const UserOrgRoutes = ({ path }) => {
         exact
         render={() => (
           <UserApprovedMissionsPage pageName="user-ApprovedMissions" />
+        )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/approved-extra-works`}
+        exact
+        render={() => (
+          <UserApprovedExtraWorksPage pageName="user-ApprovedExtraWorks" />
         )}
       />
       {/* ------------ */}
