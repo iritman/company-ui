@@ -26,7 +26,7 @@ const schema = {
   RequestID: Joi.number().required(),
   IsAccepted: Joi.boolean(),
   ResponseDetailsText: Joi.string()
-    .max(512)
+    .max(1024)
     .required()
     .label(Words.descriptions),
 };
@@ -196,7 +196,7 @@ const UserOfficialCheckExtraWorkRequestModal = ({
               formConfig={formConfig}
               multiline
               rows={7}
-              maxLength={512}
+              maxLength={1024}
               showCount
               required
               autoFocus
