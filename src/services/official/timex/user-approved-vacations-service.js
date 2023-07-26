@@ -3,6 +3,12 @@ import { apiUrl } from "../../../config.json";
 
 const apiEndpoint = apiUrl + "/official/timex/user-approved-vacations";
 
+async function getCurrentDate() {
+  const { data } = await http.get(`${apiEndpoint}/current-date`);
+
+  return data;
+}
+
 async function getParams() {
   const { data } = await http.get(`${apiEndpoint}/params`);
 
@@ -16,6 +22,7 @@ async function searchData(filter) {
 }
 
 const service = {
+  getCurrentDate,
   getParams,
   searchData,
 };

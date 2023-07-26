@@ -7,6 +7,7 @@ import {
   checkAccess,
   getColumns,
   GetSimplaDataPageMethods,
+  handleError,
 } from "../../../../tools/form-manager";
 import SimpleDataTable from "../../../common/simple-data-table";
 import SimpleDataPageHeader from "../../../common/simple-data-page-header";
@@ -44,6 +45,23 @@ const UserApprovedVacations = ({ pageName }) => {
     handleResetContext();
 
     await checkAccess(setAccess, pageName);
+
+    try {
+      const data = await service.getCurrentDate();
+
+      const default_filter = {
+        VacationTypeID: 0,
+        MemberID: 0,
+        FromDate: data.CurrentDate,
+        ToDate: data.CurrentDate,
+      };
+
+      setFilter(default_filter);
+
+      await handleAdvancedSearch(default_filter);
+    } catch (ex) {
+      handleError(ex);
+    }
   });
 
   const { handleResetContext, handleAdvancedSearch } = GetSimplaDataPageMethods(
