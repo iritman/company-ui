@@ -15,6 +15,7 @@ import SearchModal from "./user-official-check-members-missions-search-modal";
 import DetailsModal from "./user-members-missions-details-modal";
 import { getSheets, baseColumns } from "../../../common/missions-page-items";
 import DetailsButton from "../../../common/details-button";
+import WorkTimeStatistics from "../../../common/work-time-statistics";
 
 const handleCheckEditable = (row) => false;
 const handleCheckDeletable = (row) => false;
@@ -120,12 +121,12 @@ const UserOfficialCheckMembersMissions = ({ pageName }) => {
             onGetAll={null}
             onAdd={null}
           />
-
           <Col xs={24}>
             {searched && (
               <SimpleDataTable records={records} columns={columns} />
             )}
           </Col>
+          <WorkTimeStatistics type="mission" data={records} />
         </Row>
       </Spin>
 

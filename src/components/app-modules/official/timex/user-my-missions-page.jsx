@@ -16,6 +16,7 @@ import SearchModal from "./user-my-mission-search-modal";
 import DetailsModal from "./user-my-mission-details-modal";
 import { getSheets, baseColumns } from "../../../common/missions-page-items";
 import DetailsButton from "../../../common/details-button";
+import WorkTimeStatistics from "../../../common/work-time-statistics";
 
 const handleCheckEditable = (row) => row.Editable;
 const handleCheckDeletable = (row) => row.Deletable;
@@ -144,6 +145,7 @@ const UserMyMissionsPage = ({ pageName }) => {
               <SimpleDataTable records={records} columns={columns} />
             )}
           </Col>
+          <WorkTimeStatistics type="mission" data={records} />
         </Row>
       </Spin>
 

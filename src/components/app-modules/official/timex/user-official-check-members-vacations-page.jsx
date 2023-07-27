@@ -15,6 +15,7 @@ import SearchModal from "./user-official-check-members-vacations-search-modal";
 import DetailsModal from "../../../common/vacation-details-modal";
 import { getSheets, baseColumns } from "../../../common/vacations-page-items";
 import DetailsButton from "../../../common/details-button";
+import WorkTimeStatistics from "../../../common/work-time-statistics";
 
 const handleCheckEditable = (row) => false;
 const handleCheckDeletable = (row) => false;
@@ -96,12 +97,12 @@ const UserOfficialCheckMembersVacations = ({ pageName }) => {
             onGetAll={null}
             onAdd={null}
           />
-
           <Col xs={24}>
             {searched && (
               <SimpleDataTable records={records} columns={columns} />
             )}
           </Col>
+          <WorkTimeStatistics type="vacation" data={records} />
         </Row>
       </Spin>
 

@@ -102,6 +102,7 @@ const UserMembersVacationsPage = ({ pageName }) => {
               <SimpleDataTable records={records} columns={columns} />
             )}
           </Col>
+          <WorkTimeStatistics type="vacation" data={records} />
         </Row>
       </Spin>
 
