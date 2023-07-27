@@ -968,6 +968,15 @@ class Words extends Component {
   static mission_to_date = "ماموریت تا تاریخ";
   static request_type = "نوع درخواست";
 
+  static work_time = "کارکرد";
+  static work_time_daily = "کارکرد روزانه";
+  static work_time_timely = "کارکرد ساعتی";
+  static work_time_total = "مجموع کارکرد";
+  static and = "و";
+  static vacation_daily = "مرخصی روزانه";
+  static vacation_timely = "مرخصی ساعتی";
+  static vacation_total = "مجموع مرخصی";
+
   static edu_levels = "مقاطع تحصیلی";
   static edu_level = "مقطع تحصیلی";
   static edu_fields = "رشته های تحصیلی";

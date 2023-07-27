@@ -15,6 +15,7 @@ import SearchModal from "./user-members-missions-search-modal";
 import DetailsModal from "./user-members-missions-details-modal";
 import { getSheets, baseColumns } from "../../../common/missions-page-items";
 import DetailsButton from "../../../common/details-button";
+import WorkTimeStatistics from "../../../common/work-time-statistics";
 
 const handleCheckEditable = (row) => false;
 const handleCheckDeletable = (row) => false;
@@ -107,6 +108,8 @@ const UserMembersMissionsPage = ({ pageName }) => {
     message.success(Words.messages.note_deleted);
   };
 
+  //------
+
   return (
     <>
       <Spin spinning={progress}>
@@ -126,6 +129,7 @@ const UserMembersMissionsPage = ({ pageName }) => {
               <SimpleDataTable records={records} columns={columns} />
             )}
           </Col>
+          <WorkTimeStatistics type="mission" data={records} />
         </Row>
       </Spin>
 
