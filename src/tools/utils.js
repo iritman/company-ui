@@ -625,12 +625,12 @@ export function getWorkTimeInfo(data) {
 
   data.forEach((r) => {
     if (r.StartTime.length === 0 && r.FinishTime.length === 0)
-      daily += r.WorkTimeInMin / 1440; // 1 day = 1,440 min
+      daily += parseInt(r.WorkTimeInMin / 1440); // 1 day = 1,440 min
 
     total_mins += r.WorkTimeInMin;
   });
 
-  days = parseInt(total_mins / 1440); // 1 day = 1,440 min
+  days = daily;
   let remain_mins = parseInt(total_mins % 1440);
   hours = parseInt(remain_mins / 60);
   minutes = parseInt(remain_mins % 60);
