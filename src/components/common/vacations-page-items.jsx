@@ -87,6 +87,10 @@ export function getSheets(records, title) {
           value: (record) => record.DetailsText,
         },
         {
+          label: Words.duration,
+          value: (record) => utils.farsiNum(record.Duration),
+        },
+        {
           label: Words.status,
           value: (record) => getVacationStatusTitle(record.FinalStatusID),
         },
@@ -179,6 +183,18 @@ export const baseColumns = [
           </Text>
         )}
       </>
+    ),
+  },
+  {
+    title: Words.duration,
+    width: 150,
+    align: "center",
+    dataIndex: "Duration",
+    sorter: getSorter("Duration"),
+    render: (Duration) => (
+      <Text style={{ color: Colors.orange[6] }}>
+        {utils.farsiNum(Duration)}
+      </Text>
     ),
   },
   {
