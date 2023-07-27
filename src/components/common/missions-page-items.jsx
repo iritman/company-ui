@@ -99,6 +99,10 @@ export function getSheets(records, title) {
           value: (record) => utils.colonTime(record.FinishTime),
         },
         {
+          label: Words.work_time,
+          value: (record) => utils.farsiNum(record.WorkTime),
+        },
+        {
           label: Words.descriptions,
           value: (record) => record.DetailsText,
         },
@@ -203,6 +207,18 @@ export const baseColumns = [
           </Space>
         )}
       </>
+    ),
+  },
+  {
+    title: Words.work_time,
+    width: 150,
+    align: "center",
+    dataIndex: "WorkTime",
+    sorter: getSorter("WorkTime"),
+    render: (WorkTime) => (
+      <Text style={{ color: Colors.orange[6] }}>
+        {utils.farsiNum(WorkTime)}
+      </Text>
     ),
   },
   {
