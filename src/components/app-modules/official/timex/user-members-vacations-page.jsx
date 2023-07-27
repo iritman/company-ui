@@ -15,6 +15,7 @@ import SearchModal from "./user-members-vacations-search-modal";
 import DetailsModal from "../../../common/vacation-details-modal";
 import { getSheets, baseColumns } from "../../../common/vacations-page-items";
 import DetailsButton from "../../../common/details-button";
+import WorkTimeStatistics from "../../../common/work-time-statistics";
 
 const handleCheckEditable = (row) => false;
 const handleCheckDeletable = (row) => false;
