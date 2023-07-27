@@ -615,6 +615,34 @@ export function workTimeToText(obj) {
   return result;
 }
 
+export function getWorkTimeInfo(data) {
+  let daily = 0;
+
+  let total_mins = 0;
+  let days = 0;
+  let hours = 0;
+  let minutes = 0;
+
+  data.forEach((r) => {
+    if (r.StartTime.length === 0 && r.FinishTime.length === 0)
+      daily += r.WorkTimeInMin / 1440; // 1 day = 1,440 min
+
+    total_mins += r.WorkTimeInMin;
+  });
+
+  days = parseInt(total_mins / 1440); // 1 day = 1,440 min
+  let remain_mins = parseInt(total_mins % 1440);
+  hours = parseInt(remain_mins / 60);
+  minutes = parseInt(remain_mins % 60);
+
+  return {
+    days,
+    remain_mins,
+    hours,
+    minutes,
+  };
+}
+
 export const VALID_REGEX =
   /^[آ-یa-zA-Z0-9،,:<>?-_=+()*&^%$#@!~{}؟۰-۹.\-()\s]+$/;
 
@@ -665,6 +693,7 @@ const methods = {
   getDescription,
   setDefaultCurrency,
   workTimeToText,
+  getWorkTimeInfo,
 };
 
 export default methods;
