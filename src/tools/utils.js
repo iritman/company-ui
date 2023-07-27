@@ -3,6 +3,7 @@ import persianJS from "persianjs";
 import fileExtension from "file-extension";
 import dayjs from "dayjs";
 import passGenerator from "generate-password";
+import Words from "../resources/words";
 
 export function checkRegex(
   isFarsiChar,
@@ -592,6 +593,28 @@ export function setDefaultCurrency(
   load_fields_value(form_ref, rec);
 }
 
+export function workTimeToText(obj) {
+  const {
+    days,
+    // remain_mins,
+    hours,
+    minutes,
+  } = obj;
+
+  let part_1 = days > 0 ? `${days} ${Words.day}` : "";
+  let part_2 = hours > 0 ? `${hours} ${Words.hour}` : "";
+  let part_3 = minutes > 0 ? `${minutes} ${Words.minute}` : "";
+
+  let result = [];
+  if (part_1.length > 0) result = [...result, part_1];
+  if (part_2.length > 0) result = [...result, part_2];
+  if (part_3.length > 0) result = [...result, part_3];
+
+  result = result.join(` ${Words.and} `);
+
+  return result;
+}
+
 export const VALID_REGEX =
   /^[آ-یa-zA-Z0-9،,:<>?-_=+()*&^%$#@!~{}؟۰-۹.\-()\s]+$/;
 
@@ -641,6 +664,7 @@ const methods = {
   hasSelectedFilter,
   getDescription,
   setDefaultCurrency,
+  workTimeToText,
 };
 
 export default methods;
