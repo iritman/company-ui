@@ -15,6 +15,7 @@ import UserMyVacationsPage from "../../components/app-modules/official/timex/use
 import UserMyMissionsPage from "../../components/app-modules/official/timex/user-my-missions-page";
 import UserVacationReplaceWorkRequestsPage from "../../components/app-modules/official/timex/user-vacation-replace-work-requests-page";
 import UserMissionReplaceWorkRequestsPage from "../../components/app-modules/official/timex/user-mission-replace-work-requests-page";
+import UserMyCardsReportPage from "../../components/app-modules/official/timex/reports/user-my-cards-report-page";
 //---
 import UserMembersRegedCardsPage from "../../components/app-modules/official/timex/user-members-reged-cards-page";
 import UserMembersWorkShiftsPage from "../../components/app-modules/official/timex/user-members-work-shifts-page";
@@ -109,6 +110,11 @@ const UserOrgRoutes = ({ path }) => {
         render={() => (
           <UserMissionReplaceWorkRequestsPage pageName="user-MissionReplaceWorkRequests" />
         )}
+      />
+      <ProtectedRoute
+        path={`${path}/${modulePath}/my-cards-report`}
+        exact
+        render={() => <UserMyCardsReportPage pageName="user-MyCardsReport" />}
       />
       {/* --- */}
       <ProtectedRoute

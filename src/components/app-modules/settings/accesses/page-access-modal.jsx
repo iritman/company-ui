@@ -412,6 +412,10 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
         result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
         break;
       }
+      case "user-MyCardsWorkReport": {
+        result = `${page.PageTitle} - [ ${Words.my_cartable} ]`;
+        break;
+      }
       //---
       case "user-SecurityGuardRegedCards": {
         result = `${page.PageTitle} - [ ${Words.security_cartable} ]`;

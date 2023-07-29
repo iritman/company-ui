@@ -940,6 +940,7 @@ class Words extends Component {
   static my_work_shifts = "شیفت های کاری من";
   static my_missions = "ماموریت های من";
   static my_vacations = "مرخصی های من";
+  static my_cards_report = "گزارش تردد من";
   static vacation_replace_work_requests = "جانشینی های مرخصی";
   static mission_replace_work_requests = "جانشینی های ماموریت";
   static my_work_report = "گزارش کارکرد من";
@@ -967,6 +968,12 @@ class Words extends Component {
   static mission_from_date = "ماموریت از تاریخ";
   static mission_to_date = "ماموریت تا تاریخ";
   static request_type = "نوع درخواست";
+
+  static reg_id = "شناسه ثبت";
+  static card_type = "نوع تردد";
+  static in = "ورود";
+  static out = "خروج";
+  static total_work_time = "مجموع کارکرد";
 
   static work_time = "کارکرد";
   static work_time_daily = "کارکرد روزانه";

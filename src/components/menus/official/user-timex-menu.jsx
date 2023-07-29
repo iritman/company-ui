@@ -125,6 +125,13 @@ const mapper = (pageID) => {
       );
       break;
 
+    case 170:
+      link = "my-cards-report";
+      icon = (
+        <WorkReportIcon style={{ color: Colors.green[6] }} size={iconSize} />
+      );
+      break;
+
     //---------
 
     case 46:
@@ -270,6 +277,7 @@ const tabs = [
       { pageName: "user-VacationReplaceWorkRequests" },
       { pageName: "user-MissionReplaceWorkRequests" },
       { pageName: "user-MyWorkReport" },
+      { pageName: "user-MyCardsReport" },
     ],
   },
   {
