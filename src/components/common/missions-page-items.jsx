@@ -158,7 +158,7 @@ export const baseColumns = [
     sorter: getSorter("StartDate"),
     render: (record) => (
       <>
-        {record.StartTime.length === 0 ? (
+        {record.StartTime?.length === 0 ? (
           <Text style={{ color: Colors.green[6] }}>
             {`${utils.weekDayNameFromText(record.StartDate)} - ${utils.farsiNum(
               utils.slashDate(record.StartDate)
@@ -187,7 +187,7 @@ export const baseColumns = [
     sorter: getSorter("FinishDate"),
     render: (record) => (
       <>
-        {record.FinishTime.length === 0 ? (
+        {record.FinishTime?.length === 0 ? (
           <Text style={{ color: Colors.green[6] }}>
             {`${utils.weekDayNameFromText(
               record.FinishDate
