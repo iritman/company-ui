@@ -21,7 +21,7 @@ import {
 
 const schema = {
   CityID: Joi.number().required(),
-  ProvinceID: Joi.number().required(),
+  ProvinceID: Joi.number().min(1).required(),
   CityTitle: Joi.string()
     .min(2)
     .max(50)
@@ -110,6 +110,7 @@ const CityModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
               formConfig={formConfig}
               disabled={isEdit}
               autoFocus
+              required
             />
           </Col>
           <Col xs={24}>
