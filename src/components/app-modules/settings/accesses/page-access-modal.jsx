@@ -501,6 +501,10 @@ const PageAccessModal = ({ employee, isOpen, onOk }) => {
         break;
       }
       //---
+      case "user-MyCardsReport": {
+        result = `${page.PageTitle} - [ ${Words.my_cards_report} ]`;
+        break;
+      }
       case "user-ReportMyInOutCards": {
         result = `${page.PageTitle} - [ ${Words.my_reports_cartable} ]`;
         break;
