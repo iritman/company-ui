@@ -33,7 +33,7 @@ const schema = {
   //   .regex(utils.VALID_REGEX)
   //   .label(Words.title),
   FunderMemberID: Joi.number().min(1).required().label(Words.funder_member),
-  EstablishDate: Joi.string().required().label(Words.establish_date),
+  EstablishDate: Joi.string().allow("").label(Words.establish_date),
   CurrencyID: Joi.number().min(1).required().label(Words.currency),
   InitialInventory: Joi.number().required().label(Words.initial_inventory),
   MaxInventory: Joi.number().required().label(Words.max_inventory),
@@ -165,7 +165,7 @@ const FundModal = ({ isOpen, selectedObject, onOk, onCancel }) => {
           <Col xs={24} md={12}>
             <DateItem
               horizontal
-              required
+              // required
               title={Words.establish_date}
               fieldName="EstablishDate"
               formConfig={formConfig}
