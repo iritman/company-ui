@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   FaDatabase as StoreIcon,
+  FaWarehouse as StoreOperationsIcon,
   FaMoneyCheckAlt as TreasuryIcon,
 } from "react-icons/fa";
 import {
@@ -30,6 +31,16 @@ const mapper = (moduleID) => {
     case 14:
       link = "store-mgr";
       icon = <StoreIcon style={{ color: Colors.blue[6] }} size={iconSize} />;
+      break;
+
+    case 16:
+      link = "store-opr";
+      icon = (
+        <StoreOperationsIcon
+          style={{ color: Colors.orange[6] }}
+          size={iconSize}
+        />
+      );
       break;
 
     case 17:

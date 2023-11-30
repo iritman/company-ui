@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import DashboardTile from "../../common/dashboard-tile";
 import {
   FaDatabase as StoreIcon,
+  FaWarehouse as StoreOperationsIcon,
   FaMoneyCheckAlt as TreasuryIcon,
 } from "react-icons/fa";
 import {
@@ -36,6 +37,12 @@ const mapper = (moduleID) => {
       link = "store-mgr";
       icon = <StoreIcon {...iconProps} />;
       backColor = Colors.blue[3];
+      break;
+
+    case 16:
+      link = "store-opr";
+      icon = <StoreOperationsIcon {...iconProps} />;
+      backColor = Colors.orange[3];
       break;
 
     case 17:

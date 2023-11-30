@@ -28,6 +28,7 @@ const BreadcrumbMap = ({ location }) => {
     //---
     "/home/financial": Words.financial,
     "/home/financial/store-mgr": Words.store_basic_info,
+    "/home/financial/store-opr": Words.store_operations,
     "/home/financial/public-settings": Words.public_settings,
     "/home/financial/ledger": Words.ledger,
     "/home/financial/treasury/basic": Words.treasury_basic_info,

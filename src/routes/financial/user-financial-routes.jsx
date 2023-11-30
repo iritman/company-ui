@@ -4,6 +4,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 import UserFinancialDashboard from "../../components/app-modules/financial/user-financial-dashboard";
 import UserPublicSettingsRoutes from "./user-public-settings-routes";
 import UserStoreManagementRoutes from "./user-store-management-routes";
+import UserStoreOperationsRoutes from "./user-store-operations-routes";
 import UserAccountsRoutes from "./user-accounts-routes";
 import UserLedgerRoutes from "./user-ledger-routes";
 import UserTreasuryBasicInfoRoutes from "./user-treasury-basic-info-routes";
@@ -29,6 +30,10 @@ const UserFinancialRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/financial/store-mgr`}
         render={() => <UserStoreManagementRoutes path={path} />}
+      />
+      <ProtectedRoute
+        path={`${path}/financial/store-opr`}
+        render={() => <UserStoreOperationsRoutes path={path} />}
       />
       <ProtectedRoute
         path={`${path}/financial/accounts`}

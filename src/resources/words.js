@@ -1042,6 +1042,8 @@ class Words extends Component {
   static credit_sources = "منابع تامین اعتبار";
   static credit_source = "منبع تامین اعتبار";
   //----
+  static store_operations = "عملیات انبار";
+  //----
   static provinces = "استان ها";
   static province = "استان";
   static cities = "شهرها";
