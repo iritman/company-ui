@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import {
-  AiOutlineDeploymentUnit as NatureIcon,
-  AiOutlineControl as InventoryControlAgentIcon,
-} from "react-icons/ai";
+// import {
+//   AiOutlineDeploymentUnit as NatureIcon,
+//   AiOutlineControl as InventoryControlAgentIcon,
+// } from "react-icons/ai";
 import {
   TbBuildingBank as StoresIcon,
-  TbBrandCodesandbox as MeasureTypeIcon,
-  TbRuler2 as MeasureUnitIcon,
-  TbReportMoney as PricingTypeIcon,
-  TbShape2 as BachPatternIcon,
+  // TbBrandCodesandbox as MeasureTypeIcon,
+  // TbRuler2 as MeasureUnitIcon,
+  // TbReportMoney as PricingTypeIcon,
+  // TbShape2 as BachPatternIcon,
 } from "react-icons/tb";
-import { CgListTree as CategoryIcon } from "react-icons/cg";
-import { FaBarcode as BachIcon } from "react-icons/fa";
-import {
-  MdOutlineFeaturedPlayList as FeatureIcon,
-  MdDonutSmall as ProductIcon,
-  MdOutlineStorage as StorageIcon,
-  MdOutlineFeaturedPlayList as FeaturesIcon,
-} from "react-icons/md";
+// import { CgListTree as CategoryIcon } from "react-icons/cg";
+// import { FaBarcode as BachIcon } from "react-icons/fa";
+// import {
+//   MdOutlineFeaturedPlayList as FeatureIcon,
+//   MdDonutSmall as ProductIcon,
+//   MdOutlineStorage as StorageIcon,
+//   MdOutlineFeaturedPlayList as FeaturesIcon,
+// } from "react-icons/md";
 import { useMount } from "react-use";
 import modulesService from "../../../services/app/modules-service";
 import Colors from "../../../resources/colors";

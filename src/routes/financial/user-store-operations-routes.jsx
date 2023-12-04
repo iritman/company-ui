@@ -19,7 +19,7 @@ const UserStoreOperationsRoutes = ({ path }) => {
       <ProtectedRoute
         path={`${path}/${modulePath}/product-requests`}
         exact
-        render={() => <ProductRequestsPage pageName="product-requests" />}
+        render={() => <ProductRequestsPage pageName="ProductRequests" />}
       />
       {/* <ProtectedRoute
         path={`${path}/${modulePath}/user-product-natures`}

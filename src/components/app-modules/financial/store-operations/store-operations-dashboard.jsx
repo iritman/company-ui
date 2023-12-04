@@ -4,21 +4,21 @@ import { Row, Col } from "antd";
 import DashboardTile from "../../../common/dashboard-tile";
 import {
   TbBuildingBank as StoresIcon,
-  TbBrandCodesandbox as MeasureTypeIcon,
-  TbRuler2 as MeasureUnitIcon,
-  TbReportMoney as PricingTypeIcon,
-  TbShape2 as BachPatternIcon,
+  // TbBrandCodesandbox as MeasureTypeIcon,
+  // TbRuler2 as MeasureUnitIcon,
+  // TbReportMoney as PricingTypeIcon,
+  // TbShape2 as BachPatternIcon,
 } from "react-icons/tb";
-import { CgListTree as CategoryIcon } from "react-icons/cg";
-import { AiOutlineControl as InventoryControlAgentIcon } from "react-icons/ai";
-import { FaBarcode as BachIcon } from "react-icons/fa";
-import {
-  MdOutlineFeaturedPlayList as FeatureIcon,
-  MdDonutSmall as ProductIcon,
-  MdOutlineStorage as StorageIcon,
-  MdOutlineFeaturedPlayList as FeaturesIcon,
-} from "react-icons/md";
-import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
+// import { CgListTree as CategoryIcon } from "react-icons/cg";
+// import { AiOutlineControl as InventoryControlAgentIcon } from "react-icons/ai";
+// import { FaBarcode as BachIcon } from "react-icons/fa";
+// import {
+//   MdOutlineFeaturedPlayList as FeatureIcon,
+//   MdDonutSmall as ProductIcon,
+//   MdOutlineStorage as StorageIcon,
+//   MdOutlineFeaturedPlayList as FeaturesIcon,
+// } from "react-icons/md";
+// import { AiOutlineDeploymentUnit as NatureIcon } from "react-icons/ai";
 import Colors from "../../../../resources/colors";
 import modulesService from "../../../../services/app/modules-service";
 

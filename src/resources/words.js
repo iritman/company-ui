@@ -1043,6 +1043,19 @@ class Words extends Component {
   static credit_source = "منبع تامین اعتبار";
   //----
   static store_operations = "عملیات انبار";
+  static product_requests = "درخواست کالای انبار";
+  static from_store = "انبار تحویل دهنده";
+  static to_store = "انبار تحویل گیرنده";
+  static product_items = "اقلام درخواست";
+
+  static product_request_status_1 = "ثبت شده";
+  static product_request_status_2 = "تایید شده";
+  static product_request_status_3 = "معلق";
+  static product_request_status_4 = "درحال تحویل";
+  static product_request_status_5 = "لغو شده";
+  static product_request_status_6 = "بسته شده";
+  static product_request_status_7 = "تحویل شده";
+  //***
   //----
   static provinces = "استان ها";
   static province = "استان";
@@ -1394,6 +1407,8 @@ class Words extends Component {
       "برای برگشت از تایید دستور خرید اطمینان دارید؟",
     sure_to_undo_approve_order_request:
       "برای برگشت از تایید سفارش خرید اطمینان دارید؟",
+    sure_to_undo_approve_product_request:
+      "برای برگشت از تایید درخواست کالای انبار اطمینان دارید؟",
   };
 
   static monthes = {
