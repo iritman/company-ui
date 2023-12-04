@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Spin, Row, Col, Typography, Button } from "antd";
-import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
+import { Spin, Row, Col, Typography } from "antd";
+// import { InfoCircleOutlined as InfoIcon } from "@ant-design/icons";
 import Words from "../../../../../resources/words";
 import utils from "./../../../../../tools/utils";
 import service from "./../../../../../services/official/timex/reports/user-my-cards-report-service";
@@ -198,8 +198,8 @@ const UserMyCardsReportPage = ({ pageName }) => {
     setRecords,
     access,
     setAccess,
-    setSelectedObject,
-    setShowDetails,
+    // setSelectedObject,
+    // setShowDetails,
     showSearchModal,
     setShowSearchModal,
     filter,
