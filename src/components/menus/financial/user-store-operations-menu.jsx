@@ -11,7 +11,7 @@ import {
   // TbShape2 as BachPatternIcon,
 } from "react-icons/tb";
 // import { CgListTree as CategoryIcon } from "react-icons/cg";
-// import { FaBarcode as BachIcon } from "react-icons/fa";
+import { FaReceipt as ItemsIcon } from "react-icons/fa";
 // import {
 //   MdOutlineFeaturedPlayList as FeatureIcon,
 //   MdDonutSmall as ProductIcon,
@@ -37,10 +37,10 @@ const mapper = (pageID) => {
       icon = <StoresIcon style={{ color: Colors.orange[6] }} size={iconSize} />;
       break;
 
-    // case 142:
-    //   link = "user-product-natures";
-    //   icon = <NatureIcon style={{ color: Colors.green[6] }} size={iconSize} />;
-    //   break;
+    case 281:
+      link = "product-request-items";
+      icon = <ItemsIcon style={{ color: Colors.green[6] }} size={iconSize} />;
+      break;
 
     // case 143:
     //   link = "user-measure-types";

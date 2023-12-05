@@ -4,6 +4,7 @@ import ProtectedRoute from "../../components/common/protected-route";
 //---
 import StoreOperationsDashboard from "../../components/app-modules/financial/store-operations/store-operations-dashboard";
 import ProductRequestsPage from "../../components/app-modules/financial/store-operations/product-requests/product-requests-page";
+import ProductRequestItemsPage from "../../components/app-modules/financial/store-operations/product-request-items/product-request-items-page";
 //---
 
 const modulePath = "financial/store-opr";
@@ -21,12 +22,14 @@ const UserStoreOperationsRoutes = ({ path }) => {
         exact
         render={() => <ProductRequestsPage pageName="ProductRequests" />}
       />
-      {/* <ProtectedRoute
-        path={`${path}/${modulePath}/user-product-natures`}
-        exact
-        render={() => <UserProductNaturesPage pageName="user-ProductNatures" />}
-      />
       <ProtectedRoute
+        path={`${path}/${modulePath}/product-request-items`}
+        exact
+        render={() => (
+          <ProductRequestItemsPage pageName="ProductRequestItems" />
+        )}
+      />
+      {/*<ProtectedRoute
         path={`${path}/${modulePath}/user-measure-types`}
         exact
         render={() => <UserMeasureTypesPage pageName="user-MeasureTypes" />}

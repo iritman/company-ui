@@ -11,7 +11,7 @@ import {
 } from "react-icons/tb";
 // import { CgListTree as CategoryIcon } from "react-icons/cg";
 // import { AiOutlineControl as InventoryControlAgentIcon } from "react-icons/ai";
-// import { FaBarcode as BachIcon } from "react-icons/fa";
+import { FaReceipt as ItemsIcon } from "react-icons/fa";
 // import {
 //   MdOutlineFeaturedPlayList as FeatureIcon,
 //   MdDonutSmall as ProductIcon,
@@ -39,11 +39,11 @@ const mapper = (pageID) => {
       backColor = Colors.orange[3];
       break;
 
-    // case 142:
-    //   link = "user-product-natures";
-    //   icon = <NatureIcon {...iconProps} />;
-    //   backColor = Colors.green[3];
-    //   break;
+    case 281:
+      link = "product-request-items";
+      icon = <ItemsIcon {...iconProps} />;
+      backColor = Colors.green[3];
+      break;
 
     // case 143:
     //   link = "user-measure-types";

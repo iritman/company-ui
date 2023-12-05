@@ -1044,9 +1044,15 @@ class Words extends Component {
   //----
   static store_operations = "عملیات انبار";
   static product_requests = "درخواست کالای انبار";
+  static product_request_items = "اقلام درخواست کالای انبار";
   static from_store = "انبار تحویل دهنده";
   static to_store = "انبار تحویل گیرنده";
   static product_items = "اقلام درخواست";
+  static request_id = "شناسه درخواست";
+  static needed_from_date = "تاریخ نیاز از";
+  static needed_to_date = "تاریخ نیاز تا";
+  static request_from_date = "تاریخ درخواست از";
+  static request_to_date = "تاریخ درخواست تا";
 
   static product_request_status_1 = "ثبت شده";
   static product_request_status_2 = "تایید شده";
