@@ -64,7 +64,7 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const [toStores, setToStores] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [frontSideTypes, setFrontSideTypes] = useState([]);
-  const [purchaseRequestTypes, setProductRequestTypes] = useState([]);
+  const [productRequestTypes, setProductRequestTypes] = useState([]);
 
   const resetContext = useResetContext();
 
@@ -313,7 +313,7 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
           <Col xs={24} md={12}>
             <DropdownItem
               title={Words.request_type}
-              dataSource={purchaseRequestTypes}
+              dataSource={productRequestTypes}
               keyColumn="RequestTypeID"
               valueColumn="Title"
               formConfig={formConfig}
