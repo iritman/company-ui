@@ -107,14 +107,30 @@ export const getProductRequestItemsColumns = (
       ),
     },
     {
-      title: Words.inventory_count,
+      title: Words.storage_inventory_count,
       width: 150,
       align: "center",
-      dataIndex: "InventoryCount",
-      sorter: getSorter("InventoryCount"),
-      render: (InventoryCount) => (
+      dataIndex: "StorageInventoryCount",
+      sorter: getSorter("StorageInventoryCount"),
+      render: (StorageInventoryCount) => (
         <Text style={{ color: Colors.green[6] }}>
-          {InventoryCount === -1 ? "-" : utils.farsiNum(InventoryCount)}
+          {StorageInventoryCount === -1
+            ? "-"
+            : utils.farsiNum(StorageInventoryCount)}
+        </Text>
+      ),
+    },
+    {
+      title: Words.store_inventory_count,
+      width: 150,
+      align: "center",
+      dataIndex: "StoreInventoryCount",
+      sorter: getSorter("StoreInventoryCount"),
+      render: (StoreInventoryCount) => (
+        <Text style={{ color: Colors.green[6] }}>
+          {StoreInventoryCount === -1
+            ? "-"
+            : utils.farsiNum(StoreInventoryCount)}
         </Text>
       ),
     },
