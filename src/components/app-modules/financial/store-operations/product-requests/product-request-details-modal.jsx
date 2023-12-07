@@ -9,11 +9,15 @@ import {
   Tabs,
   Space,
   Popconfirm,
+  Tooltip,
 } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
+import {
+  QuestionCircleOutlined as QuestionIcon,
+  RetweetOutlined as RefreshIcon,
+} from "@ant-design/icons";
 import { handleError } from "../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "../../../../common/modal-window";
@@ -27,11 +31,21 @@ const ProductRequestDetailsModal = ({
   isOpen,
   onOk,
   onUndoApprove,
+  onRefreshStoreInventory,
 }) => {
   const valueColor = Colors.blue[7];
 
   const [progress, setProgress] = useState(false);
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
+  const [hasSeeStoreInventoryAccess, setHasSeeStoreInventoryAccess] =
+    useState(false);
+  const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
+  const [hasRegPurchaseRequestAccess, setHasRegPurchaseRequestAccess] =
+    useState(false);
+  const [
+    hasRegStoreInventoryVoucherAccess,
+    setHasRegStoreInventoryVoucherAccess,
+  ] = useState(false);
 
   const {
     RequestID,
@@ -74,9 +88,19 @@ const ProductRequestDetailsModal = ({
 
       let data = await service.getParams();
 
-      let { HasUndoApproveAccess } = data;
+      let {
+        HasUndoApproveAccess,
+        HasSeeStoreInventoryAccess,
+        HasShowRelationsAccess,
+        HasRegPurchaseRequestAccess,
+        HasRegStoreInventoryVoucherAccess,
+      } = data;
 
       setHasUndoApproveAccess(HasUndoApproveAccess);
+      setHasSeeStoreInventoryAccess(HasSeeStoreInventoryAccess);
+      setHasShowRelationsAccess(HasShowRelationsAccess);
+      setHasRegPurchaseRequestAccess(HasRegPurchaseRequestAccess);
+      setHasRegStoreInventoryVoucherAccess(HasRegStoreInventoryVoucherAccess);
     } catch (ex) {
       handleError(ex);
     }
@@ -89,6 +113,18 @@ const ProductRequestDetailsModal = ({
       <Space>
         {selectedObject !== null && selectedObject.StatusID === 2 && (
           <>
+            {hasSeeStoreInventoryAccess && (
+              <Tooltip title={Words.update_store_inventory}>
+                <Button
+                  key="refresh-inventory-stock"
+                  disabled={progress}
+                  loading={progress}
+                  icon={<RefreshIcon style={{ color: Colors.red[6] }} />}
+                  onClick={onRefreshStoreInventory}
+                />
+              </Tooltip>
+            )}
+
             {hasUndoApproveAccess && (
               <Popconfirm
                 title={Words.questions.sure_to_undo_approve_product_request}

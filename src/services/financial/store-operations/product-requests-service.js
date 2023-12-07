@@ -21,6 +21,12 @@ export async function getItemParams() {
   return data;
 }
 
+export async function getRequestItems(requestID) {
+  const { data } = await http.get(`${apiEndpoint}/items/${requestID}`);
+
+  return data;
+}
+
 export async function searchMembers(searchText) {
   const { data } = await http.post(`${apiEndpoint}/search/members`, {
     searchText,
@@ -104,6 +110,7 @@ const service = {
   getParams,
   getSearchParams,
   getItemParams,
+  getRequestItems,
   searchMembers,
   searchMemberByID,
   searchFrontSideAccounts,

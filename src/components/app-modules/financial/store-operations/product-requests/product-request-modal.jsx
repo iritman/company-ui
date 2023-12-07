@@ -272,8 +272,6 @@ const ProductRequestModal = ({
         );
         record.Items[index] = product_item;
       }
-
-      console.log(product_item);
     }
 
     //------

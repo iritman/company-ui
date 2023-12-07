@@ -1053,6 +1053,8 @@ class Words extends Component {
   static needed_to_date = "تاریخ نیاز تا";
   static request_from_date = "تاریخ درخواست از";
   static request_to_date = "تاریخ درخواست تا";
+  static inventory_count = "موجودی انبار";
+  static update_store_inventory = "بروزرسانی موجودی انبار";
 
   static product_request_status_1 = "ثبت شده";
   static product_request_status_2 = "تایید شده";

@@ -365,6 +365,32 @@ const ProductRequestsPage = ({ pageName }) => {
     setProgress(false);
   };
 
+  const handleRefreshStoreInventory = async () => {
+    setProgress(true);
+
+    try {
+      const data = await service.getRequestItems(selectedObject.RequestID);
+
+      // Update selected object
+      selectedObject.Items = data;
+      setSelectedObject({ ...selectedObject });
+
+      // Update records
+      const request_index = records.findIndex(
+        (r) => r.RequestID === selectedObject.RequestID
+      );
+      records[request_index] = { ...selectedObject };
+      setRecords([...records]);
+
+      //---
+      // message.success(data.Message);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setProgress(false);
+  };
+
   //------
 
   return (
@@ -420,6 +446,7 @@ const ProductRequestsPage = ({ pageName }) => {
             setSelectedObject(null);
           }}
           onUndoApprove={handleUndoApprove}
+          onRefreshStoreInventory={handleRefreshStoreInventory}
         />
       )}
     </>

@@ -107,6 +107,18 @@ export const getProductRequestItemsColumns = (
       ),
     },
     {
+      title: Words.inventory_count,
+      width: 150,
+      align: "center",
+      dataIndex: "InventoryCount",
+      sorter: getSorter("InventoryCount"),
+      render: (InventoryCount) => (
+        <Text style={{ color: Colors.green[6] }}>
+          {InventoryCount === -1 ? "-" : utils.farsiNum(InventoryCount)}
+        </Text>
+      ),
+    },
+    {
       title: Words.measure_unit,
       width: 120,
       align: "center",

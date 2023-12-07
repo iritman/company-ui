@@ -97,7 +97,7 @@ const ProductRequestItemModal = ({
         Products,
         Statuses,
       });
-      console.log(data);
+
       setProducts(Products);
       setStatuses(Statuses);
 
