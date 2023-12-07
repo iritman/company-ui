@@ -192,8 +192,6 @@ const PaymentReceiptModal = ({
 
     try {
       let data = await service.searchOrders();
-
-      console.log(data);
     } catch (ex) {
       handleError(ex);
     }
