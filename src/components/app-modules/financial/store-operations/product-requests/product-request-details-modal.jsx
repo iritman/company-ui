@@ -449,9 +449,6 @@ const ProductRequestDetailsModal = ({
           onCancel={() => setShowPurchaseRequestModal(false)}
           isOpen={showPurchaseRequestModal}
           selectedObject={newPurchaseRequest}
-
-          // onReject={handleReject}
-          // onApprove={handleApprove}
         />
       )}
     </>
