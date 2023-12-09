@@ -43,6 +43,7 @@ const ProductRequestDetailsModal = ({
 
   const [progress, setProgress] = useState(false);
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
+  const [isReturnableRequest, setIsReturnableRequest] = useState(false);
   const [hasSeeStoreInventoryAccess, setHasSeeStoreInventoryAccess] =
     useState(false);
   const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
@@ -98,6 +99,9 @@ const ProductRequestDetailsModal = ({
       //------ load params
 
       let data = await service.getParams();
+      let is_returnable_request = await service.isReturnableRequest(
+        selectedObject?.RequestID
+      );
 
       let {
         HasUndoApproveAccess,
@@ -107,6 +111,7 @@ const ProductRequestDetailsModal = ({
         HasRegStoreInventoryVoucherAccess,
       } = data;
 
+      setIsReturnableRequest(is_returnable_request.IsReturnable);
       setHasUndoApproveAccess(HasUndoApproveAccess);
       setHasSeeStoreInventoryAccess(HasSeeStoreInventoryAccess);
       setHasShowRelationsAccess(HasShowRelationsAccess);
@@ -279,7 +284,7 @@ const ProductRequestDetailsModal = ({
               </Tooltip>
             )}
 
-            {hasUndoApproveAccess && (
+            {hasUndoApproveAccess && isReturnableRequest && (
               <Popconfirm
                 title={Words.questions.sure_to_undo_approve_product_request}
                 onConfirm={onUndoApprove}
@@ -328,6 +333,7 @@ const ProductRequestDetailsModal = ({
   const handleSavePurchaseRequest = async (request) => {
     const savedRow = await purchaseRequestService.saveData(request);
 
+    setIsReturnableRequest(false);
     setNewPurchaseRequest(savedRow);
   };
 

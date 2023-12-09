@@ -27,6 +27,12 @@ export async function getRequestItems(requestID) {
   return data;
 }
 
+export async function isReturnableRequest(requestID) {
+  const { data } = await http.get(`${apiEndpoint}/is-returnable/${requestID}`);
+
+  return data;
+}
+
 export async function searchMembers(searchText) {
   const { data } = await http.post(`${apiEndpoint}/search/members`, {
     searchText,
@@ -111,6 +117,7 @@ const service = {
   getSearchParams,
   getItemParams,
   getRequestItems,
+  isReturnableRequest,
   searchMembers,
   searchMemberByID,
   searchFrontSideAccounts,
