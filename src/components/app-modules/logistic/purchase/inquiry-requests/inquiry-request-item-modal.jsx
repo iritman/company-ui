@@ -33,6 +33,7 @@ const PurchaseItemDetails = ({ selectedItem }) => {
     FrontSideAccountTitle,
     RequestCount,
     MeasureUnitTitle,
+    PurchaseAgentID,
     AgentFirstName,
     AgentLastName,
     NeedDate,
@@ -87,22 +88,28 @@ const PurchaseItemDetails = ({ selectedItem }) => {
 
       <Descriptions.Item label={Words.request_date}>
         <Text style={{ color: valueColor }}>
-          {utils.farsiNum(utils.slashDate(RequestDate))}
+          {RequestDate?.length > 0
+            ? utils.farsiNum(utils.slashDate(RequestDate))
+            : "-"}
         </Text>
       </Descriptions.Item>
       <Descriptions.Item label={Words.need_date}>
         <Text style={{ color: valueColor }}>
-          {utils.farsiNum(utils.slashDate(NeedDate))}
+          {NeedDate?.length > 0
+            ? utils.farsiNum(utils.slashDate(NeedDate))
+            : "-"}
         </Text>
       </Descriptions.Item>
       <Descriptions.Item label={Words.inquiry_deadline}>
         <Text style={{ color: valueColor }}>
-          {utils.farsiNum(utils.slashDate(InquiryDeadline))}
+          {InquiryDeadline?.length > 0
+            ? utils.farsiNum(utils.slashDate(InquiryDeadline))
+            : "-"}
         </Text>
       </Descriptions.Item>
       <Descriptions.Item label={Words.purchasing_agent}>
         <Text style={{ color: valueColor }}>
-          {`${AgentFirstName} ${AgentLastName}`}
+          {PurchaseAgentID > 0 ? `${AgentFirstName} ${AgentLastName}` : "-"}
         </Text>
       </Descriptions.Item>
 

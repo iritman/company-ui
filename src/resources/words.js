@@ -1061,6 +1061,10 @@ class Words extends Component {
   static show_relations = "نمایش روابط";
   static no_valid_product_request_to_purchase =
     "محصول ناموجودی جهت ثبت درخواست خرید وجود ندارد یا درخواست آن قبلا ثبت شده است";
+  static reg_inquiry_request = "صدور استعلام بها";
+  static no_valid_purchase_request_item_to_inquiry =
+    "آیتمی برای صدور استعلام وجود ندارد یا درخواست آن قبلا ثبت شده است";
+  static reg_inquiry_request = "صدور استعلام بها";
 
   static product_request_status_1 = "ثبت شده";
   static product_request_status_2 = "تایید شده";

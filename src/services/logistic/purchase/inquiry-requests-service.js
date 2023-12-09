@@ -39,6 +39,14 @@ export async function getRegedPurchaseItemByID(itemID) {
   return data;
 }
 
+export async function getValidPurchaseItemsForInquiry(purchase_request_id) {
+  const { data } = await http.get(
+    `${apiEndpoint}/purchase/items-for-inquiry/${purchase_request_id}`
+  );
+
+  return data;
+}
+
 export async function searchData(filter) {
   const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
@@ -109,6 +117,7 @@ const service = {
   getSupplierParams,
   getRegedPurchaseItems,
   getRegedPurchaseItemByID,
+  getValidPurchaseItemsForInquiry,
   searchData,
   saveData,
   saveItem,

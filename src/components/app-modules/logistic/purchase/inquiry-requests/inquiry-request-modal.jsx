@@ -39,6 +39,7 @@ const InquiryRequestModal = ({
   access,
   isOpen,
   selectedObject,
+  title,
   onOk,
   onCancel,
   onSaveInquiryItem,
@@ -168,7 +169,7 @@ const InquiryRequestModal = ({
   };
 
   const handleSaveInquiryItem = async (inquiry_item) => {
-    if (selectedObject !== null) {
+    if (selectedObject !== null && selectedObject.RequestID > 0) {
       inquiry_item.RequestID = selectedObject.RequestID;
 
       const data = await onSaveInquiryItem(inquiry_item);
@@ -309,7 +310,7 @@ const InquiryRequestModal = ({
   };
 
   const handleSaveInquirySupplier = async (inquiry_supplier) => {
-    if (selectedObject !== null) {
+    if (selectedObject !== null && selectedObject.RequestID > 0) {
       inquiry_supplier.RequestID = selectedObject.RequestID;
 
       const saved_inquiry_request_supplier = await onSaveInquirySupplier(
@@ -497,6 +498,7 @@ const InquiryRequestModal = ({
         width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
+        title={title}
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>

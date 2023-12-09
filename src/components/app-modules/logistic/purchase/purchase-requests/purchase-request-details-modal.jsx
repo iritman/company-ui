@@ -9,16 +9,25 @@ import {
   Tabs,
   Space,
   Popconfirm,
+  Popover,
+  Menu,
+  message,
 } from "antd";
 import Words from "../../../../../resources/words";
 import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
-import { QuestionCircleOutlined as QuestionIcon } from "@ant-design/icons";
+import {
+  QuestionCircleOutlined as QuestionIcon,
+  RetweetOutlined as RefreshIcon,
+  SettingOutlined as SettingsIcon,
+} from "@ant-design/icons";
 import { handleError } from "../../../../../tools/form-manager";
 import DetailsTable from "../../../../common/details-table";
 import ModalWindow from "../../../../common/modal-window";
 import service from "../../../../../services/logistic/purchase/purchase-requests-service";
+import inquiryRequestService from "../../../../../services/logistic/purchase/inquiry-requests-service";
 import { getPurchaseRequestItemsColumns } from "./purchase-request-modal-code";
+import InquiryRequestModal from "../../../logistic/purchase/inquiry-requests/inquiry-request-modal";
 
 const { Text } = Typography;
 
@@ -32,6 +41,14 @@ const PurchaseRequestDetailsModal = ({
 
   const [progress, setProgress] = useState(false);
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
+  const [isReturnableRequest, setIsReturnableRequest] = useState(false);
+  const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
+  const [hasRegInquiryRequestAccess, setHasRegInquiryRequestAccess] =
+    useState(false);
+
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+  const [showInquiryRequestModal, setShowInquiryRequestModal] = useState(false);
+  const [newInquiryRequest, setNewInquiryRequest] = useState(null);
 
   const {
     RequestID,
@@ -68,10 +85,20 @@ const PurchaseRequestDetailsModal = ({
       //------ load params
 
       let data = await service.getParams();
+      let is_returnable_request = await service.isReturnableRequest(
+        selectedObject?.RequestID
+      );
 
-      let { HasUndoApproveAccess } = data;
+      let {
+        HasUndoApproveAccess,
+        HasShowRelationsAccess,
+        HasRegInquiryRequestAccess,
+      } = data;
 
+      setIsReturnableRequest(is_returnable_request.IsReturnable);
       setHasUndoApproveAccess(HasUndoApproveAccess);
+      setHasShowRelationsAccess(HasShowRelationsAccess);
+      setHasRegInquiryRequestAccess(HasRegInquiryRequestAccess);
     } catch (ex) {
       handleError(ex);
     }
@@ -79,12 +106,136 @@ const PurchaseRequestDetailsModal = ({
     setProgress(false);
   });
 
+  const handleRegInquiryRequest = async () => {
+    try {
+      const valid_requested_items_for_inquiry =
+        await inquiryRequestService.getValidPurchaseItemsForInquiry(RequestID);
+
+      if (valid_requested_items_for_inquiry.length > 0) {
+        const inquiry_request = {
+          RequestID: 0,
+          InquiryDeadline: "",
+          InquiryDate: "",
+          DetailsText: "",
+          StatusID: 1,
+        };
+
+        let items = [];
+        let suppliers = [];
+
+        valid_requested_items_for_inquiry.forEach((item) => {
+          const request_item = {};
+
+          request_item.ItemID = 0;
+          request_item.RequestID = 0;
+          request_item.NeededItemCode = item.NeededItemCode;
+          request_item.NeededItemTitle = item.NeededItemTitle;
+          request_item.RefItemID = item.RefItemID;
+          request_item.RequestCount = item.RequestCount;
+          request_item.MeasureUnitTitle = item.MeasureUnitTitle;
+          request_item.PurchaseAgentID = item.PurchaseAgentID;
+          request_item.AgentFirstName = item.AgentFirstName;
+          request_item.AgentLastName = item.AgentLastName;
+          request_item.DetailsText = "";
+          request_item.StatusID = 1;
+          request_item.StatusTitle = Words.inquiry_request_status_1;
+          items = [...items, request_item];
+
+          //------
+
+          item.Suppliers.forEach((supplier) => {
+            const _supplier = {};
+
+            _supplier.RowID = 0;
+            _supplier.RefItemID = item.RefItemID;
+            _supplier.RequestID = 0;
+            _supplier.SupplierID = supplier.SupplierID;
+            _supplier.SupplierTitle = supplier.Title;
+            _supplier.ActivityTypeID = supplier.ActivityTypeID;
+            _supplier.ActivityTypeTitle = supplier.ActivityTypeTitle;
+
+            suppliers = [...suppliers, _supplier];
+          });
+        });
+
+        inquiry_request.Items = items;
+        inquiry_request.Suppliers = suppliers;
+
+        setNewInquiryRequest(inquiry_request);
+        setShowInquiryRequestModal(true);
+      } else {
+        message.warn(Words.no_valid_purchase_request_item_to_inquiry);
+      }
+    } catch (ex) {
+      handleError(ex);
+    }
+  };
+
+  const handleShowRelations = () => {
+    // ToDo...
+  };
+
+  const getSettingsMenu = (has_reg_inquiry_request_access) => {
+    let items = [];
+
+    if (
+      has_reg_inquiry_request_access &&
+      Items.filter((item) => item.PurchaseTypeID === 2 /* Need cost inquiry */)
+        .length > 0
+    )
+      items = [
+        ...items,
+        { label: Words.reg_inquiry_request, key: "reg_inquiry_request_item" },
+      ];
+
+    items = [
+      ...items,
+      { label: Words.show_relations, key: "show_relations_item" },
+    ];
+
+    const onClick = (e) => {
+      switch (e.key) {
+        case "reg_inquiry_request_item": {
+          handleRegInquiryRequest();
+          break;
+        }
+
+        case "show_relations_item": {
+          handleShowRelations();
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+
+      setShowSettingsMenu(false);
+    };
+
+    return <Menu onClick={onClick} items={items} selectable={false} />;
+  };
+
   const getFooterButtons = () => {
     return (
       <Space>
         {selectedObject !== null && selectedObject.StatusID === 2 && (
           <>
-            {hasUndoApproveAccess && (
+            <Popover
+              trigger="click"
+              content={getSettingsMenu(hasRegInquiryRequestAccess)}
+              open={showSettingsMenu}
+              onOpenChange={() => setShowSettingsMenu(!showSettingsMenu)}
+            >
+              <Button
+                key="settings-button"
+                disabled={progress}
+                loading={progress}
+                icon={<SettingsIcon style={{ color: Colors.grey[6] }} />}
+              />
+            </Popover>
+
+            {hasUndoApproveAccess && isReturnableRequest && (
               <Popconfirm
                 title={Words.questions.sure_to_undo_approve_purchase_request}
                 onConfirm={onUndoApprove}
@@ -129,6 +280,15 @@ const PurchaseRequestDetailsModal = ({
       ),
     },
   ];
+
+  const handleSaveInquiryRequest = async (request) => {
+    const savedRow = await inquiryRequestService.saveData(request);
+
+    setIsReturnableRequest(false);
+    setNewInquiryRequest(savedRow);
+  };
+
+  // ------
 
   return (
     <>
@@ -226,6 +386,17 @@ const PurchaseRequestDetailsModal = ({
           </Col>
         </Row>
       </ModalWindow>
+
+      {showInquiryRequestModal && (
+        <InquiryRequestModal
+          access={{ CanEdit: true, CanDelete: true }}
+          onOk={handleSaveInquiryRequest}
+          title={Words.reg_inquiry_request}
+          onCancel={() => setShowInquiryRequestModal(false)}
+          isOpen={showInquiryRequestModal}
+          selectedObject={newInquiryRequest}
+        />
+      )}
     </>
   );
 };
