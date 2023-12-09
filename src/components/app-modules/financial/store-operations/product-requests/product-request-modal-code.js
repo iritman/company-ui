@@ -114,7 +114,7 @@ export const getProductRequestItemsColumns = (
       sorter: getSorter("StorageInventoryCount"),
       render: (StorageInventoryCount) => (
         <Text style={{ color: Colors.green[6] }}>
-          {StorageInventoryCount === -1
+          {StorageInventoryCount === undefined || StorageInventoryCount === -1
             ? "-"
             : utils.farsiNum(StorageInventoryCount)}
         </Text>
@@ -128,7 +128,7 @@ export const getProductRequestItemsColumns = (
       sorter: getSorter("StoreInventoryCount"),
       render: (StoreInventoryCount) => (
         <Text style={{ color: Colors.green[6] }}>
-          {StoreInventoryCount === -1
+          {StoreInventoryCount === undefined || StoreInventoryCount === -1
             ? "-"
             : utils.farsiNum(StoreInventoryCount)}
         </Text>
