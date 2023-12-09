@@ -36,7 +36,9 @@ export async function searchMemberByID(memberID) {
 }
 
 export async function searchFrontSideAccounts(typeID) {
-  const { data } = await http.get(`${apiEndpoint}/search/front-side/${typeID}`);
+  const { data } = await http.get(
+    `${apiEndpoint}/search/front-side/type/${typeID}`
+  );
 
   return data;
 }
@@ -44,6 +46,28 @@ export async function searchFrontSideAccounts(typeID) {
 export async function searchFrontSideAccountByID(accountID) {
   const { data } = await http.get(
     `${apiEndpoint}/search/front-side/${accountID}`
+  );
+
+  return data;
+}
+
+export async function getRegedProductRequestItems() {
+  const { data } = await http.get(`${apiEndpoint}/product-request-items`);
+
+  return data;
+}
+
+export async function getRegedProductRequestItemByID(itemID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/product-request-item/${itemID}`
+  );
+
+  return data;
+}
+
+export async function getNotExistsProductsForPurchase(productRequestID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/product-request-items/not-exists/${productRequestID}`
   );
 
   return data;
@@ -108,6 +132,9 @@ const service = {
   searchMemberByID,
   searchFrontSideAccounts,
   searchFrontSideAccountByID,
+  getRegedProductRequestItems,
+  getRegedProductRequestItemByID,
+  getNotExistsProductsForPurchase,
   searchData,
   saveData,
   saveItem,

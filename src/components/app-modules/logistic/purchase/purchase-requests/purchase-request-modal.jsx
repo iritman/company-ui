@@ -40,6 +40,7 @@ const PurchaseRequestModal = ({
   access,
   isOpen,
   selectedObject,
+  title,
   onOk,
   onCancel,
   onSavePurchaseRequestItem,
@@ -213,7 +214,7 @@ const PurchaseRequestModal = ({
   };
 
   const handleSavePurchaseRequestItem = async (purchase_item) => {
-    if (selectedObject !== null) {
+    if (selectedObject !== null && selectedObject.RequestID > 0) {
       purchase_item.RequestID = selectedObject.RequestID;
 
       const saved_purchase_request_item = await onSavePurchaseRequestItem(
@@ -376,8 +377,22 @@ const PurchaseRequestModal = ({
 
   //------
 
+  // const hasUncompletedItems = (items) => {
+  //   return (
+  //     items?.filter(
+  //       (i) =>
+  //         i.Suppliers?.length === 0 ||
+  //         i.PurchaseTypeID === 0 ||
+  //         i.PurchaseAgentID === 0
+  //     ).length > 0
+  //   );
+  // };
+
   const is_disable =
-    record?.Items?.length === 0 || (validateForm({ record, schema }) && true);
+    !record?.Items ||
+    record?.Items?.length === 0 ||
+    // hasUncompletedItems(record?.Items) ||
+    (validateForm({ record, schema }) && true);
 
   const status_id =
     selectedObject === null ? record.StatusID : selectedObject.StatusID;
@@ -408,6 +423,7 @@ const PurchaseRequestModal = ({
         width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
+        title={title}
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>

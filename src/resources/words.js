@@ -1056,6 +1056,11 @@ class Words extends Component {
   static store_inventory_count = "موجودی انبار";
   static storage_inventory_count = "موجودی مرکز نگهداری";
   static update_store_inventory = "بروزرسانی موجودی انبار";
+  static reg_purchase_request = "ثبت درخواست خرید";
+  static reg_store_inventory_voucher = "ثبت سند انبار";
+  static show_relations = "نمایش روابط";
+  static no_valid_product_request_to_purchase =
+    "محصول ناموجودی جهت ثبت درخواست خرید وجود ندارد یا درخواست آن قبلا ثبت شده است";
 
   static product_request_status_1 = "ثبت شده";
   static product_request_status_2 = "تایید شده";

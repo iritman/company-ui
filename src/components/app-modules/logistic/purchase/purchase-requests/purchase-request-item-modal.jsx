@@ -38,7 +38,9 @@ const schema = {
     .precision(2)
     .label(Words.request_count),
   NeedDate: Joi.string(),
-  PurchaseTypeID: Joi.number().min(1).required().label(Words.purchase_type),
+  PurchaseTypeID: Joi.number() /*.min(1)*/
+    .required()
+    .label(Words.purchase_type),
   InquiryDeadline: Joi.string().allow(""),
   PurchaseAgentID: Joi.number().required().label(Words.purchasing_agent),
   DetailsText: Joi.string()
@@ -75,6 +77,7 @@ const formRef = React.createRef();
 const PurchaseRequestItemModal = ({
   isOpen,
   selectedObject,
+  selectedItems,
   onOk,
   onCancel,
   setParams,
@@ -83,8 +86,8 @@ const PurchaseRequestItemModal = ({
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
 
+  const [items, setItems] = useState([]);
   const [baseTypes, setBaseTypes] = useState([]);
-  const [bases, setBases] = useState([]);
   const [choices, setChoices] = useState([]);
   const [purchaseTypes, setPurchaseTypes] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
@@ -124,7 +127,7 @@ const PurchaseRequestItemModal = ({
     setProgress(true);
 
     try {
-      const data = await service.getItemParams();
+      const params = await service.getItemParams();
 
       let {
         BaseTypes,
@@ -134,7 +137,7 @@ const PurchaseRequestItemModal = ({
         Agents,
         Statuses,
         CurrentDate,
-      } = data;
+      } = params;
 
       setParams({
         BaseTypes,
@@ -154,6 +157,8 @@ const PurchaseRequestItemModal = ({
       setStatuses(Statuses);
       setCurrentDate(CurrentDate);
 
+      //------
+
       if (!selectedObject) {
         const rec = { ...initRecord };
         rec.NeedDate = `${CurrentDate}`;
@@ -161,6 +166,31 @@ const PurchaseRequestItemModal = ({
         setRecord({ ...rec });
         loadFieldsValue(formRef, { ...rec });
       } else {
+        const { BaseTypeID } = selectedObject;
+
+        switch (BaseTypeID) {
+          // no base
+          case 1: {
+            break;
+          }
+
+          // product request from store inventory
+          case 2: {
+            const selected_product_request_item =
+              await service.getRegedProductRequestItemByID(
+                selectedObject.BaseID
+              );
+
+            setItems([selected_product_request_item]);
+
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+
         initModal(formRef, selectedObject, setRecord);
       }
     } catch (ex) {
@@ -185,19 +215,44 @@ const PurchaseRequestItemModal = ({
     onCancel();
   };
 
-  const handleChangeBaseType = (value) => {
+  const handleChangeBaseType = async (value) => {
     const rec = { ...record };
     rec.BaseTypeID = value || 0;
 
     if (value > 1) {
       schema.BaseID = Joi.number().min(1).required().label(Words.base);
+
+      // load purchase request items
+      try {
+        const data = await service.getRegedProductRequestItems();
+
+        setItems(data);
+      } catch (ex) {
+        handleError(ex);
+      }
     } else {
       schema.BaseID = Joi.number().required().label(Words.base);
+
+      setItems([]);
+
+      rec.BaseID = 0;
+      rec.NeededItemTypeID = 0;
+      rec.NeededItemID = 0;
+      rec.NeededItemMeasureUnitID = 0;
+      rec.RequestCount = 0;
+      rec.NeedDate = "";
+      rec.PurchaseTypeID = 0;
+      rec.InquiryDeadline = "";
+      rec.PurchaseAgentID = 0;
+      rec.Suppliers = [];
+      rec.SupplierIDs = [];
+      rec.DetailsText = "";
     }
 
-    setBases([]);
+    // setBases([]);
 
     setRecord(rec);
+    loadFieldsValue(formRef, rec);
   };
 
   const handleChangeProduct = (value) => {
@@ -224,6 +279,40 @@ const PurchaseRequestItemModal = ({
     )?.MeasureUnits;
   };
 
+  const getSelectedItem = (item_id) => {
+    let selected_item = null;
+
+    if (item_id > 0) {
+      selected_item = items.find((i) => i.BaseID === item_id);
+
+      if (!selected_item) selected_item = null;
+    }
+
+    return selected_item;
+  };
+
+  const handleChangeItem = (value) => {
+    const rec = { ...record };
+    rec.BaseID = value;
+
+    if (value === 0) {
+      rec.NeededItemID = 0;
+      rec.NeededItemCode = "";
+      rec.NeededItemMeasureUnitID = 0;
+      rec.RequestCount = 0;
+    } else {
+      const selected_item = getSelectedItem(value);
+
+      rec.NeededItemID = selected_item?.NeededItemID;
+      rec.NeededItemCode = selected_item?.NeededItemCode;
+      rec.NeededItemMeasureUnitID = selected_item?.NeededItemMeasureUnitID;
+      rec.RequestCount = selected_item?.RequestCount;
+    }
+
+    setRecord(rec);
+    loadFieldsValue(formRef, rec);
+  };
+
   //------
 
   return (
@@ -246,42 +335,64 @@ const PurchaseRequestItemModal = ({
               keyColumn="BaseTypeID"
               valueColumn="Title"
               formConfig={formConfig}
-              onChange={handleChangeBaseType}
               required
               autoFocus
+              onChange={handleChangeBaseType}
             />
           </Col>
           <Col xs={24} md={12}>
             <DropdownItem
-              title={Words.base}
-              dataSource={bases}
+              title={Words.base_id}
+              dataSource={items}
               keyColumn="BaseID"
-              valueColumn="Title"
+              valueColumn={"InfoTitle"}
               formConfig={formConfig}
-              disabled={record?.BaseTypeID <= 1}
-              required={record?.BaseTypeID > 1}
+              disabled={record.BaseTypeID < 2 || selectedObject}
+              required={record.BaseTypeID > 1}
+              onChange={handleChangeItem}
             />
           </Col>
           <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.product}
-              dataSource={choices}
-              keyColumn="NeededItemID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              onChange={handleChangeProduct}
-              required
-            />
+            {selectedObject === null && record.BaseTypeID < 2 ? (
+              <DropdownItem
+                title={Words.product}
+                dataSource={choices}
+                keyColumn="NeededItemID"
+                valueColumn="Title"
+                formConfig={formConfig}
+                onChange={handleChangeProduct}
+                required
+              />
+            ) : (
+              <TextItem
+                title={Words.item_title}
+                value={utils.farsiNum(
+                  getSelectedItem(record.BaseID)?.NeededItemTitle || "-"
+                )}
+                valueColor={Colors.magenta[6]}
+              />
+            )}
           </Col>
           <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.measure_unit}
-              dataSource={getMeasureUnits()}
-              keyColumn="NeededItemMeasureUnitID"
-              valueColumn="MeasureUnitTitle"
-              formConfig={formConfig}
-              required
-            />
+            {selectedObject === null && record.BaseTypeID < 2 ? (
+              <DropdownItem
+                title={Words.measure_unit}
+                dataSource={getMeasureUnits()}
+                keyColumn="NeededItemMeasureUnitID"
+                valueColumn="MeasureUnitTitle"
+                formConfig={formConfig}
+                required
+              />
+            ) : (
+              <TextItem
+                title={Words.measure_unit}
+                value={utils.farsiNum(
+                  getSelectedItem(record.BaseID)?.NeededItemMeasureUnitTitle ||
+                    "-"
+                )}
+                valueColor={Colors.magenta[6]}
+              />
+            )}
           </Col>
           <Col xs={24} md={12}>
             <NumericInputItem
@@ -315,7 +426,7 @@ const PurchaseRequestItemModal = ({
               keyColumn="PurchaseTypeID"
               valueColumn="Title"
               formConfig={formConfig}
-              required
+              // required
             />
           </Col>
           <Col xs={24} md={12}>
@@ -336,7 +447,7 @@ const PurchaseRequestItemModal = ({
               fieldIDs="SuppliersIDs"
               formConfig={formConfig}
               setIDsAutomatically
-              required
+              // required
             />
           </Col>
           <Col xs={24} md={12}>
