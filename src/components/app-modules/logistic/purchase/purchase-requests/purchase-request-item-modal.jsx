@@ -435,6 +435,8 @@ const PurchaseRequestItemModal = ({
               title={Words.inquiry_final_deadline}
               fieldName="InquiryDeadline"
               formConfig={formConfig}
+              required={record.PurchaseTypeID === 2}
+              // 2: Purchase Type: With Cost Inquiry
             />
           </Col>
           <Col xs={24}>
