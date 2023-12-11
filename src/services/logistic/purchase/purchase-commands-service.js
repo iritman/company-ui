@@ -33,6 +33,14 @@ export async function getRegedInvoiceItemByID(itemID) {
   return data;
 }
 
+export async function getValidInvoiceItemsForPurchaseCommand(invoiceID) {
+  const { data } = await http.get(
+    `${apiEndpoint}/invoice/items-for-purchase-command/${invoiceID}`
+  );
+
+  return data;
+}
+
 export async function searchData(filter) {
   const { data } = await http.post(`${apiEndpoint}/search`, filter);
 
@@ -90,6 +98,7 @@ const service = {
   getItemParams,
   getRegedInvoiceItems,
   getRegedInvoiceItemByID,
+  getValidInvoiceItemsForPurchaseCommand,
   searchData,
   saveData,
   saveItem,

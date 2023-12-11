@@ -39,6 +39,7 @@ const PurchaseCommandModal = ({
   access,
   isOpen,
   selectedObject,
+  title,
   onOk,
   onCancel,
   onSaveCommandItem,
@@ -57,6 +58,7 @@ const PurchaseCommandModal = ({
 
   const [selectedCommandItem, setSelectedCommandItem] = useState(null);
   const [showCommandItemModal, setShowCommandItemModal] = useState(false);
+  const [currentDate, setCurrentDate] = useState("");
 
   const resetContext = useResetContext();
 
@@ -93,6 +95,7 @@ const PurchaseCommandModal = ({
 
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
+      setCurrentDate(CurrentDate);
 
       //------
 
@@ -157,7 +160,7 @@ const PurchaseCommandModal = ({
   };
 
   const handleSaveCommandItem = async (command_item) => {
-    if (selectedObject !== null) {
+    if (selectedObject !== null && selectedObject.CommandID > 0) {
       command_item.CommandID = selectedObject.CommandID;
 
       const saved_command_item = await onSaveCommandItem(command_item);
@@ -295,10 +298,11 @@ const PurchaseCommandModal = ({
         width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
+        title={title}
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-            {selectedObject && (
+            {selectedObject && selectedObject.CommandID > 0 && (
               <Col xs={24}>
                 <TextItem
                   title={Words.id}

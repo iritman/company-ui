@@ -104,7 +104,7 @@ const InvoiceModal = ({
 
     try {
       const data = await service.getParams();
-      console.log(data);
+
       let {
         Suppliers,
         TransportTypes,

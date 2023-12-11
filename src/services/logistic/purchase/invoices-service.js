@@ -21,6 +21,12 @@ export async function getItemParams() {
   return data;
 }
 
+export async function isReturnableInvoice(invoiceID) {
+  const { data } = await http.get(`${apiEndpoint}/is-returnable/${invoiceID}`);
+
+  return data;
+}
+
 export async function getRegedInquiryItems(supplierID) {
   const { data } = await http.get(`${apiEndpoint}/inquiry/items/${supplierID}`);
 
@@ -96,6 +102,7 @@ const service = {
   getParams,
   getSearchParams,
   getItemParams,
+  isReturnableInvoice,
   getRegedInquiryItems,
   getRegedInquiryItemByID,
   getValidInquiryItemsForInvoice,
