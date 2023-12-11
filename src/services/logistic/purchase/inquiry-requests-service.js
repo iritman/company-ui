@@ -21,6 +21,12 @@ export async function getItemParams() {
   return data;
 }
 
+export async function isReturnableRequest(requestID) {
+  const { data } = await http.get(`${apiEndpoint}/is-returnable/${requestID}`);
+
+  return data;
+}
+
 export async function getSupplierParams() {
   const { data } = await http.get(`${apiEndpoint}/supplier/params`);
 
@@ -43,6 +49,12 @@ export async function getValidPurchaseItemsForInquiry(purchase_request_id) {
   const { data } = await http.get(
     `${apiEndpoint}/purchase/items-for-inquiry/${purchase_request_id}`
   );
+
+  return data;
+}
+
+export async function isReturnableInquiry(requestID) {
+  const { data } = await http.get(`${apiEndpoint}/is-returnable/${requestID}`);
 
   return data;
 }
@@ -114,6 +126,7 @@ const service = {
   getParams,
   getSearchParams,
   getItemParams,
+  isReturnableRequest,
   getSupplierParams,
   getRegedPurchaseItems,
   getRegedPurchaseItemByID,

@@ -41,6 +41,7 @@ const InvoiceModal = ({
   access,
   isOpen,
   selectedObject,
+  title,
   onOk,
   onCancel,
   onSaveInvoiceItem,
@@ -103,7 +104,7 @@ const InvoiceModal = ({
 
     try {
       const data = await service.getParams();
-
+      console.log(data);
       let {
         Suppliers,
         TransportTypes,
@@ -185,7 +186,7 @@ const InvoiceModal = ({
   };
 
   const handleSaveInvoiceItem = async (invoice_item) => {
-    if (selectedObject !== null) {
+    if (selectedObject !== null && selectedObject.InvoiceID > 0) {
       invoice_item.InvoiceID = selectedObject.InvoiceID;
 
       const saved_invoice_item = await onSaveInvoiceItem(invoice_item);
@@ -330,6 +331,7 @@ const InvoiceModal = ({
         width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
+        title={title}
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
@@ -381,6 +383,7 @@ const InvoiceModal = ({
                 title={Words.credit_date}
                 fieldName="CreditDate"
                 formConfig={formConfig}
+                required
               />
             </Col>
             <Col xs={24} md={12} lg={8}>
