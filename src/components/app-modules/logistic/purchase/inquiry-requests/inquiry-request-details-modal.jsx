@@ -44,7 +44,7 @@ const InquiryRequestDetailsModal = ({
 
   const [progress, setProgress] = useState(false);
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
-  const [isReturnableInvoice, setIsReturnableInvoice] = useState(false);
+  const [isReturnableInquiry, setIsReturnableInquiry] = useState(false);
   const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
   const [hasRegInvoiceAccess, setHasRegInvoiceAccess] = useState(false);
 
@@ -85,7 +85,7 @@ const InquiryRequestDetailsModal = ({
         HasRegInvoiceAccess,
       } = data;
 
-      setIsReturnableInvoice(is_returnable_invoice.IsReturnable);
+      setIsReturnableInquiry(is_returnable_invoice.IsReturnable);
       setHasUndoApproveAccess(HasUndoApproveAccess);
       setHasShowRelationsAccess(HasShowRelationsAccess);
       setHasRegInvoiceAccess(HasRegInvoiceAccess);
@@ -228,7 +228,7 @@ const InquiryRequestDetailsModal = ({
               />
             </Popover>
 
-            {hasUndoApproveAccess && isReturnableInvoice && (
+            {hasUndoApproveAccess && isReturnableInquiry && (
               <Popconfirm
                 title={Words.questions.sure_to_undo_approve_inquiry_request}
                 onConfirm={onUndoApprove}
@@ -288,7 +288,7 @@ const InquiryRequestDetailsModal = ({
   const handleSaveInvoice = async (request) => {
     const savedRow = await invoiceService.saveData(request);
 
-    setIsReturnableInvoice(false);
+    setIsReturnableInquiry(false);
     setNewInvoice(savedRow);
   };
 
