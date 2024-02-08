@@ -207,7 +207,7 @@ const PurchaseOrderItemModal = ({
 
   useMount(async () => {
     setRecord(initRecord);
-
+    console.log("so", selectedObject);
     setProgress(true);
 
     try {
@@ -218,11 +218,11 @@ const PurchaseOrderItemModal = ({
       const { Agents, BaseTypes, MeasureUnits, Statuses } = params;
 
       setAgents(Agents);
-      if (BaseTypeID === 1) {
-        setBaseTypes(BaseTypes.filter((bt) => bt.BaseTypeID < 3));
-      } else {
-        setBaseTypes(BaseTypes.filter((bt) => bt.BaseTypeID === 3));
-      }
+      // if (BaseTypeID === 1) {
+      //   setBaseTypes(BaseTypes.filter((bt) => bt.BaseTypeID < 3));
+      // } else {
+      setBaseTypes(BaseTypes.filter((bt) => bt.BaseTypeID === 3));
+      // }
       setMeasureUnits(MeasureUnits);
       setStatuses(Statuses);
 
@@ -480,7 +480,8 @@ const PurchaseOrderItemModal = ({
   };
 
   //------
-
+  console.log(record);
+  console.log(validateForm({ record: record, schema }));
   return (
     <ModalWindow
       isOpen={isOpen}

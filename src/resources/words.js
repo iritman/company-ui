@@ -1071,6 +1071,9 @@ class Words extends Component {
   static no_valid_invoice_item_to_purchase_command =
     "آیتمی برای صدور دستور خرید وجود ندارد یا درخواست آن قبلا ثبت شده است";
   static reg_purchase_command = "صدور دستور خرید";
+  static no_valid_purchase_command_item_to_order =
+    "آیتمی برای ثبت سفارش خرید وجود ندارد یا درخواست آن قبلا ثبت شده است";
+  static reg_order = "ثبت سفارش خرید";
 
   static product_request_status_1 = "ثبت شده";
   static product_request_status_2 = "تایید شده";

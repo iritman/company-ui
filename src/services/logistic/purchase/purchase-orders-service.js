@@ -59,6 +59,14 @@ export async function getRegedPurchaseRequestItemByID(itemID) {
   return data;
 }
 
+export async function getValidCommandItemsForOrder(command_id) {
+  const { data } = await http.get(
+    `${apiEndpoint}/command/items-for-order/${command_id}`
+  );
+
+  return data;
+}
+
 export async function getProductByID(productID) {
   const { data } = await http.get(`${apiEndpoint}/product/${productID}`);
 
@@ -134,6 +142,7 @@ const service = {
   getRegedCommandItemByID,
   getRegedPurchaseRequestItems,
   getRegedPurchaseRequestItemByID,
+  getValidCommandItemsForOrder,
   getProductByID,
   searchProducts,
   searchData,

@@ -41,6 +41,7 @@ const PurchaseOrderModal = ({
   access,
   isOpen,
   selectedObject,
+  title,
   onOk,
   onCancel,
   onSaveOrderItem,
@@ -196,7 +197,7 @@ const PurchaseOrderModal = ({
   };
 
   const handleSaveOrderItem = async (order_item) => {
-    if (selectedObject !== null) {
+    if (selectedObject !== null && selectedObject.OrderID > 0) {
       order_item.OrderID = selectedObject.OrderID;
 
       const saved_order_item = await onSaveOrderItem(order_item);
@@ -406,6 +407,7 @@ const PurchaseOrderModal = ({
         width={1250}
         footer={getFooterButtons(footer_config)}
         onCancel={onCancel}
+        title={title}
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>

@@ -21,6 +21,12 @@ export async function getItemParams() {
   return data;
 }
 
+export async function isReturnableCommand(commandID) {
+  const { data } = await http.get(`${apiEndpoint}/is-returnable/${commandID}`);
+
+  return data;
+}
+
 export async function getRegedInvoiceItems() {
   const { data } = await http.get(`${apiEndpoint}/invoice/items`);
 
@@ -96,6 +102,7 @@ const service = {
   getParams,
   getSearchParams,
   getItemParams,
+  isReturnableCommand,
   getRegedInvoiceItems,
   getRegedInvoiceItemByID,
   getValidInvoiceItemsForPurchaseCommand,
