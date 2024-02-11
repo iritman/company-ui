@@ -13,6 +13,7 @@ const handleSwitchChange = (fieldName, checked, formConfig) => {
 const SwitchItem = ({
   fieldName,
   title,
+  required,
   checkedTitle,
   unCheckedTitle,
   initialValue,
@@ -25,6 +26,7 @@ const SwitchItem = ({
       // wrapperCol={{ xs: { span: 12 } }}
       label={title}
       name={fieldName}
+      required={required && required}
       valuePropName="checked"
       initialValue={initialValue || false}
     >
