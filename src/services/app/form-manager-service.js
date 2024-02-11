@@ -5,6 +5,7 @@ const apiEndpoint = apiUrl + "/global/form";
 
 export const forms = {
   FINANCIAL_STORE_PRODUCT_REQUEST: 1,
+  FINANCIAL_STORE_PRODUCT_REQUEST_SEARCH: 2,
 };
 
 export async function getFormUI(form_id) {

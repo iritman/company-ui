@@ -130,7 +130,7 @@ export const getInitRecord = (form_ui) => {
   return result;
 };
 
-const renderFormItem = (form_item, formConfig, selectedObject) => {
+const renderFormItem = (form_item, formConfig) => {
   const {
     ItemID,
     Title,
@@ -202,9 +202,6 @@ const renderFormItem = (form_item, formConfig, selectedObject) => {
 
   switch (ControlTypeID) {
     case 1:
-      if (form_item.DataSourceID === 7)
-        console.log(KeyFieldName === FieldName ? KeyFieldName : FieldName);
-
       result = (
         <>
           {!is_hidden && (
@@ -399,14 +396,14 @@ const renderFormItem = (form_item, formConfig, selectedObject) => {
   return result;
 };
 
-export const renderFormUI = (form_ui, formConfig, selectedObject) => {
+export const renderFormUI = (form_ui, formConfig) => {
   return (
     <>
       {form_ui?.FormItems.filter(
         (i) => i.ControlTypeID !== controlTypes.Hidden_Field
       ).map((form_item) => (
         <React.Fragment key={form_item?.ItemID}>
-          {renderFormItem(form_item, formConfig, selectedObject)}
+          {renderFormItem(form_item, formConfig)}
         </React.Fragment>
       ))}
     </>
