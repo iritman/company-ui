@@ -9,12 +9,6 @@ export async function getParams() {
   return data;
 }
 
-export async function getSearchParams() {
-  const { data } = await http.get(`${apiEndpoint}/search/params`);
-
-  return data;
-}
-
 export async function getItemParams() {
   const { data } = await http.get(`${apiEndpoint}/item/params`);
 
@@ -116,7 +110,6 @@ export async function deleteItem(recordID) {
 
 const service = {
   getParams,
-  getSearchParams,
   getItemParams,
   getRequestItems,
   isReturnableRequest,
