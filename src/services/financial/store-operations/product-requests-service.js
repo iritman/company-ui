@@ -48,14 +48,16 @@ export async function searchMemberByID(memberID) {
 }
 
 export async function searchFrontSideAccounts(typeID) {
-  const { data } = await http.get(`${apiEndpoint}/search/front-side/${typeID}`);
+  const { data } = await http.get(
+    `${apiEndpoint}/search/front-side/by-type/${typeID}`
+  );
 
   return data;
 }
 
 export async function searchFrontSideAccountByID(accountID) {
   const { data } = await http.get(
-    `${apiEndpoint}/search/front-side/${accountID}`
+    `${apiEndpoint}/search/front-side/by-id/${accountID}`
   );
 
   return data;
