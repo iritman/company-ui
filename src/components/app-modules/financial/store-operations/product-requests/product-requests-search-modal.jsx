@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
-import Joi from "joi-browser";
+import { Form, Row } from "antd";
 import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
 import {
   validateForm,
   loadFieldsValue,
@@ -15,37 +13,16 @@ import {
   useResetContext,
 } from "../../../../contexts/modal-context";
 import service from "../../../../../services/financial/store-operations/product-requests-service";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import DateItem from "../../../../form-controls/date-item";
-import NumericInputItem from "../../../../form-controls/numeric-input-item";
-
-const schema = {
-  RequestID: Joi.number().label(Words.id),
-  FromDate: Joi.string().allow(""),
-  ToDate: Joi.string().allow(""),
-  //   StorageCenterID: Joi.number(),
-  FromStoreID: Joi.number(),
-  ToStoreID: Joi.number(),
-  StatusID: Joi.number(),
-  MemberID: Joi.number(),
-  FrontSideTypeID: Joi.number(),
-  FrontSideAccountID: Joi.number(),
-  RequestTypeID: Joi.number(),
-};
-
-const initRecord = {
-  RequestID: 0,
-  FromDate: "",
-  ToDate: "",
-  //   StorageCenterID: 0,
-  FromStoreID: 0,
-  ToStoreID: 0,
-  StatusID: 0,
-  MemberID: 0,
-  FrontSideTypeID: 0,
-  FrontSideAccountID: 0,
-  RequestTypeID: 0,
-};
+import {
+  forms,
+  getFormUI,
+} from "../../../../../services/app/form-manager-service";
+import {
+  // controlTypes,
+  getSchema,
+  getInitRecord,
+  renderFormUI,
+} from "../../../../common/form-manager/form-renderer";
 
 const formRef = React.createRef();
 
@@ -53,111 +30,20 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
+  const [initRecord, setInitRecord] = useState({});
+  const [schema, setSchema] = useState({});
+  const [formUI, setFormUI] = useState(null);
+
   const [frontSideAccountSearchProgress, setFrontSideAccountSearchProgress] =
     useState(false);
   const [frontSideAccounts, setFrontSideAccounts] = useState([]);
+
   const [memberSearchProgress, setMemberSearchProgress] = useState(false);
   const [members, setMembers] = useState([]);
 
-  //   const [storageCenters, setStorageCenters] = useState([]);
-  const [fromStores, setFromStores] = useState([]);
-  const [toStores, setToStores] = useState([]);
-  const [statuses, setStatuses] = useState([]);
-  const [frontSideTypes, setFrontSideTypes] = useState([]);
-  const [productRequestTypes, setProductRequestTypes] = useState([]);
-
   const resetContext = useResetContext();
 
-  const formConfig = {
-    schema,
-    record,
-    setRecord,
-    errors,
-    setErrors,
-  };
-
-  const clearRecord = () => {
-    record.RequestID = 0;
-    record.FromDate = "";
-    record.ToDate = "";
-    // record.StorageCenterID = 0;
-    record.FromStoreID = 0;
-    record.ToStoreID = 0;
-    record.StatusID = 0;
-    record.MemberID = 0;
-    record.FrontSideTypeID = 0;
-    record.FrontSideAccountID = 0;
-    record.RequestTypeID = 0;
-
-    setMembers([]);
-    setFrontSideAccounts([]);
-
-    setErrors({});
-    setRecord(record);
-    loadFieldsValue(formRef, record);
-  };
-
-  useMount(async () => {
-    resetContext();
-
-    setRecord(initRecord);
-    initModal(formRef, filter, setRecord);
-
-    setProgress(true);
-    try {
-      const data = await service.getSearchParams();
-
-      const {
-        Statuses,
-        Stores,
-        /* StorageCenters */
-        FrontSideTypes,
-        ProductRequestTypes,
-      } = data;
-
-      //   setStorageCenters(StorageCenters);
-      const fromStores = [...Stores];
-      const toStores = [...Stores];
-
-      fromStores.forEach((store) => (store.FromStoreID = store.StoreID));
-      toStores.forEach((store) => (store.ToStoreID = store.StoreID));
-
-      setFromStores(fromStores);
-      setToStores(toStores);
-      setStatuses(Statuses);
-      setFrontSideTypes(FrontSideTypes);
-      setProductRequestTypes(ProductRequestTypes);
-
-      //------
-
-      if (filter) {
-        if (filter.MemberID > 0) {
-          const request_member = await service.searchMemberByID(
-            filter.MemberID
-          );
-
-          setMembers(request_member);
-        }
-
-        if (filter.FrontSideAccountID > 0) {
-          const front_side_account = await service.searchFrontSideAccountByID(
-            filter.FrontSideAccountID
-          );
-
-          setFrontSideAccounts(front_side_account);
-        }
-      }
-    } catch (err) {
-      handleError(err);
-    }
-    setProgress(false);
-  });
-
-  const handleChangeMember = (value) => {
-    const rec = { ...record };
-    rec.MemberID = value || 0;
-    setRecord(rec);
-  };
+  // ------
 
   const handleSearchMember = async (searchText) => {
     setMemberSearchProgress(true);
@@ -171,6 +57,12 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     }
 
     setMemberSearchProgress(false);
+  };
+
+  const handleChangeMember = (value) => {
+    const rec = { ...record };
+    rec.MemberID = value || 0;
+    setRecord(rec);
   };
 
   const handleChangeFrontSideType = async (value) => {
@@ -209,6 +101,126 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
   // ------
 
+  const formItemProperties = [
+    {
+      fieldName: "RequestMemberID",
+      dataSource: members,
+      props: [
+        {
+          propName: "loading",
+          propValue: memberSearchProgress,
+        },
+      ],
+      events: [
+        {
+          eventName: "onSearch",
+          eventMethod: handleSearchMember,
+        },
+        {
+          eventName: "onChange",
+          eventMethod: handleChangeMember,
+        },
+      ],
+    },
+
+    {
+      fieldName: "FrontSideTypeID",
+      // dataSource: -,
+      events: [
+        {
+          eventName: "onChange",
+          eventMethod: handleChangeFrontSideType,
+        },
+      ],
+    },
+    {
+      fieldName: "FrontSideAccountID",
+      dataSource: frontSideAccounts,
+      events: [
+        {
+          eventName: "onSearch",
+          eventMethod: handleSearchFrontSideAccount,
+        },
+      ],
+      props: [
+        {
+          propName: "disabled",
+          propValue: record.FrontSideTypeID === 0,
+        },
+        {
+          propName: "loading",
+          propValue: frontSideAccountSearchProgress,
+        },
+      ],
+    },
+  ];
+
+  const formConfig = {
+    schema,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    formItemProperties,
+  };
+
+  const clearRecord = () => {
+    const rec = { ...initRecord };
+
+    setMembers([]);
+    setFrontSideAccounts([]);
+    setErrors({});
+    setRecord(rec);
+    loadFieldsValue(formRef, rec);
+  };
+
+  useMount(async () => {
+    resetContext();
+
+    setProgress(true);
+
+    try {
+      const form_ui = await getFormUI(
+        forms.FINANCIAL_STORE_PRODUCT_REQUEST_SEARCH
+      );
+      setFormUI(form_ui);
+
+      const init_record = getInitRecord(form_ui);
+      setInitRecord(init_record);
+
+      const schema = getSchema(form_ui);
+      setSchema(schema);
+
+      setRecord(init_record);
+      initModal(formRef, filter, setRecord);
+
+      //------
+
+      if (filter) {
+        if (filter.MemberID > 0) {
+          const request_member = await service.searchMemberByID(
+            filter.MemberID
+          );
+
+          setMembers(request_member);
+        }
+
+        if (filter.FrontSideTypeID > 0) {
+          const front_side_accounts = await handleSearchFrontSideAccount(
+            filter.FrontSideTypeID
+          );
+
+          setFrontSideAccounts(front_side_accounts);
+        }
+      }
+    } catch (err) {
+      handleError(err);
+    }
+    setProgress(false);
+  });
+
+  // ------
+
   return (
     <ModalWindow
       isOpen={isOpen}
@@ -222,112 +234,7 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[10, 5]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
-            <NumericInputItem
-              horizontal
-              title={Words.id}
-              fieldName="RequestID"
-              min={0}
-              max={9999999999}
-              formConfig={formConfig}
-              autoFocus
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.request_member}
-              dataSource={members}
-              keyColumn="MemberID"
-              valueColumn="FullName"
-              formConfig={formConfig}
-              loading={memberSearchProgress}
-              onSearch={handleSearchMember}
-              onChange={handleChangeMember}
-            />
-          </Col>
-          {/* <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.storage_center}
-              dataSource={storageCenters}
-              keyColumn="CenterID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col> */}
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.from_store}
-              dataSource={fromStores}
-              keyColumn="FromStoreID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.to_store}
-              dataSource={toStores}
-              keyColumn="ToStoreID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.front_side_type}
-              dataSource={frontSideTypes}
-              keyColumn="FrontSideTypeID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              onChange={handleChangeFrontSideType}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.front_side_account}
-              dataSource={frontSideAccounts}
-              keyColumn="FrontSideAccountID"
-              valueColumn="FrontSideAccountTitle"
-              formConfig={formConfig}
-              loading={frontSideAccountSearchProgress}
-              onSearch={handleSearchFrontSideAccount}
-              disabled={record.FrontSideTypeID === 0}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.from_date}
-              fieldName="FromDate"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DateItem
-              horizontal
-              title={Words.to_date}
-              fieldName="ToDate"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.request_type}
-              dataSource={productRequestTypes}
-              keyColumn="RequestTypeID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.status}
-              dataSource={statuses}
-              keyColumn="StatusID"
-              valueColumn="Title"
-              formConfig={formConfig}
-            />
-          </Col>
+          {formUI && <>{renderFormUI(formUI, formConfig)}</>}
         </Row>
       </Form>
     </ModalWindow>
