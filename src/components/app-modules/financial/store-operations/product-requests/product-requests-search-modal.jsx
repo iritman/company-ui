@@ -46,6 +46,7 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   // ------
 
   const handleSearchMember = async (searchText) => {
+    console.log(searchText);
     setMemberSearchProgress(true);
 
     try {
@@ -103,7 +104,7 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
 
   const formItemProperties = [
     {
-      fieldName: "RequestMemberID",
+      fieldName: "MemberID",
       dataSource: members,
       props: [
         {
