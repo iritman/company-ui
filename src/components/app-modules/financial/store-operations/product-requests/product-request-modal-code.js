@@ -1,5 +1,4 @@
 import React from "react";
-import Joi from "joi-browser";
 import { Button, Space, Popconfirm, Popover, Typography } from "antd";
 import {
   PlusOutlined as AddIcon,
@@ -14,46 +13,6 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 
 const { Text } = Typography;
-
-export const schema = {
-  RequestID: Joi.number().required().label(Words.id),
-  //   StorageCenterID: Joi.number().min(1).required().label(Words.storage_center),
-  FrontSideTypeID: Joi.number().min(1).required().label(Words.front_side_type),
-  FrontSideAccountID: Joi.number()
-    .min(1)
-    .required()
-    .label(Words.front_side_account),
-  RequestMemberID: Joi.number().required().label(Words.request_member),
-  RequestTypeID: Joi.number().required().label(Words.request_type),
-  RequestDate: Joi.string().required().label(Words.request_date),
-  NeededDate: Joi.string().required().label(Words.need_date),
-  DetailsText: Joi.string()
-    .min(5)
-    .max(250)
-    .allow("")
-    .regex(utils.VALID_REGEX)
-    .label(Words.standard_description),
-  FromStoreID: Joi.number(),
-  ToStoreID: Joi.number(),
-  StatusID: Joi.number(),
-  Items: Joi.array(),
-};
-
-export const initRecord = {
-  RequestID: 0,
-  //   StorageCenterID: 0,
-  FrontSideTypeID: 0,
-  FrontSideAccountID: 0,
-  RequestMemberID: 0,
-  RequestTypeID: 0,
-  RequestDate: "",
-  NeededDate: "",
-  DetailsText: "",
-  FromStoreID: 0,
-  ToStoreID: 0,
-  StatusID: 1,
-  Items: [],
-};
 
 export const getProductRequestItemsColumns = (
   access,
@@ -359,8 +318,6 @@ export const getFooterButtons = (config) => {
 };
 
 const codes = {
-  schema,
-  initRecord,
   getProductRequestItemsColumns,
   getNewProductRequestItemButton,
   getFooterButtons,

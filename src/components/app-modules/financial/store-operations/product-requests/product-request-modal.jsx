@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
 import Joi from "joi-browser";
-import { Form, Row, Col, Divider, Typography } from "antd";
+import { Form, Row, Col } from "antd";
 import ModalWindow from "../../../../common/modal-window";
 import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
-import utils from "../../../../../tools/utils";
+import utils from "./../../../../../tools/utils";
+
 import { v4 as uuid } from "uuid";
 import {
   validateForm,
@@ -15,10 +15,16 @@ import {
   handleError,
 } from "../../../../../tools/form-manager";
 import service from "../../../../../services/financial/store-operations/product-requests-service";
-import InputItem from "../../../../form-controls/input-item";
-import DateItem from "../../../../form-controls/date-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "../../../../form-controls/text-item";
+import {
+  forms,
+  getFormUI,
+} from "../../../../../services/app/form-manager-service";
+import {
+  controlTypes,
+  getSchema,
+  getInitRecord,
+  renderFormUI,
+} from "../../../../common/form-manager/form-renderer";
 import {
   useModalContext,
   useResetContext,
@@ -26,14 +32,10 @@ import {
 import DetailsTable from "../../../../common/details-table";
 import ProductRequestItemModal from "./product-request-item-modal";
 import {
-  schema,
-  initRecord,
   getProductRequestItemsColumns,
   getNewProductRequestItemButton,
   getFooterButtons,
 } from "./product-request-modal-code";
-
-const { Text } = Typography;
 
 const formRef = React.createRef();
 
@@ -51,6 +53,10 @@ const ProductRequestModal = ({
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
+  const [initRecord, setInitRecord] = useState({});
+  const [schema, setSchema] = useState({});
+  const [formUI, setFormUI] = useState(null);
+
   const [frontSideAccountSearchProgress, setFrontSideAccountSearchProgress] =
     useState(false);
   const [frontSideAccounts, setFrontSideAccounts] = useState([]);
@@ -58,18 +64,11 @@ const ProductRequestModal = ({
   const [memberSearchProgress, setMemberSearchProgress] = useState(false);
   const [members, setMembers] = useState([]);
 
-  //   const [storageCenters, setStorageCenters] = useState([]);
-  const [stores, setStores] = useState([]);
-  const [fromStores, setFromStores] = useState([]);
-  const [toStores, setToStores] = useState([]);
-  const [productRequestTypes, setProductRequestTypes] = useState([]);
-  const [frontSideTypes, setFrontSideTypes] = useState([]);
   const [hasSaveApproveAccess, setHasSaveApproveAccess] = useState(false);
   const [hasRejectAccess, setHasRejectAccess] = useState(false);
 
   const [products, setProducts] = useState([]);
   const [statuses, setStatuses] = useState([]);
-  const [currentDate, setCurrentDate] = useState("");
 
   const [selectedProductRequestItem, setSelectedProductRequestItem] =
     useState(null);
@@ -78,33 +77,208 @@ const ProductRequestModal = ({
 
   const resetContext = useResetContext();
 
+  //------
+
+  const handleChangeRequestType = async (value) => {
+    const rec = { ...record };
+    rec.RequestTypeID = value || 0;
+    rec.FromStoreID = 0;
+    rec.ToStoreID = 0;
+
+    const field_name = "ToStoreID";
+
+    if (value === 5) {
+      schema.ToStoreID = Joi.number().min(1);
+
+      formUI.FormItems.find(
+        (i) => i.FieldName === field_name
+      ).IsMandatory = true;
+    } else {
+      schema.ToStoreID = Joi.number();
+
+      formUI.FormItems.find(
+        (i) => i.FieldName === field_name
+      ).IsMandatory = false;
+    }
+
+    setSchema({ ...schema });
+    setFormUI({ ...formUI });
+    setRecord(rec);
+    loadFieldsValue(formRef, rec);
+  };
+
+  const handleSearchMember = async (searchText) => {
+    setMemberSearchProgress(true);
+
+    try {
+      const data = await service.searchMembers(searchText);
+
+      data.forEach((m) => {
+        m.RequestMemberID = m.MemberID;
+      });
+
+      setMembers(data);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setMemberSearchProgress(false);
+  };
+
+  const handleChangeFrontSideType = async (value) => {
+    const rec = { ...record };
+    rec.FrontSideTypeID = value || 0;
+    rec.FrontSideAccountID = 0;
+
+    setRecord(rec);
+
+    if (value === 0) {
+      setFrontSideAccounts([]);
+    } else {
+      const data = await handleSearchFrontSideAccount(value);
+      setFrontSideAccounts(data);
+    }
+    loadFieldsValue(formRef, rec);
+  };
+
+  const handleSearchFrontSideAccount = async (typeID) => {
+    let data = [];
+
+    setFrontSideAccountSearchProgress(true);
+
+    try {
+      data = await service.searchFrontSideAccounts(typeID);
+
+      setFrontSideAccounts(data);
+    } catch (ex) {
+      handleError(ex);
+    }
+
+    setFrontSideAccountSearchProgress(false);
+
+    return data;
+  };
+
+  //------
+
+  const formItemProperties = [
+    {
+      fieldName: "RequestID",
+      controlTypeID: controlTypes.Label,
+      props: [
+        {
+          propName: "hidden",
+          propValue: selectedObject === null,
+        },
+        {
+          propName: "value",
+          propValue: selectedObject
+            ? utils.farsiNum(selectedObject.RequestID)
+            : "-",
+        },
+        // {
+        //   propName: "valueColor",
+        //   propValue: Colors.cyan[5],
+        // },
+      ],
+    },
+    {
+      fieldName: "RequestTypeID",
+      events: [
+        {
+          eventName: "onChange",
+          eventMethod: handleChangeRequestType,
+        },
+      ],
+    },
+    {
+      fieldName: "RequestMemberID",
+      dataSource: members,
+      props: [
+        {
+          propName: "loading",
+          propValue: memberSearchProgress,
+        },
+      ],
+      events: [
+        {
+          eventName: "onSearch",
+          eventMethod: handleSearchMember,
+        },
+      ],
+    },
+    {
+      fieldName: "FrontSideTypeID",
+      // dataSource: -,
+      events: [
+        {
+          eventName: "onChange",
+          eventMethod: handleChangeFrontSideType,
+        },
+      ],
+    },
+    {
+      fieldName: "FrontSideAccountID",
+      dataSource: frontSideAccounts,
+      events: [
+        {
+          eventName: "onSearch",
+          eventMethod: handleSearchFrontSideAccount,
+        },
+      ],
+      props: [
+        {
+          propName: "disabled",
+          propValue: record.FrontSideTypeID === 0,
+        },
+        {
+          propName: "loading",
+          propValue: frontSideAccountSearchProgress,
+        },
+      ],
+    },
+    {
+      fieldName: "DetailsText",
+      props: [
+        {
+          propName: "rows",
+          propValue: 2,
+        },
+      ],
+    },
+    // {
+    //   fieldName: "IsPresentational",
+    //   props: [
+    //     {
+    //       propName: "checkedTitle",
+    //       propValue: Words.active,
+    //     },
+    //     {
+    //       propName: "unCheckedTitle",
+    //       propValue: Words.inactive,
+    //     },
+    //   ],
+    // },
+  ];
+
   const formConfig = {
     schema,
     record,
     setRecord,
     errors,
     setErrors,
+    formItemProperties,
   };
 
   const clearRecord = () => {
-    // record.StorageCenterID = 0;
-    record.FrontSideTypeID = 0;
-    record.FrontSideAccountID = 0;
-    record.RequestMemberID = 0;
-    record.NeedDate = "";
-    record.RequestTypeID = 0;
-    record.RequestDate = currentDate;
-    record.DetailsText = "";
-    record.FromStoreID = 0;
-    record.ToStoreID = 0;
-    record.StatusID = 1;
-    record.Items = [];
+    const rec = { ...initRecord };
+    delete rec.RequestID;
 
-    setRecord(record);
-    setErrors({});
-    setFrontSideAccounts([]);
     setMembers([]);
-    loadFieldsValue(formRef, record);
+    setFrontSideAccounts([]);
+    setErrors({});
+    setRecord(rec);
+    loadFieldsValue(formRef, rec);
   };
 
   useMount(async () => {
@@ -115,42 +289,27 @@ const ProductRequestModal = ({
     setProgress(true);
 
     try {
+      const form_ui = await getFormUI(forms.FINANCIAL_STORE_PRODUCT_REQUEST);
+      setFormUI(form_ui);
+
+      const init_record = getInitRecord(form_ui);
+      setInitRecord(init_record);
+
+      const schema = getSchema(form_ui);
+      setSchema(schema);
+
       const data = await service.getParams();
 
-      let {
-        // StorageCenters,
-        Stores,
-        ProductRequestTypes,
-        FrontSideTypes,
-        HasSaveApproveAccess,
-        HasRejectAccess,
-        CurrentDate,
-      } = data;
+      let { HasSaveApproveAccess, HasRejectAccess } = data;
 
-      //   setStorageCenters(StorageCenters);
-      setStores(Stores);
-
-      const from_stores = [...Stores];
-      const to_stores = [...Stores];
-      from_stores.forEach((store) => (store.FromStoreID = store.StoreID));
-      to_stores.forEach((store) => (store.ToStoreID = store.StoreID));
-      setFromStores(from_stores);
-      setToStores(to_stores);
-
-      setProductRequestTypes(ProductRequestTypes);
-      setFrontSideTypes(FrontSideTypes);
       setHasSaveApproveAccess(HasSaveApproveAccess);
       setHasRejectAccess(HasRejectAccess);
-      setCurrentDate(CurrentDate);
 
       //------
 
       if (!selectedObject) {
-        const rec = { ...initRecord };
-        rec.RequestDate = `${CurrentDate}`;
-
-        setRecord({ ...rec });
-        loadFieldsValue(formRef, { ...rec });
+        setRecord(init_record);
+        loadFieldsValue(formRef, init_record);
       } else {
         const request_member = await service.searchMemberByID(
           selectedObject.RequestMemberID
@@ -317,60 +476,6 @@ const ProductRequestModal = ({
 
   //------
 
-  const handleSearchMember = async (searchText) => {
-    setMemberSearchProgress(true);
-
-    try {
-      const data = await service.searchMembers(searchText);
-
-      data.forEach((m) => {
-        m.RequestMemberID = m.MemberID;
-      });
-
-      setMembers(data);
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setMemberSearchProgress(false);
-  };
-
-  const handleChangeFrontSideType = async (value) => {
-    const rec = { ...record };
-    rec.FrontSideTypeID = value || 0;
-    rec.FrontSideAccountID = 0;
-
-    setRecord(rec);
-
-    if (value === 0) {
-      setFrontSideAccounts([]);
-    } else {
-      const data = await handleSearchFrontSideAccount(value);
-      setFrontSideAccounts(data);
-    }
-    loadFieldsValue(formRef, rec);
-  };
-
-  const handleSearchFrontSideAccount = async (typeID) => {
-    let data = [];
-
-    setFrontSideAccountSearchProgress(true);
-
-    try {
-      data = await service.searchFrontSideAccounts(typeID);
-
-      setFrontSideAccounts(data);
-    } catch (ex) {
-      handleError(ex);
-    }
-
-    setFrontSideAccountSearchProgress(false);
-
-    return data;
-  };
-
-  //------
-
   const is_disable =
     record?.Items?.length === 0 || (validateForm({ record, schema }) && true);
 
@@ -393,24 +498,6 @@ const ProductRequestModal = ({
 
   //------
 
-  const handleChangeRequestType = async (value) => {
-    const rec = { ...record };
-    rec.RequestTypeID = value || 0;
-    rec.FromStoreID = 0;
-    rec.ToStoreID = 0;
-
-    if (value === 5) {
-      schema.FromStoreID = Joi.number().min(1);
-      schema.ToStoreID = Joi.number().min(1);
-    } else {
-      schema.FromStoreID = Joi.number();
-      schema.ToStoreID = Joi.number();
-    }
-
-    setRecord(rec);
-    loadFieldsValue(formRef, rec);
-  };
-
   return (
     <>
       <ModalWindow
@@ -424,132 +511,7 @@ const ProductRequestModal = ({
       >
         <Form ref={formRef} name="dataForm">
           <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-            {selectedObject && (
-              <Col xs={24}>
-                <TextItem
-                  title={Words.id}
-                  value={
-                    selectedObject
-                      ? utils.farsiNum(selectedObject.RequestID)
-                      : "-"
-                  }
-                  valueColor={Colors.magenta[6]}
-                />
-              </Col>
-            )}
-            {/* <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.storage_center}
-                dataSource={storageCenters}
-                keyColumn="StorageCenterID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                required
-              />
-            </Col> */}
-            <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.request_type}
-                dataSource={productRequestTypes}
-                keyColumn="RequestTypeID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                onChange={handleChangeRequestType}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.request_member}
-                dataSource={members}
-                keyColumn="RequestMemberID"
-                valueColumn="FullName"
-                formConfig={formConfig}
-                loading={memberSearchProgress}
-                onSearch={handleSearchMember}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DateItem
-                horizontal
-                required
-                title={Words.request_date}
-                fieldName="RequestDate"
-                formConfig={formConfig}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DateItem
-                horizontal
-                required
-                title={Words.need_date}
-                fieldName="NeededDate"
-                formConfig={formConfig}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.front_side_type}
-                dataSource={frontSideTypes}
-                keyColumn="FrontSideTypeID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                onChange={handleChangeFrontSideType}
-                required
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.front_side_account}
-                dataSource={frontSideAccounts}
-                keyColumn="FrontSideAccountID"
-                valueColumn="FrontSideAccountTitle"
-                formConfig={formConfig}
-                loading={frontSideAccountSearchProgress}
-                onSearch={handleSearchFrontSideAccount}
-                disabled={record.FrontSideTypeID === 0}
-                required
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.from_store}
-                dataSource={fromStores}
-                keyColumn="FromStoreID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                required={record.RequestTypeID === 5}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <DropdownItem
-                title={Words.to_store}
-                dataSource={toStores}
-                keyColumn="ToStoreID"
-                valueColumn="Title"
-                formConfig={formConfig}
-                required={record.RequestTypeID === 5}
-              />
-            </Col>
-            <Col xs={24}>
-              <InputItem
-                title={Words.descriptions}
-                fieldName="DetailsText"
-                multiline
-                rows={2}
-                showCount
-                maxLength={512}
-                formConfig={formConfig}
-              />
-            </Col>
-
-            {/* ToDo: Implement base_doc_id field based on the selected base type */}
-            <Col xs={24}>
-              <Divider orientation="right">
-                <Text style={{ fontSize: 14, color: Colors.green[6] }}>
-                  {Words.product_items}
-                </Text>
-              </Divider>
-            </Col>
+            {formUI && <>{renderFormUI(formUI, formConfig)}</>}
 
             {record.Items && (
               <>
