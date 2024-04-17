@@ -46,7 +46,6 @@ const ProductRequestsSearchModal = ({ isOpen, filter, onOk, onCancel }) => {
   // ------
 
   const handleSearchMember = async (searchText) => {
-    console.log(searchText);
     setMemberSearchProgress(true);
 
     try {

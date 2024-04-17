@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useMount } from "react-use";
-import { Form, Row, Col } from "antd";
-import Joi from "joi-browser";
+import { Form, Row } from "antd";
 import ModalWindow from "../../../../common/modal-window";
-import Words from "../../../../../resources/words";
-import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   validateForm,
@@ -14,40 +11,18 @@ import {
   handleError,
 } from "../../../../../tools/form-manager";
 import service from "../../../../../services/financial/store-operations/product-requests-service";
-import InputItem from "../../../../form-controls/input-item";
-import NumericInputItem from "../../../../form-controls/numeric-input-item";
-import DropdownItem from "../../../../form-controls/dropdown-item";
-import TextItem from "../../../../form-controls/text-item";
 
-const schema = {
-  ItemID: Joi.number().required(),
-  RequestID: Joi.number().required(),
-  ProductID: Joi.number().required().min(1),
-  MeasureUnitID: Joi.number().min(1).required().label(Words.measure_unit),
-  RequestCount: Joi.number()
-    .min(0)
-    .max(999999)
-    .positive()
-    .precision(2)
-    .label(Words.request_count),
-  DetailsText: Joi.string()
-    .min(5)
-    .max(250)
-    .allow("")
-    .regex(utils.VALID_REGEX)
-    .label(Words.descriptions),
-  StatusID: Joi.number().min(1),
-};
-
-const initRecord = {
-  ItemID: 0,
-  RequestID: 0,
-  ProductID: 0,
-  MeasureUnitID: 0,
-  RequestCount: 0,
-  DetailsText: "",
-  StatusID: 1,
-};
+import {
+  forms,
+  getFormUI,
+} from "../../../../../services/app/form-manager-service";
+import {
+  controlTypes,
+  getSchema,
+  getInitRecord,
+  renderFormUI,
+} from "../../../../common/form-manager/form-renderer";
+import Words from "../../../../../resources/words";
 
 const formRef = React.createRef();
 
@@ -56,79 +31,33 @@ const ProductRequestItemModal = ({
   selectedObject,
   onOk,
   onCancel,
-  setParams,
+  // setParams,
 }) => {
   const [progress, setProgress] = useState(false);
   const [errors, setErrors] = useState({});
   const [record, setRecord] = useState({});
 
+  const [initRecord, setInitRecord] = useState({});
+  const [schema, setSchema] = useState({});
+  const [formUI, setFormUI] = useState(null);
+
+  const [productSearchProgress, setProductSearchProgress] = useState(false);
   const [products, setProducts] = useState([]);
-  const [statuses, setStatuses] = useState([]);
 
-  const formConfig = {
-    schema,
-    record,
-    setRecord,
-    errors,
-    setErrors,
-  };
+  // ------
 
-  const clearRecord = () => {
-    record.ProductID = 0;
-    record.MeasureUnitID = 0;
-    record.RequestCount = 0;
-    record.DetailsText = "";
-    record.StatusID = 1;
-
-    setRecord(record);
-    setErrors({});
-    loadFieldsValue(formRef, record);
-  };
-
-  useMount(async () => {
-    setProgress(true);
+  const handleSearchProduct = async (searchText) => {
+    setProductSearchProgress(true);
 
     try {
-      const data = await service.getItemParams();
+      const data = await service.searchProducts(searchText);
 
-      let { Products, Statuses } = data;
-
-      setParams({
-        Products,
-        Statuses,
-      });
-
-      setProducts(Products);
-      setStatuses(Statuses);
-
-      if (!selectedObject) {
-        const rec = { ...initRecord };
-
-        setRecord({ ...rec });
-        loadFieldsValue(formRef, { ...rec });
-      } else {
-        initModal(formRef, selectedObject, setRecord);
-      }
+      setProducts(data);
     } catch (ex) {
       handleError(ex);
     }
 
-    setProgress(false);
-  });
-
-  const isEdit = selectedObject !== null;
-
-  const handleSubmit = async () => {
-    await saveModalChanges(
-      formConfig,
-      selectedObject,
-      setProgress,
-      onOk,
-      clearRecord,
-      false // showMessage
-    );
-
-    onCancel();
+    setProductSearchProgress(false);
   };
 
   const handleChangeProduct = (value) => {
@@ -154,6 +83,167 @@ const ProductRequestItemModal = ({
       ?.MeasureUnits;
   };
 
+  const formItemProperties = [
+    {
+      fieldName: "ItemID",
+      controlTypeID: controlTypes.Label,
+      props: [
+        {
+          propName: "hidden",
+          propValue: selectedObject === null,
+        },
+        {
+          propName: "value",
+          propValue: selectedObject
+            ? utils.farsiNum(selectedObject.ItemID)
+            : "-",
+        },
+        // {
+        //   propName: "valueColor",
+        //   propValue: Colors.cyan[5],
+        // },
+      ],
+    },
+    {
+      fieldName: "ProductID",
+      dataSource: products,
+      props: [
+        {
+          propName: "loading",
+          propValue: productSearchProgress,
+        },
+      ],
+      events: [
+        {
+          eventName: "onSearch",
+          eventMethod: handleSearchProduct,
+        },
+        {
+          eventName: "onChange",
+          eventMethod: handleChangeProduct,
+        },
+      ],
+    },
+    {
+      fieldName: "MeasureUnitID",
+      dataSource: getMeasureUnits(),
+      props: [
+        {
+          propName: "keyColumn",
+          propValue: "MeasureUnitID",
+        },
+        {
+          propName: "valueColumn",
+          propValue: "MeasureUnitTitle",
+        },
+        {
+          propName: "disabled",
+          propValue: record.ProductID === 0,
+        },
+      ],
+    },
+    {
+      fieldName: "RequestCount",
+      props: [
+        {
+          propName: "maxLength",
+          propValue: 7,
+        },
+        {
+          propName: "step",
+          propValue: "0.01",
+        },
+      ],
+    },
+    {
+      fieldName: "StatusID",
+      controlTypeID: controlTypes.Label,
+      props: [
+        {
+          propName: "value",
+          propValue: selectedObject
+            ? selectedObject.StatusTitle
+            : Words.product_request_status_1,
+        },
+      ],
+    },
+  ];
+
+  const formConfig = {
+    schema,
+    record,
+    setRecord,
+    errors,
+    setErrors,
+    formItemProperties,
+  };
+
+  const clearRecord = () => {
+    const rec = { ...initRecord };
+
+    setProducts([]);
+    // setFrontSideAccounts([]);
+    setErrors({});
+    setRecord(rec);
+    loadFieldsValue(formRef, rec);
+  };
+
+  useMount(async () => {
+    setProgress(true);
+
+    try {
+      const form_ui = await getFormUI(
+        forms.FINANCIAL_STORE_PRODUCT_REQUEST_ITEM
+      );
+      setFormUI(form_ui);
+
+      const init_record = getInitRecord(form_ui);
+      setInitRecord(init_record);
+
+      const schema = getSchema(form_ui);
+      setSchema(schema);
+
+      //------
+
+      if (!selectedObject) {
+        setRecord(init_record);
+        loadFieldsValue(formRef, init_record);
+      } else {
+        const request_product = await service.searchProductByID(
+          selectedObject.ProductID
+        );
+
+        request_product.forEach((p) => {
+          p.ProductID = p.ProductID;
+        });
+
+        setProducts(request_product);
+
+        initModal(formRef, selectedObject, setRecord);
+      }
+    } catch (err) {
+      handleError(err);
+    }
+    setProgress(false);
+  });
+
+  const isEdit = selectedObject !== null;
+
+  const handleSubmit = async () => {
+    //...
+
+    await saveModalChanges(
+      formConfig,
+      selectedObject,
+      setProgress,
+      onOk,
+      clearRecord,
+      false // showMessage
+    );
+
+    onCancel();
+  };
+
   //------
 
   return (
@@ -169,71 +259,7 @@ const ProductRequestItemModal = ({
     >
       <Form ref={formRef} name="dataForm">
         <Row gutter={[5, 1]} style={{ marginLeft: 1 }}>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.product}
-              dataSource={products}
-              keyColumn="ProductID"
-              valueColumn="Title"
-              formConfig={formConfig}
-              onChange={handleChangeProduct}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <DropdownItem
-              title={Words.measure_unit}
-              dataSource={getMeasureUnits()}
-              keyColumn="MeasureUnitID"
-              valueColumn="MeasureUnitTitle"
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <NumericInputItem
-              horizontal
-              title={Words.request_count}
-              fieldName="RequestCount"
-              min={0}
-              max={999999}
-              precision={2}
-              maxLength={7}
-              step="0.01"
-              stringMode
-              decimalText
-              formConfig={formConfig}
-              required
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            {selectedObject && selectedObject.ItemID > 0 ? (
-              <DropdownItem
-                title={Words.status}
-                dataSource={statuses}
-                keyColumn="StatusID"
-                valueColumn="Title"
-                formConfig={formConfig}
-              />
-            ) : (
-              <TextItem
-                title={Words.status}
-                value={Words.product_request_status_1}
-                valueColor={Colors.magenta[6]}
-              />
-            )}
-          </Col>
-          <Col xs={24}>
-            <InputItem
-              title={Words.standard_description}
-              fieldName="DetailsText"
-              multiline
-              rows={4}
-              showCount
-              maxLength={250}
-              formConfig={formConfig}
-            />
-          </Col>
+          {formUI && <>{renderFormUI(formUI, formConfig)}</>}
         </Row>
       </Form>
     </ModalWindow>

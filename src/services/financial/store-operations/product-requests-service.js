@@ -41,6 +41,20 @@ export async function searchMemberByID(memberID) {
   return data;
 }
 
+export async function searchProducts(searchText) {
+  const { data } = await http.post(`${apiEndpoint}/search/products`, {
+    searchText,
+  });
+
+  return data;
+}
+
+export async function searchProductByID(productID) {
+  const { data } = await http.get(`${apiEndpoint}/search/product/${productID}`);
+
+  return data;
+}
+
 export async function searchFrontSideAccounts(typeID) {
   const { data } = await http.get(
     `${apiEndpoint}/search/front-side/by-type/${typeID}`
@@ -115,6 +129,8 @@ const service = {
   isReturnableRequest,
   searchMembers,
   searchMemberByID,
+  searchProducts,
+  searchProductByID,
   searchFrontSideAccounts,
   searchFrontSideAccountByID,
   searchData,
