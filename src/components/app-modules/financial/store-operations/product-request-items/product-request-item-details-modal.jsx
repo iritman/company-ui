@@ -239,7 +239,8 @@ const getProductRequestItemsColumns = () => {
 };
 
 const ProductRequestItemDetailsModal = ({ requestID, isOpen, onOk }) => {
-  const [progress, setProgress] = useState(false);
+  const [, setProgress] = useState(false);
+  // const [progress, setProgress] = useState(false);
   const [productRequest, setProductRequest] = useState(null);
 
   useMount(async () => {

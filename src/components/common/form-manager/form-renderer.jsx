@@ -73,6 +73,9 @@ export const getSchema = (form_ui) => {
         let array_schema = Joi.array();
         schema[i.FieldName] = array_schema;
         break;
+
+      default:
+        break;
     }
   });
 
@@ -410,11 +413,11 @@ export const renderFormUI = (form_ui, formConfig) => {
   );
 };
 
-const methods = {
-  controlTypes,
-  getSchema,
-  getInitRecord,
-  renderFormUI,
-};
+// const methods = {
+//   controlTypes,
+//   getSchema,
+//   getInitRecord,
+//   renderFormUI,
+// };
 
-export default methods;
+// export default methods;

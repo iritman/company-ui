@@ -18,7 +18,7 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   QuestionCircleOutlined as QuestionIcon,
-  RetweetOutlined as RefreshIcon,
+  // RetweetOutlined as RefreshIcon,
   SettingOutlined as SettingsIcon,
 } from "@ant-design/icons";
 import { handleError } from "../../../../../tools/form-manager";
@@ -45,7 +45,8 @@ const InquiryRequestDetailsModal = ({
   const [progress, setProgress] = useState(false);
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
   const [isReturnableInquiry, setIsReturnableInquiry] = useState(false);
-  const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
+  const [, setHasShowRelationsAccess] = useState(false);
+  // const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
   const [hasRegInvoiceAccess, setHasRegInvoiceAccess] = useState(false);
 
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
@@ -117,7 +118,7 @@ const InquiryRequestDetailsModal = ({
         };
 
         let items = [];
-        let suppliers = [];
+        // let suppliers = [];
 
         valid_requested_items_for_invoice.forEach((item) => {
           const request_item = {};

@@ -18,7 +18,7 @@ import Colors from "../../../../../resources/colors";
 import utils from "../../../../../tools/utils";
 import {
   QuestionCircleOutlined as QuestionIcon,
-  RetweetOutlined as RefreshIcon,
+  // RetweetOutlined as RefreshIcon,
   SettingOutlined as SettingsIcon,
 } from "@ant-design/icons";
 import { handleError } from "../../../../../tools/form-manager";
@@ -42,7 +42,8 @@ const InvoiceDetailsModal = ({
   const [progress, setProgress] = useState(false);
   const [hasUndoApproveAccess, setHasUndoApproveAccess] = useState(false);
   const [isReturnableInvoice, setIsReturnableInvoice] = useState(false);
-  const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
+  const [, setHasShowRelationsAccess] = useState(false);
+  // const [hasShowRelationsAccess, setHasShowRelationsAccess] = useState(false);
   const [hasRegPurchaseCommandAccess, setHasRegPurchaseCommandAccess] =
     useState(false);
 

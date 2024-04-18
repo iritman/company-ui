@@ -58,7 +58,8 @@ const PurchaseCommandModal = ({
 
   const [selectedCommandItem, setSelectedCommandItem] = useState(null);
   const [showCommandItemModal, setShowCommandItemModal] = useState(false);
-  const [currentDate, setCurrentDate] = useState("");
+  const [, setCurrentDate] = useState("");
+  // const [currentDate, setCurrentDate] = useState("");
 
   const resetContext = useResetContext();
 

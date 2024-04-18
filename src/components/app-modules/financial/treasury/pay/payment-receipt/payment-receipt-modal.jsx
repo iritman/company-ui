@@ -57,7 +57,8 @@ const PaymentReceiptModal = ({
   const { progress, setProgress, record, setRecord, errors, setErrors } =
     useModalContext();
 
-  const [orders, setOrders] = useState([]);
+  const [, setOrders] = useState([]);
+  // const [orders, setOrders] = useState([]);
 
   const [baseTypes, setBaseTypes] = useState([]);
   const [payTypes, setPayTypes] = useState([]);
@@ -191,7 +192,8 @@ const PaymentReceiptModal = ({
     setProgress(true);
 
     try {
-      let data = await service.searchOrders();
+      // let data =
+      await service.searchOrders();
     } catch (ex) {
       handleError(ex);
     }

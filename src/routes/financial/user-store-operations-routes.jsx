@@ -3,7 +3,7 @@ import { Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "../../components/common/protected-route";
 //---
 import StoreOperationsDashboard from "../../components/app-modules/financial/store-operations/store-operations-dashboard";
-import ProductRequestsPage from "../../components/app-modules/financial/store-operations/product-requests/product-requests-page";
+import ProductRequestsPage from "../../components/app-modules/financial/store-operations/product-requests/ProductRequestsPage";
 import ProductRequestItemsPage from "../../components/app-modules/financial/store-operations/product-request-items/product-request-items-page";
 //---
 
